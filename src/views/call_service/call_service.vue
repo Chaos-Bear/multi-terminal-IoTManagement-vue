@@ -232,6 +232,9 @@ import { ChatDotRound } from '@element-plus/icons-vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router';
 import {createWebSocket} from "@/utils/websocket.js";
+
+import {request,noderedrequest}  from "@/utils/server.js" 
+
 // debugger
 const route = new useRoute()
 // 获取当前日期,如是当日日期，则不显示日期，只显示时间
@@ -248,8 +251,8 @@ const route = new useRoute()
    var dayTime=Y+'-'+M+'-'+D
 // 大屏显示会议室最新消息列表接口
 const getmsgList = () => {
-  axios
-    .post('http://172.28.5.134:8084/ShowCatCtrl/showRoomDisplayList')
+  request
+    .post('/ShowCatCtrl/showRoomDisplayList')
     .then((res) => {
       console.log('大屏显示会议室列表查询成功:', res.data)
 
@@ -275,8 +278,8 @@ const getmsgList = () => {
 }
 // 获取会议室状态接口
 const getMeetingInfo = () => {
-  axios
-    .post('http://172.28.5.134:8084/ShowCatCtrl/queryCallRmStatInfo', {
+  request
+    .post('/ShowCatCtrl/queryCallRmStatInfo', {
       meetID: meetingInfo.value.meetID,
       roomID: meetingInfo.value.roomID
     })
@@ -297,8 +300,8 @@ const getMeetingInfo = () => {
 // 获取历史消息接口
 const historyParams = ref({ lastChatTime: '', count: 10, roomID: '', source: '1' })
 const getHistoryInfo = () => {
-  axios
-    .post('http://172.28.5.134:8084/ShowCatCtrl/showLgScrnChatHis', historyParams.value)
+  request
+    .post('/ShowCatCtrl/showLgScrnChatHis', historyParams.value)
     .then((res) => {
       console.log('历史消息查询成功:', res.data)
       // debugger
@@ -314,7 +317,7 @@ const getHistoryInfo = () => {
 }
 
 onMounted(() => {
-  getmsgList()
+  // getmsgList()
 
   // getHistoryInfo()
 })
@@ -397,7 +400,7 @@ const onScroll = (top) => {
 
 // 2.2 websocket连接
 //--------创建中间聊天区域websocket对象
-var websocket=createWebSocket('ws://172.28.5.134:53134/ws',{onopen(e){
+var websocket=createWebSocket('ws://172.28.5.134:8083/ws',{onopen(e){
   console.log('建立了websocket连接')
   console.log(e)
   // 重新调用会议室最新消息列表
@@ -432,9 +435,11 @@ var websocket=createWebSocket('ws://172.28.5.134:53134/ws',{onopen(e){
 // 获取组织信息，并传递给后端  **此处相关 部署时记得打开注释  待处理
 // localStorage.setItem("show-name","益伟康");
 // localStorage.setItem("remember-name","4600072255");
+// var showName = localStorage.getItem("show-name") || "益伟康";
+// var rememberName = localStorage.getItem("remember-name") || "4600072255";
 
-var showName = localStorage.getItem("show-name") || "益伟康";
-var rememberName = localStorage.getItem("remember-name") || "4600072255";
+var showName = sessionStorage.getItem("sessionUserName") || "益伟康";
+var rememberName = sessionStorage.getItem("userId") || "4600072255";
 
 // 监听输入框消息变化
 const onChangeMsgInfo = (e) => {
@@ -464,7 +469,7 @@ const onChangeMsgInfo = (e) => {
   inputMsg.value = ''
   
   //发送完消息，重新调用会议室列表接口，渲染------待处理，建议不要这样频繁调用接口，
-  getmsgList()
+  // getmsgList()
   
 }
 
@@ -951,7 +956,7 @@ var ws1=createWebSocket('ws://172.28.5.134:8084/websocket/'+rememberName,{onopen
 }
 
 :deep(.custom-el-scrollbar.el-scrollbar) {
-  height: (670/1080)*100vh;
+  height: (660/1080)*100vh;
   &.active{
     height:calc( (670/1080)*100vh - (172/1080)*100vh) ;
   }

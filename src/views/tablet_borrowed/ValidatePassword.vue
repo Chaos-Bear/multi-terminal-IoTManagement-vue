@@ -33,10 +33,13 @@ import axios from "axios";
 import { ElMessage,ElMessageBox } from 'element-plus';
 import {useRouter,useRoute} from "vue-router";
 const router=useRouter();
+import {request,noderedrequest}  from "@/utils/server.js" 
+
+
 const getList=()=>{
   
-  //  axios.post("http://10.31.0.101:1880/tablet_borrowed/list?verificationCode="+getArr.value.join(""))
-   axios.post("http://10.31.0.101:1880/tablet_borrowed/list",
+  //  noderedrequest.post("/tablet_borrowed/list?verificationCode="+getArr.value.join(""))
+   noderedrequest.post("/tablet_borrowed/list",
    {
         
       "verificationCode":getArr.value.join(""),

@@ -96,6 +96,8 @@ import { reactive, ref ,onMounted, nextTick} from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
+import {request,noderedrequest}  from "@/utils/server.js" 
+
 const table=ref(null)
 const getList=()=>{
   var borrowStartTime=value1.value[0] || '';
@@ -109,7 +111,8 @@ const getList=()=>{
         "borrowedState":form.historyState,
 
    }
-  if(value1.value){
+  if(value1.value>0){
+    // debugger
       json.borrowStartTime={
             "_gre":borrowStartTime,
             "_timestamp":true
@@ -130,15 +133,15 @@ const getList=()=>{
            D="0"+D
     }
     var time=Y+'-'+M+'-'+D+' '+'00:00:00'
-    
+    // debugger
     json.borrowEndTime={
       "_le":time,
       "_timestamp":true
     }
   }
-   axios.post("http://10.31.0.101:1880/tablet_borrowed/list",json
+   noderedrequest.post("/tablet_borrowed/list",json
    )
-  //  axios.get("http://10.31.0.101:1880/tablet_borrowed/list?borrowedName="+form.borrowedName+"&borrowedState="+form.historyState)
+  //  noderedrequest.get("/tablet_borrowed/list?borrowedName="+form.borrowedName+"&borrowedState="+form.historyState)
   .then(response => {
     console.log("历史列表按条件查询成功:",response.data);
     
@@ -218,8 +221,9 @@ const resetbtn=()=>{
   value1.value="";
   form.borrowedName="";
   form.historyState="";
+  // debugger
   getList()
-
+  
 }
 
 //3 设备信息
@@ -386,7 +390,7 @@ const handleCurrentChange = (val) => {
       font-size: (18/1920)*100vw;
       color: rgba(255, 255, 255, 1);
       font-family: Roboto;
-      // border: 1px solid blue;
+       border: 1px solid #011E4E;
       // overflow: hidden;
         
       .el-table__inner-wrapper{

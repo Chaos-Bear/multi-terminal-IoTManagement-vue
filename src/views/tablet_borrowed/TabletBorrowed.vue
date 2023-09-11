@@ -144,6 +144,7 @@ const router=useRouter();
 import axios from "axios";
 import quertstring from "querystring"
 // import { el } from 'element-plus/es/locale';
+import {request,noderedrequest}  from "@/utils/server.js" 
 
 const dayGetList=()=>{
     // 获取当前时间，定义上午和下午的开始时间，结束时间
@@ -175,8 +176,8 @@ const dayGetList=()=>{
   //  debugger
    console.log("11111",borrowStartTime,borrowEndTime)
    
-  // axios.get("http://10.31.0.101:1880/tablet_borrowed/list?borrowStartTime="+borrowStartTime+"&borrowEndTime="+borrowEndTime+"&borrowedState="+dayState.value)
-   axios.post("http://10.31.0.101:1880/tablet_borrowed/list",
+  // noderedrequest.get("/tablet_borrowed/list?borrowStartTime="+borrowStartTime+"&borrowEndTime="+borrowEndTime+"&borrowedState="+dayState.value)
+   noderedrequest.post("/tablet_borrowed/list",
    {
         "borrowStartTime":{
             "_gre":borrowStartTime,
@@ -220,16 +221,18 @@ const appointmentGetList=()=>{
     borrowStartTime={
             "_lk":appointmentValue.value,
         }
+    
   }else{
     borrowStartTime={
             "_gre":time,
             "_timestamp":true
         }
   }
-  //  axios.get("http://10.31.0.101:1880/tablet_borrowed/list?borrowStartTime="+appointmentTime.value)
-  axios.post("http://10.31.0.101:1880/tablet_borrowed/list",
+  //  noderedrequest.get("/tablet_borrowed/list?borrowStartTime="+appointmentTime.value)  ASC  DESC
+  noderedrequest.post("/tablet_borrowed/list",
    {
         "borrowStartTime":borrowStartTime, 
+        "order":{sortFeild: 'borrowStartTime',sortType:'ASC',"_timestamp":true}
    })
   .then(response => {
     console.log("预约记录按条件查询成功:",response.data);

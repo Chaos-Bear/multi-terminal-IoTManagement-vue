@@ -86,96 +86,40 @@
       </div>
     </div>
     <!-- 3.会议室列表 -->
-    <el-scrollbar height="490px">
-      <div class="meetingList">
-        <div v-for="(item, index) in meetingList" :key="index" class="meetingroom">
-          <!-- <img src="@/assets/index/1.png" @click="router.push('/meetingUserList?id='+item.id+'&name='+item.name)"/> -->
-          <img :src="'data:image/jpg;base64,' + item.roomImg" @click="gotoMeetingUserList(item)" />
-          <div>
+    <div class="tableBox">
+      <el-scrollbar height="100%">
+        <div class="meetingList" v-if="meetingList.length > 0">
+          <div v-for="(item, index) in meetingList" :key="index" class="meetingroom">
+            <!-- <img src="@/assets/index/1.png" @click="router.push('/meetingUserList?id='+item.id+'&name='+item.name)"/> -->
+            <img
+              :src="'data:image/jpg;base64,' + item.roomImg"
+              @click="gotoMeetingUserList(item)"
+            />
             <div>
-              <div class="roomName">{{ item.roomName }}会议室</div>
+              <div>
+                <div class="roomName">{{ item.roomName }}会议室</div>
 
-              <img
-                class="custom_option_img1"
-                src="/img/meeting_modify.png"
-                alt="修改图片"
-                @click="meetingModify(item)"
-              />
-              <img
-                class="custom_option_img2"
-                alt="删除图片"
-                src="/img/meeting_delete.png"
-                @click="deleteMeeting(item)"
-              />
+                <img
+                  class="custom_option_img1"
+                  src="/img/meeting_modify.png"
+                  alt="修改图片"
+                  @click="meetingModify(item)"
+                />
+                <img
+                  class="custom_option_img2"
+                  alt="删除图片"
+                  src="/img/meeting_delete.png"
+                  @click="deleteMeeting(item)"
+                />
+              </div>
+              <div class="detailInfo">1个项目，1个发布页</div>
             </div>
-            <div class="detailInfo">1个项目，1个发布页</div>
           </div>
         </div>
-      </div>
-    </el-scrollbar>
-    <!-- ----------新增/修改会议室弹框 -->
-    <el-dialog
-      :title="createForm.roomID ? '修改会议室' : '新增会议室'"
-      v-model="meetingVisual"
-      style="width: 400px"
-    >
-      <el-form :model="createForm" label-width="100px" ref="createFormRef" :rules="createFormRules">
-        <el-form-item label="会议室名称" prop="name">
-          <el-input v-model="createForm.name" placeholder="请输入会议室名称例如:A2-110"/>
-        </el-form-item>
-        <el-form-item label="楼层" prop="floor">
-          <el-select v-model="createForm.floor" style="width: 100%" placeholder="选择楼层">
-            <el-option
-              v-for="item in floorOptions"
-              :key="item.order"
-              :label="item.floor"
-              :value="item.floor"
-              :disabled="item.disabled"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="地点" prop="address">
-          <el-select v-model="createForm.address" style="width: 100%" placeholder="选择地点">
-            <el-option
-              v-for="item in addressOptions"
-              :key="item.order"
-              :label="item.address"
-              :value="item.address"
-              :disabled="item.disabled"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="会议室图片" prop="imageUrl" class="is-required">
-          <!-- action:要上传的地址   :show-file-list是否展示上传列表 :on-change上传文件列表改变时 :auto-upload 是否自动上传 false为手动上传  -->
-          <div v-if="imageUrl" style="position: relative" class="uploadImgCont">
-            <img :src="imageUrl" class="avatar" />
-            <div class="uploadImg">
-              <el-icon @click="del"><Delete /></el-icon>
-            </div>
-          </div>
-          <el-upload
-            class="avatar-uploader"
-            auto-upload="false"
-            limit="1"
-            :show-file-list="false"
-            :before-upload="beforeAvatarUpload"
-            :http-request="uploadFlie"
-            v-else
-          >
-            <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
-          </el-upload>
-        </el-form-item>
-        <el-form-item>
-          <!-- 修改弹窗 -->
-          <el-button v-if="createForm.roomID" type="primary" @click="saveMeetingModify"
-            >确 定</el-button
-          >
-          <!-- 新增弹窗 -->
-          <el-button v-else type="primary" @click="addMeeting">确 定</el-button>
-          <el-button @click="meetingVisual = false">取 消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+        <!-- 暂无会议室 -->
+        <div v-else class="noMeetingList">暂无会议室</div>
+      </el-scrollbar>
+    </div>
 
     <!-- 4. 分页 -->
     <div class="pagination-block">
@@ -192,6 +136,79 @@
       <img src="@/assets/index/deviceList/refresh.png" @click="refresh()" />
     </div>
   </div>
+  <!-- ----------新增/修改会议室弹框 -->
+  <el-dialog
+    :title="createForm.roomID ? '修改会议室' : '新增会议室'"
+    v-model="meetingVisual"
+    style="width: 450px"
+  >
+    <el-form
+      :model="createForm"
+      label-width="100px"
+      ref="createFormRef"
+      :rules="createFormRules"
+      label-position="left"
+    >
+      <el-form-item label="会议室名称" prop="name">
+        <el-input v-model="createForm.name" placeholder="请输入会议室名称例如:A2-110" />
+      </el-form-item>
+      <el-form-item label="楼层" prop="floor">
+        <el-select v-model="createForm.floor" style="width: 100%" placeholder="选择楼层">
+          <el-option
+            v-for="item in floorOptions"
+            :key="item.order"
+            :label="item.floor"
+            :value="item.floor"
+            :disabled="item.disabled"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="地点" prop="address">
+        <el-select v-model="createForm.address" style="width: 100%" placeholder="选择地点">
+          <el-option
+            v-for="item in addressOptions"
+            :key="item.order"
+            :label="item.address"
+            :value="item.address"
+            :disabled="item.disabled"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="会议室图片" prop="imageUrl" class="is-required">
+        <!-- action:要上传的地址   :show-file-list是否展示上传列表 :on-change上传文件列表改变时 :auto-upload 是否自动上传 false为手动上传  -->
+        <div style="display: flex; align-items: center">
+          <div v-if="imageUrl" style="position: relative" class="uploadImgCont">
+            <img :src="imageUrl" class="avatar" />
+            <div class="uploadImg">
+              <el-icon @click="del"><Delete /></el-icon>
+            </div>
+          </div>
+          <el-upload
+            class="avatar-uploader"
+            auto-upload="false"
+            limit="1"
+            :show-file-list="false"
+            :before-upload="beforeAvatarUpload"
+            :http-request="uploadFlie"
+            accept=".jpeg,.jpg,.png,.gif"
+            v-else
+          >
+            <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
+          </el-upload>
+          <div class="uploadTip" v-if="!imageUrl">仅支持jpeg/jpg/png/gif格式上传!</div>
+        </div>
+      </el-form-item>
+      <el-form-item>
+        <!-- 修改弹窗 -->
+        <el-button v-if="createForm.roomID" type="primary" @click="saveMeetingModify"
+          >确 定</el-button
+        >
+        <!-- 新增弹窗 -->
+        <el-button v-else type="primary" @click="addMeeting">确 定</el-button>
+        <el-button @click="meetingVisual = false">取 消</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
@@ -201,35 +218,40 @@ import { useApiAddressStore } from '@/pinia_stores/api_address_store.js'
 import { ElMessage, valueEquals, ElMessageBox, ElConfigProvider } from 'element-plus'
 import { Plus, Delete } from '@element-plus/icons-vue'
 const router = useRouter()
-import axios from 'axios'
+// import axios from 'axios'
+
+import { request, noderedrequest } from '@/utils/server.js'
 
 // 获取组织信息，并传递给后端
-// var showName=localStorage.get("show-name");
-// var rememberName=localStorage.get("remember-name");
-// const postUserInfo=()=>{
-//     axios
-//     .post('http://172.28.5.134:8084/CallUserCtrl/queryUserByOrgService',
-//     {
-//       "erpbh":showName
-//       // "erpbh":"4600072255"
-//     })
-//     .then((res) => {
-//       console.log('用户信息查询成功:', res.data)
-//       // erpbh: "4600072255" orgeh: "46004475" orgehName: null  xm: "益伟康"
+// var showName=localStorage.getItem("show-name");
+// var rememberName=localStorage.getItem("remember-name");
 
-//     })
-//     .catch((error) => {
-//       // console.log('用户信息查失败:', error)
-//     })
-// }
+var sessionUserName=sessionStorage.getItem("sessionUserName");
+var userId=sessionStorage.getItem("userId");
+const postUserInfo=()=>{
+    request
+    .post('/CallUserCtrl/queryUserByOrgService',
+    {
+      "erpbh":userId
+      // "erpbh":"4600072255"
+    })
+    .then((res) => {
+      console.log('用户信息查询成功:', res.data)
+      // erpbh: "4600072255" orgeh: "46004475" orgehName: null  xm: "益伟康"
+
+    })
+    .catch((error) => {
+      // console.log('用户信息查失败:', error)
+    })
+}
 
 // 会议室配置信息
 var floorOptions = ref([])
 var addressOptions = ref([])
 
 const getFloorandAddList = () => {
-  axios
-    .post('http://172.28.5.134:8084/IOTRoomCrtl/queryIotFloorAddr')
+  request
+    .post('/IOTRoomCrtl/queryIotFloorAddr')
     .then((res) => {
       // console.log("楼层及地点列表获取成功",res.data);
       floorOptions.value = res.data.iotFloorList
@@ -241,19 +263,23 @@ const getFloorandAddList = () => {
 }
 // 会议室列表接口
 const getList = () => {
-  axios
-    .post('http://172.28.5.134:8084/IOTRoomCrtl/queryIotRoomList', {
+  request
+    .post('/IOTRoomCrtl/queryIotRoomList', {
       floor: searchform.floor,
       roomAddr: searchform.address,
       roomName: searchform.name,
-      source: ''
+      source: '',
+      pageNum: currentPage.value,
+      pageSize: pageSize.value
     })
     .then((res) => {
       console.log('会议室列表查询成功:', res.data)
       // debugger
+      // 总条数
+      total.value = res.data.totalRecord
       meetingList.length = 0
       //使用push方法:结构后再赋值
-      meetingList.push(...res.data)
+      meetingList.push(...res.data.data)
     })
     .catch((error) => {
       console.log('会议室列表查询失败:', error)
@@ -279,8 +305,8 @@ const postList = () => {
   // 二进制文件上传
   formData.append('file', createForm.img)
   // debugger
-  axios
-    .post('http://172.28.5.134:8084/IOTRoomCrtl/saveIOTRoomInfo', formData, {
+  request
+    .post('/IOTRoomCrtl/saveIOTRoomInfo', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -298,12 +324,12 @@ const postList = () => {
 // 会议室列表删除接口
 const roomID = ref('')
 const deleteList = () => {
-  axios
-    .post('http://172.28.5.134:8084/IOTRoomCrtl/deleteIOTMTInfo', {
+  request
+    .post('/IOTRoomCrtl/deleteIOTMTInfo', {
       roomID: roomID.value
     })
     .then((res) => {
-      console.log('删除会议室列表成功:', res.data)
+      // console.log('删除会议室列表成功:', res.data)
       console.log('删除id:', roomID.value)
       getList()
     })
@@ -375,6 +401,7 @@ const addMeetingItem = () => {
 
   imageUrl.value = ''
   meetingVisual.value = true
+  createFormRef.value.clearValidate()
 }
 // 新增-----图片上传
 const imageUrl = ref('')
@@ -383,10 +410,11 @@ const beforeAvatarUpload = (rawFile) => {
   // if (rawFile.type !== 'image/jpeg') {
   //   ElMessage.error('Avatar picture must be JPG format!')
   //   return false
-  // } else if (rawFile.size / 1024 / 1024 > 2) {
-  //   ElMessage.error('Avatar picture size can not exceed 2MB!')
-  //   return false
-  // }
+  // } else
+  if (rawFile.size / 1024 / 1024 > 1) {
+    ElMessage.error('上传图片尺寸不能超过 1MB!')
+    return false
+  }
 
   imageUrl.value = URL.createObjectURL(rawFile)
   createForm.img = rawFile
@@ -413,8 +441,20 @@ const checkImg = (rule, value, callback) => {
 // 组件实例 及校验
 const createFormRef = ref(null)
 // ,max:10 ,min:4
+const validateName = (rule, value, callback) => {
+  // debugger
+  const reg = /[a-zA-Z0-9\-]{1}/g
+  if (!reg.test(value)) {
+    return callback(new Error('会议室名称校验失败'))
+  } else {
+    callback()
+  }
+}
 const createFormRules = reactive({
-  name: [{ required: true, message: '请输入会议室名称', trigger: 'blur'}],
+  name: [
+    { required: true, message: '请输入会议室名称', trigger: 'blur' },
+    { validator: validateName, trigger: 'blur' }
+  ],
   address: [{ required: true, message: '请选择地点', trigger: 'blur' }],
   floor: [{ required: true, message: '请选择楼层', trigger: 'blur' }],
   imageUrl: [{ validator: checkImg, trigger: 'blur' }]
@@ -439,9 +479,9 @@ const meetingList = reactive([
 // 点击会议室图片，跳转到 用户界面列表
 const gotoMeetingUserList = (item) => {
   // debugger
-  localStorage.setItem('name', item.roomName)
-  localStorage.setItem('roomId', item.roomID)
-  router.push('/meetingUserList')
+  // localStorage.setItem('name', item.roomName)
+  // localStorage.setItem('roomId', item.roomID)
+  router.push('/meetingUserList?roomName=' + item.roomName + '&roomID=' + item.roomID)
 }
 
 // ----------------修改会议信息弹框
@@ -449,7 +489,13 @@ const meetingVisual = ref(false)
 // 修改会议信息涉及的字段
 
 const meetingModify = (obj) => {
-  createFormRef.value.clearValidate()
+  // debugger
+  // console.log("333333333333333333333",createFormRef.value)
+
+  if (createFormRef.value != null) {
+    createFormRef.value.clearValidate()
+  }
+
   // debugger
   createForm.roomID = obj.roomID
   createForm.name = obj.roomName
@@ -536,8 +582,8 @@ const saveMeetingModify = () => {
       //  debugger
       formData.append('file', createForm.img || base64ToFile(imageUrl.value))
       // debugger
-      axios
-        .post('http://172.28.5.134:8084/IOTRoomCrtl/updateIOTRoom', formData, {
+      request
+        .post('/IOTRoomCrtl/updateIOTRoom', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -591,24 +637,25 @@ const total = ref(0)
 const handleSizeChange = (val) => {
   console.log(`${val} items per page`)
   //重新发请求，渲染设备列表
-  //   getList()
+  getList()
 }
 const handleCurrentChange = (val) => {
   console.log(`current page: ${val}`)
   //重新发请求，渲染设备列表
-  // getList()
+  getList()
 }
 // 刷新按钮
-const refresh=()=>{
+const refresh = () => {
   //重新发请求，渲染设备列表
   getList()
-
 }
 </script>
 <style lang="less" scoped>
 .home {
   margin: 0;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   //1.导航栏
   .navigationBar {
     height: 111px;
@@ -616,6 +663,7 @@ const refresh=()=>{
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    flex: none;
     .item {
       margin-right: 40px;
       display: flex;
@@ -647,6 +695,7 @@ const refresh=()=>{
     padding: 16px 0px 20px 20px;
     height: 113px;
     border-bottom: 1px solid rgba(239, 239, 239, 1);
+    flex: none;
     & > div {
       margin-top: 11px;
     }
@@ -681,92 +730,105 @@ const refresh=()=>{
   }
 
   // 3. 会议列表
-  .meetingList {
-    width: 100%;
-    // height: 690px;
-    // height: calc( 100% -  );
-    padding-top: 16px;
-    padding-left: 22px;
-    display: flex;
-    flex-wrap: wrap;
-    // border: 1px solid red;
-    .meetingroom {
-      width: 214px;
-      height: 247px;
-      margin-right: 24px;
-      margin-bottom: 24px;
-      border-radius: 8px;
-      background-color: rgba(255, 255, 255, 1);
-      text-align: center;
-      border: 1px solid rgba(233, 233, 233, 1);
-      img {
-        width: 100%;
-        height: 157px;
-      }
-      & > div {
-        height: 90px;
-        display: flex;
-        flex-direction: column;
+  .tableBox {
+    flex: 1;
+    overflow: hidden;
+    .meetingList {
+      width: 100%;
+      // height: 690px;
+      // height: calc( 100% -  );
+      padding-top: 16px;
+      padding-left: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      // border: 1px solid red;
+      .meetingroom {
+        width: 214px;
+        height: 247px;
+        margin-right: 24px;
+        margin-bottom: 24px;
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 1);
+        text-align: center;
+        border: 1px solid rgba(233, 233, 233, 1);
+        img {
+          width: 100%;
+          height: 157px;
+        }
         & > div {
-          line-height: 38px;
-          padding-left: 24px;
-          padding-right: 24px;
+          height: 90px;
           display: flex;
-          justify-content: space-between;
-          .roomName {
-            height: 24px;
-            font-size: 16px;
+          flex-direction: column;
+          & > div {
+            line-height: 38px;
+            padding-left: 24px;
+            padding-right: 24px;
+            display: flex;
+            justify-content: space-between;
+            .roomName {
+              height: 24px;
+              font-size: 16px;
+              text-align: left;
+              font-family: SourceHanSansSC-regular;
+            }
+            & > div:nth-child(2) {
+              width: 28px;
+              height: 20px;
+              color: rgba(24, 144, 255, 1);
+              font-size: 14px;
+              text-align: right;
+              font-family: SourceHanSansSC-regular;
+              display: none;
+            }
+          }
+          .detailInfo {
+            // height: 20px;
+            margin-top: 12px;
+            color: rgba(154, 154, 154, 1);
+            font-size: 14px;
             text-align: left;
             font-family: SourceHanSansSC-regular;
           }
-          & > div:nth-child(2) {
-            width: 28px;
-            height: 20px;
-            color: rgba(24, 144, 255, 1);
-            font-size: 14px;
-            text-align: right;
-            font-family: SourceHanSansSC-regular;
-            display: none;
-          }
         }
-        .detailInfo {
-          // height: 20px;
-          margin-top: 12px;
-          color: rgba(154, 154, 154, 1);
-          font-size: 14px;
-          text-align: left;
-          font-family: SourceHanSansSC-regular;
-        }
-      }
 
-      .custom_option_img1,
-      .custom_option_img2 {
-        width: 16px;
-        height: 16px;
-        margin: 10px 2px 0 2px;
-        cursor: pointer;
-        display: none;
-      }
-      .custom_option_img1 {
-        margin-left: 15px;
-      }
-
-      &:hover {
-        box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.2);
         .custom_option_img1,
         .custom_option_img2 {
-          display: inline-block;
+          width: 16px;
+          height: 16px;
+          margin: 10px 2px 0 2px;
+          cursor: pointer;
+          display: none;
+        }
+        .custom_option_img1 {
+          margin-left: 15px;
+        }
+
+        &:hover {
+          box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.2);
+          .custom_option_img1,
+          .custom_option_img2 {
+            display: inline-block;
+          }
         }
       }
     }
+    .noMeetingList {
+      height: 35px;
+      margin-top: 5%;
+      color: rgba(191, 191, 191, 1);
+      font-size: 24px;
+      text-align: center;
+      font-family: SourceHanSansSC-regular;
+    }
   }
+
   // 4.分页
   .pagination-block {
     height: 52px;
     // border: 1px solid red;
     display: flex;
     justify-content: flex-end;
-
+    flex: none;
     .el-button {
       width: 48px;
       height: 32px;
@@ -785,38 +847,72 @@ const refresh=()=>{
       margin-top: 14px;
     }
   }
+}
+// 新增/修改弹框
+.uploadImgCont {
+  width: 120px;
+  height: 120px;
+  border-radius: 3px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 
-  .uploadImgCont {
-    width: 120px;
-    height: 120px;
-    border-radius: 3px;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-
-    .uploadImg {
-      display: none;
+  .uploadImg {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    i {
+      color: #fff;
+      font-size: 28px;
       position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background-color: rgba(0, 0, 0, 0.2);
-      i {
-        color: #fff;
-        font-size: 28px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    }
-    &:hover {
-      .uploadImg {
-        display: block;
-      }
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
+  &:hover {
+    .uploadImg {
+      display: block;
+    }
+  }
+}
+
+.uploadTip {
+  font-size: 12px;
+  color: red;
+  margin-left: 6px;
+}
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  width: 120px;
+  height: 120px;
+  line-height: 20px;
+  border-radius: 3px;
+  background-color: rgba(251, 253, 255, 1);
+  text-align: center;
+  border: 1px solid rgba(192, 204, 218, 1);
 }
 </style>

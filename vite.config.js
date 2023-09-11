@@ -24,9 +24,11 @@ export default defineConfig({
     }
   },
   lintOnSave: false,
-
+  // server:{
+  //   hmr:{overlay: false}
+  // },
   // vue.config.js
-
+  
   devServer: {
     // proxy: {
     //   '/v2': {
@@ -40,3 +42,5 @@ export default defineConfig({
   }
 
 })
+
+

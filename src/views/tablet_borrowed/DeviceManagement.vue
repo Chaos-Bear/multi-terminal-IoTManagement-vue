@@ -49,6 +49,7 @@
           <el-table-column prop="deviceIpAddress" label="设备序列号" min-width="20%" />
           <el-table-column prop="deviceState" label="设备状态" min-width="15%">
             <template #default="scope">
+              <!-- 当设备借用状态为2 使用中时，按钮禁用 -->
               <el-switch
                 v-model="scope.row.deviceState"
                 size="small"
@@ -58,6 +59,7 @@
                 active-value="1"
                 inactive-value="0"
                 @change="switchChange($event, scope.row)"
+                :disabled="scope.row.borrowedState==2"
               />
             </template>
           </el-table-column>
@@ -87,20 +89,12 @@ import { reactive, ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
+import {request,noderedrequest}  from "@/utils/server.js" 
+
 const table = ref(null)
 const getList = () => {
-  // axios.get('http://10.31.0.101:1880/device/list?deviceName=' +
-  //       form.deviceName +
-  //       '&deviceState=' +
-  //       form.deviceState +
-  //       '&borrowedState=' +
-  //       form.borrowedState +
-  //       '&page=' +
-  //       currentPage.value +
-  //       '&limit=' +
-  //       pageSize.value
-  //   )
-    axios.post('http://10.31.0.101:1880/device/list', 
+  
+    noderedrequest.post('/device/list', 
         {
           "deviceName":{
             "_lk":form.deviceName,
@@ -139,11 +133,11 @@ const searchbtn = () => {
 const dayStateOptions = [
   {
     value: '1',
-    label: '使用中',
+    label: '空闲中',
   },
   {
     value: '2',
-    label: '空闲中',
+    label: '使用中',
   }
 ]
 const getDayStateStr=(v)=>{
@@ -161,7 +155,7 @@ const switchChange=(v,row)=>{
   console.log(v)
   if(row.borrowedState== 1){
     //调用设备管理的更新接口
-    axios.put("http://10.31.0.101:1880/device/update",
+    noderedrequest.put("/device/update",
       {
               //当前行的id
               "id":row.id,
@@ -203,7 +197,7 @@ const deleteitem = (row) => {
         message: '删除成功'
       })
       //单个删除请求（成功后发查询请求）
-      axios.delete("http://10.31.0.101:1880/device/delete?id="+id).then(response=>{
+      noderedrequest.delete("/device/delete?id="+id).then(response=>{
         console.log("设备列表删除成功",response);
         if(response.data.code==200){
           //重新发请求，渲染设备列表
@@ -366,7 +360,7 @@ const handleCurrentChange = (val) => {
     display: flex;
     flex-wrap: wrap;
     height: calc(100% - (8 / 1080) * 100vh);
-
+   
     .scrollbar-flex-content {
       display: flex;
     }
@@ -411,7 +405,7 @@ const handleCurrentChange = (val) => {
       font-size: (18/1920) * 100vw;
       color: rgba(255, 255, 255, 1);
       font-family: Roboto;
-      // border: 1px solid blue;
+      border: 1px solid #011E4E;
       // overflow: hidden;
 
       .el-table__inner-wrapper {

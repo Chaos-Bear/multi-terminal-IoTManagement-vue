@@ -40,7 +40,7 @@
       <!-- 3.1新增/删除-->
       <div>
         <!-- 新增 -->
-        <el-button type="primary" text @click="add()" class="addbtn">新增</el-button>
+        <el-button type="primary" text @click="add()" :class="['addbtn',selectList.length != 0?'addbtnActive':'']" :disabled="selectList.length != 0">新增</el-button>
         <!--新增弹框表单  -->
         <el-dialog v-model="newdialogFormVisible" title="新增">
           <el-form :model="newForm" ref="newFormRef" :rules="newFormRules">
@@ -100,64 +100,71 @@
           </template>
         </el-dialog>
         <!-- 删除 -->
-        <el-button @click="deletebtn()" class="deletebtn" :disabled="selectList.length == 0"
+        <el-button @click="deletebtn()" :class="['deletebtn',selectList.length != 0?'delbtnActive':'']" :disabled="selectList.length == 0"
           >删除</el-button
         >
       </div>
       <!-- 3.2 设备列表-->
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-        height="400"
-        :header-cell-style="{ background: '#F5F9FC' }"
-        @select="handleSelectionChange"
-        @select-all="selectAll"
-        ref="table"
-      >
-        <el-table-column type="selection" prop="sec" label="" width="30" />
-        <el-table-column fixed prop="deviceId" label="设备ID" width="80" />
-        <el-table-column prop="deviceName" label="设备名称" width="120" />
-        <el-table-column prop="deviceIpAddress" label="设备ip地址" width="120" />
-        <el-table-column prop="port" label="端口号" width="70" />
-        <el-table-column prop="brand" label="品牌" width="60" />
-        <el-table-column prop="modelNumber" label="型号" width="150" />
-        <el-table-column prop="region" label="区域" width="120" />
-        <el-table-column prop="createTime" label="添加时间" width="170" >
-          <template #default="scope">
-            {{getcreateTime(scope.row.createTime)}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="state" label="状态" width="150">
-          <template #default="scope">
-            <el-switch
-              class="ml-2"
-              size="small"
-              v-model="scope.row.state"
-              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
-              active-text="开启"
-              inactive-text="关闭"
-              active-value="ON"
-              inactive-value="OFF"
-              @change="
-                (v) => {
-                  isOpen(v, scope.row)
-                }
-              "
-            />
-          </template>
-        </el-table-column>
-        <el-table-column prop="opration" label="操作" width="120">
-          <!-- scope.row   -->
-          <template #default="scope">
-            <el-button link type="primary" size="small" @click.prevent="edititem(scope.row)">
-              编辑
-            </el-button>
-            <el-button link type="primary" size="small" @click.prevent="deleteitem(scope.row)">
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="tableBox">
+        <el-scrollbar height="100%">
+          <el-table
+            :data="tableData"
+            style="width: 100%"
+            height="400"
+            :header-cell-style="{ background: '#F5F9FC' }"
+            @select="handleSelectionChange"
+            @select-all="selectAll"
+            ref="table"
+            v-if="tableData.length>0"
+          >
+            <el-table-column type="selection" prop="sec" label="" width="30" />
+            <el-table-column fixed prop="deviceId" label="设备ID" width="80" />
+            <el-table-column prop="deviceName" label="设备名称" width="120" />
+            <el-table-column prop="deviceIpAddress" label="设备ip地址" width="120" />
+            <el-table-column prop="port" label="端口号" width="70" />
+            <el-table-column prop="brand" label="品牌" width="60" />
+            <el-table-column prop="modelNumber" label="型号" width="150" />
+            <el-table-column prop="region" label="区域" width="120" />
+            <el-table-column prop="createTime" label="添加时间" width="170" >
+              <template #default="scope">
+                {{getcreateTime(scope.row.createTime)}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="state" label="状态" width="150">
+              <template #default="scope">
+                <el-switch
+                  class="ml-2"
+                  size="small"
+                  v-model="scope.row.state"
+                  style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
+                  active-text="开启"
+                  inactive-text="关闭"
+                  active-value="ON"
+                  inactive-value="OFF"
+                  @change="
+                    (v) => {
+                      isOpen(v, scope.row)
+                    }
+                  "
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="opration" label="操作" width="120">
+              <!-- scope.row   -->
+              <template #default="scope">
+                <el-button link type="primary" size="small" @click.prevent="edititem(scope.row)">
+                  编辑
+                </el-button>
+                <el-button link type="primary" size="small" @click.prevent="deleteitem(scope.row)">
+                  删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <!-- 暂无设备管理 -->
+          <div v-else class="noDeviceList">暂无设备管理</div>
+        </el-scrollbar>
+      </div>
       <!--编辑弹框表单  -->
       <el-dialog v-model="editdialogFormVisible" title="编辑">
         <el-form :model="editForm" ref="editFormRef" :rules="editFormRules">
@@ -228,40 +235,32 @@ import { reactive, ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
+
+import {request,noderedrequest}  from "@/utils/server.js" 
+
 const table = ref(null)
 
-// 会议室列表维护
-const meetingRoomlist = ref([
-  'A2-107会议室',
-  'A2-108会议室',
-  'A2-117会议室',
-  'A2-113会议室',
-  'A2-201会议室',
-  'A2-205会议室',
-  'A2-207会议室',
-  'A2-208会议室',
-  'A2-211会议室',
-  'A2-212会议室',
-  'A2-215会议室',
-  'A2-219会议室',
-  'A2-220会议室',
-  'A2-221会议室',
-  'A2-222会议室',
-  'A2-223会议室',
-  'A2-225会议室',
-  'A2-226会议室',
-  'A2-227会议室',
-  'A2-228会议室',
-  'A2-229会议室',
-  'A2-307会议室',
-  'A2-309会议室',
-  'A2-310会议室',
-  'A2-312会议室'
-])
+// 设备管理页会议室列表维护
+const meetingRoomlist = ref([])
+const getmeetingRoomList = () => {
+  request
+    .post('/IOTRoomCrtl/queryAllIotRoomList', { })
+    .then((res) => {
+      console.log('设备管理会议室列表查询成功:', res.data)
+      for(var i=0;i<res.data.length;i++){
+         meetingRoomlist.value.push(res.data[i].roomName+'会议室')
+      }
+
+    })
+    .catch((error) => {
+      console.log('设备管理会议室列表查询失败:', error)
+    })
+}
+
 const getList = () => {
-  //  axios.get("http://10.31.0.101:1880/device/list?deviceName="+form.deviceName+"&deviceIpAddress="+form.deviceIpAddress+"&region="+form.region+"&page="+currentPage.value+"&limit="+pageSize.value)
-  axios
-    .post('http://10.31.0.101:1880/device/list', {
+  //  noderedrequest.get("/device/list?deviceName="+form.deviceName+"&deviceIpAddress="+form.deviceIpAddress+"&region="+form.region+"&page="+currentPage.value+"&limit="+pageSize.value)
+  noderedrequest
+    .post('/device/list', {
       deviceName: {
         _lk: form.deviceName
       },
@@ -271,11 +270,11 @@ const getList = () => {
       region: form.region,
       page: currentPage.value,
       limit: pageSize.value,
-      deviceType: '1'
+      deviceType: '0'
     })
     .then((response) => {
-      console.log('按条件查询成功:', response.data)
-      total.value = response.data.data.total
+      console.log('设备管理列表按条件查询成功:', response.data)
+      total.value = response.data.data.total;
       tableData.length = 0
       //使用push方法:结构后再赋值
       // debugger
@@ -292,14 +291,20 @@ const getList = () => {
       })
     })
     .catch((error) => {
-      console.log('按条件查询失败:', error)
+      console.log('设备管理列表按条件查询失败:', error)
     })
 }
+
 const getcreateTime=(createTime)=>{
   //  console.log( createTime.split("T0")[0] +" "+ createTime.split("T0")[1]) 
    return createTime.split("T0")[0] +" "+ createTime.split("T0")[1].split(".")[0]
 }
 
+//初始化渲染
+onMounted(() => {
+  getList()
+  getmeetingRoomList()
+})
 //2.按要求查询
 const form = reactive({
   deviceName: '',
@@ -343,8 +348,8 @@ const deletebtn = () => {
         message: '删除成功'
       })
       //批量删除请求（成功后发查询请求）
-      axios
-        .delete('http://10.31.0.101:1880/device/delete?id=' + id.join(','))
+      noderedrequest
+        .delete('/device/delete?id=' + id.join(','))
         .then((response) => {
           console.log('设备列表删除成功', response)
           if (response.data.code == 200) {
@@ -393,8 +398,8 @@ const addItem = () => {
     if (valid) {
       //校验通过后发请求
       // console.log(newForm.region)
-      axios
-        .post('http://10.31.0.101:1880/device/create', {
+      noderedrequest
+        .post('/device/create', {
           data: {
             deviceId: newForm.deviceId,
             deviceName: newForm.deviceName,
@@ -404,7 +409,8 @@ const addItem = () => {
             modelNumber: newForm.modelNumber,
             region: newForm.region,
             state: newForm.state,
-            deviceType: '1'
+            topic: newForm.topic,
+            deviceType: '0'
           }
         })
         .then((res) => {
@@ -434,10 +440,12 @@ const add = () => {
   newForm.deviceName = ''
   newForm.deviceIpAddress = ''
   newForm.port = ''
-  ;(newForm.brand = ''), (newForm.modelNumber = '')
+  newForm.brand = '', 
+  newForm.modelNumber = ''
   newForm.region = ''
   newForm.state = ''
-
+  newForm.topic = ''
+  
   newdialogFormVisible.value = true
 }
 
@@ -456,8 +464,8 @@ const deleteitem = (row) => {
         message: '删除成功'
       })
       //单个删除请求（成功后发查询请求）
-      axios
-        .delete('http://10.31.0.101:1880/device/delete?id=' + id)
+      noderedrequest
+        .delete('/device/delete?id=' + id)
         .then((response) => {
           console.log('设备列表删除成功', response)
           if (response.data.code == 200) {
@@ -519,9 +527,9 @@ const edititem = (row) => {
 const editIteminfo = () => {
   editFormRef.value.validate((valid) => {
     if (valid) {
-      axios
+      noderedrequest
         .put(
-          'http://10.31.0.101:1880/device/update',
+          '/device/update',
           // {data:
           {
             id: editId,
@@ -634,10 +642,7 @@ const isOpen = (v, item) => {
   }
   
 }
-//初始化渲染
-onMounted(() => {
-  getList()
-})
+
 
 // 4.分页
 const currentPage = ref(1)
@@ -664,12 +669,15 @@ const refresh=()=>{
 .device {
   margin: 0;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   // 1.顶部
   .top {
     width: 100%;
     height: 52px;
     display: flex;
     justify-content: space-between;
+    flex: none;
 
     h1 {
       height: 35px;
@@ -699,6 +707,8 @@ const refresh=()=>{
     border-bottom: 1px solid rgba(239, 239, 239, 1);
     display: flex;
     justify-content: space-between;
+    flex: none;
+
     :deep(.el-form) {
       display: flex;
       margin-top: 16px;
@@ -744,6 +754,9 @@ const refresh=()=>{
     padding-top: 16px;
     display: flex;
     flex-wrap: wrap;
+    flex: 1;
+    overflow: hidden;
+    
     // 编辑/删除按钮
     .addbtn,
     .deletebtn {
@@ -759,9 +772,21 @@ const refresh=()=>{
       text-align: center;
       font-family: Roboto;
     }
+    .addbtn{
+       &.addbtnActive{
+        background-color: #bfbfbf!important;
+        color: #ffffff;
+      }
+    }
     .deletebtn {
       background-color: rgba(191, 191, 191, 1);
       color: rgba(255, 255, 255, 1);
+     
+      &.delbtnActive{
+         background-color: red;
+      }
+
+
     }
     //编辑弹窗
     :deep(.el-form) {
@@ -806,13 +831,21 @@ const refresh=()=>{
         }
       }
     }
+    .noDeviceList {
+      height: 35px;
+      margin-top: 5%;
+      color: rgba(191, 191, 191, 1);
+      font-size: 24px;
+      text-align: center;
+      font-family: SourceHanSansSC-regular;
+    }
   }
   // 4.分页
   .pagination-block {
     height: 52px;
     display: flex;
     justify-content: flex-end;
-
+    flex: none;
     .el-button {
       width: 48px;
       height: 32px;

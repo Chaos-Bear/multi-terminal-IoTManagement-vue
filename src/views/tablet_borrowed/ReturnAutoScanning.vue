@@ -109,9 +109,11 @@ import axios from "axios";
 import {useRouter,useRoute} from "vue-router";
 const router=useRouter();
 const route=useRoute();
+import {request,noderedrequest}  from "@/utils/server.js" 
+
 const getBorrowInfo=()=>{
-  axios
-    .post('http://10.31.0.101:1880/tablet_borrowed/list', {
+  noderedrequest
+    .post('/tablet_borrowed/list', {
       id: route.query.id
     })
     .then((res) => {
@@ -147,8 +149,8 @@ onBeforeMount(() => {
 })
 const getList = () => {
   //查询 设备列表中，借用状态是2 ->使用用中设备 的设备列表，设备状态1 ->启用 ,设备类型"deviceType": "1"  展示在手动添加的 下拉设备下拉选项中
-  // axios.get('http://10.31.0.101:1880/device/list?borrowedState=1&deviceState=1')
-  axios.post('http://10.31.0.101:1880/device/list',
+  // noderedrequest.get('/device/list?borrowedState=1&deviceState=1')
+  noderedrequest.post('/device/list',
     {
       "borrowedState":2,
       "deviceState":1,
@@ -226,7 +228,7 @@ const submitScan=()=>{
   for(var i=0;i<tableData.length;i++){
     PromiseArr.push(
       // 更新设备接口设备
-      axios.put("http://10.31.0.101:1880/device/update",
+      noderedrequest.put("/device/update",
         {
               "id": tableData[i].id,  
               //借用状态 在此时->1 空闲中
@@ -234,7 +236,7 @@ const submitScan=()=>{
         }
       ),
       // 更新平板预约借用接口
-      axios.put("http://10.31.0.101:1880/tablet_borrowed/update",
+      noderedrequest.put("/tablet_borrowed/update",
         {
               "id": route.query.id,  
               // 借用状态 在此时->1/2 完结/异常
@@ -340,8 +342,8 @@ const  ishas=(item)=>{
 const submitHandOperated=()=>{
   //-----调用查询设备接口  -----根据手动选择的设备名称
   console.log("form.deviceName：",form.deviceName)
-  // axios.get('http://10.31.0.101:1880/device/list?id='+form.deviceName)
-  axios.post('http://10.31.0.101:1880/device/list',
+  // noderedrequest.get('/device/list?id='+form.deviceName)
+  noderedrequest.post('/device/list',
   {
       "id":form.deviceName,
   })

@@ -22,6 +22,8 @@ zhCn.el.pagination = {
   </el-config-provider>
 </template>
 
-<style scoped>
-  
+<style >
+    html,body,#app{
+       height: 100%;
+    }
 </style>
