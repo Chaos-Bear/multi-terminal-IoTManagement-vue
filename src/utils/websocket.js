@@ -39,7 +39,7 @@ function createWebSocket(url, { onopen, onmessage, onerror, onclose, onbeforeunl
 function init(onopen, onmessage, onerror, onclose, onbeforeunload) {
   //连接成功建立的回调方法
   websocket.onopen = function (event) {
-    console.log('WebSocket:已连接')
+    // console.log('WebSocket:已连接')
     typeof onopen == 'function' && onopen(event)
     //心跳检测重置
     heartCheck.reset().start()
@@ -64,7 +64,7 @@ function init(onopen, onmessage, onerror, onclose, onbeforeunload) {
 
   //连接关闭的回调方法
   websocket.onclose = function (event) {
-    console.log('WebSocket:已关闭')
+    console.log('WebSocket:已关闭',event.code,event.reason)
     typeof onclose == 'function' && onclose(event)
 
     heartCheck.reset() //心跳检测

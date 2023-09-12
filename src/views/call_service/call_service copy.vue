@@ -843,7 +843,7 @@ ws1.addEventListener('error', (err) => {
 }
 
 .call_service {
-  background: #01163d url('/img/call_bg.png') no-repeat;
+  background: #01163d url('@/assets/img/call_bg.png') no-repeat;
   background-size: 100% 100%;
   width: 100vw;
   height: 100vh;
@@ -882,17 +882,17 @@ ws1.addEventListener('error', (err) => {
 }
 
 .call_service_online_img_meeting {
-  background-image: url('/img/call_online_meeting.svg');
+  background-image: url('@/assets/call_online_meeting.svg');
   background-size: (18/1920)*100vw (18/1920)*100vw;
 }
 
 .call_service_online_img_rank {
-  background-image: url('/img/call_ranking_list.svg');
+  background-image: url('@/assets/call_ranking_list.svg');
   background-size: (18/1920)*100vw (18/1920)*100vw;
 }
 
 .call_service_online_img_time {
-  background-image: url('/img/call_time_line.svg');
+  background-image: url('@/assets/call_time_line.svg');
   background-size: (18/1920)*100vw (18/1920)*100vw;
 }
 

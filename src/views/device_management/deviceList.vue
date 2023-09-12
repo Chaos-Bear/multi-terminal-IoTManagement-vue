@@ -115,7 +115,6 @@
             @select="handleSelectionChange"
             @select-all="selectAll"
             ref="table"
-            v-if="tableData.length>0"
           >
             <el-table-column type="selection" prop="sec" label="" width="30" />
             <el-table-column fixed prop="deviceId" label="设备ID" width="80" />
@@ -161,8 +160,6 @@
               </template>
             </el-table-column>
           </el-table>
-          <!-- 暂无设备管理 -->
-          <div v-else class="noDeviceList">暂无设备管理</div>
         </el-scrollbar>
       </div>
       <!--编辑弹框表单  -->
@@ -623,8 +620,8 @@ const selectAll = (e) => {
 const isOpen = (v, item) => {
   // debugger
   if(item.topic!=""){
-     axios
-    .post('http://172.28.5.134:8084/MqttCrtl/crtIotopic', 
+     request
+    .post('/MqttCrtl/crtIotopic', 
       {
         "message": v,
         "pubTopic": item.topic,
@@ -831,14 +828,7 @@ const refresh=()=>{
         }
       }
     }
-    .noDeviceList {
-      height: 35px;
-      margin-top: 5%;
-      color: rgba(191, 191, 191, 1);
-      font-size: 24px;
-      text-align: center;
-      font-family: SourceHanSansSC-regular;
-    }
+  
   }
   // 4.分页
   .pagination-block {

@@ -121,6 +121,7 @@ const getList=()=>{
             "_lee":borrowEndTime,
             "_timestamp":true
       }
+      json.order={sortFeild: 'borrowStartTime',sortType:'ASC',"_timestamp":true}
   }else{
     var d=new Date();
     var Y=d.getFullYear();
@@ -138,6 +139,7 @@ const getList=()=>{
       "_le":time,
       "_timestamp":true
     }
+    json.order={sortFeild: 'borrowStartTime',sortType:'ASC',"_timestamp":true}
   }
    noderedrequest.post("/tablet_borrowed/list",json
    )

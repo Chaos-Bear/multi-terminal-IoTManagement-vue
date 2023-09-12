@@ -23,12 +23,19 @@
       <div class="scanningInfo">
         <!-- 按钮 -->
         <div class="scanningBtn">
-          <div>
-            <span>自动扫描中</span>
-            <img src="@/assets/tablet_borrowed/11.png"> 
+          <div class="topInfo">
+            <div v-if="isSuccess">
+              <span>自动扫描中</span>
+              <img src="@/assets/tablet_borrowed/11.png" />
+            </div>
+            <div v-else>
+              <span>归还完成</span>
+            </div>
+            <span>{{borrowedInfo.returnQuantity}}</span>
+            <span>/{{borrowedInfo.quantityBorrowed}}</span>
           </div>
           <div>
-            <el-button type="info" @click="submitScan" :disabled="borrowedInfo.quantityBorrowed==0 || borrowedInfo.usedNum==0 || borrowedInfo.usedNum -tableData.length < 0 || tableData.length==0">归还完成</el-button> 
+            <!-- <el-button type="info" @click="submitScan" :disabled="borrowedInfo.quantityBorrowed==0 || borrowedInfo.usedNum==0 || borrowedInfo.usedNum -tableData.length < 0 || tableData.length==0">归还完成</el-button>  -->
             <el-button type="primary" @click="handOperated" :disabled="borrowedInfo.quantityBorrowed==0 || borrowedInfo.usedNum==0 || borrowedInfo.usedNum -tableData.length<=0">手动归还添加</el-button>
           </div>  
           <!--以下为 手动添加-------弹出框  -->
@@ -46,7 +53,7 @@
                 </el-form-item>
                 <el-form-item label="设备序列号" :label-width="formLabelWidth">
                   <!-- <el-input v-model="form.modelNumber" autocomplete="off" /> -->
-                  <template v-for="item in deviceList">
+                  <template v-for="(item,i) in deviceList" :key="i">
                     <span v-if="item.id==form.deviceName">{{item.modelNumber}}</span>
                   </template>
                 </el-form-item>
@@ -76,7 +83,7 @@
             <el-table-column prop="modelNumber" label="设备序列号" min-width="24%" />
             <el-table-column prop="deviceName" label="设备名称" min-width="20.5%" />
             <el-table-column prop="borrowedState" label="状态" min-width="20.5%" >
-              <template #scope>
+              <template #default="scope">
                   {{getDayStateStr(scope.row.borrowedState)}}
               </template>
             </el-table-column>  
@@ -94,6 +101,12 @@
               </template>
             </el-table-column>
           </el-table>
+          <!-- 2.3归还完成 -->
+          <div class="finishBtn">
+            <el-button type="info" v-if="isSuccess"  @click="submitScan" :disabled="borrowedInfo.quantityBorrowed==0 || borrowedInfo.usedNum==0 || borrowedInfo.usedNum -tableData.length < 0 || tableData.length==0">归还完成</el-button>
+            <el-button v-else @click="continueScan">继续扫描</el-button>
+            
+          </div>  
           </el-scrollbar>
         </div>
       </div>
@@ -217,6 +230,7 @@ const getDayStateStr=(v)=>{
 }
 // 2.2.1 绑定完成
 // 同时调用更新设备接口 借用状态->2使用中，和 更新平板预约借用接口 借用状态->3借用中 （隐含调用无纸化接口）
+const isSuccess=ref(true)
 const submitScan=()=>{
   console.log(1111)
   if(borrowedInfo.quantityBorrowed==0 || borrowedInfo.usedNum==0 || borrowedInfo.usedNum -tableData.length < 0 ||tableData.length==0){
@@ -267,7 +281,8 @@ const submitScan=()=>{
             }
           )
           .then(() => {
-            
+            // 绑定完成功，关闭确认按钮后，展示继续扫描按钮
+           isSuccess.value=false
           })
           .catch(() => {
             
@@ -364,6 +379,20 @@ const submitHandOperated=()=>{
 
 }
 
+//删除
+const deleteitem=(v)=>{
+  //  debugger 
+   for(var i=0;i<tableData.length;i++){
+      if(v.id==tableData[i].id){
+          tableData.splice(i,1)
+      }
+   }
+}
+// 继续扫描按钮
+const continueScan=()=>{
+  isSuccess.value=true
+}
+
 </script>
 
 <style lang="less" scoped>
@@ -431,18 +460,27 @@ const submitHandOperated=()=>{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        &>div{
+        .topInfo {
           display: flex;
           align-items: center;
-          span{
-            width: (170/1920)*100vw;
-            height: (50/1080)*100vh;
-            margin-right: (10/1920)*100vw;
-            color: rgba(255, 255, 255, 1);
-            font-size: (34/1920)*100vw;
-            text-align: left;
-            font-family: SourceHanSansSC-regular;
+          div:nth-child(1){
+            margin-right: (20/1920) * 100vw;
+            display: flex;
+            align-items: center;
           }
+          span {
+              // height: (50/1080) * 100vh;
+              // margin-right: (10/1920) * 100vw;
+              color: rgba(255, 255, 255, 1);
+              font-size: (34/1920) * 100vw;
+              text-align: left;
+              font-family: SourceHanSansSC-regular;
+              display: inline-block;
+          }
+          span:nth-child(1) {
+            width: (170/1920)*100vw;
+          }
+         
           img{
             width: (54/1920)*100vw;
             height: (54/1920)*100vw;
@@ -551,7 +589,7 @@ const submitHandOperated=()=>{
       }
       .scanning{
         width: 100%;
-         //3.2设备列表
+         //2.2设备列表
         :deep(.el-table ) {
           height: (584/1080)*100vh!important;
           background-color: transparent;
@@ -620,6 +658,22 @@ const submitHandOperated=()=>{
           }
           }
         }
+
+        //2.3绑定完成/继续扫描
+        .finishBtn{
+          :deep(.el-button){
+            width: (677/1920) * 100vw;
+            height: (71/1080) * 100vh;
+            border-radius: (2/1920) * 100vw;
+            background-color: rgba(24, 144, 255, 1);
+            color: rgba(255, 255, 255, 1);
+            font-size: (34/1920) * 100vw;
+            text-align: center;
+            font-family: Roboto;
+            border: 0px;
+
+          }
+        }
       }
     }
   }
@@ -627,7 +681,7 @@ const submitHandOperated=()=>{
   & > div:nth-child(3) {
     width: (589/1920) * 100vw;
     height: 100vh;
-    background-image: url(tablet_borrowed/7.png);
+    background-image: url(@/assets/tablet_borrowed/7.png);
     background-size: (400/1920)*100vw   (400/1920)*100vw;
     background-repeat: no-repeat;
     background-position-x: (250/1920)*100vw;

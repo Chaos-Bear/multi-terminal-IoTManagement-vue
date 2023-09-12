@@ -50,7 +50,7 @@
                     {{ scope.row.className }}
                   </template>
                   <template v-if="scope.row.contType== '页面'">
-                    <a :href="scope.row.publishPath" target="_blank">{{ scope.row.contName}}</a>
+                    <a :href="scope.row.pubPath" target="_blank">{{ scope.row.contName}}</a>
                   </template>
                 </template>
               </el-table-column>
@@ -105,7 +105,7 @@
                     >
                     <a
                       style="color: #1890ff; font-size: 14px; cursor: pointer"
-                      :href="scope.row.processEditPath"
+                      :href="scope.row.editPath"
                       target="_blank"
                     >
                       编辑

@@ -60,7 +60,7 @@ const getList=()=>{
         //验证码校验成功，跳转到扫描页,并使用query传参
         // router.push("/auto-scanning?id="+res.items[0].id+"&mtName="+res.items[0].mtName+"&borrowedName="+res.items[0].borrowedName+"&quantityBorrowed="+res.items[0].quantityBorrowed+"&borrowStartTime="+res.items[0].borrowStartTime+"&borrowEndTime="+res.items[0].borrowEndTime+"&usedNum="+res.items[0].usedNum)
         router.push("/auto-scanning?id="+res.items[0].id)
-
+        
       // }else{
       //   ElMessage({
       //     type: 'error',

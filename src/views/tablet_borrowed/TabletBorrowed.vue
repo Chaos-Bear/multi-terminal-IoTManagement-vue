@@ -188,6 +188,7 @@ const dayGetList=()=>{
             "_timestamp":true
         },
         "borrowedState":dayState.value,
+        "order":{sortFeild: 'borrowStartTime',sortType:'ASC',"_timestamp":true}
    })
   .then(response => {
     console.log("当日借用信息按条件查询成功:",response.data);

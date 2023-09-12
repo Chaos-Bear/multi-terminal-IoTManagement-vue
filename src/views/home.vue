@@ -14,8 +14,8 @@
         </div>
         <div>设备管理</div>
       </div>
-      <div class="item">
-        <a href="/#/callService" target="_blank">
+      <!-- <div class="item">
+        <a href="/#/callService" target="_self">
           <img src="@/assets/home/3.png" />
         </a>
         <div>呼叫服务</div>
@@ -24,6 +24,18 @@
         <a href="/#/tablet" target="_blank">
           <img src="@/assets/home/2.png" />
         </a>
+        <div>平板借还</div>
+      </div> -->
+       <div class="item">
+        <div>
+          <img src="@/assets/home/3.png" @click="router.push('/callService')" />
+        </div>
+        <div>呼叫服务</div>
+      </div>
+      <div class="item">
+        <div>
+          <img src="@/assets/home/2.png" @click="router.push('/tablet')" />
+        </div>
         <div>平板借还</div>
       </div>
     </div>
@@ -101,14 +113,14 @@
 
                 <img
                   class="custom_option_img1"
-                  src="/img/meeting_modify.png"
+                  src="@/assets/img/meeting_modify.png"
                   alt="修改图片"
                   @click="meetingModify(item)"
                 />
                 <img
                   class="custom_option_img2"
                   alt="删除图片"
-                  src="/img/meeting_delete.png"
+                  src="@/assets/img/meeting_delete.png"
                   @click="deleteMeeting(item)"
                 />
               </div>
@@ -226,13 +238,15 @@ import { request, noderedrequest } from '@/utils/server.js'
 // var showName=localStorage.getItem("show-name");
 // var rememberName=localStorage.getItem("remember-name");
 
-var sessionUserName=sessionStorage.getItem("sessionUserName");
-var userId=sessionStorage.getItem("userId");
+// const sessionUserName=ref(sessionStorage.getItem("sessionUserName") || '');
+const  userId=ref(sessionStorage.getItem("userId") || '');
+
+console.log(userId.value);
 const postUserInfo=()=>{
     request
     .post('/CallUserCtrl/queryUserByOrgService',
     {
-      "erpbh":userId
+      "erpbh":userId.value
       // "erpbh":"4600072255"
     })
     .then((res) => {
@@ -445,7 +459,7 @@ const validateName = (rule, value, callback) => {
   // debugger
   const reg = /[a-zA-Z0-9\-]{1}/g
   if (!reg.test(value)) {
-    return callback(new Error('会议室名称校验失败'))
+    return callback(new Error('请输入正确的格式:'))
   } else {
     callback()
   }
@@ -669,7 +683,7 @@ const refresh = () => {
       display: flex;
       flex-direction: column;
       align-items: center;
-      & > a,
+      // & > a,
       & > div:nth-child(1) {
         width: 45px;
         height: 45px;

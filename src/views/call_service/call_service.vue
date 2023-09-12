@@ -353,8 +353,8 @@ const clickRoomName = (item, index) => {
       chatID: '',
       roleName: 'admin',
       // userID: '4600072255',
-      userID: rememberName,
-      userName: showName
+      userID: rememberName.value,
+      userName: showName.value
     },
     chatMsg: '',
     // "chatTime": "2023-08-07 10:22:54",
@@ -400,7 +400,11 @@ const onScroll = (top) => {
 
 // 2.2 websocket连接
 //--------创建中间聊天区域websocket对象
-var websocket=createWebSocket('ws://172.28.5.134:8083/ws',{onopen(e){
+// var websocket=createWebSocket('ws://10.31.0.228:53134/wsmq',{onopen(e){
+// var websocket=createWebSocket('ws://172.28.5.134:8282/wsmq',{onopen(e){
+ 
+var websocket=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/wsmq',{onopen(e){
+
   console.log('建立了websocket连接')
   console.log(e)
   // 重新调用会议室最新消息列表
@@ -438,17 +442,17 @@ var websocket=createWebSocket('ws://172.28.5.134:8083/ws',{onopen(e){
 // var showName = localStorage.getItem("show-name") || "益伟康";
 // var rememberName = localStorage.getItem("remember-name") || "4600072255";
 
-var showName = sessionStorage.getItem("sessionUserName") || "益伟康";
-var rememberName = sessionStorage.getItem("userId") || "4600072255";
-
+var showName = ref(sessionStorage.getItem("sessionUserName") || "益伟康");
+var rememberName = ref(sessionStorage.getItem("userId") || "4600072255");
+console.log(rememberName.value,showName.value)
 // 监听输入框消息变化
 const onChangeMsgInfo = (e) => {
   var sendmsg = {
     callUser: {
       ' chatID': '',
       roleName: 'admin',
-      userID: rememberName,
-      userName: showName,
+      userID: rememberName.value,
+      userName: showName.value,
       // userID: '4600072255',
       // userName: '益伟康'
     },
@@ -508,23 +512,31 @@ const onCommonMsgInfo=(e)=>{
 //--------创建右侧websocket对象------***
 
 // debugger
-// var ws1=createWebSocket('http://172.28.5.134/:8084/websocket/4600072255',{onopen(e){
-var ws1=createWebSocket('ws://172.28.5.134:8084/websocket/'+rememberName,{onopen(e){
+// 开发环境
+// var ws1=createWebSocket('ws://10.31.0.228:8081/call-service/websocket/4600072255',{onopen(e){
+// 测试环境
+var ws1=createWebSocket('ws://172.28.5.134:8084/call-service/websocket/4600072255',{onopen(e){
+
+// http环境
+// var ws1=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/call-service/websocket/4600072255',{onopen(e){
+// var ws1=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/call-service/websocket/'+rememberName.value,{onopen(e){
    console.log('建立了ws1连接')
    
-  //  console.log(e)
-
 },onmessage(e){
-    // console.log('接收ws1服务器消息:', e.data)
+    console.log('接收ws1服务器消息:', e)
   // 如果e.data是所有消息，则判断是否是当前会议室消息
   // debugger
-  var data = JSON.parse(e.data)
- 
-  floorInfo.value=data
+  if(e.data=='HeartBeat'){
+     return
+  }else{
+     var data = JSON.parse(e.data)
+     floorInfo.value=data
+  }
+  
 },onerror(){
      
 },onclose(){
-
+   
 },onbeforeunload(){
    
 }})
@@ -853,7 +865,7 @@ var ws1=createWebSocket('ws://172.28.5.134:8084/websocket/'+rememberName,{onopen
 }
 
 .call_service {
-  background: #01163d url('/img/call_bg.png') no-repeat;
+  background: #01163d url('@/assets/img/call_bg.png') no-repeat;
   background-size: 100% 100%;
   width: 100vw;
   height: 100vh;
@@ -892,17 +904,17 @@ var ws1=createWebSocket('ws://172.28.5.134:8084/websocket/'+rememberName,{onopen
 }
 
 .call_service_online_img_meeting {
-  background-image: url('/img/call_online_meeting.svg');
+  background-image: url('@/assets/img/call_online_meeting.svg');
   background-size: (18/1920)*100vw (18/1920)*100vw;
 }
 
 .call_service_online_img_rank {
-  background-image: url('/img/call_ranking_list.svg');
+  background-image: url('@/assets/img/call_ranking_list.svg');
   background-size: (18/1920)*100vw (18/1920)*100vw;
 }
 
 .call_service_online_img_time {
-  background-image: url('/img/call_time_line.svg');
+  background-image: url('@/assets/img/call_time_line.svg');
   background-size: (18/1920)*100vw (18/1920)*100vw;
 }
 
@@ -954,11 +966,12 @@ var ws1=createWebSocket('ws://172.28.5.134:8084/websocket/'+rememberName,{onopen
   background-color: rgba(255, 255, 255, 0.06);
   padding: (18/1920)*100vw 18px;
 }
-
+// 聊天区
 :deep(.custom-el-scrollbar.el-scrollbar) {
-  height: (660/1080)*100vh;
+  // height: (670/1080)*100vh;
+  height: (654/1080)*100vh;
   &.active{
-    height:calc( (670/1080)*100vh - (172/1080)*100vh) ;
+    height:calc( (654/1080)*100vh - (172/1080)*100vh) ;
   }
 }
 

@@ -14,7 +14,14 @@
       <!--2.2密码输入区  -->
       <div class="inputPassword">
         <div ref="inputnum" v-for="(item, i) in arr" :key="i" @click.stop="clicktEvent(item)">{{ item }}</div>
-        <div ><img src="@/assets/tablet_borrowed/10.png"  @click="del()"/></div>
+
+        <div v-if="getArr.length>=1"  @click="del()">
+          删除
+          <!-- <img src="@/assets/tablet_borrowed/10.png"  @click="del()"/> -->
+        </div>
+        <div v-else  @click="router.push('/tablet')">
+          取消
+        </div>
       </div>
     </div>
     <!-- 3.右 -->
@@ -82,7 +89,7 @@ const getList=()=>{
 //2.1验证区
 const isActive=ref("background-color: rgba(24, 144, 255, 1)")
 //2.2密码输入区
-const arr=["1","2","3","4","5","6","7","8","9","。","0"];
+const arr=["1","2","3","4","5","6","7","8","9","0"];
 const getArr=ref([]);
 const inputnum=ref(null);
 const clicktEvent=(e)=>{
@@ -127,7 +134,7 @@ watch(()=>getArr.value.length,()=>{
   & > div:nth-child(1) {
     width: (583/1920) * 100vw;
     height: 100vh;
-    background-image: url(tablet_borrowed/7.png);
+    background-image: url(@/assets/tablet_borrowed/7.png);
     background-size: (400/1920)*100vw   (400/1920)*100vw;
     background-repeat: no-repeat;
     background-position-x: (100/1920)*100vw;
@@ -171,6 +178,9 @@ watch(()=>getArr.value.length,()=>{
         font-family: Roboto;
         border: 1px solid rgba(0, 142, 255, 0.8);
       }
+      & > div:nth-child(10){
+        width: (500/1920) * 100vw;
+      }
       img{
         width: (54/1920) * 100vw;
         height: (54/1080) * 100vh;
@@ -182,7 +192,7 @@ watch(()=>getArr.value.length,()=>{
   & > div:nth-child(3) {
     width: (567/1920) * 100vw;
     height: 100vh;
-    background-image: url(tablet_borrowed/7.png);
+    background-image: url(@/assets/tablet_borrowed/7.png);
     background-size: (400/1920)*100vw   (400/1920)*100vw;
     background-repeat: no-repeat;
     background-position-x: (250/1920)*100vw;
