@@ -1,10 +1,8 @@
 <template>
   <div class="autoScanning">
     <!-- 1.左-->
-    <div></div>
-    <!-- 2.中间 -->
-    <div class="content">
-      <!-- 2.1会议信息 -->
+    <div class="left">
+      <!-- 1会议信息 -->
       <div class="meetingInfo">
         <!-- <div>集团2023年5月度工作例会</div>
         <div>
@@ -12,20 +10,61 @@
           <span> 借用数量：10台</span>
           <span>借用时间：6月30日 </span>
         </div> -->
-        <div>{{ borrowedInfo.mtName }}</div>
-        <div>
-          <span>借用人：{{ borrowedInfo.borrowedName }} </span>
-          <span> 借用数量：{{ borrowedInfo.quantityBorrowed }}台</span>
-          <span
-            >借用时间：{{
-              borrowedInfo.borrowStartTime.slice(5, -3) +
+        <div class="first">{{ borrowedInfo.mtName }}</div>
+        <div class="second">
+          <div>
+            会议时间：{{
+              borrowedInfo.borrowStartTime.slice(0, -3) +
               '～' +
               borrowedInfo.borrowEndTime.slice(10, -3)
             }}
-          </span>
+          </div>
+          <div>借用地点：A2-110</div>
+        </div>
+        <div class="third">
+          <div>借用人：{{ borrowedInfo.borrowedName }}</div>
+          <div>借用数量：{{ borrowedInfo.quantityBorrowed }}台</div>
+          <div>
+            借用时间：{{
+              borrowedInfo.borrowStartTime.slice(0, -3) +
+              '～' +
+              borrowedInfo.borrowEndTime.slice(10, -3)
+            }}
+          </div>
+        </div>
+        <div class="four">
+          <el-button
+            type="primary"
+            @click="handOperated"
+            :disabled="
+              borrowedInfo.quantityBorrowed == borrowedInfo.usedNum ||
+              borrowedInfo.quantityBorrowed - borrowedInfo.usedNum - tableData.length <= 0
+            "
+            >手动添加</el-button
+          >
+          <!-- 1.4绑定完成 -->
+          <!-- <div class="finishBtn"> -->
+          <el-button
+            type="info"
+            @click="submitScan"
+            v-if="isSuccess"
+            :disabled="
+              borrowedInfo.quantityBorrowed == borrowedInfo.usedNum ||
+              borrowedInfo.quantityBorrowed - borrowedInfo.usedNum - tableData.length < 0 ||
+              tableData.length <= 0
+            "
+            >绑定完成</el-button
+          >
+          <el-button v-else @click="continuetScan">继续扫描</el-button>
+
+          <el-button type="primary" @click="goBack">返回</el-button>
+          <!-- </div> -->
         </div>
       </div>
-      <!--2.2扫描信息  -->.
+    </div>
+    <!-- 2.中间 -->
+    <div class="content">
+      <!--2.1扫描信息  -->.
       <div class="scanningInfo">
         <!-- 按钮 -->
         <div class="scanningBtn">
@@ -37,63 +76,9 @@
             <div v-else>
               <span>绑定完成</span>
             </div>
-            <span>{{borrowedInfo.usedNum + tableData.length}}</span>
-            <span>/{{borrowedInfo.quantityBorrowed}}</span>
+            <span>{{ borrowedInfo.usedNum + tableData.length }}</span>
+            <span>/{{ borrowedInfo.quantityBorrowed }}</span>
           </div>
-          <div>
-            <!-- <el-button
-              type="info"
-              @click="submitScan"
-              :disabled="
-                borrowedInfo.quantityBorrowed == borrowedInfo.usedNum ||
-                borrowedInfo.quantityBorrowed - borrowedInfo.usedNum - tableData.length < 0 ||
-                tableData.length <=0
-              "
-              >绑定完成</el-button
-            > -->
-            <el-button
-              type="primary"
-              @click="handOperated"
-              :disabled="
-                borrowedInfo.quantityBorrowed == borrowedInfo.usedNum ||
-                borrowedInfo.quantityBorrowed - borrowedInfo.usedNum - tableData.length <= 0
-              "
-              >手动添加</el-button
-            >
-          </div>
-          <!--以下为 手动添加-------弹出框  -->
-          <el-dialog v-model="dialogFormVisible" title="手动添加">
-            <el-form :model="form">
-              <el-form-item label="选择设备&nbsp;&nbsp;&nbsp;" :label-width="formLabelWidth">
-                <el-select
-                  v-model="form.deviceName"
-                  placeholder="请选择设备"
-                  @change="onDeviceNameChange"
-                >
-                  <el-option
-                    v-for="item in deviceList"
-                    :key="item.id"
-                    :label="item.deviceName"
-                    :value="item.id"
-                    :disabled="ishas(item)"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="设备序列号" :label-width="formLabelWidth">
-                <!-- <el-input v-model="form.modelNumber" autocomplete="off" /> -->
-                <template v-for="(item,i) in deviceList" :key="i">
-                  <span v-if="item.id == form.deviceName">{{ item.modelNumber }}</span>
-                </template>
-              </el-form-item>
-            </el-form>
-            <template #footer>
-              <span class="dialog-footer">
-                <el-button @click="cancelHandOperated">取消</el-button>
-                <el-button type="primary" @click="submitHandOperated"> 确定 </el-button>
-              </span>
-            </template>
-          </el-dialog>
         </div>
         <!-- 设备扫描信息 -->
         <div class="scanning">
@@ -107,9 +92,27 @@
               ref="table"
             >
               <el-table-column fixed type="index" min-width="14%" label="序号" />
-              <el-table-column prop="modelNumber" label="设备序列号" min-width="24%" />
+              <el-table-column prop="modelNumber" label="设备序ID" min-width="24%" />
               <el-table-column prop="deviceName" label="设备名称" min-width="20.5%" />
-              <el-table-column prop="borrowedState" label="状态" min-width="20.5%">
+              <el-table-column prop="borrowedState" label="设备状态" min-width="20.5%">
+                <!-- 自定义表头：设备状态 -->
+                <template #header>
+                  <el-select
+                    :model-value="borrowedState"
+                    placeholder="设备状态"
+                    @change="onChange1"
+                    style="width: 100%"
+                    popper-class="zdy_select1"
+                  >
+                    <el-option
+                      v-for="item in deviceStateOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                      :disabled="item.disabled"
+                    />
+                  </el-select>
+                </template>
                 <template #default="scope">
                   {{ getDayStateStr(scope.row.borrowedState) }}
                 </template>
@@ -128,27 +131,43 @@
                 </template>
               </el-table-column>
             </el-table>
-            <!-- 2.3绑定完成 -->
-            <div class="finishBtn">
-              <el-button
-                type="info"
-                @click="submitScan"
-                v-if="isSuccess"
-                :disabled="
-                  borrowedInfo.quantityBorrowed == borrowedInfo.usedNum ||
-                  borrowedInfo.quantityBorrowed - borrowedInfo.usedNum - tableData.length < 0 ||
-                  tableData.length <=0
-                "
-                >绑定完成</el-button
-              >
-              <el-button v-else @click="continuetScan">继续扫描</el-button>
-            </div>
           </el-scrollbar>
         </div>
       </div>
+      <!--以下为 手动添加-------弹出框  -->
+    <el-dialog v-model="dialogFormVisible" title="手动添加">
+      <el-form :model="form">
+        <el-form-item label="选择设备&nbsp;&nbsp;&nbsp;" :label-width="formLabelWidth">
+          <el-select
+            v-model="form.deviceName"
+            placeholder="请选择设备"
+            @change="onDeviceNameChange"
+          >
+            <el-option
+              v-for="item in deviceList"
+              :key="item.id"
+              :label="item.deviceName"
+              :value="item.id"
+              :disabled="ishas(item)"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="设备序列号" :label-width="formLabelWidth">
+          <!-- <el-input v-model="form.modelNumber" autocomplete="off" /> -->
+          <template v-for="(item, i) in deviceList" :key="i">
+            <span v-if="item.id == form.deviceName">{{ item.modelNumber }}</span>
+          </template>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="cancelHandOperated">取消</el-button>
+          <el-button type="primary" @click="submitHandOperated"> 确定 </el-button>
+        </span>
+      </template>
+    </el-dialog>
     </div>
-    <!-- 3.右 -->
-    <div></div>
   </div>
 </template>
 <script setup >
@@ -158,15 +177,15 @@ import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
-import {request,noderedrequest}  from "@/utils/server.js" 
+import { request, noderedrequest } from '@/utils/server.js'
 
-const getBorrowInfo=()=>{
+const getBorrowInfo = () => {
   noderedrequest
     .post('/tablet_borrowed/list', {
       id: route.query.id
     })
     .then((res) => {
-      borrowedInfo.value=res.data.data.items[0] || {};
+      borrowedInfo.value = res.data.data.items[0] || {}
     })
     .catch((error) => {
       // debugger
@@ -174,36 +193,36 @@ const getBorrowInfo=()=>{
     })
 }
 const borrowedInfo = ref({
-  id: "",
-  personneId: "",
+  id: '',
+  personneId: '',
   borrowedName: '',
   borrowedNamePhone: '',
   quantityBorrowed: '',
   borrowStartTime: '',
   borrowEndTime: '',
   borrowedState: '',
-  returnQuantity: "",
-  returnTime:"",
+  returnQuantity: '',
+  returnTime: '',
   verificationCode: '',
   mtName: '',
   applyId: '',
   roomId: '',
-  customTheme: "",
+  customTheme: '',
   startTime: '',
   usedNum: '',
-  avaiableNum: ""
+  avaiableNum: ''
 })
 onBeforeMount(() => {
   getBorrowInfo()
 })
 const getList = () => {
-  //查询 设备列表中，借用状态是1 ->可用设备 的设备列表，设备状态1 ->启用 设备类型"deviceType": "1"  展示在手动添加的 下拉设备下拉选项中
+  //查询 设备列表中，借用状态是1 ->可用设备 的设备列表，设备状态1 ->启用 设备类型"deviceType": 1  展示在手动添加的 下拉设备下拉选项中
   // noderedrequest.get('/device/list?borrowedState=1&deviceState=1')
   noderedrequest
     .post('/device/list', {
       borrowedState: 1,
       deviceState: 1,
-      "deviceType": "1"
+      deviceType: 1
     })
     .then((response) => {
       console.log('按条件查询成功:', response.data)
@@ -218,57 +237,14 @@ const getList = () => {
     })
 }
 
-//2.1会议信息
+//1.会议信息
 const meetingInfo = []
 // 接收url query传参
 console.log('借用query传参', route.query)
 
-//2.2 已扫描 待绑定数组
-const tableData = reactive([
-  // {
-  //     "id": 9,
-  //     "deviceId": "20",
-  //     "deviceName": "220VA609WSMARTBULLB",
-  //     "deviceIpAddress": "139.120.1.1",
-  //     "port": 800000,
-  //     "brand": "TTst1",
-  //     "modelNumber": "220VA609WSMARTBULLB",
-  //     "region": "A2-229会议室",
-  //     "state": "在线",
-  //     "createTime": "2023-08-10T01:55:21.000Z",
-  //     "updateTime": "2023-08-10T05:59:56.000Z",
-  //     "equipmentSerialNumber": "12345",
-  //     "borrowedState": "可借用",
-  //     "deviceType": "移动设备"
-  // }
-])
-// ----借用状态
-const dayStateOptions = ref([
-  {
-    value: 1,
-    label: '空闲中'
-  },
-  {
-    value: '2',
-    label: '使用中'
-  }
-])
-// debugger
-const getDayStateStr = (v) => {
-  // debugger
-  let a
-  for (var i = 0; i < dayStateOptions.value.length; i++) {
-    if (v == dayStateOptions.value[i].value) {
-      a = dayStateOptions.value[i].label
-      console.log(a)
-      break
-    }
-  }
-  return a
-}
-// 2.2.1 绑定完成
+// 1.4 绑定完成
 // 同时调用更新设备接口 借用状态->2使用中，和 更新平板预约借用接口 借用状态->3借用中 （隐含调用无纸化接口）
-const isSuccess=ref(true)
+const isSuccess = ref(true)
 const submitScan = () => {
   // debugger
   console.log(1111)
@@ -336,8 +312,8 @@ const submitScan = () => {
         }
       )
         .then(() => {
-           // 绑定完成功，关闭确认按钮后，展示继续扫描按钮
-           isSuccess.value=false
+          // 绑定完成功，关闭确认按钮后，展示继续扫描按钮
+          isSuccess.value = false
         })
         .catch(() => {})
       //清空tableData表格
@@ -360,7 +336,7 @@ const submitScan = () => {
     })
 }
 
-// 2.2.2 手动添加
+// 1.4.2 手动添加
 const formLabelWidth = '(542/1920)*100vw'
 const dialogFormVisible = ref(false)
 
@@ -427,24 +403,102 @@ const submitHandOperated = () => {
   dialogFormVisible.value = false
 }
 
-//删除
-const deleteitem=(v)=>{
-  //  debugger 
-   for(var i=0;i<tableData.length;i++){
-      if(v.id==tableData[i].id){
-          tableData.splice(i,1)
-      }
-   }
-}
-
 // 继续扫描按钮
-const continuetScan=()=>{
-  isSuccess.value=true
+const continuetScan = () => {
+  isSuccess.value = true
 }
 
-</script>
+// 1.4.3 返回首页
+const goBack = () => {
+  router.push('/tablet')
+}
 
+//2 已扫描 待绑定数组
+const tableData = reactive([
+  // {
+  //     "id": 9,
+  //     "deviceId": "20",
+  //     "deviceName": "220VA609WSMARTBULLB",
+  //     "deviceIpAddress": "139.120.1.1",
+  //     "port": 800000,
+  //     "brand": "TTst1",
+  //     "modelNumber": "220VA609WSMARTBULLB",
+  //     "region": "A2-229会议室",
+  //     "state": "在线",
+  //     "createTime": "2023-08-10T01:55:21.000Z",
+  //     "updateTime": "2023-08-10T05:59:56.000Z",
+  //     "equipmentSerialNumber": "12345",
+  //     "borrowedState": "可借用",
+  //     "deviceType": "移动设备"
+  // }
+])
+// ----借用状态
+const deviceStateOptions = ref([
+  {
+    value: 1,
+    label: '空闲中'
+  },
+  {
+    value: '2',
+    label: '使用中'
+  }
+])
+// debugger
+const getDayStateStr = (v) => {
+  // debugger
+  let a
+  for (var i = 0; i < deviceStateOptions.value.length; i++) {
+    if (v == deviceStateOptions.value[i].value) {
+      a = deviceStateOptions.value[i].label
+      console.log(a)
+      break
+    }
+  }
+  return a
+}
+
+//删除
+const deleteitem = (v) => {
+  //  debugger
+  for (var i = 0; i < tableData.length; i++) {
+    if (v.id == tableData[i].id) {
+      tableData.splice(i, 1)
+    }
+  }
+}
+</script>
+<style lang="less">
+  .el-popper.zdy_select1{
+      width: calc((179/1920)*100vw - 12px)!important;
+       background: #05456e!important;
+       border: 0px!important;
+       margin-top: -10px;
+       margin-left: -12px!important;
+       border-radius:0!important;
+       
+       .el-select-dropdown{
+            border-radius:0!important;
+       }
+      .el-select-dropdown__item{
+         color: rgba(255, 255, 255, 1)!important;
+          font-size: (18/1920)*100vw!important;
+          text-align: center!important;
+          font-family: Microsoft Yahei!important;
+        &.hover, &:hover{
+           background-color: rgba(255, 255, 255, 0.1)!important;
+        }
+      }
+      .el-popper__arrow{
+         display: none!important;
+      }
+      
+  }
+</style>
 <style lang="less" scoped>
+*{
+  margin: 0;
+  // padding: 0;
+}
 .autoScanning {
   width: 100vw;
   height: 100vh;
@@ -455,102 +509,256 @@ const continuetScan=()=>{
   background-repeat: no-repeat;
   // position: relative;
   // 1.左
-  & > div:nth-child(1) {
-    width: (589/1920) * 100vw;
+  .left {
+    width: (500/1920) * 100vw;
+    margin-left: (100/1920) * 100vw;
+    margin-right: (46/1920) * 100vw;
     height: 100vh;
     background-image: url(@/assets/tablet_borrowed/7.png);
     background-size: (400/1920) * 100vw (400/1920) * 100vw;
     background-repeat: no-repeat;
-    background-position-x: (100/1920) * 100vw;
-    background-position-y: (600/1080) * 100vh;
+    background-position-x: left;
+    background-position-y: (599/1080) * 100vh;
+
+    //2.1. 会议信息
+    .meetingInfo {
+      height: (839/1080) * 100vh;
+      // border: 1px solid red;
+      margin-top: (141/1080) * 100vh;
+      padding: (40/1080) * 100vh (0/1920) * 100vw (40/1080) * 100vh (40/1920) * 100vw;
+      color: rgba(255, 255, 255, 1);
+      background-color: rgba(24, 144, 255, 0.2);
+      text-align: center;
+      font-family: SourceHanSansSC-regular;
+
+      .first {
+        width: (420/1920) * 100vw;
+        // height: (98/1080) * 100vh;
+        margin-top: (40/1080) * 100vh;
+        margin-bottom: (40/1080) * 100vh;
+        color: rgba(255, 255, 255, 1);
+        font-size: (34/1920) * 100vw;
+        text-align: center;
+        font-family: SourceHanSansSC-regular;
+      }
+      .second {
+        height: (77/1080) * 100vh;
+        margin-bottom: (40/1080) * 100vh;
+
+        div {
+          white-space: nowrap;
+          color: rgba(255, 255, 255, 1);
+          font-size: (24/1920) * 100vw;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
+        }
+      }
+
+      .third {
+        height: (202/1080) * 100vh;
+        margin-bottom: (40/1080) * 100vh;
+
+        div {
+          white-space: nowrap;
+          color: rgba(255, 255, 255, 1);
+          font-size: (24/1920) * 100vw;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
+        }
+      }
+      .four {
+        height: (257/1080) * 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        :deep(.el-button) {
+          width: (420/1920) * 100vw;
+          height: (71/1080) * 100vh;
+          margin-bottom: (20/1080) * 100vh;
+          margin-left: (0/1920) * 100vw!important;
+          color: rgba(255, 255, 255, 1);
+          border: (1/1920) * 100vw solid rgba(15, 204, 249, 1);
+          border-radius: (2/1920) * 100vw;
+          font-size: (28/1920) * 100vw;
+          text-align: center;
+          font-family: Roboto;
+        }
+        :deep(.el-button):nth-child(1) {
+          background-color: rgba(15, 204, 249, 0.3);
+          font-size: (34/1920) * 100vw;
+        }
+        //2.3绑定完成/继续扫描
+        :deep(.el-button):nth-child(2) {
+          background-color: rgba(24, 144, 255, 1);
+        }
+        :deep(.el-button):nth-child(3) {
+          background-color: transparent;
+          margin-bottom: (0/1080) * 100vh;
+        }
+      }
+    }
   }
 
   // 2.中间区域
   .content {
-    width: (742/1920) * 100vw;
-    //2.1. 会议信息
-    .meetingInfo {
-      width: 100%;
-      // height: (247/1080) * 100vh;
-      padding-top: (68/1080) * 100vh;
-      // margin-bottom: (80/1080)*100vh;
-      color: rgba(255, 255, 255, 1);
-      text-align: center;
-      font-family: SourceHanSansSC-regular;
-      & > div {
-        font-size: (34/1920) * 100vw;
-        margin-bottom: (10/1080) * 100vh;
-      }
-      & > div:nth-child(2) {
-        display: flex;
-        justify-content: flex-start;
-        span {
-          font-size: (24/1920) * 100vw;
-          text-align: left;
-        }
-        span:nth-child(1) {
-          width: (240/1920) * 100vw;
-        }
-        span:nth-child(2) {
-          width: (200/1920) * 100vw;
-        }
-        span:nth-child(3) {
-          width: (302/1920) * 100vw;
-        }
-      }
-    }
+    width: (1274/1920) * 100vw;
+    background-image: url(@/assets/tablet_borrowed/7.png);
+    background-size: (400/1920) * 100vw (400/1080) * 100vh;
+    background-repeat: no-repeat;
+    background-position-x: (940/1920) * 100vw;
+    background-position-y: (-180/1080) * 100vh;
     //2.2 扫描信息
     .scanningInfo {
-      width: (660/1920) * 100vw;
-      margin-left: (40/1920) * 100vw;
+      width: (1174/1920) * 100vw;
+      
       .scanningBtn {
-        margin-bottom: (30/1080) * 100vh;
+        height: (50/1080) * 100vh;
+        margin-top: (22/1080) * 100vh;
+        // margin-bottom: (22/1080) * 100vh;
         display: flex;
         justify-content: space-between;
         align-items: center;
         .topInfo {
           display: flex;
           align-items: center;
-          div:nth-child(1){
+          div:nth-child(1) {
             margin-right: (20/1920) * 100vw;
             display: flex;
             align-items: center;
           }
           span {
-              // height: (50/1080) * 100vh;
-              // margin-right: (10/1920) * 100vw;
-              color: rgba(255, 255, 255, 1);
-              font-size: (34/1920) * 100vw;
-              text-align: left;
-              font-family: SourceHanSansSC-regular;
-              display: inline-block;
+            // height: (50/1080) * 100vh;
+            // margin-right: (10/1920) * 100vw;
+            color: rgba(255, 255, 255, 1);
+            font-size: (34/1920) * 100vw;
+            text-align: left;
+            font-family: SourceHanSansSC-regular;
+            display: inline-block;
           }
           span:nth-child(1) {
-            width: (170/1920)*100vw;
+            width: (170/1920) * 100vw;
           }
-          
+
           img {
             width: (54/1920) * 100vw;
             height: (54/1920) * 100vw;
           }
-          :deep(.el-button) {
-            width: (160/1920) * 100vw;
-            height: (60/1080) * 100vh;
-            border-radius: (2/1920) * 100vw;
-            // background-color: rgba(255, 169, 64, 0.2);
-            // color: rgba(255, 255, 255, 1);
-            font-size: (28/1920) * 100vw;
-            text-align: center;
-            font-family: Roboto;
-            // border: 1px solid rgba(255, 169, 64, 1);
+        }
+
+        
+      }
+      .scanning {
+        width: 100%;
+        //2.2设备列表
+        :deep(.el-table) {
+          height: (584/1080) * 100vh !important;
+          background-color: transparent;
+          font-size: (18/1920) * 100vw;
+          color: rgba(255, 255, 255, 1);
+          font-family: Roboto;
+          
+          .el-input__wrapper .el-input__inner{
+            //  color:#fff!important;
           }
-          .el-button:nth-child(1) {
-            background-color: rgba(15, 204, 249, 0.3);
-            color: rgba(255, 255, 255, 1);
-            border: (1/1920) * 100vw solid rgba(15, 204, 249, 1);
+          .el-table__inner-wrapper {
+            &::before {
+              background-color: transparent;
+            }
+            tr {
+              background-color: transparent !important;
+              td,
+              th {
+                background-color: transparent !important;
+              }
+            }
+            .el-table__cell {
+              height: (44/1080) * 100vh;
+              text-align: center;
+              border-bottom: 0px !important;
+            }
+            thead {
+              color: rgba(255, 255, 255, 1);
+              tr th {
+                border: (5/1920) * 100vw solid transparent;
+                .cell {
+                  background: radial-gradient(
+                    0.5% 0.5% at 50% 50%,
+                    rgba(0, 207, 255, 0.1) 0%,
+                    rgba(0, 207, 255, 0.25) 100%
+                  ) !important;
+                  border: 0px;
+                  white-space: nowrap;
+                }
+              }
+            }
+            .el-table__body-wrapper {
+              margin-left: (5/1920) * 100vw;
+            }
+            tbody {
+              margin-left: (5/1920) * 100vw;
+              tr td {
+                height: (44/1080) * 100vh;
+
+                .el-button {
+                  color: rgba(24, 144, 255, 1);
+                  font-size: (14/1920) * 100vw;
+                  text-align: left;
+                  font-family: SourceHanSansSC-regular;
+                  // :deep(.el-switch__label .is-active){
+                  //   color: rgba(255, 255, 255, 1);
+                  //   font-size: 18px;
+                  //   text-align: left;
+                  //   font-family: SourceHanSansSC-regular;
+                  // }
+                }
+                .el-button:nth-child(2) {
+                  color: red;
+                }
+                .cell {
+                  background-color: rgba(24, 144, 255, 0.1);
+                  margin-right: (10/1920) * 100vw;
+                }
+              }
+            }
+          }
+
+          .el-select {
+            .el-input {
+                
+            }
+            .el-input__wrapper{
+              height: (44/1080)*100vh;
+              border-radius: 0px;
+              padding: 0;
+              background-color: transparent;
+              box-shadow:none!important;
+                .el-input__inner{
+                  color: rgba(255, 255, 255, 1)!important;
+                  font-size: (18/1920)*100vw;
+                }
+            }
+            
+          }
+          .el-input--small .el-input__inner{
+            &::-webkit-input-placeholder{
+              color: #fff;
+            }
+            &:-moz-placeholder{
+              color: #fff;
+            }
+            &::-moz-placeholder{
+              color: #fff;
+            }
+            &:-ms-input-placeholder{
+              color: #fff;
+            }
           }
         }
-        :deep(.el-dialog) {
+      }
+    }
+  }
+
+  :deep(.el-dialog) {
           width: (542/1920) * 100vw;
           height: (327/1080) * 100vh;
           margin-top: (417/1080) * 100vh;
@@ -629,112 +837,6 @@ const continuetScan=()=>{
               }
             }
           }
-        }
-      }
-      .scanning {
-        width: 100%;
-        //2.2设备列表
-        :deep(.el-table) {
-          height: (584/1080) * 100vh !important;
-          background-color: transparent;
-          font-size: (18/1920) * 100vw;
-          color: rgba(255, 255, 255, 1);
-          font-family: Roboto;
-          // border: 1px solid blue;
-          // overflow: hidden;
-
-          .el-table__inner-wrapper {
-            // height: (800/1080)*100vh!important;
-            // height:auto;
-            &::before {
-              background-color: transparent;
-            }
-            tr {
-              background-color: transparent !important;
-              td,
-              th {
-                background-color: transparent !important;
-              }
-            }
-            .el-table__cell {
-              height: (44/1080) * 100vh;
-              text-align: center;
-              border-bottom: 0px !important;
-            }
-            thead {
-              color: rgba(255, 255, 255, 1);
-              tr th {
-                border: (5/1920) * 100vw solid transparent;
-                .cell {
-                  background: radial-gradient(
-                    0.5% 0.5% at 50% 50%,
-                    rgba(0, 207, 255, 0.1) 0%,
-                    rgba(0, 207, 255, 0.25) 100%
-                  ) !important;
-                  border: 0px;
-                  white-space: nowrap;
-                }
-              }
-            }
-            .el-table__body-wrapper {
-              margin-left: (5/1920) * 100vw;
-            }
-            tbody {
-              margin-left: (5/1920) * 100vw;
-              tr td {
-                height: (44/1080) * 100vh;
-
-                .el-button {
-                  color: rgba(24, 144, 255, 1);
-                  font-size: (14/1920) * 100vw;
-                  text-align: left;
-                  font-family: SourceHanSansSC-regular;
-                  // :deep(.el-switch__label .is-active){
-                  //   color: rgba(255, 255, 255, 1);
-                  //   font-size: 18px;
-                  //   text-align: left;
-                  //   font-family: SourceHanSansSC-regular;
-                  // }
-                }
-                .el-button:nth-child(2) {
-                  color: red;
-                }
-                .cell {
-                  background-color: rgba(24, 144, 255, 0.1);
-                  margin-right: (10/1920) * 100vw;
-                }
-              }
-            }
-          }
-        }
-     
-        //2.3绑定完成/继续扫描
-        .finishBtn{
-          :deep(.el-button){
-            width: (677/1920) * 100vw;
-            height: (71/1080) * 100vh;
-            border-radius: (2/1920) * 100vw;
-            background-color: rgba(24, 144, 255, 1);
-            color: rgba(255, 255, 255, 1);
-            font-size: (34/1920) * 100vw;
-            text-align: center;
-            font-family: Roboto;
-            border: 0px;
-
-          }
-        }
-      }
-    }
-  }
-  // 3.右
-  & > div:nth-child(3) {
-    width: (589/1920) * 100vw;
-    height: 100vh;
-    background-image: url(@/assets/tablet_borrowed/7.png);
-    background-size: (400/1920) * 100vw (400/1920) * 100vw;
-    background-repeat: no-repeat;
-    background-position-x: (250/1920) * 100vw;
-    background-position-y: (-150/1080) * 100vh;
   }
 }
 </style>

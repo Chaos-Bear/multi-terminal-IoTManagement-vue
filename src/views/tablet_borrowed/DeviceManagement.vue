@@ -8,7 +8,7 @@
         </el-form-item>
 
         <el-form-item label="设备状态">
-          <el-select v-model="form.deviceState" placeholder="全部">
+          <el-select v-model="form.deviceState" placeholder="全部" popper-class="zdy_select">
             <!-- <el-option v-for="(item,id) in tableData"  label="item.region" value="item.region" :key="id"/> -->
             <el-option label="启用" value="1" />
             <el-option label="禁用" value="0" />
@@ -16,7 +16,7 @@
         </el-form-item>
 
         <el-form-item label="借用状态">
-          <el-select v-model="form.borrowedState" placeholder="全部">
+          <el-select v-model="form.borrowedState" placeholder="全部" popper-class="zdy_select">
             <el-option
                       v-for="item in dayStateOptions"
                       :key="item.value"
@@ -45,9 +45,13 @@
           ref="table"
         >
           <el-table-column fixed type="index" min-width="10%" label="序号" />
-          <el-table-column prop="deviceName" label="设备名称" min-width="18%" />
-          <el-table-column prop="deviceIpAddress" label="设备序列号" min-width="20%" />
-          <el-table-column prop="deviceState" label="设备状态" min-width="15%">
+          <el-table-column prop="deviceName" label="设备名称" min-width="12%" />
+          <el-table-column prop="equipmentSerialNumber" label="设备序列号" min-width="25%" />
+          <el-table-column prop="deviceIpAddress" label="设备ip地址" width="120" />
+            <el-table-column prop="port" label="端口号" width="70" />
+            <el-table-column prop="brand" label="品牌" width="60" />
+            <el-table-column prop="modelNumber" label="型号" width="150" />
+          <el-table-column prop="deviceState" label="设备状态" min-width="20%">
             <template #default="scope">
               <!-- 当设备借用状态为2 使用中时，按钮禁用 -->
               <el-switch
@@ -72,6 +76,9 @@
           <el-table-column prop="opration" label="操作" min-width="15%">
             <!-- scope.row   -->
             <template #default="scope">
+              <el-button link type="primary" size="small" @click.prevent="edititem(scope.row)">
+                编辑
+              </el-button>
               <el-button link type="primary" size="small" @click.prevent="deleteitem(scope.row)">
                 删除
               </el-button>
@@ -79,7 +86,56 @@
           </el-table-column>
         </el-table>
       </el-scrollbar>
+      <!--编辑弹框表单  -->
+      <el-dialog v-model="editdialogFormVisible" title="编辑">
+        <el-form :model="editForm" ref="editFormRef" :rules="editFormRules">
+          <!-- <el-form-item label="设备ID" :label-width="formLabelWidth" prop="deviceId">
+            <el-input v-model="editForm.deviceId" autocomplete="off" />
+          </el-form-item> -->
+          <el-form-item label="设备名称" :label-width="formLabelWidth" prop="deviceName">
+            <el-input v-model="editForm.deviceName" autocomplete="off" />
+          </el-form-item>
+          <el-form-item label="设备序列号" :label-width="formLabelWidth" prop="deviceIpAddress">
+            <el-input v-model="editForm.equipmentSerialNumber" autocomplete="off" />
+          </el-form-item>
+          <el-form-item label="设备IP地址" :label-width="formLabelWidth" prop="deviceIpAddress">
+            <el-input v-model="editForm.deviceIpAddress" autocomplete="off" />
+          </el-form-item>
+          <el-form-item label="品牌" :label-width="formLabelWidth" prop="brand">
+            <el-input v-model="editForm.brand" autocomplete="off" />
+          </el-form-item>
+          <el-form-item label="型号" :label-width="formLabelWidth" prop="modelNumber">
+            <el-input v-model="editForm.modelNumber" autocomplete="off" />
+          </el-form-item>
+          <el-form-item label="端口号" :label-width="formLabelWidth" prop="port">
+            <el-input v-model="editForm.port" autocomplete="off" />
+          </el-form-item>
+          <el-form-item label="&nbsp;&nbsp;设备状态" :label-width="formLabelWidth" prop="status">
+            <el-input v-model="editForm.deviceState" autocomplete="off" disabled/>
+          </el-form-item>
+          <el-form-item label="借用状态" :label-width="formLabelWidth" prop="status">
+            <!-- <el-input v-model="editForm.borrowedState" autocomplete="off"  disabled/> -->
+            <el-select v-model="editForm.borrowedState" placeholder="" @change="onChange2" style="width:100%">
+                        <el-option
+                          v-for="item in dayStateOptions"
+                          :key="item.value" 
+                          :label="item.label"
+                          :value="item.value"
+                          :disabled="item.disabled"
+                        />
+                      </el-select>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="cancelItemEdit()">取消</el-button>
+            <el-button type="primary" @click="editIteminfo()">确认</el-button>
+          </span>
+        </template>
+      </el-dialog>
     </div>
+    
+    
   </div>
 </template>
 <script setup>
@@ -102,7 +158,7 @@ const getList = () => {
         },
           "deviceState":form.deviceState,
           "borrowedState":form.borrowedState,
-          "deviceType": "1"
+          "deviceType": 1
         }
     )
     .then((response) => {
@@ -276,6 +332,96 @@ onMounted(() => {
    getList()
 })
 
+//编辑按钮
+const formLabelWidth = '90px'
+var editId
+const editdialogFormVisible = ref(false)
+const editForm = reactive({
+  deviceId: '',
+  deviceName: '',
+  equipmentSerialNumber:'',
+  deviceIpAddress:'',
+  brand: '',
+  modelNumber: '',
+  port: '',
+  deviceState: '',
+  borrowedState: '',
+})
+// 组件实例
+const editFormRef = ref(null)
+const editFormRules = reactive({
+  deviceId: [{ required: true, message: '请输入', trigger: 'blur' }],
+  deviceName: [{ required: true, message: '请输入', trigger: 'blur' }],
+  equipmentSerialNumber: [{ required: true, message: '请输入', trigger: 'blur' }],
+  deviceIpAddress: [{ required: true, message: '请输入', trigger: 'blur' }],
+  brand: [{ required: true, message: '请输入', trigger: 'blur' }],
+  modelNumber: [{ required: true, message: '请输入', trigger: 'blur' }],
+  port: [{ required: true, message: '请输入', trigger: 'blur' }],
+  // deviceState: [{ required: true, message: '请输入', trigger: 'blur' }],
+  // borrowedState: [{ required: true, message: '请输入', trigger: 'blur' }],
+})
+const edititem=(row)=>{
+  console.log("2222222222",row)
+  console.log(row)
+
+  editId = row.id
+  editdialogFormVisible.value = true
+
+  editForm.deviceId = row.deviceId
+  editForm.deviceName = row.deviceName
+  editForm.equipmentSerialNumber = row.equipmentSerialNumber
+  editForm.deviceIpAddress = row.deviceIpAddress
+  editForm.brand = row.brand,
+  editForm.modelNumber = row.modelNumber,
+  editForm.port = row.port
+  editForm.deviceState = row.deviceState==1?"移动设备":''
+  editForm.borrowedState = row.borrowedState
+}
+
+const onChange2=(v)=>{
+  // debugger
+  editForm.deviceState=v
+  
+}
+const editIteminfo = () => {
+  editFormRef.value.validate((valid) => {
+    if (valid) {
+      noderedrequest
+        .put(
+          '/device/update',
+          {
+            id: editId,
+            deviceId: editForm.deviceId,
+            deviceName: editForm.deviceName,
+            equipmentSerialNumber:editForm.equipmentSerialNumber,
+            deviceIpAddress: editForm.deviceIpAddress,
+            brand: editForm.brand,
+            modelNumber: editForm.modelNumber,
+            port: editForm.port, 
+            deviceState: editForm.deviceState,
+            borrowedState:editForm.borrowedState,
+          }
+        )
+        .then((res) => {
+          console.log('设备列表修改成功:', res)
+          if (res.data.code == 200) {
+            //重新发请求，渲染设备列表
+            getList()
+          }
+        })
+      editdialogFormVisible.value = false
+    } else {
+      console.log('校验错误')
+    }
+  })
+}
+
+const cancelItemEdit = () => {
+  editdialogFormVisible.value = false
+}
+
+
+
 // 4.分页
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -291,6 +437,35 @@ const handleCurrentChange = (val) => {
   getList()
 }
 </script>
+<style lang="less">
+    .el-popper.zdy_select{
+      width: calc((260/1920)*100vw - 12px)!important;
+       background: #05456e!important;
+       border: 0px!important;
+       margin-top: -10px;
+      //  margin-left: -12px!important;
+       margin-left: (0/1920)*100vw!important;
+       border-radius:0!important;
+       
+       .el-select-dropdown{
+            border-radius:0!important;
+       }
+      .el-select-dropdown__item{
+         color: rgba(255, 255, 255, 1)!important;
+          font-size: (18/1920)*100vw!important;
+          text-align: center!important;
+          font-family: Microsoft Yahei!important;
+        &.hover, &:hover{
+           background-color: rgba(255, 255, 255, 0.1)!important;
+        }
+      }
+      .el-popper__arrow{
+         display: none!important;
+      }
+      
+    }
+    
+</style>
 <style lang="less" scoped>
 .deviceManagement {
   margin: 0 (58/1920) * 100vw;
@@ -327,8 +502,10 @@ const handleCurrentChange = (val) => {
           height: (50/1080) * 100vh;
         }
       }
+      
     }
-
+    
+   
     .searchbtn {
       display: flex;
       justify-content: flex-end;

@@ -25,14 +25,14 @@
                   <el-table-column fixed type="index" min-width="15%" label="序号"/>
                   <el-table-column prop="borrowedName" label="借用人" min-width="17%" />
                   <el-table-column prop="quantityBorrowed" label="借用数量" min-width="20%" />
-                  <el-table-column prop="borrowStartTime" label="借用时间" min-width="32%" >
+                  <el-table-column prop="borrowStartTime" label="借用时间" min-width="27%" >
                     <template #default="scope">
                       <!-- 显示时分 00:00 -->
                        {{scope.row.borrowStartTime.split(" ")[1].slice(0,-3)+'～'+scope.row.borrowEndTime.split(" ")[1].slice(0,-3)}}
                     </template>
                     <!-- 自定义表头：借用时间 -->
                     <template #header>
-                       <el-select :model-value="'借用时间'+(dayTime?'('+dayTimeStr+')':'')" placeholder="借用时间" @change="onChange1" style="width:100%">
+                       <el-select :model-value="'借用时间'+(dayTime?'('+dayTimeStr+')':'')" placeholder="借用时间" @change="onChange1" style="width:100%" popper-class="zdy_select1">
                         <el-option
                           v-for="item in dayTimeOptions"
                           :key="item.value"
@@ -43,13 +43,13 @@
                       </el-select>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="borrowedState" label="借用状态" min-width="20%" >
+                  <el-table-column prop="borrowedState" label="借用状态" min-width="25%" >
                     <template #default="scope">
                        {{getDayStateStr(scope.row.borrowedState)}}
                     </template>  
                     <!-- 自定义表头：借用状态 -->
                     <template #header>
-                       <el-select model-value="借用状态" placeholder="借用状态" @change="onChange2" style="width:100%">
+                       <el-select model-value="借用状态" placeholder="借用状态" @change="onChange2" style="width:100%" popper-class="zdy_select2">
                         <el-option
                           v-for="item in dayStateOptions"
                           :key="item.value" 
@@ -110,7 +110,7 @@
                     <el-date-picker
                       v-model="appointmentValue"
                       type="date"
-                      
+                      popper-class="dzy_datePicker"
                       format="YYYY-MM-DD"
                       value-format="YYYY-MM-DD"
                       placeholder="借用时间"
@@ -376,22 +376,22 @@ const onChange3=(v)=>{
    
 }
 const appointmentTableData =reactive( [
-  {
-    "id": 1,
-    "personneId": 460003839,
-    "borrowedName": "张小小",
-    "borrowedNamePhone": "15295765073",
-    "quantityBorrowed": 12,
-    "borrowTime": "2022-8-8 17：00-19：00",
-    "borrowedState": null,
-    "returnQuantity": null,
-    "returnTime": null,
-    "verificationCode": "3049",
-    "mtName": "8.8日测试会议",
-    "applyId": "340087888",
-    "roomId": "35999887",
-    "customTheme": null
-  }
+  // {
+  //   "id": 1,
+  //   "personneId": 460003839,
+  //   "borrowedName": "张小小",
+  //   "borrowedNamePhone": "15295765073",
+  //   "quantityBorrowed": 12,
+  //   "borrowTime": "2022-8-8 17：00-19：00",
+  //   "borrowedState": null,
+  //   "returnQuantity": null,
+  //   "returnTime": null,
+  //   "verificationCode": "3049",
+  //   "mtName": "8.8日测试会议",
+  //   "applyId": "340087888",
+  //   "roomId": "35999887",
+  //   "customTheme": null
+  // }
 ])
 // 今天之前的日期禁止选择 
 const disabledDate = (time) => {
@@ -422,6 +422,83 @@ watch(()=>appointmentValue.value,()=>{
 })
 
 </script>
+
+<style lang="less">
+  .dzy_datePicker{
+     background: #05456e!important;
+     border: 0px!important ;
+    //  border-radius: 0px;
+    //  margin-right:(-180/1920)*100vw!important;
+     margin-top: (-18/1080)*100vh!important;
+     .el-date-picker{
+        background: #05456e!important;
+         
+     }
+     .el-popper__arrow{
+        display: none!important;
+     }
+     .el-popper.is-pure{
+        background-color: red;
+     }
+    .el-date-table td.disabled .el-date-table-cell{
+       background-color: transparent;
+    }
+    .el-date-table th{
+      border-color:rgba(235, 238, 245,0.3); 
+    }
+    
+  }
+  .el-popper.zdy_select1{
+      width: calc((179/1920)*100vw - 12px)!important;
+       background: #05456e!important;
+       border: 0px!important;
+       margin-top: -10px;
+       margin-left: -12px!important;
+       border-radius:0!important;
+       
+       .el-select-dropdown{
+            border-radius:0!important;
+       }
+      .el-select-dropdown__item{
+         color: rgba(255, 255, 255, 1)!important;
+          font-size: (18/1920)*100vw!important;
+          text-align: center!important;
+          font-family: Microsoft Yahei!important;
+        &.hover, &:hover{
+           background-color: rgba(255, 255, 255, 0.1)!important;
+        }
+      }
+      .el-popper__arrow{
+         display: none!important;
+      }
+      
+    }
+  .el-popper.zdy_select2{
+      width: calc((166/1920)*100vw - 12px)!important;
+       background: #05456e!important;
+       border: 0px!important;
+       margin-top: -10px;
+       margin-left: -12px!important;
+       border-radius:0!important;
+       
+       .el-select-dropdown{
+            border-radius:0!important;
+       }
+      .el-select-dropdown__item{
+         color: rgba(255, 255, 255, 1)!important;
+          font-size: (18/1920)*100vw!important;
+          text-align: center!important;
+          font-family: Microsoft Yahei!important;
+        &.hover, &:hover{
+           background-color: rgba(255, 255, 255, 0.1)!important;
+        }
+      }
+      .el-popper__arrow{
+         display: none!important;
+      }
+      
+    }
+</style>
 <style lang="less" scoped>
 /* @media (min-width: 1024px) {
   .about {
@@ -477,7 +554,12 @@ watch(()=>appointmentValue.value,()=>{
     color: rgba(255, 255, 255, 1);
     font-family: Roboto;
     //  border: 1px solid blue;
-     
+     .cell{
+        line-height: (44/1080)*100vh;
+        i{
+          color:white
+        }
+     }
     .el-table__inner-wrapper{
       height: (476/1080)*100vh!important;
       //  height: auto;
@@ -519,7 +601,7 @@ watch(()=>appointmentValue.value,()=>{
   }
   // 1.左区 当日借用信息及功能菜单
   .borrowandmenu{
-    width: 50%;
+    width: 60%;
     height: 100%;
     
     // border: 1px solid red;
@@ -633,8 +715,8 @@ watch(()=>appointmentValue.value,()=>{
                 }
               }
           }
-          .el-date-editor.el-input{
-              width:(210/1980)*100vw ;
+        .el-date-editor.el-input{
+              // width:(210/1980)*100vw ;
               height: (44/1080)*100vh;
               transform: translateX((-16/1980)*100vw);
               .el-input__wrapper{
@@ -642,7 +724,22 @@ watch(()=>appointmentValue.value,()=>{
                 box-shadow:none;
                 padding-left: 0px;
               }
+        }
+
+        .el-input--small .el-input__inner{
+          &::-webkit-input-placeholder{
+            color: #fff;
           }
+          &:-moz-placeholder{
+            color: #fff;
+          }
+          &::-moz-placeholder{
+            color: #fff;
+          }
+          &:-ms-input-placeholder{
+            color: #fff;
+          }
+        }
      }
   }
 }

@@ -124,7 +124,7 @@
                   @click="deleteMeeting(item)"
                 />
               </div>
-              <div class="detailInfo">1个项目，1个发布页</div>
+              <div class="detailInfo">{{item.roomClassNum}}个项目，{{item.roomContNum}}个发布页</div>
             </div>
           </div>
         </div>
@@ -234,30 +234,6 @@ const router = useRouter()
 
 import { request, noderedrequest } from '@/utils/server.js'
 
-// 获取组织信息，并传递给后端
-// var showName=localStorage.getItem("show-name");
-// var rememberName=localStorage.getItem("remember-name");
-
-// const sessionUserName=ref(sessionStorage.getItem("sessionUserName") || '');
-const  userId=ref(sessionStorage.getItem("userId") || '');
-
-console.log(userId.value);
-const postUserInfo=()=>{
-    request
-    .post('/CallUserCtrl/queryUserByOrgService',
-    {
-      "erpbh":userId.value
-      // "erpbh":"4600072255"
-    })
-    .then((res) => {
-      console.log('用户信息查询成功:', res.data)
-      // erpbh: "4600072255" orgeh: "46004475" orgehName: null  xm: "益伟康"
-
-    })
-    .catch((error) => {
-      // console.log('用户信息查失败:', error)
-    })
-}
 
 // 会议室配置信息
 var floorOptions = ref([])
@@ -300,8 +276,6 @@ const getList = () => {
     })
 }
 onMounted(() => {
-  // 获取用户信息
-  // postUserInfo()
   getList()
   getFloorandAddList()
 })

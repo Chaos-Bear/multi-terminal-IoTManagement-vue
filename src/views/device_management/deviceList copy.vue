@@ -128,7 +128,6 @@
             @select="handleSelectionChange"
             @select-all="selectAll"
             ref="table"
-            :row-class-name="tableRowClassName"
           >
             <el-table-column type="selection" prop="sec" label="" min-width="30" />
             <el-table-column fixed prop="deviceId" label="设备ID" min-width="80" />
@@ -320,30 +319,15 @@ const getList = () => {
       console.log('设备管理列表按条件查询失败:', error)
     })
 }
-// 添加时间
+
 const getcreateTime=(createTime)=>{
   if(createTime){
-    // 现在的时间
-    var currentTime=new Date()
-    var ty=currentTime.getFullYear()
-    var tm=currentTime.getMonth()+1
-    var td=currentTime.getDate()
-    // 创建时间
-    // debugger
-    var time=new Date(createTime)
-    
-    var y=time.getFullYear()
-    var m=time.getMonth()+1
-    var d=time.getDate()
-    // console.log(time,y,m,d )
-    if(currentTime.getTime() - new Date(createTime).getTime() <5*60*1000){
-      return "刚刚"
-    }else if(ty==y&&tm==m&&td==d){
-      return "今天 "+time.getHours()+':'+time.getMinutes()
-    }else { 
-      return m+'月'+d+'日 ' +time.getHours()+':'+time.getMinutes()
-    }
+    var date=new Date(createTime)
+    return date.getFullYear()+"."+date.getMonth() + '.' + date.getDay() + ' ' + date.getHours() + ':' + date.getMinutes()
+    //  console.log( createTime.split("T0")[0] +" "+ createTime.split("T0")[1]) 
+    // return createTime.split("T0")[0] +" "+ createTime.split("T0")[1].split(".")[0]
   }
+  return ''
 }
 
 //初始化渲染
@@ -401,10 +385,6 @@ const deletebtn = () => {
           if (response.data.code == 200) {
             //重新发请求，渲染设备列表
             getList()
-            
-            selectList.value=[]
-            // 清除勾选
-            table.value.clearSelection()
           }
         })
         .catch((error) => {})
@@ -416,16 +396,6 @@ const deletebtn = () => {
       })
     })
 }
-// 3.2 row-class-name 属性来为 Table 中的某一行添加 class， 这样就可以自定义每一行的样式了
-const tableRowClassName = ({row,rowIndex}) => {
-  if (rowIndex %2 == 0) {
-    return 'warning-row'
-  } else if (rowIndex % 2 == 1) {
-    return 'success-row'
-  }
-  return ''
-}
-
 // 3.1新增按钮弹框
 const deviceTypeOptions = ref([
   {
@@ -433,7 +403,7 @@ const deviceTypeOptions = ref([
     label: '固定设备'
   },
   {
-    value: 1,
+    value: '1',
     label: '移动设备'
   }
 ])
@@ -544,10 +514,6 @@ const deleteitem = (row) => {
           if (response.data.code == 200) {
             //重新发请求，渲染设备列表
             getList()
-            
-            selectList.value=[]
-            // 清除勾选
-            table.value.clearSelection()
           }
         })
         .catch((error) => {})
@@ -914,13 +880,6 @@ const refresh=()=>{
             color: red;
           }
         }
-      }
-
-      .warning-row {
-        background-color: transparent!important;
-      }
-      .success-row {
-        background-color: #F5F9FC!important;
       }
     }
   

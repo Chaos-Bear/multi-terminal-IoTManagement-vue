@@ -2,7 +2,7 @@
   <div class="tablet">
     <div class="tablet-inner">
       <div class="tablet-select">
-        <el-select v-model="index" placeholder="Select" @change="onChange" style="width:auto">
+        <el-select v-model="index" placeholder="Select" @change="onChange" style="width:auto" popper-class="zdy_select_top">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -66,47 +66,36 @@ const onChange=()=>{
 }
 
 
-// let meetingList = ref([]);
-// axios.get('http://172.28.5.134:17010/api/meeting/seat-plan/meeting-msg-room?roomId=8186863024963584&time=1689004800000')
-
-// axios.get('http://10.31.0.239:8080/areas/list',
-// {
-//     // params:{
-//     //   pageNo:1,
-//     //   pageSize:1
-//     // },
-//     headers:{ //头部参数
-//       "pageNo":1,
-//       "pageSize":1,
-//     }
-//   }
-// )
-//   .then(response => {
-//     console.log(response.data);
-//     // meetingList.value=response.data.data.records;
-//   })
-//   .catch(error => {
-//     console.error(error);
-//   });
-
-  // 生成一个Promise对象的数组
-    // const promises = [1, 3, 5, 7, 9].map(function (id) {
-    //   if(id==1){
-    //     return axios.get('https://jsonplaceholder.typicode.com/users/' + id);
-    //   }else{
-    //     return axios.get('https://jsonplaceholder.typicode.com/users/' + id);
-    //   }
-    
-    // });
- 
-    // Promise.all(promises).then(function (posts) {
-    //     console.log("ok")
-    //     console.log('Contents: ' + posts);
-    // }).catch(function(reason){
-    //     console.log('出错了',reason)
-    // });
-
 </script>
+<style lang="less">
+  // 通过自定义，修改select下拉框
+   .el-popper.zdy_select_top{
+       width: 30%!important;
+       background: #05456e!important;
+       border: 0px!important;
+       margin-top: -4px;
+       margin-left: -4%;
+       border-radius:0!important;
+       
+       .el-select-dropdown{
+            border-radius:0!important;
+       }
+      .el-select-dropdown__item{
+         color: rgba(255, 255, 255, 1)!important;
+          font-size: (18/1920)*100vw!important;
+          text-align: center!important;
+          font-family: Microsoft Yahei!important;
+        &.hover, &:hover{
+           background-color: rgba(255, 255, 255, 0.1)!important;
+        }
+      }
+      .el-popper__arrow{
+         display: none!important;
+      }
+      
+    }
+
+</style>
 <style lang="less" scoped>
   .tablet{
     width: 100vw;
@@ -126,6 +115,7 @@ const onChange=()=>{
       background-size: 100% 100%;
       position: relative;
       .tablet-select{
+        width: (434/1920)*100vw;
         height: (95/1920)*100vw;
         display: flex;
         justify-content: center;
@@ -155,6 +145,9 @@ const onChange=()=>{
                 // font-family: SourceHanSansSC-regular;
               }
             
+          }
+          .el-icon svg{
+            color: white;
           }
         }
        

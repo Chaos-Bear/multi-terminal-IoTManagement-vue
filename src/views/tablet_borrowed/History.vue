@@ -8,6 +8,7 @@
           <!-- v-model中的值，对应两个值，一个开始时间，一个结束时间，以数组的形式存在 -->
           <el-date-picker
             v-model="value1"
+            popper-class="dzy_datePickers"
             type="datetimerange"
             range-separator="～"
             start-placeholder="开始时间"
@@ -19,7 +20,7 @@
                 new Date(2000, 1, 1, 0, 0, 0),
                 new Date(2000, 2, 1, 23, 59, 59),
               ]"
-              :disabled-date="disabledDate"
+            :disabled-date="disabledDate"
           />
           
         </el-form-item>
@@ -30,7 +31,7 @@
         </el-form-item>
 
         <el-form-item label="借用状态">
-          <el-select v-model="form.historyState" placeholder="全部" >
+          <el-select v-model="form.historyState" placeholder="全部" popper-class="zdy_select">
             <el-option v-for="item in historyStateOptions"
             :key="item.value"
             :label="item.label"
@@ -274,6 +275,89 @@ const handleCurrentChange = (val) => {
 
 
 </script>
+<style lang="less">
+  .el-popper.dzy_datePickers{
+     border: 0px!important ;
+    
+    
+     .el-popper__arrow{
+        display: none!important;
+     }
+   
+    .el-date-table td.disabled .el-date-table-cell{
+       background-color: transparent;
+    }
+    .el-date-table th{
+      border-color:rgba(235, 238, 245,0.3); 
+    }
+
+    .el-picker-panel{
+      background: #05456e!important;
+       
+    }
+    
+    .el-input__wrapper{
+      background: #05456e!important;
+      border:1px solid  rgba(235, 238, 245,0.3)!important;
+    }
+    .el-date-range-picker__time-header{
+      border-bottom:1px solid  rgba(235, 238, 245,0.3)!important;
+    }
+    .el-picker-panel__footer{
+      background-color: #05456e!important;
+      border-top:1px solid  rgba(235, 238, 245,0.3)!important;
+
+    }
+    .el-date-range-picker__content.is-left{
+       border-right:1px solid  rgba(235, 238, 245,0.3)!important;
+    }
+    .el-input--small .el-input__inner{
+          &::-webkit-input-placeholder{
+            color: #fff;
+          }
+          &:-moz-placeholder{
+            color: #fff;
+          }
+          &::-moz-placeholder{
+            color: #fff;
+          }
+          &:-ms-input-placeholder{
+            color: #fff;
+          }
+        }
+    .el-picker-panel,{
+       color:#ffffff;
+    }
+  }
+  
+  .el-popper.zdy_select{
+      width: calc((260/1920)*100vw - 12px)!important;
+       background: #05456e!important;
+       border: 0px!important;
+       margin-top: -10px;
+      //  margin-left: -12px!important;
+       margin-left: (0/1920)*100vw!important;
+       border-radius:0!important;
+       
+       .el-select-dropdown{
+            border-radius:0!important;
+       }
+      .el-select-dropdown__item{
+         color: rgba(255, 255, 255, 1)!important;
+          font-size: (18/1920)*100vw!important;
+          text-align: center!important;
+          font-family: Microsoft Yahei!important;
+        &.hover, &:hover{
+           background-color: rgba(255, 255, 255, 0.1)!important;
+        }
+      }
+      .el-popper__arrow{
+         display: none!important;
+      }
+      
+  }
+    
+</style>
 <style lang="less" scoped>
 .history {
   margin: 0 (58/1920)*100vw;

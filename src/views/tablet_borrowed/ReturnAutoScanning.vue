@@ -167,7 +167,7 @@ const getList = () => {
     {
       "borrowedState":2,
       "deviceState":1,
-      "deviceType": "1"
+      "deviceType": 1,
   })
   .then((response) => {
       console.log('按条件查询成功:', response.data)
