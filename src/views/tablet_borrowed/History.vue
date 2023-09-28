@@ -49,7 +49,7 @@
     <!-- 3.设备列表 -->
     <div class="deviceList">
       <!-- 此处设置了滚动条组件 -->
-      <el-scrollbar>
+      <el-scrollbar style="width: 100%">
       <!-- 3.2 设备列表-->
       <el-table
         :data="tableData"
@@ -58,7 +58,7 @@
         ref="table"
       >
         <el-table-column fixed type="index" min-width="6%" label="序号"/>
-        <el-table-column prop="mtName" label="名称会议" min-width="21%" />
+        <el-table-column prop="mtName" label="会议名称" min-width="21%" />
         <el-table-column prop="borrowedName" label="借用人" min-width="12%" />
         <el-table-column prop="quantityBorrowed" label="借用数量" min-width="11%" />
         <el-table-column prop="borrowStartTime" label="借用时间" min-width="12%" >
@@ -371,6 +371,9 @@ const handleCurrentChange = (val) => {
     height: (82/1080)*100vh;
     display: flex;
     justify-content: space-between;
+    border:calc((5/1920) * 100vw + 1px)  solid transparent;
+    border-width:0px  calc((5/1920) * 100vw + 1px);
+    box-sizing: border-box;
     :deep(.el-form) {
       display: flex;
       margin-top: (38/1080)*100vh;
@@ -382,7 +385,7 @@ const handleCurrentChange = (val) => {
 
         .el-form-item__label {
           // height: (20/1920)*100vw;
-          margin-bottom: (8/1080)*100vh;
+          // margin-bottom: (8/1080)*100vh;
           color: rgba(255, 255, 255, 1);
           font-size: (20/1920)*100vw;
           text-align: left;
@@ -403,11 +406,11 @@ const handleCurrentChange = (val) => {
       display: flex;
       justify-content: flex-end;
       height: (32/1080)*100vh;
-      margin-top: (36/1080)*100vh;
+      margin-top: (18/1080)*100vh;
       .el-button {
-        width: (80/1920)*100vw;
-        height: (32/1080)*100vh;
-        line-height: (20/1080)*100vh;
+        width: (120/1920)*100vw;
+        height: (50/1080)*100vh;
+        line-height: (50/1080)*100vh;
         border-radius: 2px;
         color: rgba(255, 255, 255, 1);
         background-color: transparent;
@@ -476,9 +479,8 @@ const handleCurrentChange = (val) => {
       font-size: (18/1920)*100vw;
       color: rgba(255, 255, 255, 1);
       font-family: Roboto;
-       border: 1px solid #011E4E;
-      // overflow: hidden;
-        
+      border: 1px solid transparent;
+      
       .el-table__inner-wrapper{
         height: (800/1080)*100vh!important;
         // height:auto;
@@ -508,6 +510,7 @@ const handleCurrentChange = (val) => {
             height: (44/1080)*100vh;
             text-align: center;
             border-bottom:0px !important;
+             padding:(5/1080) * 100vh 0;
         }
         thead {
           color:  rgba(255, 255, 255, 1);
@@ -544,6 +547,7 @@ const handleCurrentChange = (val) => {
               color: red;
            }
            .cell{
+             white-space: nowrap;
              background-color: rgba(24, 144, 255, 0.1);
              margin-right: (10/1920)*100vw;
            }

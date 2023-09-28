@@ -36,7 +36,7 @@
     <!-- 3.设备列表 -->
     <div class="deviceList">
       <!-- 此处设置了滚动条组件 -->
-      <el-scrollbar>
+      <el-scrollbar style="width: 100%">
         <!-- 3.2 设备列表-->
         <el-table
           :data="tableData"
@@ -51,10 +51,11 @@
             <el-table-column prop="port" label="端口号" width="70" />
             <el-table-column prop="brand" label="品牌" width="60" />
             <el-table-column prop="modelNumber" label="型号" width="150" />
-          <el-table-column prop="deviceState" label="设备状态" min-width="20%">
+          <el-table-column prop="deviceState" label="设备状态" min-width="15%">
             <template #default="scope">
               <!-- 当设备借用状态为2 使用中时，按钮禁用 -->
               <el-switch
+                class="switchClass"
                 v-model="scope.row.deviceState"
                 size="small"
                 active-text="启用"
@@ -185,8 +186,12 @@ const searchbtn = () => {
   console.log(form.deviceName, form.deviceState, form.borrowedState)
   getList()
 }
-// ----借用状态
+// ----设备借用状态
 const dayStateOptions = [
+  {
+    value: '0',
+    label: '已禁用',
+  },
   {
     value: '1',
     label: '空闲中',
@@ -208,6 +213,7 @@ const getDayStateStr=(v)=>{
 }
 //----监听设备启用/禁用状态
 const switchChange=(v,row)=>{
+  debugger
   console.log(v)
   if(row.borrowedState== 1){
     //调用设备管理的更新接口
@@ -226,7 +232,6 @@ const switchChange=(v,row)=>{
         }
     })
   }
-  
 }
 // 重置
 const resetbtn = () => {
@@ -479,6 +484,9 @@ const handleCurrentChange = (val) => {
     height: (82/1080) * 100vh;
     display: flex;
     justify-content: space-between;
+    border:calc((5/1920) * 100vw + 1px)  solid transparent;
+    border-width:0px  calc((5/1920) * 100vw + 1px);
+    box-sizing: border-box;
     :deep(.el-form) {
       display: flex;
       margin-top: (38/1080) * 100vh;
@@ -490,7 +498,7 @@ const handleCurrentChange = (val) => {
 
         .el-form-item__label {
           // height: (20/1920)*100vw;
-          margin-bottom: (8/1920) * 100vw;
+          // margin-bottom: (8/1920) * 100vw;
           color: rgba(255, 255, 255, 1);
           font-size: (20/1920) * 100vw;
           text-align: left;
@@ -510,10 +518,10 @@ const handleCurrentChange = (val) => {
       display: flex;
       justify-content: flex-end;
       height: (32/1080) * 100vh;
-      margin-top: (36/1080) * 100vh;
+      margin-top: (18/1080) * 100vh;
       .el-button {
-        width: (80/1920) * 100vw;
-        height: (32/1080) * 100vh;
+        width: (120/1920)*100vw;
+        height: (50/1080)*100vh;
         line-height: (20/1080) * 100vh;
         border-radius: 2px;
         color: rgba(255, 255, 255, 1);
@@ -582,7 +590,7 @@ const handleCurrentChange = (val) => {
       font-size: (18/1920) * 100vw;
       color: rgba(255, 255, 255, 1);
       font-family: Roboto;
-      border: 1px solid #011E4E;
+      border: 1px solid transparent;
       // overflow: hidden;
 
       .el-table__inner-wrapper {
@@ -596,9 +604,10 @@ const handleCurrentChange = (val) => {
           }
         }
         .el-table__cell {
-          height: (44/1080) * 100vh;
+          // height: (20/1080) * 100vh;
           text-align: center;
           border-bottom: 0px !important;
+          padding:(5/1080) * 100vh 0;
         }
         thead {
           color: rgba(255, 255, 255, 1);
@@ -621,7 +630,7 @@ const handleCurrentChange = (val) => {
         tbody {
           margin-left: (5/1920) * 100vw;
           tr td {
-            height: (44/1080) * 100vh;
+            // height: (44/1080) * 100vh;
 
             .el-button {
               color: rgba(24, 144, 255, 1);
@@ -639,10 +648,32 @@ const handleCurrentChange = (val) => {
               color: red;
             }
             .cell {
+              white-space: nowrap;
               background-color: rgba(24, 144, 255, 0.1);
               margin-right: (10/1920) * 100vw;
             }
           }
+        }
+      }
+      .switchClass{
+        .el-switch__label{
+          display: none;
+        }
+        .is-active{
+           display: inline-block;
+        }
+        .el-switch__label--left{
+          position: absolute;
+          right: 0;
+          margin-right: 0px;
+        }
+        .el-switch__label--right{
+          position: absolute;
+          right: 0;
+          
+        }
+        .el-switch__core{
+          margin-right: 30px;
         }
       }
     }

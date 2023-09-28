@@ -15,7 +15,7 @@
           <div>
             会议时间：{{
               borrowedInfo.borrowStartTime.slice(0, -3) +
-              '～' +
+              ' ～' +
               borrowedInfo.borrowEndTime.slice(10, -3)
             }}
           </div>
@@ -27,7 +27,7 @@
           <div>
             借用时间：{{
               borrowedInfo.borrowStartTime.slice(0, -3) +
-              '～' +
+              ' ～' +
               borrowedInfo.borrowEndTime.slice(10, -3)
             }}
           </div>
@@ -69,9 +69,12 @@
         <!-- 按钮 -->
         <div class="scanningBtn">
           <div class="topInfo">
-            <div v-if="isSuccess">
+            <div v-if="isSuccess" class="topInfo1">
               <span>自动扫描中</span>
-              <img src="@/assets/tablet_borrowed/11.png" />
+              <!-- <img src="@/assets/tablet_borrowed/11.png" /> -->
+              <div class="contain">
+                  <div class="zhizhen"></div>
+              </div>
             </div>
             <div v-else>
               <span>绑定完成</span>
@@ -102,7 +105,7 @@
                     placeholder="设备状态"
                     @change="onChange1"
                     style="width: 100%"
-                    popper-class="zdy_select1"
+                    popper-class="zdy_select3"
                   >
                     <el-option
                       v-for="item in deviceStateOptions"
@@ -142,6 +145,7 @@
             v-model="form.deviceName"
             placeholder="请选择设备"
             @change="onDeviceNameChange"
+            multiple
           >
             <el-option
               v-for="item in deviceList"
@@ -155,8 +159,10 @@
         </el-form-item>
         <el-form-item label="设备序列号" :label-width="formLabelWidth">
           <!-- <el-input v-model="form.modelNumber" autocomplete="off" /> -->
-          <template v-for="(item, i) in deviceList" :key="i">
-            <span v-if="item.id == form.deviceName">{{ item.modelNumber }}</span>
+          <template v-for="(item1, ii) in form.deviceName" :key="ii">{{ii==0?'':','}}
+            <template v-for="(item, i) in deviceList" :key="i">
+              <span v-if="item.id == item1">{{ item.modelNumber }}</span>
+            </template>
           </template>
         </el-form-item>
       </el-form>
@@ -178,6 +184,7 @@ import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 import { request, noderedrequest } from '@/utils/server.js'
+
 
 const getBorrowInfo = () => {
   noderedrequest
@@ -344,7 +351,13 @@ const form = reactive({
   deviceName: '',
   modelNumber: ''
 })
-const deviceList = ref([])
+const deviceList = ref([{
+  id:1,deviceName:1
+},{
+  id:2,deviceName:2
+},{
+  id:3,deviceName:3
+}])
 // 监听选择的设备名称，发请求获取该设备名称对应的设备序列号，展示在设备序列号输入框
 // 声明手动选择的 设备id
 var id
@@ -432,8 +445,12 @@ const tableData = reactive([
   //     "deviceType": "移动设备"
   // }
 ])
-// ----借用状态
+// ----设备借用状态
 const deviceStateOptions = ref([
+  {
+    value: 0,
+    label: '已禁用'
+  },
   {
     value: 1,
     label: '空闲中'
@@ -468,8 +485,8 @@ const deleteitem = (v) => {
 }
 </script>
 <style lang="less">
-  .el-popper.zdy_select1{
-      width: calc((179/1920)*100vw - 12px)!important;
+  .el-popper.zdy_select3{
+      width: calc((261/1920)*100vw - 12px)!important;
        background: #05456e!important;
        border: 0px!important;
        margin-top: -10px;
@@ -579,13 +596,13 @@ const deleteitem = (v) => {
           color: rgba(255, 255, 255, 1);
           border: (1/1920) * 100vw solid rgba(15, 204, 249, 1);
           border-radius: (2/1920) * 100vw;
-          font-size: (28/1920) * 100vw;
+          font-size: (34/1920) * 100vw;
           text-align: center;
           font-family: Roboto;
         }
         :deep(.el-button):nth-child(1) {
           background-color: rgba(15, 204, 249, 0.3);
-          font-size: (34/1920) * 100vw;
+          font-size: (28/1920) * 100vw;
         }
         //2.3绑定完成/继续扫描
         :deep(.el-button):nth-child(2) {
@@ -598,7 +615,7 @@ const deleteitem = (v) => {
       }
     }
   }
-
+  
   // 2.中间区域
   .content {
     width: (1274/1920) * 100vw;
@@ -613,7 +630,7 @@ const deleteitem = (v) => {
       
       .scanningBtn {
         height: (50/1080) * 100vh;
-        margin-top: (22/1080) * 100vh;
+        margin-top: (26/1080) * 100vh;
         // margin-bottom: (22/1080) * 100vh;
         display: flex;
         justify-content: space-between;
@@ -621,11 +638,61 @@ const deleteitem = (v) => {
         .topInfo {
           display: flex;
           align-items: center;
-          div:nth-child(1) {
+          .topInfo1{
             margin-right: (20/1920) * 100vw;
             display: flex;
             align-items: center;
+            .contain{
+              width: (54/1920) * 100vw;
+              height: (54/1920) * 100vw;
+              margin-left: (10/1920) * 100vw;
+              border: 3px solid #fff;
+              border-radius: 50%;
+              position: relative;
+              
+              @keyframes rotate {
+                from {
+                transform: rotate(0deg);
+                }
+                to {
+                transform: rotate(360deg);
+                }
+              }
+              .zhizhen{
+                width: (53/1920) * 100vw;;
+                height: (3/1920) * 100vw;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50% ,-50%);
+                transform-origin:  center left;
+                animation: rotate 2s linear infinite;
+                // &::after{
+                //     content: "";
+                //     width: 3px;
+                //     height: 3px;
+                //     position: absolute;
+                //     left: 0;
+                //     top: 50%;
+                //     transform: translateY(-50%);
+                    
+                //     background-color: #011841;
+                // }
+                &::before{
+                    content: "";
+                    width: 50%;
+                    height: 3px;
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background-color: #fff;
+                }
+                
+              }
+            }
           }
+          
           span {
             // height: (50/1080) * 100vh;
             // margin-right: (10/1920) * 100vw;
@@ -649,6 +716,7 @@ const deleteitem = (v) => {
       }
       .scanning {
         width: 100%;
+        margin-left: (-2/1920) * 100vw;
         //2.2设备列表
         :deep(.el-table) {
           height: (584/1080) * 100vh !important;
@@ -656,10 +724,43 @@ const deleteitem = (v) => {
           font-size: (18/1920) * 100vw;
           color: rgba(255, 255, 255, 1);
           font-family: Roboto;
-          
-          .el-input__wrapper .el-input__inner{
-            //  color:#fff!important;
+          .el-select {
+            .el-input {
+                .el-icon svg {
+                  color: #fff;
+              }
+            }
+            .el-input__wrapper{
+              height: (44/1080)*100vh;
+              border-radius: 0px;
+              padding: 0;
+              background-color: transparent;
+              box-shadow:none!important;
+                .el-input__inner{
+                  color: rgba(255, 255, 255, 1)!important;
+                  font-size: (18/1920)*100vw;
+                  text-align: center;
+                }
+            }
+            .el-input__suffix-inner>:first-child {
+                // margin-left: 0px; 
+            }
+            .el-input__inner {
+              &::-webkit-input-placeholder {
+                color: #fff;
+              }
+              &:-moz-placeholder {
+                color: #fff;
+              }
+              &::-moz-placeholder {
+                color: #fff;
+              }
+              &:-ms-input-placeholder {
+                color: #fff;
+              }
+            }
           }
+         
           .el-table__inner-wrapper {
             &::before {
               background-color: transparent;
@@ -721,46 +822,17 @@ const deleteitem = (v) => {
               }
             }
           }
-
-          .el-select {
-            .el-input {
-                
-            }
-            .el-input__wrapper{
-              height: (44/1080)*100vh;
-              border-radius: 0px;
-              padding: 0;
-              background-color: transparent;
-              box-shadow:none!important;
-                .el-input__inner{
-                  color: rgba(255, 255, 255, 1)!important;
-                  font-size: (18/1920)*100vw;
-                }
-            }
-            
-          }
-          .el-input--small .el-input__inner{
-            &::-webkit-input-placeholder{
-              color: #fff;
-            }
-            &:-moz-placeholder{
-              color: #fff;
-            }
-            &::-moz-placeholder{
-              color: #fff;
-            }
-            &:-ms-input-placeholder{
-              color: #fff;
-            }
-          }
+             
         }
       }
     }
+    
+    
   }
-
+  
   :deep(.el-dialog) {
           width: (542/1920) * 100vw;
-          height: (327/1080) * 100vh;
+          // height: (327/1080) * 100vh;
           margin-top: (417/1080) * 100vh;
           .el-dialog__header {
             padding-left: (24/1920) * 100vw;
@@ -783,7 +855,7 @@ const deleteitem = (v) => {
           .el-dialog__body {
             padding: (24/1080) * 100vh (48/1920) * 100vw (1/1080) * 100vh (48/1920) * 100vw;
             .el-form-item {
-              height: (32/1080) * 100vh;
+              // height: (32/1080) * 100vh;
               margin-bottom: (36/1080) * 100vh;
               position: relative;
               .el-form-item__label {
@@ -795,7 +867,7 @@ const deleteitem = (v) => {
                 font-family: SourceHanSansSC-regular;
               }
               .el-input__wrapper {
-                height: (42/1080) * 100vh;
+                // height: (42/1080) * 100vh;
                 .el-input__inner {
                   font-size: (14/1920) * 100vw;
                   text-align: left;
@@ -830,7 +902,7 @@ const deleteitem = (v) => {
                 text-align: center;
                 font-family: Roboto;
               }
-              .el-button:nth-child(2) {
+              .el-button:nth-child(1) {
                 color: rgba(51, 51, 51, 1);
                 background-color: rgba(217, 217, 217, 1);
                 border: 1px solid rgba(206, 206, 206, 1);

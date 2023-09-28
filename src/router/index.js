@@ -1,13 +1,11 @@
 import { createRouter, createWebHistory ,createWebHashHistory} from 'vue-router';
 import home from '../views/home.vue';
 
-import meetingUserList from '../views/meeting_room/user_list.vue'
 import callService from '../views/call_service/call_service.vue'
-import mobileCallService from '../views/call_service/mobile_call_service.vue'
-import mobileCallService2 from '../views/call_service/mobile_call_service2.vue'
 
 import Tablet from '../views/tablet_borrowed/Tablet.vue';
 import TabletBorrowed from '../views/tablet_borrowed/TabletBorrowed.vue';
+import NotFound from '../views/NotFound.vue';
 
 const router = createRouter({
   // history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,7 +19,8 @@ const router = createRouter({
     
     {
       path: '/meetingUserList',
-      component: meetingUserList,
+      name: 'meetingUserList',
+      component: () => import('../views/meeting_room/user_list.vue'),
     },
     // 1. 呼叫服务模块
     {
@@ -92,7 +91,9 @@ const router = createRouter({
 
     // hash设置默认路由
     {
-      path: '/',
+      path: "/:pathMatch(.*)",
+      name: "notFound",
+      component: NotFound,
     },
   ]
 })
