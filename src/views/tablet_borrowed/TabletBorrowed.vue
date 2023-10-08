@@ -38,10 +38,10 @@
                 :header-cell-style="{ background: '#F5F9FC' }"
                 ref="table"
               >
-                <el-table-column fixed type="index" min-width="15%" label="序号" />
+                <el-table-column fixed type="index" min-width="12%" label="序号" />
                 <el-table-column prop="borrowedName" label="借用人" min-width="17%" />
                 <el-table-column prop="quantityBorrowed" label="借用数量" min-width="20%" />
-                <el-table-column prop="borrowStartTime" label="借用时间" min-width="27%">
+                <el-table-column prop="borrowStartTime" label="借用时间" min-width="28%">
                   <template #default="scope">
                     <!-- 显示时分 00:00 -->
                     {{
@@ -169,7 +169,7 @@ const router = useRouter()
 import axios from 'axios'
 import quertstring from 'querystring'
 // import { el } from 'element-plus/es/locale';
-import { request, noderedrequest } from '@/utils/server.js'
+import { request, noderedrequest ,tabletRequest} from '@/utils/server.js'
 // 轮播图
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // Import Swiper styles
@@ -473,13 +473,16 @@ watch(
 </script>
 
 <style lang="less">
+// 右侧 借用时间下拉框
 .dzy_datePicker {
-  background: #05456e !important;
+  background: transparent !important;
   border: 0px !important ;
-  //  border-radius: 0px;
-  //  margin-right:(-180/1920)*100vw!important;
-  margin-top: (-18/1080) * 100vh !important;
+  margin-top: (-36/1080) * 100vh !important;
+  margin-left: (-36/1080) * 100vh !important;
+  width: 300px!important;
+  height: 300px!important;
   .el-date-picker {
+    zoom: 0.8;
     background: #05456e !important;
   }
   .el-popper__arrow {
@@ -495,8 +498,10 @@ watch(
     border-color: rgba(235, 238, 245, 0.3);
   }
 }
+// 左侧 借用时间下拉框
 .el-popper.zdy_select1 {
-  width: calc((197 / 1920) * 100vw - 12px) !important;
+  // width: calc((197 / 1920) * 100vw - 12px) !important;
+  width: calc((188 / 1920) * 100vw) !important;
   background: #05456e !important;
   border: 0px !important;
   margin-top: -10px;
@@ -520,8 +525,10 @@ watch(
     display: none !important;
   }
 }
+// 左侧 借用状态下拉框
 .el-popper.zdy_select2 {
-  width: calc((182 / 1920) * 100vw - 12px) !important;
+  // width: calc((182 / 1920) * 100vw - 12px) !important;
+  width: calc((168 / 1920) * 100vw) !important;
   background: #05456e !important;
   border: 0px !important;
   margin-top: -10px;
@@ -701,6 +708,7 @@ watch(
             background-color: transparent;
             box-shadow: none !important;
             .el-input__inner {
+              text-align: center;
               color: rgba(255, 255, 255, 1) !important;
               font-size: (18/1920) * 100vw;
             }
@@ -779,23 +787,25 @@ watch(
           background-color: transparent;
           box-shadow: none !important;
           .el-input__inner {
+            text-align: center;
             color: rgba(255, 255, 255, 1) !important;
             font-size: (18/1920) * 100vw;
           }
           .el-input__inner {
-          &::-webkit-input-placeholder {
-            color: #fff;
+            text-align: center;
+            &::-webkit-input-placeholder {
+              color: #fff;
+            }
+            &:-moz-placeholder {
+              color: #fff;
+            }
+            &::-moz-placeholder {
+              color: #fff;
+            }
+            &:-ms-input-placeholder {
+              color: #fff;
+            }
           }
-          &:-moz-placeholder {
-            color: #fff;
-          }
-          &::-moz-placeholder {
-            color: #fff;
-          }
-          &:-ms-input-placeholder {
-            color: #fff;
-          }
-        }
         }
         
       }
@@ -828,6 +838,7 @@ watch(
             margin-left: 0!important;
           }
           .el-input__inner {
+            text-align: center;
             color: rgba(255, 255, 255, 1) !important;
             font-size: (18/1920) * 100vw;
           }

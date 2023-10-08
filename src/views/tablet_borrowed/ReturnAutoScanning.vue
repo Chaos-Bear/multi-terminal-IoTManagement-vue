@@ -15,7 +15,7 @@
         </div>
         <div class="third">
           <div>借用人：{{ borrowedInfo.borrowedName }}</div>
-          <div>借用数量：{{ borrowedInfo.quantityBorrowed }}台</div>
+          <div>借用数量：{{ borrowedInfo.quantityBorrowed? borrowedInfo.quantityBorrowed: 0}}台</div>
           <div>
             借用时间：{{
               borrowedInfo.borrowStartTime.slice(0, -3) +
@@ -70,8 +70,8 @@
             <div v-else>
               <span>归还完成</span>
             </div>
-            <span>{{ borrowedInfo.returnQuantity }}</span>
-            <span>/{{ borrowedInfo.quantityBorrowed }}</span>
+            <span>{{ borrowedInfo.returnQuantity?borrowedInfo.returnQuantity:0 }}</span>
+            <span>/{{ borrowedInfo.quantityBorrowed?borrowedInfo.quantityBorrowed:0 }}</span>
           </div>
           
         </div>
@@ -98,6 +98,7 @@
                     @change="onChange1"
                     style="width: 100%"
                     popper-class="zdy_select3"
+                    class="zdy"
                   >
                     <el-option
                       v-for="item in deviceStateOptions"
@@ -463,7 +464,34 @@ const deleteitem = (v) => {
 }
 
 </script>
-
+<style lang="less">
+  .el-popper.zdy_select3{
+      // width: calc((257/1920)*100vw - 12px)!important;
+      width: calc((240/1920)*100vw)!important;
+       background: #05456e!important;
+       border: 0px!important;
+       margin-top: -10px;
+       margin-left: -12px!important;
+       border-radius:0!important;
+       
+       .el-select-dropdown{
+            border-radius:0!important;
+       }
+      .el-select-dropdown__item{
+         color: rgba(255, 255, 255, 1)!important;
+          font-size: (18/1920)*100vw!important;
+          text-align: center!important;
+          font-family: Microsoft Yahei!important;
+        &.hover, &:hover{
+           background-color: rgba(255, 255, 255, 0.1)!important;
+        }
+      }
+      .el-popper__arrow{
+         display: none!important;
+      }
+      
+  }
+</style>
 <style lang="less" scoped>
 .autoScanning {
   width: 100vw;
@@ -600,41 +628,43 @@ const deleteitem = (v) => {
               border: 3px solid #fff;
               border-radius: 50%;
               position: relative;
-              
+              box-sizing: border-box;
+             
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
               @keyframes rotate {
                 from {
-                transform: rotate(0deg);
+                  transform: rotate(0deg) ;
                 }
                 to {
-                transform: rotate(360deg);
+                  transform: rotate(360deg) ;
                 }
               }
               .zhizhen{
-                width: (53/1920) * 100vw;;
+                width: (54/1920) * 100vw;
                 height: (3/1920) * 100vw;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50% ,-50%);
-                transform-origin:  center left;
-                animation: rotate 2s linear infinite;
-                // &::after{
-                //     content: "";
-                //     width: 3px;
-                //     height: 3px;
-                //     position: absolute;
-                //     left: 0;
-                //     top: 50%;
-                //     transform: translateY(-50%);
-                    
-                //     background-color: #011841;
-                // }
-                &::before{
+                flex: none;
+                animation: rotate 4s linear infinite;
+               
+                &::after{
                     content: "";
-                    width: 50%;
+                    width: 6px;
                     height: 3px;
                     position: absolute;
                     left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    margin-top: -3px;
+                    background-color: #011841;
+                }
+                &::before{
+                    content: "";
+                    width:calc(50% - 2px) ;
+                    height: 3px;
+                    position: absolute;
+                    left: 2px;
                     top: 50%;
                     transform: translateY(-50%);
                     background-color: #fff;
@@ -680,16 +710,20 @@ const deleteitem = (v) => {
               }
             }
             .el-input__wrapper{
-              height: (44/1080)*100vh;
               border-radius: 0px;
               padding: 0;
               background-color: transparent;
               box-shadow:none!important;
+             
                 .el-input__inner{
+                  width: 5em;
+                  height: 100%;
+                  flex: none;
                   color: rgba(255, 255, 255, 1)!important;
                   font-size: (18/1920)*100vw;
                   text-align: center;
                 }
+                
             }
             .el-input__inner {
               &::-webkit-input-placeholder {
@@ -728,6 +762,8 @@ const deleteitem = (v) => {
               tr th {
                 border: (5/1920) * 100vw solid transparent;
                 .cell {
+                  height: (44/1080) * 100vh!important;
+                  line-height: (44/1080) * 100vh!important;
                   background: radial-gradient(
                     0.5% 0.5% at 50% 50%,
                     rgba(0, 207, 255, 0.1) 0%,

@@ -147,80 +147,80 @@
       <el-button type="primary">确定</el-button>
       <img src="@/assets/index/deviceList/refresh.png" @click="refresh()" />
     </div>
-  </div>
-  <!-- ----------新增/修改会议室弹框 -->
-  <el-dialog
-    :title="createForm.roomID ? '修改会议室' : '新增会议室'"
-    v-model="meetingVisual"
-    style="width: 450px"
-  >
-    <el-form
-      :model="createForm"
-      label-width="100px"
-      ref="createFormRef"
-      :rules="createFormRules"
-      label-position="left"
+    <!-- ----------新增/修改会议室弹框 -->
+    <el-dialog
+      :title="createForm.roomID ? '修改会议室' : '新增会议室'"
+      v-model="meetingVisual"
+      style="width: 450px"
     >
-      <el-form-item label="会议室名称" prop="name">
-        <el-input v-model="createForm.name" placeholder="请输入会议室名称例如:A2-110" />
-      </el-form-item>
-      <el-form-item label="楼层" prop="floor">
-        <el-select v-model="createForm.floor" style="width: 100%" placeholder="选择楼层">
-          <el-option
-            v-for="item in floorOptions"
-            :key="item.order"
-            :label="item.floor"
-            :value="item.floor"
-            :disabled="item.disabled"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="地点" prop="address">
-        <el-select v-model="createForm.address" style="width: 100%" placeholder="选择地点">
-          <el-option
-            v-for="item in addressOptions"
-            :key="item.order"
-            :label="item.address"
-            :value="item.address"
-            :disabled="item.disabled"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="会议室图片" prop="imageUrl" class="is-required">
-        <!-- action:要上传的地址   :show-file-list是否展示上传列表 :on-change上传文件列表改变时 :auto-upload 是否自动上传 false为手动上传  -->
-        <div style="display: flex; align-items: center">
-          <div v-if="imageUrl" style="position: relative" class="uploadImgCont">
-            <img :src="imageUrl" class="avatar" />
-            <div class="uploadImg">
-              <el-icon @click="del"><Delete /></el-icon>
+      <el-form
+        :model="createForm"
+        label-width="100px"
+        ref="createFormRef"
+        :rules="createFormRules"
+        label-position="left"
+      >
+        <el-form-item label="会议室名称" prop="name">
+          <el-input v-model="createForm.name" placeholder="请输入会议室名称例如:A2-110" />
+        </el-form-item>
+        <el-form-item label="楼层" prop="floor">
+          <el-select v-model="createForm.floor" style="width: 100%" placeholder="选择楼层">
+            <el-option
+              v-for="item in floorOptions"
+              :key="item.order"
+              :label="item.floor"
+              :value="item.floor"
+              :disabled="item.disabled"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="地点" prop="address">
+          <el-select v-model="createForm.address" style="width: 100%" placeholder="选择地点">
+            <el-option
+              v-for="item in addressOptions"
+              :key="item.order"
+              :label="item.address"
+              :value="item.address"
+              :disabled="item.disabled"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="会议室图片" prop="imageUrl" class="is-required">
+          <!-- action:要上传的地址   :show-file-list是否展示上传列表 :on-change上传文件列表改变时 :auto-upload 是否自动上传 false为手动上传  -->
+          <div style="display: flex; align-items: center">
+            <div v-if="imageUrl" style="position: relative" class="uploadImgCont">
+              <img :src="imageUrl" class="avatar" />
+              <div class="uploadImg">
+                <el-icon @click="del"><Delete /></el-icon>
+              </div>
             </div>
+            <el-upload
+              class="avatar-uploader"
+              auto-upload="false"
+              limit="1"
+              :show-file-list="false"
+              :before-upload="beforeAvatarUpload"
+              :http-request="uploadFlie"
+              accept=".jpeg,.jpg,.png,.gif"
+              v-else
+            >
+              <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
+            </el-upload>
+            <div class="uploadTip" v-if="!imageUrl">仅支持jpeg/jpg/png/gif格式上传!</div>
           </div>
-          <el-upload
-            class="avatar-uploader"
-            auto-upload="false"
-            limit="1"
-            :show-file-list="false"
-            :before-upload="beforeAvatarUpload"
-            :http-request="uploadFlie"
-            accept=".jpeg,.jpg,.png,.gif"
-            v-else
+        </el-form-item>
+        <el-form-item>
+          <!-- 修改弹窗 -->
+          <el-button v-if="createForm.roomID" type="primary" @click="saveMeetingModify"
+            >确 定</el-button
           >
-            <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
-          </el-upload>
-          <div class="uploadTip" v-if="!imageUrl">仅支持jpeg/jpg/png/gif格式上传!</div>
-        </div>
-      </el-form-item>
-      <el-form-item>
-        <!-- 修改弹窗 -->
-        <el-button v-if="createForm.roomID" type="primary" @click="saveMeetingModify"
-          >确 定</el-button
-        >
-        <!-- 新增弹窗 -->
-        <el-button v-else type="primary" @click="addMeeting">确 定</el-button>
-        <el-button @click="meetingVisual = false">取 消</el-button>
-      </el-form-item>
-    </el-form>
-  </el-dialog>
+          <!-- 新增弹窗 -->
+          <el-button v-else type="primary" @click="addMeeting">确 定</el-button>
+          <el-button @click="meetingVisual = false">取 消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </div>
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
@@ -433,7 +433,7 @@ const validateName = (rule, value, callback) => {
   // debugger
   const reg = /[a-zA-Z0-9\-]{1}/g
   if (!reg.test(value)) {
-    return callback(new Error('请输入正确的格式:'))
+    return callback(new Error('请输入正确的格式:例如A2-110'))
   } else {
     callback()
   }

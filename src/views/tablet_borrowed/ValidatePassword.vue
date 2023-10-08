@@ -33,17 +33,15 @@ import axios from "axios";
 import { ElMessage,ElMessageBox } from 'element-plus';
 import {useRouter,useRoute} from "vue-router";
 const router=useRouter();
-import {request,noderedrequest}  from "@/utils/server.js" 
+import {request,noderedrequest,tabletRequest}  from "@/utils/server.js" 
 
-
+var verifyCode=getArr.value.join("")
 const getList=()=>{
-  
+  // debugger
   //  noderedrequest.post("/tablet_borrowed/list?verificationCode="+getArr.value.join(""))
-   noderedrequest.post("/tablet_borrowed/list",
+   tabletRequest.post("/tablet_borrowed/list",
    {
-        
-      "verificationCode":getArr.value.join(""),
-       
+      "verifyCode":verifyCode,
    })
   .then(res => {
     var res=res.data.data;
@@ -52,14 +50,14 @@ const getList=()=>{
     // 计算现在的时间 和 校验码对应的会议开始时间 是否在2H之内，否则不允许取平板
     var nowTime=new Date().getTime()
      
-    if(res.items.length==1){
+    if(res.repCode==200){
       console.log("校验码输入正确:",res);
      
       var startTime=res.items[0].startTime;
       // if((startTime-nowTime) <=2*60*60*1000  && (startTime-nowTime)>=0){
         //验证码校验成功，跳转到扫描页,并使用query传参
         // router.push("/auto-scanning?id="+res.items[0].id+"&mtName="+res.items[0].mtName+"&borrowedName="+res.items[0].borrowedName+"&quantityBorrowed="+res.items[0].quantityBorrowed+"&borrowStartTime="+res.items[0].borrowStartTime+"&borrowEndTime="+res.items[0].borrowEndTime+"&usedNum="+res.items[0].usedNum)
-        router.push("/auto-scanning?id="+res.items[0].id)
+        router.push("/auto-scanning?id="+verifyCode)
         
       // }else{
       //   ElMessage({

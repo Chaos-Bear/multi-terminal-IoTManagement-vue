@@ -65,7 +65,7 @@
                 placeholder="请输入IP地址"
               />
             </el-form-item>
-            <el-form-item label="会议室" :label-width="formLabelWidth" prop="region">
+            <el-form-item label="&nbsp;&nbsp;会议室" :label-width="formLabelWidth" prop="region">
               <el-select
                 v-model="newForm.region"
                 placeholder="请输入会议室名称"
@@ -86,7 +86,7 @@
             <el-form-item label="&nbsp;&nbsp;状态" :label-width="formLabelWidth" prop="status">
               <el-input v-model="newForm.status" autocomplete="off" placeholder="请输入状态" />
             </el-form-item>
-            <el-form-item label="&nbsp;&nbsp;请选择设备类型" :label-width="formLabelWidth" prop="deviceType">
+            <el-form-item label="&nbsp;&nbsp;设备类型" :label-width="formLabelWidth" prop="deviceType">
               <el-select
                 v-model="newForm.deviceType"
                 placeholder="请选择设备类型"
@@ -190,8 +190,7 @@
       <el-button type="primary">确定</el-button>
       <img src="@/assets/index/deviceList/refresh.png" @click="refresh()"/>
     </div>
-  </div>
-   <!--编辑弹框表单  -->
+     <!--编辑弹框表单  -->
    <div class="tankuang">
       <el-dialog v-model="editdialogFormVisible" title="编辑">
         <el-form :model="editForm" ref="editFormRef" :rules="editFormRules" >
@@ -227,7 +226,7 @@
           <el-form-item label="&nbsp;&nbsp;状态" :label-width="formLabelWidth" prop="status">
             <el-input v-model="editForm.status" autocomplete="off" />
           </el-form-item>
-           <el-form-item label="&nbsp;&nbsp;请选择设备类型" :label-width="formLabelWidth" prop="deviceType">
+           <el-form-item label="&nbsp;&nbsp;设备类型" :label-width="formLabelWidth" prop="deviceType">
               <el-select
                 v-model="editForm.deviceType"
                 placeholder="请选择设备类型"
@@ -253,6 +252,7 @@
         </template>
       </el-dialog>
     </div>
+  </div>
 </template>
 <script setup>
 // import TheWelcome from '../components/TheWelcome.vue';
@@ -437,7 +437,7 @@ const deviceTypeOptions = ref([
     label: '移动设备'
   }
 ])
-const formLabelWidth = "50%";
+const formLabelWidth = "35%";
 const newdialogFormVisible = ref(false)
 const newForm = reactive({
   deviceId: '',

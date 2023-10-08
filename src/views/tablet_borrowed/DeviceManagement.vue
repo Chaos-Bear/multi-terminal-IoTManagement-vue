@@ -16,7 +16,7 @@
         </el-form-item>
 
         <el-form-item label="借用状态">
-          <el-select v-model="form.borrowedState" placeholder="全部" popper-class="zdy_select">
+          <el-select v-model="form.borrowedState" placeholder="全部" popper-class="zdy_select" >
             <el-option
                       v-for="item in dayStateOptions"
                       :key="item.value"
@@ -44,14 +44,14 @@
           :header-cell-style="{ background: '#F5F9FC' }"
           ref="table"
         >
-          <el-table-column fixed type="index" min-width="10%" label="序号" />
-          <el-table-column prop="deviceName" label="设备名称" min-width="12%" />
-          <el-table-column prop="equipmentSerialNumber" label="设备序列号" min-width="25%" />
-          <el-table-column prop="deviceIpAddress" label="设备ip地址" width="120" />
-            <el-table-column prop="port" label="端口号" width="70" />
-            <el-table-column prop="brand" label="品牌" width="60" />
-            <el-table-column prop="modelNumber" label="型号" width="150" />
-          <el-table-column prop="deviceState" label="设备状态" min-width="15%">
+          <el-table-column fixed type="index" min-width="8%" label="序号" />
+          <el-table-column prop="deviceName" label="设备名称" min-width="10%" />
+          <el-table-column prop="equipmentSerialNumber" label="设备序列号" min-width="20%" />
+          <el-table-column prop="deviceIpAddress" label="设备ip地址" min-width="16%" />
+            <el-table-column prop="port" label="端口号" min-width="10%" />
+            <el-table-column prop="brand" label="品牌" min-width="10%" />
+            <el-table-column prop="modelNumber" label="型号" min-width="10%" />
+          <el-table-column prop="deviceState" label="设备状态" min-width="10%">
             <template #default="scope">
               <!-- 当设备借用状态为2 使用中时，按钮禁用 -->
               <el-switch
@@ -68,10 +68,10 @@
               />
             </template>
           </el-table-column>
-          <el-table-column prop="borrowedState" label="借用状态" min-width="15%">
+          <el-table-column prop="borrowedState" label="借用状态" min-width="10%">
             <!--此处声明了一个getDayStateStr()方法，将接口返回的状态号，映射成对应得状态文字  -->
             <template #default="scope">
-              {{getDayStateStr(scope.row.borrowedState)}}
+              {{getDayStateStr(scope.row.borrowedState)?getDayStateStr(scope.row.borrowedState):"空闲中"}}
             </template>  
           </el-table-column>
           <el-table-column prop="opration" label="操作" min-width="15%">
@@ -87,8 +87,10 @@
           </el-table-column>
         </el-table>
       </el-scrollbar>
-      <!--编辑弹框表单  -->
-      <el-dialog v-model="editdialogFormVisible" title="编辑">
+    </div>
+    <!--编辑弹框表单  -->
+   <div class="tankuang">
+      <el-dialog v-model="editdialogFormVisible" title="编辑" >
         <el-form :model="editForm" ref="editFormRef" :rules="editFormRules">
           <!-- <el-form-item label="设备ID" :label-width="formLabelWidth" prop="deviceId">
             <el-input v-model="editForm.deviceId" autocomplete="off" />
@@ -114,7 +116,7 @@
           <el-form-item label="&nbsp;&nbsp;设备状态" :label-width="formLabelWidth" prop="status">
             <el-input v-model="editForm.deviceState" autocomplete="off" disabled/>
           </el-form-item>
-          <el-form-item label="借用状态" :label-width="formLabelWidth" prop="status">
+          <el-form-item label="&nbsp;&nbsp;借用状态" :label-width="formLabelWidth" prop="status">
             <!-- <el-input v-model="editForm.borrowedState" autocomplete="off"  disabled/> -->
             <el-select v-model="editForm.borrowedState" placeholder="" @change="onChange2" style="width:100%">
                         <el-option
@@ -135,8 +137,6 @@
         </template>
       </el-dialog>
     </div>
-    
-    
   </div>
 </template>
 <script setup>
@@ -159,7 +159,7 @@ const getList = () => {
         },
           "deviceState":form.deviceState,
           "borrowedState":form.borrowedState,
-          "deviceType": 1
+          "deviceType": 1,
         }
     )
     .then((response) => {
@@ -213,7 +213,7 @@ const getDayStateStr=(v)=>{
 }
 //----监听设备启用/禁用状态
 const switchChange=(v,row)=>{
-  debugger
+  // debugger
   console.log(v)
   if(row.borrowedState== 1){
     //调用设备管理的更新接口
@@ -278,23 +278,23 @@ const deleteitem = (row) => {
 
 // 3.2设备列表
 const tableData = reactive([
-  // {
-  //   id: 8,
-  //   deviceId: '34',
-  //   deviceName: '220VA609WSMARTBULLB',
-  //   deviceIpAddress: '131',
-  //   port: 810,
-  //   brand: 'TTst',
-  //   modelNumber: '220VA609WSMARTBULLB',
-  //   region: 'A2-230会议室',
-  //   state: '在线',
-  //   createTime: '2023-08-23T02:35:18.000Z',
-  //   updateTime: null,
-  //   equipmentSerialNumber: 'OPNIHFP0QU93H4FU',
-  //   borrowedState: '3',
-  //   deviceType: '移动设备',
-  //   deviceState: '1'
-  // },
+  {
+    id: 8,
+    deviceId: '34',
+    deviceName: '平板01',
+    deviceIpAddress: '192.168.100.100',
+    port: 61000,
+    brand: '联想',
+    modelNumber: 'yoga',
+    region: 'A2-230会议室',
+    state: '在线',
+    createTime: '2023-08-23T02:35:18.000Z',
+    updateTime: null,
+    equipmentSerialNumber: 'OPNIHFP0QU93H4FU',
+    borrowedState: '3',
+    deviceType: '移动设备',
+    deviceState: '1'
+  },
   // {
   //   id: 8,
   //   deviceId: '34',
@@ -338,7 +338,7 @@ onMounted(() => {
 })
 
 //编辑按钮
-const formLabelWidth = '90px'
+const formLabelWidth = '35%'
 var editId
 const editdialogFormVisible = ref(false)
 const editForm = reactive({
@@ -568,21 +568,7 @@ const handleCurrentChange = (val) => {
       background-color: rgba(191, 191, 191, 1);
       color: rgba(255, 255, 255, 1);
     }
-    //编辑弹窗
-    :deep(.el-form) {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-
-      .el-form-item {
-        width: 45%;
-
-        .el-form-item__label {
-          justify-content: flex-start;
-        }
-      }
-    }
-
+    
     //3.2设备列表
     :deep(.el-table) {
       height: (800/1080) * 100vh !important;
@@ -614,6 +600,8 @@ const handleCurrentChange = (val) => {
           tr th {
             border: (5/1920) * 100vw solid transparent;
             .cell {
+              height: (44/1080)*100vh;
+              line-height: (44/1080)*100vh;
               background: radial-gradient(
                 0.5% 0.5% at 50% 50%,
                 rgba(0, 207, 255, 0.1) 0%,
@@ -648,6 +636,8 @@ const handleCurrentChange = (val) => {
               color: red;
             }
             .cell {
+              height: (44/1080)*100vh;
+              line-height: (44/1080)*100vh;
               white-space: nowrap;
               background-color: rgba(24, 144, 255, 0.1);
               margin-right: (10/1920) * 100vw;
@@ -700,6 +690,23 @@ const handleCurrentChange = (val) => {
       width: 24px;
       height: 24px;
       margin-top: 14px;
+    }
+  }
+  
+  .tankuang{
+    //编辑弹窗
+    :deep(.el-form) {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+
+      .el-form-item {
+        width: 45%;
+
+        .el-form-item__label {
+          justify-content: flex-start;
+        }
+      }
     }
   }
 }

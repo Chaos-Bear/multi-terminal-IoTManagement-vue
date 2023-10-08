@@ -57,17 +57,17 @@
         :header-cell-style="{ background: '#F5F9FC' }"
         ref="table"
       >
-        <el-table-column fixed type="index" min-width="6%" label="序号"/>
-        <el-table-column prop="mtName" label="会议名称" min-width="21%" />
-        <el-table-column prop="borrowedName" label="借用人" min-width="12%" />
-        <el-table-column prop="quantityBorrowed" label="借用数量" min-width="11%" />
+        <el-table-column fixed type="index" min-width="5%" label="序号"/>
+        <el-table-column prop="mtName" label="会议名称" min-width="38%" />
+        <el-table-column prop="borrowedName" label="借用人" min-width="8%" />
+        <el-table-column prop="quantityBorrowed" label="借用数量" min-width="9%" />
         <el-table-column prop="borrowStartTime" label="借用时间" min-width="12%" >
           <template #default="scope">
             <!-- 显示年月日 2023-8-23 -->
             {{scope.row.borrowStartTime.split(" ")[0]}}
           </template>
         </el-table-column>
-        <el-table-column prop="returnQuantity" label="归还数量" min-width="11%" >
+        <el-table-column prop="returnQuantity" label="归还数量" min-width="9%" >
           <template #default="scope">
             <!-- 未归还时，归还数量默认为0-->
             {{scope.row.returnQuantity==null ? 0 :scope.row.returnQuantity}}
@@ -79,7 +79,7 @@
             {{scope.row.returnTime==null ? '- - -' : (scope.row.returnTime.split(" ")[0])}}
           </template>
         </el-table-column>
-        <el-table-column prop="borrowedState" label="状态" min-width="12%" >
+        <el-table-column prop="borrowedState" label="状态" min-width="8%" >
            <!--此处声明了一个getDayStateStr()方法，将接口返回的状态号，映射成对应得状态文字  -->
           <template #default="scope">
             {{getDayStateStr(scope.row.borrowedState)}}
@@ -232,23 +232,23 @@ const resetbtn=()=>{
 //3 设备信息
 // 3.2设备列表
 const tableData =reactive( [
-  // {
-  //     "id": 10,
-  //     "personneId": 460002033,
-  //     "borrowedName": "name1",
-  //     "borrowedNamePhone": "15295765073",
-  //     "quantityBorrowed": 5,
-  //     "borrowStartTime": "2023-08-23 10:00:00",
-  //     "borrowEndTime": "2023-08-23 12:00:00",
-  //     "borrowedState": "2",
-  //     "returnQuantity": null,
-  //     "returnTime": null,
-  //     "verificationCode": "4520",
-  //     "mtName": "8.8日测试会议",
-  //     "applyId": "340087888",
-  //     "roomId": "35999887",
-  //     "customTheme": null
-  // },
+  {
+      "id": 10,
+      "personneId": 460002033,
+      "borrowedName": "南宫一梦",
+      "borrowedNamePhone": "15295765073",
+      "quantityBorrowed": 5,
+      "borrowStartTime": "2023-08-23 10:00:00",
+      "borrowEndTime": "2023-08-23 12:00:00",
+      "borrowedState": "2",
+      "returnQuantity": null,
+      "returnTime": null,
+      "verificationCode": "4520",
+      "mtName": "8.8日测试会议",
+      "applyId": "340087888",
+      "roomId": "35999887",
+      "customTheme": null
+  },
 ])
 //----启用 禁用
 const isDisabled = ref(true)
@@ -507,7 +507,7 @@ const handleCurrentChange = (val) => {
           }
         }
         .el-table__cell{
-            height: (44/1080)*100vh;
+            
             text-align: center;
             border-bottom:0px !important;
              padding:(5/1080) * 100vh 0;
@@ -517,6 +517,8 @@ const handleCurrentChange = (val) => {
           tr th{
             border:(5/1920)*100vw solid transparent;
             .cell{
+              height: (44/1080)*100vh;
+              line-height: (44/1080)*100vh;
               background: radial-gradient(0.5% 0.5% at 50% 50%, rgba(0,207,255,0.1) 0%,rgba(0,207,255,0.25) 100%)!important;
               border: 0px;
               white-space: nowrap;
@@ -547,6 +549,8 @@ const handleCurrentChange = (val) => {
               color: red;
            }
            .cell{
+             height: (44/1080)*100vh;
+             line-height: (44/1080)*100vh;
              white-space: nowrap;
              background-color: rgba(24, 144, 255, 0.1);
              margin-right: (10/1920)*100vw;
