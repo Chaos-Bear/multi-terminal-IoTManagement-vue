@@ -11,9 +11,13 @@ const request=http({
 const tabletRequest=http({
   baseURL:import.meta.env.VITE_BASE_URL3
 })
+// 平板借还ws 
+const tabletWSRequest=http({
+  baseURL:import.meta.env.VITE_BASE_URL4
+})
 
 const noderedrequest=http({
   baseURL:import.meta.env.VITE_BASE_URL1
 })
 
-export {request,tabletRequest,noderedrequest}
+export {request,tabletRequest,noderedrequest,tabletWSRequest}

@@ -2,57 +2,54 @@
   <div class="autoScanning">
     <!-- 1.左-->
     <div class="left">
-      <!-- 1会议信息 -->
-      <div class="meetingInfo">
+      <!-- 1.1取平板 -->
+      <div class="tip">取平板</div>
+      <!-- 1.2会议信息 -->
+      <div class="borrowedInfo">
         <!-- <div>集团2023年5月度工作例会</div>
         <div>
           <span>借用人：张小花 </span>
           <span> 借用数量：10台</span>
           <span>借用时间：6月30日 </span>
         </div> -->
-        <div class="first">{{ borrowedInfo.mtName }}</div>
+        <div class="first">{{ borrowedInfo.mtName  ? borrowedInfo.mtName : "无会议信息" }}</div>
         <div class="second">
           <div>
-            会议时间：{{
+            会议时间：
+            <!-- {{
               borrowedInfo.borrowStartTime.slice(0, -3) +
               ' ～' +
               borrowedInfo.borrowEndTime.slice(10, -3)
-            }}
+            }} -->
           </div>
           <div>借用地点：A2-110</div>
         </div>
         <div class="third">
-          <div>借用人：{{ borrowedInfo.borrowedName }}</div>
-          <div>借用数量：{{ borrowedInfo.quantityBorrowed?borrowedInfo.quantityBorrowed:0 }}台</div>
+          <div>借用人：{{ borrowedInfo.userName }}</div>
+          <div>借用数量：{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}台</div>
           <div>
-            借用时间：{{
+            借用时间：
+            <!-- {{
               borrowedInfo.borrowStartTime.slice(0, -3) +
               ' ～' +
               borrowedInfo.borrowEndTime.slice(10, -3)
-            }}
+            }} -->
           </div>
         </div>
         <div class="four">
+          <!-- 1.4.1手动添加 -->
           <el-button
             type="primary"
             @click="handOperated"
-            :disabled="
-              borrowedInfo.quantityBorrowed == borrowedInfo.usedNum ||
-              borrowedInfo.quantityBorrowed - borrowedInfo.usedNum - tableData.length <= 0
-            "
-            >手动添加</el-button
-          >
-          <!-- 1.4绑定完成 -->
+            :disabled="borrowedInfo.borrowNumNum - tableData.length <= 0"
+            >手动添加</el-button>
+          <!-- 1.4.2绑定完成 -->
           <!-- <div class="finishBtn"> -->
           <el-button
             type="info"
             @click="submitScan"
             v-if="isSuccess"
-            :disabled="
-              borrowedInfo.quantityBorrowed == borrowedInfo.usedNum ||
-              borrowedInfo.quantityBorrowed - borrowedInfo.usedNum - tableData.length < 0 ||
-              tableData.length <= 0
-            "
+            :disabled="tableData.length <= 0"
             >绑定完成</el-button
           >
           <el-button v-else @click="continuetScan">继续扫描</el-button>
@@ -79,8 +76,8 @@
             <div v-else>
               <span>绑定完成</span>
             </div>
-            <span>{{ borrowedInfo.usedNum + tableData.length }}</span>
-            <span>/{{ borrowedInfo.quantityBorrowed?borrowedInfo.quantityBorrowed:0 }}</span>
+            <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{tableData.length }}</span>
+            <span>/{{ borrowedInfo.borrowNum?borrowedInfo.borrowNum:0 }}</span>
           </div>
         </div>
         <!-- 设备扫描信息 -->
@@ -94,15 +91,15 @@
               :header-cell-style="{ background: '#F5F9FC' }"
               ref="table"
             >
-              <el-table-column fixed type="index" min-width="14%" label="序号" />
-              <el-table-column prop="modelNumber" label="设备序ID" min-width="24%" />
-              <el-table-column prop="deviceName" label="设备名称" min-width="20.5%" />
-              <el-table-column prop="borrowedState" label="设备状态" min-width="20.5%">
+              <el-table-column fixed type="index" min-width="8%" label="序号" />
+              <el-table-column prop="tabletID" label="设备序ID" min-width="30%" />
+              <el-table-column prop="tabletName" label="设备名称" min-width="20.5%" />
+              <el-table-column prop="borrowedStatus" label="设备借用状态" min-width="20.5%">
                 <!-- 自定义表头：设备状态 -->
                 <template #header>
                   <el-select
-                    :model-value="borrowedState"
-                    placeholder="设备状态"
+                    :model-value="borrowedStatusValue"
+                    placeholder="设备借用状态"
                     @change="onChange1"
                     style="width: 100%"
                     popper-class="zdy_select3"
@@ -117,7 +114,7 @@
                   </el-select>
                 </template>
                 <template #default="scope">
-                  {{ getDayStateStr(scope.row.borrowedState) }}
+                  {{ getDayStateStr(scope.row.borrowedStatus) }}
                 </template>
               </el-table-column>
               <el-table-column prop="" label="操作" min-width="16%">
@@ -142,27 +139,25 @@
       <el-form :model="form">
         <el-form-item label="选择设备&nbsp;&nbsp;&nbsp;" :label-width="formLabelWidth">
           <el-select
-            v-model="form.deviceName"
+            v-model="form.tabletIDs"
             placeholder="请选择设备"
-            @change="onDeviceNameChange"
+            @change="ontabletNameChange"
             multiple
           >
             <el-option
               v-for="item in deviceList"
-              :key="item.id"
-              :label="item.deviceName"
-              :value="item.id"
+              :key="item.tabletID"
+              :label="item.tabletName"
+              :value="item.tabletID"
               :disabled="ishas(item)"
             >
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="设备序列号" :label-width="formLabelWidth">
-          <!-- <el-input v-model="form.modelNumber" autocomplete="off" /> -->
-          <template v-for="(item1, ii) in form.deviceName" :key="ii">{{ii==0?'':','}}
-            <template v-for="(item, i) in deviceList" :key="i">
-              <span v-if="item.id == item1">{{ item.modelNumber }}</span>
-            </template>
+         
+          <template v-for="(item1, ii) in form.tabletNames" :key="ii">{{ii==0?'':','}}
+            <span >{{ item1.tabletID }}</span>
           </template>
         </el-form-item>
       </el-form>
@@ -183,133 +178,236 @@ import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
-import { request, noderedrequest ,tabletRequest} from '@/utils/server.js'
+import { request, noderedrequest ,tabletRequest,tabletWSRequest} from '@/utils/server.js'
+import {createWebSocket} from "@/utils/websocket.js"
+import { dataType } from 'element-plus/es/components/table-v2/src/common'
 
+// 接收url query传参
+console.log('借用query传参', route.query)
+// 用于ws连接参数
+const repCode=route.query.verifyCode
+const repMsg=route.query.repMsg
 
+// 1. 取平板前通过借还验证码查询预约信息接口,渲染左侧会议信息
 const getBorrowInfo = () => {
-  noderedrequest
-    .post('/tablet_borrowed/list', {
-      id: route.query.id
+  tabletRequest
+    .post('/IotBabletBindCrtl/queryBindInfo', {
+      verifyCode: route.query.verifyCode
     })
     .then((res) => {
-      borrowedInfo.value = res.data.data.items[0] || {}
+      // debugger
+      borrowedInfo.value = res.data.result
     })
     .catch((error) => {
-      // debugger
       console.log('当日借用信息按条件查询失败:', error)
     })
 }
+const borrowedStatusValue=ref("")
 const borrowedInfo = ref({
-  id: '',
-  personneId: '',
-  borrowedName: '',
-  borrowedNamePhone: '',
-  quantityBorrowed: '',
-  borrowStartTime: '',
-  borrowEndTime: '',
-  borrowedState: '',
-  returnQuantity: '',
-  returnTime: '',
-  verificationCode: '',
-  mtName: '',
-  applyId: '',
-  roomId: '',
-  customTheme: '',
-  startTime: '',
-  usedNum: '',
-  avaiableNum: ''
+  "roomName": "8559878580142080",
+  "meetName": "8646084058906624",
+  "meetTime": null,
+  "userName": "维康",
+  "borrowNum": 2,
+  "borrowStartTime": "2023-10-08 11:00:00",
+
+  "borrowEndTime": "2023-10-08 17:00:00",
+  "mtName":""   //会议名称
 })
-onBeforeMount(() => {
+
+onMounted(() => {
   getBorrowInfo()
+  
+  // 进入扫描页面，立即调用打开扫描设备接口
+  openScanDevice()
 })
+const openScanDevice=()=>{
+   tabletRequest
+    .post('/IotBabletBindCrtl/startBindBorroFlow', 
+      {
+        "message": "ON",
+        "openTopic": "A2-206/206-RFID-DOWN",
+        "qos": 2,
+        "topic": repMsg,
+        "verifyCode":repCode 
+      }
+    )
+    .then((res) => {
+      // debugger
+      if(res.data.repCode==200){
+         console.log('扫描设备已打开成功:', res)
+      }
+    })
+    .catch((error) => {
+      console.log('扫描设备已打开失败:', error)
+    })
+}
+// 建立ws连接
+// debugger
+var websocket=createWebSocket('ws://10.31.0.251:8082/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
+ 
+  console.log('建立了websocket连接')
+  
+  // 重新调用会议室最新消息列表-----------------------
+
+},onmessage(e){
+  // debugger
+  // console.log('接收服务器消息：', e.data)
+  // 如果e.data是所有消息，则判断是否是当前会议室消息
+  if(e.data=='HeartBeat'){
+     return
+  }else{
+    var list = JSON.parse(e.data)
+    
+    
+    list.data.forEach((item)=>{
+      let it=getItemById(tableData.value,item.tabletID,'tabletID')
+       if(it){
+           
+       }else{
+          tableData.value.push(item)
+       } 
+    })
+   
+    // console.log('接收设备扫描信息：', tableData)
+  }
+  
+},onerror(){
+
+},onclose(){
+  
+},onbeforeunload(){
+   
+},onreconnect(ws){
+  websocket=ws
+ 
+}})
+
+// 1.4.1 手动添加
+const formLabelWidth = '(542/1920)*100vw'
+const dialogFormVisible = ref(false)
+
+const form = reactive({
+  tabletNames: [],
+  tabletIDs: []
+})
+//2.获取平板设备列表接口
 const getList = () => {
-  //查询 设备列表中，借用状态是1 ->可用设备 的设备列表，设备状态1 ->启用 设备类型"deviceType": 1  展示在手动添加的 下拉设备下拉选项中
-  // noderedrequest.get('/device/list?borrowedState=1&deviceState=1')
-  noderedrequest
-    .post('/device/list', {
-      borrowedState: 1,
-      deviceState: 1,
-      deviceType: 1
+  //查询 设备列表中，借用状态是2 ->空闲中 的设备列表， 展示在手动添加的 下拉设备下拉选项中
+  tabletRequest
+    .post('/IotBabletEditCrtl/queryMageBablet', {
+      "borrowedStatus":"2",
     })
     .then((response) => {
-      console.log('按条件查询成功:', response.data)
+      console.log('空闲中设备列表查询成功:', response.data.result)
       // debugger
-      // tableData.length = 0
-      //使用push方法:结构后再赋值
-      deviceList.value = response.data.data.items
+      deviceList.value = response.data.result
       console.log(deviceList.value)
     })
     .catch((error) => {
       console.log('按条件查询失败:', error)
     })
 }
-
-//1.会议信息
-const meetingInfo = []
-// 接收url query传参
-console.log('借用query传参', route.query)
-
-// 1.4 绑定完成
-// 同时调用更新设备接口 借用状态->2使用中，和 更新平板预约借用接口 借用状态->3借用中 （隐含调用无纸化接口）
-const isSuccess = ref(true)
-const submitScan = () => {
+// 借用状态为空闲中的设备列表
+const deviceList = ref([
+  // {
+  //     "tabletID": "E280689400004020F535A17F",
+  //     "tabletName": "平板01",
+  //     "tabletModel": "A2764",
+  //     "tabletBrand": "联想",
+  //     "tabletIP": "172.28.5.141",
+  //     "tabletPort": "17000",
+  //     "tabletState": "1",
+  //     "borrowedStatus": "2",
+  //     "tabletOrder": 0,
+  //     "verifyCode": null
+  //   }
+    ])
+// 监听选择的设备名称，发请求获取该设备名称对应的设备序列号，展示在设备序列号输入框
+// 声明手动选择的 设备id
+// var id
+const getItemById=(arr,id,idstr)=>{
+  let rs
+  for(let i=0;i<arr.length;i++){
+     if(id ==arr[i][idstr] ){
+        rs=arr[i]
+        break
+     }
+  }
+  return rs
+}
+const ontabletNameChange = (v) => {
+  var arr=[]
   // debugger
-  console.log(1111)
-  if (tableData.length <= 0) {
-    return
+  form.tabletIDs.forEach((tabletID)=>{
+     var it=getItemById(deviceList.value,tabletID,'tabletID')
+     if(it){
+         arr.push(it)
+     }
+  })
+  form.tabletNames=arr
+}
+//手动添加按钮
+const handOperated = () => {
+  dialogFormVisible.value = true
+  // debugger
+  getList()
+  
+  form.tabletNames =[]
+  form.tabletIDs = []
+}
+// 取消手动添加
+const cancelHandOperated = () => {
+  dialogFormVisible.value = false
+  form.tabletNames =[ ]
+  form.tabletIDs = []
+}
+const ishas = (item) => {
+  for (var i = 0; i < tableData.value.length; i++) {
+    // debugger
+    if (item.tabletID == tableData.value[i].tabletID) {
+      return true
+    }
   }
-  if (
-    borrowedInfo.value.quantityBorrowed == borrowedInfo.value.usedNum ||
-    borrowedInfo.value.quantityBorrowed - borrowedInfo.value.usedNum - tableData.length < 0
-  ) {
-    return
-  }
-  var PromiseArr = []
-  // 发请求
-  // 根据 手动选择的设备id ,和志培确认要不要将设备状态从 可借用->使用中
-  for (var i = 0; i < tableData.length; i++) {
-    PromiseArr.push(
-      // 更新设备接口设备
-      noderedrequest.put('/device/update', {
-        id: tableData[i].id,
-        //借用状态 在此时->2 使用中
-        borrowedState: '2'
-      }),
-      // 更新平板预约借用接口
-      noderedrequest.put('/tablet_borrowed/update', {
-        id: route.query.id,
-        //借用状态 在此时->3 借用中
-        borrowedState: '3',
-        // 可借用数量
-        usedNum: borrowedInfo.value.usedNum + tableData.length
-        // "avaiableNum": null
-      })
-    )
+  return false
+}
+// 确定手动添加，将选择的设备添加到待绑定列表
+const submitHandOperated = () => {
+  
+  form.tabletNames.forEach((item)=>{
+    let it=getItemById(tableData.value,item.tabletID,'tabletID')
+       if(it){
+           
+       }else{
+          tableData.value.push(item)
+       } 
+  })
+  
+  dialogFormVisible.value = false
+}
 
-    // .then(res=>{
-    //   console.log("设备列表修改成功:",res)
-    //   if(res.data.code==200){
-    //     //重新发请求，渲染设备列表
-    //     getList()
-    //   }
-    // });
+// 继续扫描按钮
+const continuetScan = () => {
+  isSuccess.value = true
+}
 
-    // .then(res=>{
-    //   console.log("设备列表修改成功:",res)
-    //   if(res.data.code==200){
-    //     //重新发请求，渲染设备列表
-    //     getList()
-    //   }
-    // });
-  }
-  Promise.all(PromiseArr)
-    .then(function (posts) {
-      console.log('ok')
-      console.log('Contents: ' + posts)
-      getBorrowInfo()
+// 1.4.2 绑定完成
+// 同时调用更新设备接口 借用状态->2使用中，和 更新平板预约借用接口 借用状态->3借用中 （隐含调用无纸化接口）
+// 1. 取平板 绑定完成 请求接口
+const postsubmitScan = () => {
+  tabletRequest
+    .post('/IotBabletBindCrtl/takeBabletBind', {
+      "bindNum": 0,
+      "iotBindTabletList": tableData.value,
+      "topic": repMsg,
+      "verifyCode":repCode,
+    })
+    .then((res) => {
+      // debugger
+      console.log('平板借用绑定完成:', res)
       // 成功提示
       ElMessageBox.confirm(
-        '您已成功绑定' + tableData.length + '台平板至【' + borrowedInfo.value.mtName + '】下。',
+        '您已成功绑定' + tableData.value.length + '台平板至【' + borrowedInfo.value.mtName + '】下。',
         '提示',
         {
           confirmButtonText: '确认',
@@ -321,16 +419,42 @@ const submitScan = () => {
         .then(() => {
           // 绑定完成功，关闭确认按钮后，展示继续扫描按钮
           isSuccess.value = false
+
+          // 调用已绑定完成的设备列表接口
+          getsubmitScanSuccessList()
         })
         .catch(() => {})
-      //清空tableData表格
-      tableData.length = 0
+      
     })
-    .catch(function (reason) {
-      console.log('出错了', reason)
-      //失败提示
-      ElMessageBox.confirm(
-        '绑定失败！请先删除状态为【已借用】、【不可用】、【已超出】的设备！',
+    .catch((error) => {
+      console.log('平板借用绑定失败:', error)
+    })
+}
+// 2. 取平板 绑定完成后 获取设备列表，并展示
+const getsubmitScanSuccessList = () => {
+  tabletRequest
+    .post('/IotDeviRevertCrtl/queryRevertTabletInfo', {
+      "verifyCode":repCode,
+    })
+    .then((res) => {
+      // debugger
+      console.log('已绑定完成的设备列表获取成功:', res)
+      tableData.value=res.data.result
+    })
+    .catch((error) => {
+      console.log('已绑定完成的设备列表获取失败:', error)
+    })
+}
+const isSuccess = ref(true)
+const submitScan = () => {
+  // debugger
+  console.log(1111)
+  if (tableData.value.length <= 0) {
+    return
+  }
+  if (borrowedInfo.value.borrowNum - tableData.value.length < 0) {
+    ElMessageBox.confirm(
+        '绑定失败！请先删除状态为【已借用】、【不可用】、【已超出】的设备。如有请删除！',
         '提示',
         {
           confirmButtonText: '确认',
@@ -340,112 +464,48 @@ const submitScan = () => {
       )
         .then(() => {})
         .catch(() => {})
-    })
-}
-
-// 1.4.2 手动添加
-const formLabelWidth = '(542/1920)*100vw'
-const dialogFormVisible = ref(false)
-
-const form = reactive({
-  deviceName: '',
-  modelNumber: ''
-})
-const deviceList = ref([{
-  id:1,deviceName:1
-},{
-  id:2,deviceName:2
-},{
-  id:3,deviceName:3
-}])
-// 监听选择的设备名称，发请求获取该设备名称对应的设备序列号，展示在设备序列号输入框
-// 声明手动选择的 设备id
-var id
-const onDeviceNameChange = (v) => {
-  form.deviceName = v
-}
-//手动添加按钮
-const handOperated = () => {
-  if (
-    borrowedInfo.value.quantityBorrowed == borrowedInfo.value.usedNum ||
-    borrowedInfo.value.quantityBorrowed - borrowedInfo.value.usedNum - tableData.length <= 0
-  ) {
     return
   }
-  dialogFormVisible.value = true
-  getList()
-  form.deviceName = ''
-  form.modelNumber = ''
-}
-// 取消手动添加
-const cancelHandOperated = () => {
-  dialogFormVisible.value = false
-  form.deviceName = ''
-  form.modelNumber = ''
-}
-const ishas = (item) => {
-  for (var i = 0; i < tableData.length; i++) {
-    // debugger
-    if (item.id == tableData[i].id) {
-      return true
-    }
-  }
-  return false
-}
-// 确定手动添加，将选择的设备添加到待绑定列表
-const submitHandOperated = () => {
-  //-----调用查询设备接口  -----根据手动选择的设备名称
-  console.log('form.deviceName：', form.deviceName)
-  // noderedrequest.get('/device/list?id='+form.deviceName)
-  noderedrequest
-    .post('/device/list', {
-      id: form.deviceName
-    })
-    .then((response) => {
-      // debugger
-      console.log('查询手动选择的设备:', response.data)
+  postsubmitScan()
 
-      // tableData.length = 0
-      //使用push方法:结构后再赋值
-      tableData.push(...response.data.data.items)
-      console.log('tableData', tableData)
-    })
-    .catch((error) => {
-      console.log('按条件查询失败:', error)
-    })
-  dialogFormVisible.value = false
 }
-
-// 继续扫描按钮
-const continuetScan = () => {
-  isSuccess.value = true
-}
-
 // 1.4.3 返回首页
 const goBack = () => {
   router.push('/tablet')
 }
 
+
 //2 已扫描 待绑定数组
-const tableData = reactive([
+const tableData = ref([
   // {
   //     "id": 9,
   //     "deviceId": "20",
-  //     "deviceName": "220VA609WSMARTBULLB",
+  //     "tabletName": "220VA609WSMARTBULLB",
   //     "deviceIpAddress": "139.120.1.1",
   //     "port": 800000,
   //     "brand": "TTst1",
-  //     "modelNumber": "220VA609WSMARTBULLB",
+  //     "tabletID": "220VA609WSMARTBULLB",
   //     "region": "A2-229会议室",
   //     "state": "在线",
   //     "createTime": "2023-08-10T01:55:21.000Z",
   //     "updateTime": "2023-08-10T05:59:56.000Z",
   //     "equipmentSerialNumber": "12345",
-  //     "borrowedState": "可借用",
+  //     "tabletState": "可借用",
   //     "deviceType": "移动设备"
+  // },
+  // {
+  //     "borrowedStatus": "2",
+  //     "tabletBrand": "华为",
+  //     "tabletID": "E280689400005020F535A57F",
+  //     "tabletIP": "10.31.0.227",
+  //     "tabletModel": "1",
+  //     "tabletName": "平板01",
+  //     "tabletOrder": 0,
+  //     "tabletPort": "3308",
+  //     "tabletState": "1"
   // }
 ])
-// ----设备借用状态
+// ----设备借用状态：1：使用中  2.空闲中 0：已禁用
 const deviceStateOptions = ref([
   {
     value: 0,
@@ -453,11 +513,11 @@ const deviceStateOptions = ref([
   },
   {
     value: 1,
-    label: '空闲中'
+    label: '使用中'
   },
   {
     value: '2',
-    label: '使用中'
+    label: '空闲中'
   }
 ])
 // debugger
@@ -467,7 +527,7 @@ const getDayStateStr = (v) => {
   for (var i = 0; i < deviceStateOptions.value.length; i++) {
     if (v == deviceStateOptions.value[i].value) {
       a = deviceStateOptions.value[i].label
-      console.log(a)
+      // console.log(a)
       break
     }
   }
@@ -477,9 +537,9 @@ const getDayStateStr = (v) => {
 //删除
 const deleteitem = (v) => {
   //  debugger
-  for (var i = 0; i < tableData.length; i++) {
-    if (v.id == tableData[i].id) {
-      tableData.splice(i, 1)
+  for (var i = 0; i < tableData.value.length; i++) {
+    if (v.tabletID == tableData.value[i].tabletID) {
+      tableData.value.splice(i, 1)
     }
   }
 }
@@ -490,7 +550,7 @@ const deleteitem = (v) => {
       width: calc((240/1920)*100vw)!important;
        background: #05456e!important;
        border: 0px!important;
-       margin-top: -10px;
+       margin-top: -10px!important;
        margin-left: -12px!important;
        border-radius:0!important;
        
@@ -537,12 +597,23 @@ const deleteitem = (v) => {
     background-repeat: no-repeat;
     background-position-x: left;
     background-position-y: (599/1080) * 100vh;
-
-    //2.1. 会议信息
-    .meetingInfo {
-      height: (839/1080) * 100vh;
+    //1.1 取平板
+    .tip{
+      // margin-top: (69/1080) * 100vh;
+      margin-top: (69/1080) * 100vh;
+      margin-bottom: (32/1080) * 100vh;
+      height: (50/1080) * 100vh;
+      color: rgba(255, 255, 255, 1);
+      font-size: (34/1920) * 100vw;
+      text-align: left;
+      font-family: SourceHanSansSC-regular;
+      box-sizing: border-box;
+    }
+    //1.2 会议信息
+    .borrowedInfo {
+      height: (879/1080) * 100vh;
       // border: 1px solid red;
-      margin-top: (141/1080) * 100vh;
+      
       padding: (40/1080) * 100vh (0/1920) * 100vw (40/1080) * 100vh (40/1920) * 100vw;
       color: rgba(255, 255, 255, 1);
       background-color: rgba(24, 144, 255, 0.2);
@@ -632,7 +703,7 @@ const deleteitem = (v) => {
       .scanningBtn {
         height: (50/1080) * 100vh;
         margin-top: (26/1080) * 100vh;
-        // margin-bottom: (22/1080) * 100vh;
+        margin-bottom: (22/1080) * 100vh;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -740,7 +811,7 @@ const deleteitem = (v) => {
               background-color: transparent;
               box-shadow:none!important;
                 .el-input__inner{
-                  width: 5em;
+                  width: 6em;
                   height: 100%;
                   flex: none;
                   color: rgba(255, 255, 255, 1)!important;
@@ -779,9 +850,10 @@ const deleteitem = (v) => {
               }
             }
             .el-table__cell {
-              height: (44/1080) * 100vh!important;
+              // height: (44/1080) * 100vh!important;
               text-align: center;
               border-bottom: 0px !important;
+              padding:(5/1080) * 100vh 0;
             }
             thead {
               color: rgba(255, 255, 255, 1);
@@ -824,6 +896,9 @@ const deleteitem = (v) => {
                   color: red;
                 }
                 .cell {
+                  height: (44/1080) * 100vh;
+                  line-height: (44/1080) * 100vh;
+                  white-space: nowrap;
                   background-color: rgba(24, 144, 255, 0.1);
                   margin-right: (10/1920) * 100vw;
                 }

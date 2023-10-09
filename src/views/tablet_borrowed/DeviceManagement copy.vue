@@ -4,11 +4,11 @@
     <div class="searchInfo">
       <el-form :model="form">
         <el-form-item label="设备名称">
-          <el-input v-model="form.tabletName" placeholder="请输入设备名称" />
+          <el-input v-model="form.deviceName" placeholder="请输入设备名称" />
         </el-form-item>
 
         <el-form-item label="设备状态">
-          <el-select v-model="form.tabletState" placeholder="全部" popper-class="zdy_select">
+          <el-select v-model="form.deviceState" placeholder="全部" popper-class="zdy_select">
             <!-- <el-option v-for="(item,id) in tableData"  label="item.region" value="item.region" :key="id"/> -->
             <el-option label="启用" value="1" />
             <el-option label="禁用" value="0" />
@@ -16,7 +16,7 @@
         </el-form-item>
 
         <el-form-item label="借用状态">
-          <el-select v-model="form.borrowedStatus" placeholder="全部" popper-class="zdy_select" >
+          <el-select v-model="form.borrowedState" placeholder="全部" popper-class="zdy_select" >
             <el-option
                       v-for="item in dayStateOptions"
                       :key="item.value"
@@ -31,8 +31,6 @@
       <div class="searchbtn">
         <el-button @click="resetbtn()">重置</el-button>
         <el-button type="primary" @click="searchbtn()">查询</el-button>
-        <el-button type="primary" @click="createbtn()">新增</el-button>
-         
       </div>
     </div>
     <!-- 3.设备列表 -->
@@ -46,34 +44,34 @@
           :header-cell-style="{ background: '#F5F9FC' }"
           ref="table"
         >
-          <el-table-column fixed type="index" min-width="6%" label="序号" />
-          <el-table-column prop="tabletName" label="设备名称" min-width="10%" />
-          <el-table-column prop="tabletID" label="设备序列号" min-width="22%" />
-          <el-table-column prop="tabletIP" label="设备ip地址" min-width="16%" />
-            <el-table-column prop="tabletPort" label="端口号" min-width="10%" />
-            <el-table-column prop="tabletBrand" label="品牌" min-width="10%" />
-            <el-table-column prop="tabletModel" label="型号" min-width="10%" />
-          <el-table-column prop="tabletState" label="设备状态" min-width="10%">
+          <el-table-column fixed type="index" min-width="8%" label="序号" />
+          <el-table-column prop="deviceName" label="设备名称" min-width="10%" />
+          <el-table-column prop="equipmentSerialNumber" label="设备序列号" min-width="20%" />
+          <el-table-column prop="deviceIpAddress" label="设备ip地址" min-width="16%" />
+            <el-table-column prop="port" label="端口号" min-width="10%" />
+            <el-table-column prop="brand" label="品牌" min-width="10%" />
+            <el-table-column prop="modelNumber" label="型号" min-width="10%" />
+          <el-table-column prop="deviceState" label="设备状态" min-width="10%">
             <template #default="scope">
-              <!-- 当设备借用状态为1 使用中时，按钮禁用 -->
+              <!-- 当设备借用状态为2 使用中时，按钮禁用 -->
               <el-switch
                 class="switchClass"
-                v-model="scope.row.tabletState"
+                v-model="scope.row.deviceState"
                 size="small"
                 active-text="启用"
                 inactive-text="禁用"
                 style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
                 active-value="1"
-                inactive-value="2"
+                inactive-value="0"
                 @change="switchChange($event, scope.row)"
-                :disabled="scope.row.borrowedStatus==1"
+                :disabled="scope.row.borrowedState==2"
               />
             </template>
           </el-table-column>
-          <el-table-column prop="borrowedStatus" label="借用状态" min-width="10%">
+          <el-table-column prop="borrowedState" label="借用状态" min-width="10%">
             <!--此处声明了一个getDayStateStr()方法，将接口返回的状态号，映射成对应得状态文字  -->
             <template #default="scope">
-              {{getDayStateStr(scope.row.borrowedStatus)?getDayStateStr(scope.row.borrowedStatus):"空闲中"}}
+              {{getDayStateStr(scope.row.borrowedState)?getDayStateStr(scope.row.borrowedState):"空闲中"}}
             </template>  
           </el-table-column>
           <el-table-column prop="opration" label="操作" min-width="15%">
@@ -90,89 +88,46 @@
         </el-table>
       </el-scrollbar>
     </div>
-    <!--新增弹框表单  -->
-         <div class="tankuang">
-      <el-dialog v-model="createdialogFormVisible" title="新增" >
-        <el-form :model="createForm" ref="createFormRef" :rules="createFormRules">
-          <el-form-item label="设备名称" :label-width="formLabelWidth" prop="tabletName">
-            <el-input v-model="createForm.tabletName" autocomplete="off" />
-          </el-form-item>
-          <el-form-item label="设备序列号" :label-width="formLabelWidth" prop="tabletID" >
-            <el-input v-model="createForm.tabletID" autocomplete="off" />
-          </el-form-item>
-          <el-form-item label="设备IP地址" :label-width="formLabelWidth" prop="tabletIP">
-            <el-input v-model="createForm.tabletIP" autocomplete="off" />
-          </el-form-item>
-          <el-form-item label="品牌" :label-width="formLabelWidth" prop="tabletBrand">
-            <el-input v-model="createForm.tabletBrand" autocomplete="off" />
-          </el-form-item>
-          <el-form-item label="型号" :label-width="formLabelWidth" prop="tabletModel">
-            <el-input v-model="createForm.tabletModel" autocomplete="off" />
-          </el-form-item>
-          <el-form-item label="端口号" :label-width="formLabelWidth" prop="tabletPort">
-            <el-input v-model="createForm.tabletPort" autocomplete="off" />
-          </el-form-item>
-          <el-form-item label="&nbsp;&nbsp;设备状态" :label-width="formLabelWidth" prop="tabletState">
-            <!-- <el-input v-model="editForm.tabletState" autocomplete="off" /> -->
-            <el-select v-model="createForm.tabletState" placeholder="全部" >
-              <el-option label="启用" value="1" />
-              <el-option label="禁用" value="0" />
-            </el-select>
-          </el-form-item>
-          <!-- <el-form-item label="&nbsp;&nbsp;借用状态" :label-width="formLabelWidth" prop="borrowedStatus" >
-            <el-select v-model="editForm.borrowedStatus" placeholder="" @change="onChange2" style="width:100%" disabled>
-                        <el-option
-                          v-for="item in dayStateOptions"
-                          :key="item.value" 
-                          :label="item.label"
-                          :value="item.value"
-                        />
-                      </el-select>
-          </el-form-item> -->
-        </el-form>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="cancelItemCreate()">取消</el-button>
-            <el-button type="primary" @click="createIteminfo()">确认</el-button>
-          </span>
-        </template>
-      </el-dialog>
-         </div>
     <!--编辑弹框表单  -->
    <div class="tankuang">
       <el-dialog v-model="editdialogFormVisible" title="编辑" >
         <el-form :model="editForm" ref="editFormRef" :rules="editFormRules">
-          <el-form-item label="设备名称" :label-width="formLabelWidth" prop="tabletName">
-            <el-input v-model="editForm.tabletName" autocomplete="off" />
+          <!-- <el-form-item label="设备ID" :label-width="formLabelWidth" prop="deviceId">
+            <el-input v-model="editForm.deviceId" autocomplete="off" />
+          </el-form-item> -->
+          <el-form-item label="设备名称" :label-width="formLabelWidth" prop="deviceName">
+            <el-input v-model="editForm.deviceName" autocomplete="off" />
           </el-form-item>
-          <el-form-item label="设备序列号" :label-width="formLabelWidth" prop="tabletID" >
-            <el-input v-model="editForm.tabletID" autocomplete="off" readonly/>
+          <el-form-item label="设备序列号" :label-width="formLabelWidth" prop="deviceIpAddress">
+            <el-input v-model="editForm.equipmentSerialNumber" autocomplete="off" />
           </el-form-item>
-          <el-form-item label="设备IP地址" :label-width="formLabelWidth" prop="tabletIP">
-            <el-input v-model="editForm.tabletIP" autocomplete="off" />
+          <el-form-item label="设备IP地址" :label-width="formLabelWidth" prop="deviceIpAddress">
+            <el-input v-model="editForm.deviceIpAddress" autocomplete="off" />
           </el-form-item>
-          <el-form-item label="品牌" :label-width="formLabelWidth" prop="tabletBrand">
-            <el-input v-model="editForm.tabletBrand" autocomplete="off" />
+          <el-form-item label="品牌" :label-width="formLabelWidth" prop="brand">
+            <el-input v-model="editForm.brand" autocomplete="off" />
           </el-form-item>
-          <el-form-item label="型号" :label-width="formLabelWidth" prop="tabletModel">
-            <el-input v-model="editForm.tabletModel" autocomplete="off" />
+          <el-form-item label="型号" :label-width="formLabelWidth" prop="modelNumber">
+            <el-input v-model="editForm.modelNumber" autocomplete="off" />
           </el-form-item>
-          <el-form-item label="端口号" :label-width="formLabelWidth" prop="tabletPort">
-            <el-input v-model="editForm.tabletPort" autocomplete="off" />
+          <el-form-item label="端口号" :label-width="formLabelWidth" prop="port">
+            <el-input v-model="editForm.port" autocomplete="off" />
           </el-form-item>
-          <!-- <el-form-item label="&nbsp;&nbsp;设备状态" :label-width="formLabelWidth" prop="tabletState">
-            <el-input v-model="editForm.tabletState" autocomplete="off" disabled/>
+          <el-form-item label="&nbsp;&nbsp;设备状态" :label-width="formLabelWidth" prop="status">
+            <el-input v-model="editForm.deviceState" autocomplete="off" disabled/>
           </el-form-item>
-          <el-form-item label="&nbsp;&nbsp;借用状态" :label-width="formLabelWidth" prop="borrowedStatus" >
-            <el-select v-model="editForm.borrowedStatus" placeholder="" @change="onChange2" style="width:100%" disabled>
+          <el-form-item label="&nbsp;&nbsp;借用状态" :label-width="formLabelWidth" prop="status">
+            <!-- <el-input v-model="editForm.borrowedState" autocomplete="off"  disabled/> -->
+            <el-select v-model="editForm.borrowedState" placeholder="" @change="onChange2" style="width:100%">
                         <el-option
                           v-for="item in dayStateOptions"
                           :key="item.value" 
                           :label="item.label"
                           :value="item.value"
+                          :disabled="item.disabled"
                         />
                       </el-select>
-          </el-form-item> -->
+          </el-form-item>
         </el-form>
         <template #footer>
           <span class="dialog-footer">
@@ -191,42 +146,44 @@ import { reactive, ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
-import {request,noderedrequest,tabletRequest}  from "@/utils/server.js" 
+import {request,noderedrequest,tabletWSRequest}  from "@/utils/server.js" 
 
 const table = ref(null)
-// 1.平板管理列表查询接口 
 const getList = () => {
-    // 平板借用状态：0已禁用，1使用中，2空闲中
-    // 平板设备状态：1启用、2禁用
-    tabletRequest.post('/IotBabletEditCrtl/queryMageBablet', 
-      {
-          "borrowedStatus": form.borrowedStatus,
-          "tabletName": form.tabletName,
-          "tabletState": form.tabletState
-      }
+  
+    noderedrequest.post('/device/list', 
+        {
+          "deviceName":{
+            "_lk":form.deviceName,
+            "_timestamp":true
+        },
+          "deviceState":form.deviceState,
+          "borrowedState":form.borrowedState,
+          "deviceType": 1,
+        }
     )
     .then((response) => {
-      console.log('平板管理列表查询查询成功:', response.data)
+      console.log('按条件查询成功:', response.data)
       
-      tableData.value=response.data.result
+      tableData.length = 0
+      //使用push方法:结构后再赋值
+      tableData.push(...response.data.data.items)
+
+      
     })
     .catch((error) => {
-      console.log('平板管理列表查询失败:', error)
+      console.log('按条件查询失败:', error)
     })
 }
-//初始化渲染
-onMounted(() => {
-   getList()
-})
 //2.按要求查询
 const form = reactive({
-  tabletName: '',
-  tabletState: '',
-  borrowedStatus: ''
+  deviceName: '',
+  deviceState: '',
+  borrowedState: ''
 })
 // 条件查询(设备名称、设备id地址、区域)
 const searchbtn = () => {
-  console.log(form.tabletName, form.tabletState, form.borrowedStatus)
+  console.log(form.deviceName, form.deviceState, form.borrowedState)
   getList()
 }
 // ----设备借用状态
@@ -258,101 +215,32 @@ const getDayStateStr=(v)=>{
 const switchChange=(v,row)=>{
   // debugger
   console.log(v)
-  if(row.borrowedStatus== 1){
+  if(row.borrowedState== 1){
     //调用设备管理的更新接口
-    tabletRequest
-    .post('/IotBabletEditCrtl/editBablet',
-          {
-            tabletID: row.tabletID,
-            tabletState:v,
-          }
+    noderedrequest.put("/device/update",
+      {
+              //当前行的id
+              "id":row.id,
+              "deviceState":v,
+            }
         )
-        .then((res) => {
-          console.log('设备列表修改成功:', res)
-          if (res.data.repCode == 200) {
-            //重新发请求，渲染设备列表
+        .then(res=>{
+          console.log("设备启用/禁用状态修改成功:",res)
+          if(res.data.code==200){
+            //更新成功，重新查询发查询请求，渲染设备列表
             getList()
-          }
-        })
+        }
+    })
   }
 }
 // 重置
 const resetbtn = () => {
-  form.tabletName = ''
-  form.tabletState = ''
-  form.borrowedStatus = ''
+  form.deviceName = ''
+  form.deviceState = ''
+  form.borrowedState = ''
   getList()
 }
 
-//新增
-const createdialogFormVisible = ref(false)
-const createForm = reactive({
-  "tabletID": "E280689400005020F5352D7F",
-  "tabletName": "平板03",
-  "tabletModel": "2",
-  "tabletBrand": "华硕",
-  "tabletIP": "10.31.0.230",
-  "tabletPort": "3308",
-  "tabletState": "1",
-  "borrowedStatus": "1",
-})
-// 组件实例
-const createFormRef = ref(null)
-const createFormRules = reactive({
-  tabletName: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletID: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletIP: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletBrand: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletModel: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletPort: [{ required: true, message: '请输入', trigger: 'blur' }],
-  // tabletState: [{ required: true, message: '请输入', trigger: '' }],
-  // borrowedStatus: [{ required: true, message: '请输入', trigger: 'blur' }],
-})
-const createbtn=()=>{
-  createdialogFormVisible.value = true
-
-  createForm.tabletID='',
-  createForm.tabletName='',
-  createForm.tabletModel='',
-  createForm.tabletBrand='',
-  createForm.tabletIP='',
-  createForm.tabletPort='',
-  createForm.tabletState=''
-  // createForm.borrowedStatus=''
-}
-const cancelItemCreate = () => {
-  createdialogFormVisible.value = false
-}
-// 2.新增弹框中 确认新增接口
-const createIteminfo = () => {
-  createFormRef.value.validate((valid) => {
-    if (valid) {
-      tabletRequest
-        .post(
-          '/IotBabletEditCrtl/saveBablet',
-          {
-            tabletID: createForm.tabletID,
-            tabletName: createForm.tabletName,
-            tabletIP: createForm.tabletIP,
-            tabletBrand: createForm.tabletBrand,
-            tabletModel: createForm.tabletModel,
-            tabletPort: createForm.tabletPort, 
-            tabletState:createForm.tabletState,
-          }
-        )
-        .then((res) => {
-          console.log('设备列表修改成功:', res)
-          if (res.data.repCode == 200) {
-            //重新发请求，渲染设备列表
-            getList()
-          }
-        })
-      createdialogFormVisible.value = false
-    } else {
-      console.log('校验错误')
-    }
-  })
-}
 //3 设备信息
 
 // 3.2 单个删除
@@ -389,93 +277,139 @@ const deleteitem = (row) => {
 }
 
 // 3.2设备列表
-const tableData = ref([
+const tableData = reactive([
+  {
+    id: 8,
+    deviceId: '34',
+    deviceName: '平板01',
+    deviceIpAddress: '192.168.100.100',
+    port: 61000,
+    brand: '联想',
+    modelNumber: 'yoga',
+    region: 'A2-230会议室',
+    state: '在线',
+    createTime: '2023-08-23T02:35:18.000Z',
+    updateTime: null,
+    equipmentSerialNumber: 'OPNIHFP0QU93H4FU',
+    borrowedState: '3',
+    deviceType: '移动设备',
+    deviceState: '1'
+  },
   // {
-  //     "tabletID": "E280689400005020F5352D7F",
-  //     "tabletName": "平板03",
-  //     "tabletModel": "2",
-  //     "tabletBrand": "华硕",
-  //     "tabletIP": "10.31.0.230",
-  //     "tabletPort": "3308",
-  //     "tabletState": "1",
-  //     "borrowedStatus": "1",
-  //     "tabletOrder": 0,
-  //     "verifyCode": null
-  //   },
+  //   id: 8,
+  //   deviceId: '34',
+  //   deviceName: '220VA609WSMARTBULLB',
+  //   deviceIpAddress: '131',
+  //   port: 810,
+  //   brand: 'TTst',
+  //   modelNumber: '220VA609WSMARTBULLB',
+  //   region: 'A2-230会议室',
+  //   state: '在线',
+  //   createTime: '2023-08-23T02:35:18.000Z',
+  //   updateTime: null,
+  //   equipmentSerialNumber: 'OPNIHFP0QU93H4FU',
+  //   borrowedState: '3',
+  //   deviceType: '移动设备',
+  //   deviceState: '1'
+  // },
+  // {
+  //   id: 8,
+  //   deviceId: '34',
+  //   deviceName: '220VA609WSMARTBULLB',
+  //   deviceIpAddress: '131',
+  //   port: 810,
+  //   brand: 'TTst',
+  //   modelNumber: '220VA609WSMARTBULLB',
+  //   region: 'A2-230会议室',
+  //   state: '在线',
+  //   createTime: '2023-08-23T02:35:18.000Z',
+  //   updateTime: null,
+  //   equipmentSerialNumber: 'OPNIHFP0QU93H4FU',
+  //   borrowedState: '3',
+  //   deviceType: '移动设备',
+  //   deviceState: '1'
+  // }
 ])
 //----启用 禁用
 const isDisabled = ref(true)
-
+//初始化渲染
+onMounted(() => {
+   getList()
+})
 
 //编辑按钮
-const formLabelWidth = '30%'
+const formLabelWidth = '35%'
 var editId
 const editdialogFormVisible = ref(false)
 const editForm = reactive({
-  "tabletID": "E280689400005020F5352D7F",
-  "tabletName": "平板03",
-  "tabletModel": "2",
-  "tabletBrand": "华硕",
-  "tabletIP": "10.31.0.230",
-  "tabletPort": "3308",
-  "tabletState": "1",
-  "borrowedStatus": "1",
+  deviceId: '',
+  deviceName: '',
+  equipmentSerialNumber:'',
+  deviceIpAddress:'',
+  brand: '',
+  modelNumber: '',
+  port: '',
+  deviceState: '',
+  borrowedState: '',
 })
 // 组件实例
 const editFormRef = ref(null)
 const editFormRules = reactive({
-  tabletName: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletID: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletIP: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletBrand: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletModel: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletPort: [{ required: true, message: '请输入', trigger: 'blur' }],
-  // tabletState: [{ required: true, message: '请输入', trigger: 'blur' }],
-  // borrowedStatus: [{ required: true, message: '请输入', trigger: 'blur' }],
+  deviceId: [{ required: true, message: '请输入', trigger: 'blur' }],
+  deviceName: [{ required: true, message: '请输入', trigger: 'blur' }],
+  equipmentSerialNumber: [{ required: true, message: '请输入', trigger: 'blur' }],
+  deviceIpAddress: [{ required: true, message: '请输入', trigger: 'blur' }],
+  brand: [{ required: true, message: '请输入', trigger: 'blur' }],
+  modelNumber: [{ required: true, message: '请输入', trigger: 'blur' }],
+  port: [{ required: true, message: '请输入', trigger: 'blur' }],
+  // deviceState: [{ required: true, message: '请输入', trigger: 'blur' }],
+  // borrowedState: [{ required: true, message: '请输入', trigger: 'blur' }],
 })
 const edititem=(row)=>{
   console.log("2222222222",row)
   console.log(row)
 
+  editId = row.id
   editdialogFormVisible.value = true
 
-  editForm.tabletID=row.tabletID,
-  editForm.tabletName=row.tabletName,
-  editForm.tabletModel=row.tabletModel,
-  editForm.tabletBrand=row.tabletBrand,
-  editForm.tabletIP=row.tabletIP,
-  editForm.tabletPort=row.tabletPort,
-  editForm.tabletState=row.tabletState==1?"启用":'禁用',
-  editForm.borrowedStatus=row.borrowedStatus
+  editForm.deviceId = row.deviceId
+  editForm.deviceName = row.deviceName
+  editForm.equipmentSerialNumber = row.equipmentSerialNumber
+  editForm.deviceIpAddress = row.deviceIpAddress
+  editForm.brand = row.brand,
+  editForm.modelNumber = row.modelNumber,
+  editForm.port = row.port
+  editForm.deviceState = row.deviceState==1?"移动设备":''
+  editForm.borrowedState = row.borrowedState
 }
 
-// const onChange2=(v)=>{
-//   // debugger
-//   editForm.tabletState=v
-// }
-
-// 2.编结弹框中 确认编辑接口
+const onChange2=(v)=>{
+  // debugger
+  editForm.deviceState=v
+  
+}
 const editIteminfo = () => {
   editFormRef.value.validate((valid) => {
     if (valid) {
-      tabletRequest
-        .post(
-          '/IotBabletEditCrtl/editBablet',
+      noderedrequest
+        .put(
+          '/device/update',
           {
-            tabletID: editForm.tabletID,
-            tabletName: editForm.tabletName,
-            
-            tabletIP: editForm.tabletIP,
-            tabletBrand: editForm.tabletBrand,
-            tabletModel: editForm.tabletModel,
-            tabletPort: editForm.tabletPort, 
-            tabletState: editForm.tabletState,
-            // borrowedStatus:editForm.borrowedStatus,
+            id: editId,
+            deviceId: editForm.deviceId,
+            deviceName: editForm.deviceName,
+            equipmentSerialNumber:editForm.equipmentSerialNumber,
+            deviceIpAddress: editForm.deviceIpAddress,
+            brand: editForm.brand,
+            modelNumber: editForm.modelNumber,
+            port: editForm.port, 
+            deviceState: editForm.deviceState,
+            borrowedState:editForm.borrowedState,
           }
         )
         .then((res) => {
           console.log('设备列表修改成功:', res)
-          if (res.data.repCode == 200) {
+          if (res.data.code == 200) {
             //重新发请求，渲染设备列表
             getList()
           }
@@ -492,6 +426,21 @@ const cancelItemEdit = () => {
 }
 
 
+
+// 4.分页
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
+const handleSizeChange = (val) => {
+  console.log(`${val} items per page`)
+  //重新发请求，渲染设备列表
+  getList()
+}
+const handleCurrentChange = (val) => {
+  console.log(`current page: ${val}`)
+  //重新发请求，渲染设备列表
+  getList()
+}
 </script>
 
 <style lang="less">
@@ -564,23 +513,7 @@ const cancelItemEdit = () => {
       }
       
     }
-    // :deep(.el-select){
-    //     .el-input__inner {
-    //         text-align: center;
-    //         &::-webkit-input-placeholder {
-    //           color: #fff;
-    //         }
-    //         &:-moz-placeholder {
-    //           color: #fff;
-    //         }
-    //         &::-moz-placeholder {
-    //           color: #fff;
-    //         }
-    //         &:-ms-input-placeholder {
-    //           color: #fff;
-    //         }
-    //       }
-    //   }
+    
    
     .searchbtn {
       display: flex;
@@ -599,7 +532,7 @@ const cancelItemEdit = () => {
         border: 1px solid rgba(15, 204, 249, 1);
         font-family: Roboto;
       }
-      .el-button:nth-child(2),.el-button:nth-child(3) {
+      .el-button:nth-child(2) {
         border-radius: 2px;
         background-color: rgba(15, 204, 249, 0.3);
         color: rgba(255, 255, 255, 1);
@@ -693,7 +626,12 @@ const cancelItemEdit = () => {
               font-size: 15%;
               text-align: left;
               font-family: SourceHanSansSC-regular;
-              
+              // :deep(.el-switch__label .is-active){
+              //   color: rgba(255, 255, 255, 1);
+              //   font-size: 18px;
+              //   text-align: left;
+              //   font-family: SourceHanSansSC-regular;
+              // }
             }
             .el-button:nth-child(2) {
               color: red;
@@ -731,23 +669,42 @@ const cancelItemEdit = () => {
       }
     }
   }
+  // 4.分页
+  .pagination-block {
+    height: 52px;
+    display: flex;
+    justify-content: flex-end;
+
+    .el-button {
+      width: 48px;
+      height: 32px;
+      line-height: 32px;
+      margin: 10px 10px 10px 8px;
+      border-radius: 3px;
+      background-color: rgba(79, 168, 249, 1);
+      color: rgba(255, 255, 255, 1);
+      font-size: 14px;
+      text-align: center;
+      font-family: Roboto;
+    }
+    img {
+      width: 24px;
+      height: 24px;
+      margin-top: 14px;
+    }
+  }
   
   .tankuang{
     //编辑弹窗
-    .el-dialog__body{
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
     :deep(.el-form) {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
 
       .el-form-item {
-        width: 48%;
+        width: 45%;
 
         .el-form-item__label {
-          white-space: nowrap;
           justify-content: flex-start;
         }
       }

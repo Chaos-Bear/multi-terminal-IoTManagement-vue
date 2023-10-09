@@ -35,29 +35,28 @@ import {useRouter,useRoute} from "vue-router";
 const router=useRouter();
 import {request,noderedrequest,tabletRequest}  from "@/utils/server.js" 
 
-var verifyCode=getArr.value.join("")
+// 取平板前通过借还验证码查询预约信息接口
 const getList=()=>{
+  var verifyCode=getArr.value.join("")
   // debugger
-  //  noderedrequest.post("/tablet_borrowed/list?verificationCode="+getArr.value.join(""))
-   tabletRequest.post("/tablet_borrowed/list",
+  tabletRequest.post("IotBabletBindCrtl/checkBindInfo",
    {
       "verifyCode":verifyCode,
    })
-  .then(res => {
-    var res=res.data.data;
-    console.log("校验码输入正确:",res);
+   .then(res => {
+    var res=res.data;
     var stratTime=res.stratTime
     // 计算现在的时间 和 校验码对应的会议开始时间 是否在2H之内，否则不允许取平板
     var nowTime=new Date().getTime()
-     
+    
     if(res.repCode==200){
       console.log("校验码输入正确:",res);
-     
-      var startTime=res.items[0].startTime;
+      
+      // res.result.startTime为申请的借用开始时间
+      var startTime=res.result.startTime;
       // if((startTime-nowTime) <=2*60*60*1000  && (startTime-nowTime)>=0){
         //验证码校验成功，跳转到扫描页,并使用query传参
-        // router.push("/auto-scanning?id="+res.items[0].id+"&mtName="+res.items[0].mtName+"&borrowedName="+res.items[0].borrowedName+"&quantityBorrowed="+res.items[0].quantityBorrowed+"&borrowStartTime="+res.items[0].borrowStartTime+"&borrowEndTime="+res.items[0].borrowEndTime+"&usedNum="+res.items[0].usedNum)
-        router.push("/auto-scanning?id="+verifyCode)
+        router.push("/auto-scanning?verifyCode="+verifyCode+"&repMsg="+res.repMsg)
         
       // }else{
       //   ElMessage({
@@ -86,39 +85,39 @@ const getList=()=>{
     isActive.value="background-color: red";
   });
 }
-//2.1验证区
-const isActive=ref("background-color: rgba(24, 144, 255, 1)")
-//2.2密码输入区
-const arr=["1","2","3","4","5","6","7","8","9","0"];
-const getArr=ref([]);
-const inputnum=ref(null);
-const clicktEvent=(e)=>{
-    console.log(e);
-    if(getArr.value.length<4){
-      getArr.value.push(e);
-      if(getArr.value.length==4){
-        console.log(getArr.value);
-        
-        //发请求
-        getList()
-      }
-    }
-};
-
+// 删除输入验证码数字
 const del=()=>{
   // 索引 删除几个
   getArr.value.splice(getArr.value.length-1,1);
   console.log(getArr.value)
 };
 
-watch(()=>getArr.value.length,()=>{
-// watch(getArr,()=>{
-  if(getArr.value.length<=3){
-    isActive.value="background-color: rgba(24, 144, 255, 1)";
-  }
-})
-</script>
 
+//2.1验证区
+const isActive=ref("background-color: rgba(24, 144, 255, 1)")
+
+//2.2密码输入区
+const arr=["1","2","3","4","5","6","7","8","9","0"];
+const getArr=ref([]);
+const inputnum=ref(null);
+const clicktEvent=(e)=>{
+    console.log(e);
+    watch(()=>getArr.value?getArr.value.length:'',()=>{
+      if(getArr.value.length<=3){
+        isActive.value="background-color: rgba(24, 144, 255, 1)";
+      }
+    })
+    if(getArr.value.length<4){
+      getArr.value.push(e);
+      if(getArr.value.length==4){
+        console.log(getArr.value);
+        //发请求
+        getList()
+      }
+    }
+};
+
+</script>
 <style lang="less" scoped>
 .validatePassword {
   width: 100%;

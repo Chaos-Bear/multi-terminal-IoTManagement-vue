@@ -510,7 +510,7 @@ const handleCurrentChange = (val) => {
             
             text-align: center;
             border-bottom:0px !important;
-             padding:(5/1080) * 100vh 0;
+            padding:(5/1080) * 100vh 0;
         }
         thead {
           color:  rgba(255, 255, 255, 1);

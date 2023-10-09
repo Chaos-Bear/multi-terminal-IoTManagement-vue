@@ -38,16 +38,21 @@
                 :header-cell-style="{ background: '#F5F9FC' }"
                 ref="table"
               >
-                <el-table-column fixed type="index" min-width="12%" label="序号" />
+                <el-table-column fixed type="index" min-width="11%" label="序号" />
                 <el-table-column prop="borrowedName" label="借用人" min-width="17%" />
                 <el-table-column prop="quantityBorrowed" label="借用数量" min-width="20%" />
                 <el-table-column prop="borrowStartTime" label="借用时间" min-width="28%">
                   <template #default="scope">
                     <!-- 显示时分 00:00 -->
-                    {{
+                    <!-- {{
                       scope.row.borrowStartTime.split(' ')[1].slice(0, -3) +
                       '～' +
                       scope.row.borrowEndTime.split(' ')[1].slice(0, -3)
+                    }} -->
+                    {{
+                      scope.row.borrowStartTime.split(' ')[1] +
+                      '～' +
+                      scope.row.borrowEndTime.split(' ')[1]
                     }}
                   </template>
                   <!-- 自定义表头：借用时间 -->
@@ -131,7 +136,7 @@
             :header-cell-style="{ background: '#F5F9FC' }"
             ref="table"
           >
-            <el-table-column fixed type="index" min-width="12%" label="序号" />
+            <el-table-column fixed type="index" min-width="11%" label="序号" />
             <el-table-column prop="mtName" label="会议名称" min-width="40%" />
             <el-table-column prop="borrowedName" label="借用人" min-width="15%" />
             <el-table-column prop="quantityBorrowed" label="借用数量" min-width="15%" />
@@ -286,23 +291,23 @@ var d = time.getDate()
 today.value = y + '年' + m + '月' + d + '日'
 
 const dayTableData = reactive([
-  // {
-  //   "id": 1,
-  //   "personneId": 460003839,
-  //   "borrowedName": "张小小",
-  //   "borrowedNamePhone": "15295765073",
-  //   "quantityBorrowed": 12,
-  //   "borrowStartTime": "2022-8-8 17:00",
-  //   "borrowEndTime": "2022-8-8 19:00",
-  //   "borrowedState": 2,
-  //   "returnQuantity": null,
-  //   "returnTime": null,
-  //   "verificationCode": "3049",
-  //   "mtName": "8.8日测试会议",
-  //   "applyId": "340087888",
-  //   "roomId": "35999887",
-  //   "customTheme": null
-  // }
+  {
+    "id": 1,
+    "personneId": 460003839,
+    "borrowedName": "张小小",
+    "borrowedNamePhone": "15295765073",
+    "quantityBorrowed": 12,
+    "borrowStartTime": "2022-8-8 17:00",
+    "borrowEndTime": "2022-8-8 19:00",
+    "borrowedState": 2,
+    "returnQuantity": null,
+    "returnTime": null,
+    "verificationCode": "3049",
+    "mtName": "8.8日测试会议",
+    "applyId": "340087888",
+    "roomId": "35999887",
+    "customTheme": null
+  }
 ])
 //自定义表头 --时间
 const dayTime = ref('')
@@ -411,22 +416,23 @@ const onChange3 = (v) => {
   appointmentGetList()
 }
 const appointmentTableData = reactive([
-  // {
-  //   "id": 1,
-  //   "personneId": 460003839,
-  //   "borrowedName": "张小小",
-  //   "borrowedNamePhone": "15295765073",
-  //   "quantityBorrowed": 12,
-  //   "borrowTime": "2022-8-8 17：00-19：00",
-  //   "borrowedState": null,
-  //   "returnQuantity": null,
-  //   "returnTime": null,
-  //   "verificationCode": "3049",
-  //   "mtName": "8.8日测试会议",
-  //   "applyId": "340087888",
-  //   "roomId": "35999887",
-  //   "customTheme": null
-  // }
+  {
+    "id": 1,
+    "personneId": 460003839,
+    "borrowedName": "张小小",
+    "borrowedNamePhone": "15295765073",
+    "quantityBorrowed": 12,
+    "borrowStartTime": "2022-8-8 17：00",
+    "borrowEndTime":"2022-8-8 19：00",
+    "borrowedState": null,
+    "returnQuantity": null,
+    "returnTime": null,
+    "verificationCode": "3049",
+    "mtName": "8.8日测试会议",
+    "applyId": "340087888",
+    "roomId": "35999887",
+    "customTheme": null
+  }
 ])
 // 今天之前的日期禁止选择
 const disabledDate = (time) => {
@@ -439,9 +445,12 @@ const formatBorrowTime = (scope) => {
     return (
       scope.row.borrowStartTime.split(' ')[0] +
       ' ' +
-      scope.row.borrowStartTime.split(' ')[1].slice(0, -3) +
+      // scope.row.borrowStartTime.split(' ')[1].slice(0, -3) +
+      // '～' +
+      // scope.row.borrowEndTime.split(' ')[1].slice(0, -3)
+      scope.row.borrowStartTime.split(' ')[1] +
       '～' +
-      scope.row.borrowEndTime.split(' ')[1].slice(0, -3)
+      scope.row.borrowEndTime.split(' ')[1]
     )
   } else {
     return ''
@@ -601,6 +610,7 @@ watch(
     }
     div {
       height: (30/1080) * 100vh;
+      line-height:(30/1080) * 100vh;
       color: rgba(255, 255, 255, 1);
       font-size: (16/1920) * 100vw;
       white-space: nowrap;
@@ -636,6 +646,7 @@ watch(
     //  border: 1px solid blue;
     .cell {
       line-height: (44/1080) * 100vh;
+      white-space: nowrap;
       i {
         color: white;
       }
