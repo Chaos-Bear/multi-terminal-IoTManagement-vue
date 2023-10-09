@@ -84,9 +84,9 @@
               ref="table"
             >
               <el-table-column fixed type="index" min-width="8%" label="序号" />
-              <el-table-column prop="tabletID" label="设备序列号" min-width="30%" :style="isscaned ? 'color:green':'color:red'">
+              <el-table-column prop="tabletID" label="设备序列号" min-width="30%" >
                 <template #default="scope">
-                  {{ scope.row[isscaned] ? 'color:green':'color:red' }}
+                  <div :style="!scope.row['isscaned'] ? 'color:red':'color:white'">{{scope.row.tabletID}}</div>
                 </template>
               </el-table-column>
               <el-table-column prop="tabletName" label="设备名称" min-width="20.5%" />
@@ -263,10 +263,13 @@ var websocket=createWebSocket('ws://10.31.0.251:8082/tablet-borrowed-service/web
     list.data.forEach((item)=>{
       let it=getItemById(tableData.value,item.tabletID,'tabletID')
        if(it){
-          item.isscaned=true
+        // debugger
+        it.isscaned=true
+          
        }else{
-        item.isscaned=true
-        tableData.value.push(item)
+        var itemx=JSON.parse(JSON.stringify(item))
+        itemx.isscaned=true
+        tableData.value.push(itemx)
        } 
     })
     
@@ -380,7 +383,10 @@ const submitHandOperated = () => {
        if(it){
            
        }else{
-          tableData.value.push(item)
+          var itemx=JSON.parse(JSON.stringify(item))
+          itemx.isscaned=false
+
+          tableData.value.push(itemx)
        } 
   })
   
@@ -431,7 +437,8 @@ const postsubmitScan = () => {
 // 2. 还平板 绑定完成后 获取设备列表，并展示
 const getsubmitScanSuccessList = () => {
   tabletRequest
-    .post('/IotDeviRevertCrtl/queryRevertTabletInfo', {
+    // .post('/IotDeviRevertCrtl/queryRevertTabletInfo', {
+    .post('/IotBabletBorrowCrtl/queryBorrowRetultInfo', {
       "verifyCode":repCode,
     })
     .then((res) => {
@@ -480,16 +487,21 @@ const goBack = () => {
   router.push('/tablet')
 }
 
-//2.2 已扫描 待绑定数组
+//2.2 打开归还页面，直接获取该验证码对应的借用设备列表，并展示
 const getTabletList = () => {
   tabletRequest
-    .post('/IotDeviRevertCrtl/queryRevertTabletInfo', {
+    // .post('/IotDeviRevertCrtl/queryRevertTabletInfo', {
+    .post('/IotBabletBorrowCrtl/queryBorrowRetultInfo', {
+
       "verifyCode": repCode
     })
     .then((response) => {
       console.log('验证码对应的借出设备列表查询成功:', response.data.result)
       // debugger
-      tableData.value.push(...response.data.result)
+      response.data.result.forEach((item)=>{
+          item.isscaned=false
+      })
+      tableData.value=response.data.result
       console.log(tableData.value)
     })
     .catch((error) => {

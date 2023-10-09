@@ -370,14 +370,15 @@ const deleteitem = (row) => {
         message: '删除成功'
       })
       //单个删除请求（成功后发查询请求）
-      noderedrequest.delete("/device/delete?id="+id).then(response=>{
+      // noderedrequest.delete("/device/delete?id="+id).then(response=>{
+      tabletRequest.delete("/device/delete?id="+id).then(response=>{
         console.log("设备列表删除成功",response);
         if(response.data.code==200){
           //重新发请求，渲染设备列表
           getList()
         }
       }).catch(error=>{
-
+           
       })
     })
     .catch(() => {
@@ -734,7 +735,7 @@ const cancelItemEdit = () => {
   
   .tankuang{
     //编辑弹窗
-    .el-dialog__body{
+    :deep(.el-dialog__body){
       padding-top: 10px;
       padding-bottom: 10px;
     }

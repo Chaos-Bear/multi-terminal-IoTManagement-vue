@@ -433,7 +433,8 @@ const postsubmitScan = () => {
 // 2. 取平板 绑定完成后 获取设备列表，并展示
 const getsubmitScanSuccessList = () => {
   tabletRequest
-    .post('/IotDeviRevertCrtl/queryRevertTabletInfo', {
+    // .post('/IotDeviRevertCrtl/queryRevertTabletInfo', {
+    .post('/IotBabletBorrowCrtl/queryBorrowRetultInfo', {
       "verifyCode":repCode,
     })
     .then((res) => {

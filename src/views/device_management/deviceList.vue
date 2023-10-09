@@ -437,7 +437,7 @@ const deviceTypeOptions = ref([
     label: '移动设备'
   }
 ])
-const formLabelWidth = "35%";
+const formLabelWidth = "32%";
 const newdialogFormVisible = ref(false)
 const newForm = reactive({
   deviceId: '',
@@ -870,7 +870,7 @@ const refresh=()=>{
       flex-wrap: wrap;
 
       .el-form-item {
-        width: 45%;
+        width: 48%;
 
         .el-form-item__label {
           justify-content: flex-start;
