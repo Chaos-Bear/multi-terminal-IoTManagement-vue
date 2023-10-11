@@ -47,7 +47,19 @@
           ref="table"
         >
           <el-table-column fixed type="index" min-width="6%" label="序号" />
-          <el-table-column prop="tabletName" label="设备名称" min-width="10%" />
+          <el-table-column prop="tabletName" label="设备名称" min-width="10%" >
+            <template #default="scope">
+              <!-- placement="bottom" effect="light" -->
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                :content="scope.row.tabletName"
+                placement="right-end"
+              >
+               <div>{{scope.row.tabletName}}</div>>
+              </el-tooltip>
+            </template>
+          </el-table-column> 
           <el-table-column prop="tabletID" label="设备序列号" min-width="22%" />
           <el-table-column prop="tabletIP" label="设备ip地址" min-width="16%" />
             <el-table-column prop="tabletPort" label="端口号" min-width="10%" />
@@ -79,10 +91,10 @@
           <el-table-column prop="opration" label="操作" min-width="15%">
             <!-- scope.row   -->
             <template #default="scope">
-              <el-button link type="primary" size="small" @click.prevent="edititem(scope.row)">
+              <el-button link type="primary" size="small" @click.prevent="edititem(scope.row)" :disabled="scope.row.borrowedStatus==1" :style="scope.row.borrowedStatus==1?'color:gray':''">
                 编辑
               </el-button>
-              <el-button link type="primary" size="small" @click.prevent="deleteitem(scope.row)">
+              <el-button link type="primary" size="small" @click.prevent="deleteitem(scope.row)" :disabled="scope.row.borrowedStatus==1" :style="scope.row.borrowedStatus==1?'color:gray':''">
                 删除
               </el-button>
             </template>
@@ -113,7 +125,6 @@
             <el-input v-model="createForm.tabletPort" autocomplete="off" />
           </el-form-item>
           <el-form-item label="&nbsp;&nbsp;设备状态" :label-width="formLabelWidth" prop="tabletState">
-            <!-- <el-input v-model="editForm.tabletState" autocomplete="off" /> -->
             <el-select v-model="createForm.tabletState" placeholder="全部" >
               <el-option label="启用" value="1" />
               <el-option label="禁用" value="0" />
@@ -258,13 +269,15 @@ const getDayStateStr=(v)=>{
 const switchChange=(v,row)=>{
   // debugger
   console.log(v)
-  if(row.borrowedStatus== 1){
+  // 设备借用 状态为 空闲中2 ，时，待用编辑接口，修改设备状态为禁用/启用 ，禁用时 设备借用状态需变为 已禁用0，
+  if(row.borrowedStatus== 2){
     //调用设备管理的更新接口
     tabletRequest
     .post('/IotBabletEditCrtl/editBablet',
           {
             tabletID: row.tabletID,
             tabletState:v,
+
           }
         )
         .then((res) => {
@@ -287,29 +300,35 @@ const resetbtn = () => {
 //新增
 const createdialogFormVisible = ref(false)
 const createForm = reactive({
-  "tabletID": "E280689400005020F5352D7F",
-  "tabletName": "平板03",
-  "tabletModel": "2",
-  "tabletBrand": "华硕",
-  "tabletIP": "10.31.0.230",
-  "tabletPort": "3308",
-  "tabletState": "1",
-  "borrowedStatus": "1",
+  // "tabletID": "E280689400005020F5352D7F",
+  // "tabletName": "平板03",
+  // "tabletModel": "2",
+  // "tabletBrand": "华硕",
+  // "tabletIP": "10.31.0.230",
+  // "tabletPort": "3308",
+  // "tabletState": "1",
+  // "borrowedStatus": "1",
 })
 // 组件实例
+
 const createFormRef = ref(null)
 const createFormRules = reactive({
   tabletName: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletID: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletIP: [{ required: true, message: '请输入', trigger: 'blur' }],
+  tabletID: [{ required: true, message: '请输入', trigger: 'blur' },
+      { min: 24, max: 24, message: '长度需为24位', trigger: 'blur' }],
+  tabletIP: [{ required: true, message: '请输入', trigger: 'blur' },
+  { pattern:/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/, message: '情输入正确的ip地址', trigger: 'blur'}],
   tabletBrand: [{ required: true, message: '请输入', trigger: 'blur' }],
   tabletModel: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletPort: [{ required: true, message: '请输入', trigger: 'blur' }],
+  tabletPort: [{ required: true, message: '请输入', trigger: 'blur' },
+    { pattern:/^(([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5]))$/, message: '范围需在0-65535之间', trigger: 'blur'}],
   // tabletState: [{ required: true, message: '请输入', trigger: '' }],
   // borrowedStatus: [{ required: true, message: '请输入', trigger: 'blur' }],
 })
 const createbtn=()=>{
   createdialogFormVisible.value = true
+  // 打开新增弹框后，清除上一次校验规则
+  createFormRef.value.clearValidate()
 
   createForm.tabletID='',
   createForm.tabletName='',
@@ -344,6 +363,7 @@ const createIteminfo = () => {
           console.log('设备列表修改成功:', res)
           if (res.data.repCode == 200) {
             //重新发请求，渲染设备列表
+            // debugger
             getList()
           }
         })
@@ -356,9 +376,11 @@ const createIteminfo = () => {
 //3 设备信息
 
 // 3.2 单个删除
+
 const deleteitem = (row) => {
-  console.log(row.id)
-  var id = row.id
+  console.log(row.tabletID)
+  var tabletID = row.tabletID
+  // debugger
   ElMessageBox.confirm('确定删除当前选中项吗？', '删除', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
@@ -371,10 +393,14 @@ const deleteitem = (row) => {
       })
       //单个删除请求（成功后发查询请求）
       // noderedrequest.delete("/device/delete?id="+id).then(response=>{
-      tabletRequest.delete("/device/delete?id="+id).then(response=>{
+      tabletRequest.post("/IotBabletEditCrtl/deleteIotIablet",{ 
+        "tabletID": tabletID
+
+      }).then(response=>{
         console.log("设备列表删除成功",response);
-        if(response.data.code==200){
+        if(response.data.repCode==200){
           //重新发请求，渲染设备列表
+          
           getList()
         }
       }).catch(error=>{
@@ -427,10 +453,12 @@ const editFormRef = ref(null)
 const editFormRules = reactive({
   tabletName: [{ required: true, message: '请输入', trigger: 'blur' }],
   tabletID: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletIP: [{ required: true, message: '请输入', trigger: 'blur' }],
+  tabletIP: [{ required: true, message: '请输入', trigger: 'blur' },
+  { pattern:/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/, message: '情输入正确的ip地址', trigger: 'blur'}],
   tabletBrand: [{ required: true, message: '请输入', trigger: 'blur' }],
   tabletModel: [{ required: true, message: '请输入', trigger: 'blur' }],
-  tabletPort: [{ required: true, message: '请输入', trigger: 'blur' }],
+  tabletPort: [{ required: true, message: '请输入', trigger: 'blur' },
+      { pattern:/^(([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5]))$/, message: '范围需在0-65535之间', trigger: 'blur'}],
   // tabletState: [{ required: true, message: '请输入', trigger: 'blur' }],
   // borrowedStatus: [{ required: true, message: '请输入', trigger: 'blur' }],
 })
@@ -455,7 +483,7 @@ const edititem=(row)=>{
 //   editForm.tabletState=v
 // }
 
-// 2.编结弹框中 确认编辑接口
+// 2.编辑弹框中 确认编辑接口
 const editIteminfo = () => {
   editFormRef.value.validate((valid) => {
     if (valid) {
@@ -470,7 +498,7 @@ const editIteminfo = () => {
             tabletBrand: editForm.tabletBrand,
             tabletModel: editForm.tabletModel,
             tabletPort: editForm.tabletPort, 
-            tabletState: editForm.tabletState,
+            // tabletState: editForm.tabletState,
             // borrowedStatus:editForm.borrowedStatus,
           }
         )

@@ -65,10 +65,10 @@ const getList=()=>{
       //   })
       // }
     }else{
-      console.log("校验码输入不正确:");
+      console.log("校验码输入不正确或已失效:");
       ElMessage({
           type: 'error',
-          message: '校验码输入不正确',
+          message: '校验码输入不正确或已失效',
         })
       // getArr.value=[];
       isActive.value="background-color: red";

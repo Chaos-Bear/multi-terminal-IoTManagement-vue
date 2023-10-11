@@ -77,7 +77,7 @@
               <span>绑定完成</span>
             </div>
             <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{tableData.length }}</span>
-            <span>/{{ borrowedInfo.borrowNum?borrowedInfo.borrowNum:0 }}</span>
+            <span>/{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}</span>
           </div>
         </div>
         <!-- 设备扫描信息 -->
@@ -125,6 +125,7 @@
                     type="primary"
                     size="small"
                     @click.prevent="deleteitem(scope.row)"
+                    :disabled="scope.row.borrowedStatus==1"
                   >
                     删除
                   </el-button>
@@ -182,6 +183,7 @@ import { request, noderedrequest ,tabletRequest,tabletWSRequest} from '@/utils/s
 import {createWebSocket} from "@/utils/websocket.js"
 import { dataType } from 'element-plus/es/components/table-v2/src/common'
 
+
 // 接收url query传参
 console.log('借用query传参', route.query)
 // 用于ws连接参数
@@ -203,6 +205,14 @@ const getBorrowInfo = () => {
     })
 }
 const borrowedStatusValue=ref("")
+const onChange1=(v)=>{
+  // debugger
+  borrowedStatusValue.value=v
+  console.log("00000000000000000000",borrowedStatusValue.value)
+  // tableData.value=tableData.value.filter((item)=>{
+  //   return item.borrowedStatus=v
+  // }) 
+}
 const borrowedInfo = ref({
   "roomName": "8559878580142080",
   "meetName": "8646084058906624",
@@ -218,6 +228,8 @@ const borrowedInfo = ref({
 onMounted(() => {
   getBorrowInfo()
   
+  // 调用该验证码以经取到的设备列表
+  getsubmitScanSuccessList()
   // 进入扫描页面，立即调用打开扫描设备接口
   openScanDevice()
 })
@@ -397,7 +409,6 @@ const continuetScan = () => {
 const postsubmitScan = () => {
   tabletRequest
     .post('/IotBabletBindCrtl/takeBabletBind', {
-      "bindNum": 0,
       "iotBindTabletList": tableData.value,
       "topic": repMsg,
       "verifyCode":repCode,
@@ -419,9 +430,10 @@ const postsubmitScan = () => {
         .then(() => {
           // 绑定完成功，关闭确认按钮后，展示继续扫描按钮
           isSuccess.value = false
-
+          
           // 调用已绑定完成的设备列表接口
           getsubmitScanSuccessList()
+
         })
         .catch(() => {})
       

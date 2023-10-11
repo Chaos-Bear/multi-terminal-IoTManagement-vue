@@ -18,7 +18,7 @@
         </div>
         <div class="third">
           <div>借用人：{{ borrowedInfo.userName }}</div>
-          <div>借用数量：{{ borrowedInfo.borrowNumd? borrowedInfo.borrowNumd: 0}}台</div>
+          <div>借用数量：{{ borrowedInfo.borrowNum? borrowedInfo.borrowNum: 0}} 台</div>
           <div>
             借用时间：
             <!-- {{
@@ -32,6 +32,7 @@
           <el-button
             type="primary"
             @click="handOperated"
+            :disabled="!isSuccess"
             >手动归还添加</el-button
           >
           <!-- 1.4归还完成 -->
@@ -91,12 +92,12 @@
               </el-table-column>
               <el-table-column prop="tabletName" label="设备名称" min-width="20.5%" />
               <el-table-column prop="borrowedStatus" label="设备借用状态" min-width="20.5%">
-                 <!-- 自定义表头：设备状态 -->
+                 <!-- 自定义表头：设备状态  @change="onChange1"-->
                 <template #header>
                   <el-select
-                    :model-value="borrowedStatus"
+                    :model-value="borrowedStatusValue"
                     placeholder="设备借用状态"
-                    @change="onChange1"
+                   
                     style="width: 100%"
                     popper-class="zdy_select4"
                     class="zdy"
@@ -122,6 +123,7 @@
                     type="primary"
                     size="small"
                     @click.prevent="deleteitem(scope.row)"
+                    :disabled="scope.row.borrowedStatus==3"
                   >
                     删除
                   </el-button>
@@ -187,14 +189,15 @@ const repCode=route.query.verifyCode
 const repMsg=route.query.repMsg
 
 // 1.根据验证码查询预约信息接口,渲染左侧会议信息
+// debugger
 const getBorrowInfo = () => {
-  tabletWSRequest
-    .post('IotDeviRevertCrtl/queryTabletRevert', {
+  tabletRequest
+    .post('/IotDeviRevertCrtl/queryTabletRevert', {
       "verifyCode": route.query.verifyCode
     })
     .then((res) => {
       // debugger
-      console.log('根据验证码查询借出的平板信息成功:', error)
+      console.log('根据验证码查询借出的平板信息成功:',res)
       borrowedInfo.value = res.data.result
       
     })
@@ -205,16 +208,25 @@ const getBorrowInfo = () => {
 
 //1.1会议信息
 const borrowedStatusValue=ref("")
-const borrowedInfo = ref({
-    "roomName": "8559878580142080",
-    "meetName": "8646084058906624",
-    "meetTime": null,
-    "userName": "维康",
-    "borrowNum": 1,
-    "borrowTime": "2023-10-08 11:00:00"
+const onChange1=(v)=>{
+  // debugger
+  borrowedStatusValue.value=v
+  console.log("00000000000000000000",borrowedStatusValue.value)
+  tableData.value=tableData.value.filter((item)=>{
+    return item.borrowedStatus=v
+  }) 
+}
+const borrowedInfo = ref(
+  {
+    // "roomName": "8559878580142080",
+    // "meetName": "8646084058906624",
+    // "meetTime": null,
+    // "userName": "维康",
+    // "borrowNum": 1,
+    // "borrowTime": "2023-10-08 11:00:00"
   },
 )
-onBeforeMount(() => {
+onMounted(() => {
   getBorrowInfo()
   getList()
   getTabletList()
@@ -267,9 +279,10 @@ var websocket=createWebSocket('ws://10.31.0.251:8082/tablet-borrowed-service/web
         it.isscaned=true
           
        }else{
-        var itemx=JSON.parse(JSON.stringify(item))
-        itemx.isscaned=true
-        tableData.value.push(itemx)
+        // 不在该验证码对应的设备列表中的 ，不放入归还列表
+        // var itemx=JSON.parse(JSON.stringify(item))
+        // itemx.isscaned=true
+        // tableData.value.push(itemx)
        } 
     })
     
@@ -300,8 +313,9 @@ const form = reactive({
 const getList = () => {
   //查询 设备列表中，借用状态是1 ->使用中 的设备列表， 展示在手动添加的 下拉设备下拉选项中
   tabletRequest
-    .post('/IotBabletEditCrtl/queryMageBablet', {
+    .post('/IotBabletBorrowCrtl/queryBorrowRetultInfo', {
       "borrowedStatus":"1",
+      "verifyCode": repCode
     })
     .then((response) => {
       console.log('借出设备列表查询成功:', response.data.result)
@@ -390,7 +404,7 @@ const submitHandOperated = () => {
        } 
   })
   
-  console.log('tableData000000000000000000000', tableData.value)
+  // console.log('tableData000000000000000000000', tableData.value)
   dialogFormVisible.value = false
 }
 
@@ -444,6 +458,9 @@ const getsubmitScanSuccessList = () => {
     .then((res) => {
       // debugger
       console.log('已绑定完成的设备列表获取成功:', res)
+      res.data.result.forEach((item)=>{
+         item.isscaned=true
+      })
       tableData.value=res.data.result
     })
     .catch((error) => {
@@ -492,8 +509,8 @@ const getTabletList = () => {
   tabletRequest
     // .post('/IotDeviRevertCrtl/queryRevertTabletInfo', {
     .post('/IotBabletBorrowCrtl/queryBorrowRetultInfo', {
-
       "verifyCode": repCode
+
     })
     .then((response) => {
       console.log('验证码对应的借出设备列表查询成功:', response.data.result)
@@ -536,6 +553,10 @@ const deviceStateOptions = [
   {
     value: '2',
     label: '空闲中'
+  },
+  {
+    value: '3',
+    label: '已归还'
   }
 ]
 const getDayStateStr = (v) => {

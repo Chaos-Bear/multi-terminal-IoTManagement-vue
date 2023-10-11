@@ -52,10 +52,10 @@ const getList=()=>{
       //验证码校验成功，跳转到扫描页,并使用query传参
       router.push("/returnAuto-scanning?verifyCode="+verifyCode+"&repMsg="+res.repMsg)
     }else{
-      console.log("校验码输入不正确:");
+      console.log("校验码输入不正确或已失效:");
       ElMessage({
           type: 'error',
-          message: '校验码输入不正确',
+          message: '校验码输入不正确或已失效',
         })
       // getArr.value=[];
       isActive.value="background-color: red";
