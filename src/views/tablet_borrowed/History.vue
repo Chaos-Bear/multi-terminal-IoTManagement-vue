@@ -144,7 +144,7 @@ const getList=()=>{
   }
    noderedrequest.post("/tablet_borrowed/list",json
    )
-  //  noderedrequest.get("/tablet_borrowed/list?borrowedName="+form.borrowedName+"&borrowedState="+form.historyState)
+  
   .then(response => {
     console.log("历史列表按条件查询成功:",response.data);
     

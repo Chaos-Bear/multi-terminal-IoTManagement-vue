@@ -29,12 +29,12 @@
           </div>
         </div>
         <div class="four">
-          <el-button
+          <!-- <el-button
             type="primary"
             @click="handOperated"
             :disabled="!isSuccess"
             >手动归还添加</el-button
-          >
+          > -->
           <!-- 1.4归还完成 -->
           <el-button
             type="info"
@@ -64,12 +64,16 @@
               <div class="contain">
                   <div class="zhizhen"></div>
               </div>
+              <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{ num}}</span>
+              <span>/{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}</span>
             </div>
             <div v-else>
-              <span>归还完成</span>
+              <span>停止扫描</span>
+              <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{ returnNum }}</span>
+              <span>/{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}</span>
             </div>
-            <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{ tableData.length }}</span>
-            <span>/{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}</span>
+            <!-- <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{ returnNum }}</span>
+            <span>/{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}</span> -->
           </div>
           
         </div>
@@ -79,7 +83,7 @@
           <el-scrollbar>
             <!-- 3.2 设备列表-->
             <el-table
-              :data="tableData"
+              :data="tableDataForRender"
               style="width: 100%"
               :header-cell-style="{ background: '#F5F9FC' }"
               ref="table"
@@ -87,7 +91,7 @@
               <el-table-column fixed type="index" min-width="8%" label="序号" />
               <el-table-column prop="tabletID" label="设备序列号" min-width="30%" >
                 <template #default="scope">
-                  <div :style="!scope.row['isscaned'] ? 'color:red':'color:white'">{{scope.row.tabletID}}</div>
+                  <div :style="(scope.row['isscaned'] || scope.row.borrowedStatus==3)? 'color:#fff':'color:red'">{{scope.row.tabletID}}</div>
                 </template>
               </el-table-column>
               <el-table-column prop="tabletName" label="设备名称" min-width="20.5%" />
@@ -95,13 +99,16 @@
                  <!-- 自定义表头：设备状态  @change="onChange1"-->
                 <template #header>
                   <el-select
-                    :model-value="borrowedStatusValue"
+                    v-model="borrowedStatusValue"
                     placeholder="设备借用状态"
                    
                     style="width: 100%"
                     popper-class="zdy_select4"
                     class="zdy"
                   >
+                   <template #prefix>
+                     设备借用状态
+                   </template>
                     <el-option
                       v-for="item in deviceStateOptions"
                       :key="item.value"
@@ -122,8 +129,19 @@
                     link
                     type="primary"
                     size="small"
+                    @click.prevent="handReturn(scope.row)"
+                    :disabled="scope.row.borrowedStatus==3"
+                    :style="scope.row.borrowedStatus==3?'color:gray':''"
+                  >
+                    手动归还
+                  </el-button>
+                  <el-button
+                    link
+                    type="primary"
+                    size="small"
                     @click.prevent="deleteitem(scope.row)"
                     :disabled="scope.row.borrowedStatus==3"
+                    :style="scope.row.borrowedStatus==3?'color:gray':''"
                   >
                     删除
                   </el-button>
@@ -135,7 +153,7 @@
       </div>
     </div>
     <!--以下为 手动添加-------弹出框  -->
-          <el-dialog v-model="dialogFormVisible" title="手动添加">
+          <!-- <el-dialog v-model="dialogFormVisible" title="手动添加">
             <el-form :model="form">
               <el-form-item label="选择设备&nbsp;&nbsp;&nbsp;" :label-width="formLabelWidth">
                 <el-select
@@ -169,7 +187,7 @@
                 <el-button type="primary" @click.prevent="submitHandOperated"> 确定 </el-button>
               </span>
             </template>
-          </el-dialog>
+          </el-dialog> -->
   </div>
 </template>
 <script setup >
@@ -205,17 +223,49 @@ const getBorrowInfo = () => {
       console.log('根据验证码查询借出的平板信息失败:', error)
     })
 }
+// 2.根据验证码查询归还数量
+// debugger
+const returnNum=ref(0)
+const getReturnInfo = () => {
+  tabletRequest
+    .post('/IotBabletBorrowCrtl/queryBorrowInfo', {
+      "verifyCode": route.query.verifyCode
+    })
+    .then((res) => {
+      // debugger
+      console.log('根据验证码查询归还数量成功:',res)
+      returnNum.value = res.data.returnNum
+      
+    })
+    .catch((error) => {
+      console.log('根据验证码查询归还数量失败:', error)
+    })
+}
 
 //1.1会议信息
-const borrowedStatusValue=ref("")
-const onChange1=(v)=>{
+const borrowedStatusValue=ref("-1")
+
+const tableDataForRender=computed(() => {
   // debugger
-  borrowedStatusValue.value=v
-  console.log("00000000000000000000",borrowedStatusValue.value)
-  tableData.value=tableData.value.filter((item)=>{
-    return item.borrowedStatus=v
+  if(borrowedStatusValue.value == -1){
+    return tableData.value
+  }
+  return tableData.value.filter((item)=>{
+    return item.borrowedStatus == borrowedStatusValue.value
   }) 
-}
+})
+
+const num=computed(()=>{
+  var count=0
+    tableData.value.forEach((item)=>{
+       if(item['isscaned'] || item.borrowedStatus==3){
+           count++
+       }
+    })
+    return count
+})
+
+
 const borrowedInfo = ref(
   {
     // "roomName": "8559878580142080",
@@ -232,6 +282,8 @@ onMounted(() => {
   getTabletList()
   //进入扫描页面，立即调用打开扫描设备接口
   openScanDevice()
+
+  // getReturnInfo()
 })
 const openScanDevice=()=>{
    tabletRequest
@@ -256,9 +308,10 @@ const openScanDevice=()=>{
 }
 
 // 建立ws连接
-// debugger
-var websocket=createWebSocket('ws://10.31.0.251:8082/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
- 
+// debugger  ws://172.28.5.134:17040
+// var websocket=createWebSocket('ws://10.31.0.251:8082/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
+// var websocket=createWebSocket('ws://172.28.5.134:17040/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
+ var websocket=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
   console.log('建立了websocket连接')
   
   // 重新调用会议室最新消息列表-----------------------
@@ -302,13 +355,13 @@ var websocket=createWebSocket('ws://10.31.0.251:8082/tablet-borrowed-service/web
 }})
 
 // 1.4.1 手动添加
-const formLabelWidth = '(542/1920)*100vw'
-const dialogFormVisible = ref(false)
+// const formLabelWidth = '(542/1920)*100vw'
+// const dialogFormVisible = ref(false)
 
-const form = reactive({
-  tabletName: '',
-  tabletID: ''
-})
+// const form = reactive({
+//   tabletName: '',
+//   tabletID: ''
+// })
 //2.获取借出平板设备列表接口
 const getList = () => {
   //查询 设备列表中，借用状态是1 ->使用中 的设备列表， 展示在手动添加的 下拉设备下拉选项中
@@ -343,7 +396,7 @@ const deviceList = ref([
     ])
 // 监听选择的设备名称，发请求获取该设备名称对应的设备序列号，展示在设备序列号输入框
 // 声明手动选择的 设备id
-// var id
+
 const getItemById=(arr,id,idstr)=>{
   let rs
   for(let i=0;i<arr.length;i++){
@@ -367,19 +420,27 @@ const ontabletNameChange = (v) => {
 }
 
 //手动添加按钮
-const handOperated = () => {
+// const handOperated = () => {
   
-  dialogFormVisible.value = true
+//   dialogFormVisible.value = true
   
-  form.tabletNames =[]
-  form.tabletIDs = []
-}
+//   form.tabletNames =[]
+//   form.tabletIDs = []
+// }
 // 取消手动添加
-const cancelHandOperated = () => {
-  dialogFormVisible.value = false
-  form.tabletNames = []
-  form.tabletIDs = []
+// const cancelHandOperated = () => {
+//   dialogFormVisible.value = false
+//   form.tabletNames = []
+//   form.tabletIDs = []
+// }
+
+//手动归还
+const handReturn=(v)=>{
+  //  debugger
+   v.isscaned=true
+   
 }
+
 const ishas = (item) => {
   for (var i = 0; i < tableData.value.length; i++) {
     // debugger
@@ -390,30 +451,47 @@ const ishas = (item) => {
   return false
 }
 // 确定手动添加，将选择的设备添加到待绑定列表
-const submitHandOperated = () => {
-  // debugger
-  form.tabletNames.forEach((item)=>{
-    let it=getItemById(tableData.value,item.tabletID,'tabletID')
-       if(it){
+// const submitHandOperated = () => {
+//   // debugger
+//   form.tabletNames.forEach((item)=>{
+//     let it=getItemById(tableData.value,item.tabletID,'tabletID')
+//        if(it){
            
-       }else{
-          var itemx=JSON.parse(JSON.stringify(item))
-          itemx.isscaned=false
+//        }else{
+//           var itemx=JSON.parse(JSON.stringify(item))
+//           itemx.isscaned=false
 
-          tableData.value.push(itemx)
-       } 
-  })
+//           tableData.value.push(itemx)
+//        } 
+//   })
   
-  // console.log('tableData000000000000000000000', tableData.value)
-  dialogFormVisible.value = false
-}
+//   // console.log('tableData000000000000000000000', tableData.value)
+//   dialogFormVisible.value = false
+// }
 
 // 1.4.2 归还完成
 const postsubmitScan = () => {
+  // debugger
+  let returnList=[]
+  for(var i=0 ;i<tableData.value.length;i++){
+
+    if(tableData.value.length==1 && tableData.value[i].isscaned==false){
+      ElMessage({
+        type: 'info',
+        message: '请添加要归还的设备'
+      })
+      return
+    }
+    if(tableData.value[i].isscaned==false){
+      
+    }else{
+      returnList.push(tableData.value[i])
+    }
+  }
   tabletRequest
     .post('/IotDeviRevertCrtl/returnTablet', {
       "borrowNum": borrowedInfo.value.borrowNum,
-      "iotBindTabletList": tableData.value,
+      "iotBindTabletList": returnList,
       // "returnNum": 10,
       "topic":  repMsg,
       "verifyCode":repCode,
@@ -438,6 +516,8 @@ const postsubmitScan = () => {
 
           // 调用已归还完成的设备列表接口
           getsubmitScanSuccessList()
+          //调用根据验证码查询归还数量接口
+          getReturnInfo()
         })
         .catch(() => {})
       //清空tableData表格
@@ -459,6 +539,9 @@ const getsubmitScanSuccessList = () => {
       // debugger
       console.log('已绑定完成的设备列表获取成功:', res)
       res.data.result.forEach((item)=>{
+        if(item.borrowedStatus==1){
+          item.isscaned=false
+        }
          item.isscaned=true
       })
       tableData.value=res.data.result
@@ -543,17 +626,21 @@ const tableData = ref([
 // ----设备借用状态
 const deviceStateOptions = [
   {
-    value: 0,
-    label: '已禁用'
+    value: '-1',
+    label: '全部'
   },
+  // {
+  //   value: 0,
+  //   label: '已禁用'
+  // },
   {
     value: '1',
     label: '使用中'
   },
-  {
-    value: '2',
-    label: '空闲中'
-  },
+  // {
+  //   value: '2',
+  //   label: '空闲中'
+  // },
   {
     value: '3',
     label: '已归还'
@@ -704,15 +791,15 @@ const deleteitem = (v) => {
           text-align: center;
           font-family: Roboto;
         }
-        :deep(.el-button):nth-child(1) {
-          background-color: rgba(15, 204, 249, 0.3);
-          font-size: (28/1920) * 100vw;
-        }
+        // :deep(.el-button):nth-child(1) {
+        //   background-color: rgba(15, 204, 249, 0.3);
+        //   font-size: (28/1920) * 100vw;
+        // }
         //2.3绑定完成/继续扫描
-        :deep(.el-button):nth-child(2) {
+        :deep(.el-button):nth-child(1) {
           background-color: rgba(24, 144, 255, 1);
         }
-        :deep(.el-button):nth-child(3) {
+        :deep(.el-button):nth-child(2) {
           background-color: transparent;
           margin-bottom: (0/1080) * 100vh;
         }
@@ -750,6 +837,7 @@ const deleteitem = (v) => {
               width: (54/1920) * 100vw;
               height: (54/1920) * 100vw;
               margin-left: (10/1920) * 100vw;
+              margin-right: (49/1920) * 100vw;
               border: 3px solid #fff;
               border-radius: 50%;
               position: relative;
@@ -847,8 +935,14 @@ const deleteitem = (v) => {
                   color: rgba(255, 255, 255, 1)!important;
                   font-size: (18/1920)*100vw;
                   text-align: center;
+                  display: none;
                 }
-                
+                .el-input__prefix{
+                  height: 4.07407407vh !important;
+                  line-height: 4.07407407vh !important;
+                  color: #fff;
+                  font-size:(18/1920)*100vw ;
+                }
             }
             .el-input__inner {
               &::-webkit-input-placeholder {

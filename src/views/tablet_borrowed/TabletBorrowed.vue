@@ -137,10 +137,10 @@
             ref="table"
           >
             <el-table-column fixed type="index" min-width="11%" label="序号" />
-            <el-table-column prop="mtName" label="会议名称" min-width="40%" />
+            <el-table-column prop="mtName" label="会议名称" min-width="34%" />
             <el-table-column prop="borrowedName" label="借用人" min-width="15%" />
             <el-table-column prop="quantityBorrowed" label="借用数量" min-width="15%" />
-            <el-table-column prop="borrowStartTime" label="借用时间" min-width="27%">
+            <el-table-column prop="borrowStartTime" label="借用时间" min-width="33%">
               <!-- 自定义表头：借用时间 -->
               <template #header>
                 <el-date-picker
@@ -423,8 +423,8 @@ const appointmentTableData = reactive([
     "borrowedName": "张小小",
     "borrowedNamePhone": "15295765073",
     "quantityBorrowed": 12,
-    "borrowStartTime": "2022-8-8 17：00",
-    "borrowEndTime":"2022-8-8 19：00",
+    "borrowStartTime": "2022-8-8 17:00",
+    "borrowEndTime":"2022-8-8 19:00",
     "borrowedState": null,
     "returnQuantity": null,
     "returnTime": null,

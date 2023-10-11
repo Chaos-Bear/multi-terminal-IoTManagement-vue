@@ -74,9 +74,9 @@
               </div>
             </div>
             <div v-else>
-              <span>绑定完成</span>
+              <span>停止扫描</span>
             </div>
-            <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{tableData.length }}</span>
+            <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{tableData.length}}</span>
             <span>/{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}</span>
           </div>
         </div>
@@ -86,7 +86,7 @@
           <el-scrollbar>
             <!-- 2.2 设备列表-->
             <el-table
-              :data="tableData"
+              :data="tableDataForRender"
               style="width: 100%"
               :header-cell-style="{ background: '#F5F9FC' }"
               ref="table"
@@ -98,12 +98,15 @@
                 <!-- 自定义表头：设备状态 -->
                 <template #header>
                   <el-select
-                    :model-value="borrowedStatusValue"
+                    v-model="borrowedStatusValue"
                     placeholder="设备借用状态"
-                    @change="onChange1"
                     style="width: 100%"
                     popper-class="zdy_select3"
                   >
+                   
+                   <template #prefix>
+                     设备借用状态
+                   </template>
                     <el-option
                       v-for="item in deviceStateOptions"
                       :key="item.value"
@@ -125,7 +128,8 @@
                     type="primary"
                     size="small"
                     @click.prevent="deleteitem(scope.row)"
-                    :disabled="scope.row.borrowedStatus==1"
+                    :disabled="scope.row.borrowedStatus==1 || scope.row.borrowedStatus==3"
+                    :style="(scope.row.borrowedStatus==1|| scope.row.borrowedStatus==3)?'color:gray':''"
                   >
                     删除
                   </el-button>
@@ -204,15 +208,25 @@ const getBorrowInfo = () => {
       console.log('当日借用信息按条件查询失败:', error)
     })
 }
-const borrowedStatusValue=ref("")
-const onChange1=(v)=>{
-  // debugger
-  borrowedStatusValue.value=v
-  console.log("00000000000000000000",borrowedStatusValue.value)
-  // tableData.value=tableData.value.filter((item)=>{
-  //   return item.borrowedStatus=v
-  // }) 
-}
+// 2.根据验证码查询归还数量
+// debugger
+// const returnNum=ref(0)
+// const getReturnInfo = () => {
+//   tabletRequest
+//     .post('/IotBabletBorrowCrtl/queryBorrowInfo', {
+//       "verifyCode": route.query.verifyCode
+//     })
+//     .then((res) => {
+//       // debugger
+//       console.log('根据验证码查询归还数量成功:',res)
+//       returnNum.value = res.data.returnNum
+      
+//     })
+//     .catch((error) => {
+//       console.log('根据验证码查询归还数量失败:', error)
+//     })
+// }
+
 const borrowedInfo = ref({
   "roomName": "8559878580142080",
   "meetName": "8646084058906624",
@@ -256,7 +270,10 @@ const openScanDevice=()=>{
 }
 // 建立ws连接
 // debugger
-var websocket=createWebSocket('ws://10.31.0.251:8082/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
+// var websocket=createWebSocket('ws://10.31.0.251:8082/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
+// var websocket=createWebSocket('ws://172.28.5.134:17040/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
+var websocket=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
+
  
   console.log('建立了websocket连接')
   
@@ -433,7 +450,8 @@ const postsubmitScan = () => {
           
           // 调用已绑定完成的设备列表接口
           getsubmitScanSuccessList()
-
+          //调用根据验证码查询归还数量接口
+          // getReturnInfo()
         })
         .catch(() => {})
       
@@ -448,6 +466,7 @@ const getsubmitScanSuccessList = () => {
     // .post('/IotDeviRevertCrtl/queryRevertTabletInfo', {
     .post('/IotBabletBorrowCrtl/queryBorrowRetultInfo', {
       "verifyCode":repCode,
+      
     })
     .then((res) => {
       // debugger
@@ -491,22 +510,6 @@ const goBack = () => {
 //2 已扫描 待绑定数组
 const tableData = ref([
   // {
-  //     "id": 9,
-  //     "deviceId": "20",
-  //     "tabletName": "220VA609WSMARTBULLB",
-  //     "deviceIpAddress": "139.120.1.1",
-  //     "port": 800000,
-  //     "brand": "TTst1",
-  //     "tabletID": "220VA609WSMARTBULLB",
-  //     "region": "A2-229会议室",
-  //     "state": "在线",
-  //     "createTime": "2023-08-10T01:55:21.000Z",
-  //     "updateTime": "2023-08-10T05:59:56.000Z",
-  //     "equipmentSerialNumber": "12345",
-  //     "tabletState": "可借用",
-  //     "deviceType": "移动设备"
-  // },
-  // {
   //     "borrowedStatus": "2",
   //     "tabletBrand": "华为",
   //     "tabletID": "E280689400005020F535A57F",
@@ -518,12 +521,16 @@ const tableData = ref([
   //     "tabletState": "1"
   // }
 ])
-// ----设备借用状态：1：使用中  2.空闲中 0：已禁用
+// ----设备借用状态：1：使用中  2.空闲中 0：已禁用 3已归还
 const deviceStateOptions = ref([
   {
-    value: 0,
-    label: '已禁用'
+    value: '-1',
+    label: '全部'
   },
+  // {
+  //   value: 0,
+  //   label: '已禁用'
+  // },
   {
     value: 1,
     label: '使用中'
@@ -531,8 +538,25 @@ const deviceStateOptions = ref([
   {
     value: '2',
     label: '空闲中'
+  },
+  {
+    value: '3',
+    label: '已归还'
   }
 ])
+
+// table列中 设备借用状态下拉 选项 刷选
+const borrowedStatusValue=ref("-1")
+const tableDataForRender=computed(() => {
+  // debugger
+  if(borrowedStatusValue.value == -1){
+    return tableData.value
+  }
+  return tableData.value.filter((item)=>{
+    return item.borrowedStatus == borrowedStatusValue.value
+  }) 
+})
+
 // debugger
 const getDayStateStr = (v) => {
   // debugger
@@ -830,6 +854,13 @@ const deleteitem = (v) => {
                   color: rgba(255, 255, 255, 1)!important;
                   font-size: (18/1920)*100vw;
                   text-align: center;
+                  display: none;
+                }
+                .el-input__prefix{
+                  height: 4.07407407vh !important;
+                  line-height: 4.07407407vh !important;
+                  color: #fff;
+                  font-size:(18/1920)*100vw ;
                 }
             }
             .el-input__suffix-inner>:first-child {

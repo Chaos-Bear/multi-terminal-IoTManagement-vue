@@ -39,7 +39,7 @@ import {request,noderedrequest,tabletRequest}  from "@/utils/server.js"
 const getList=()=>{
   var verifyCode=getArr.value.join("")
   // debugger
-  tabletRequest.post("IotBabletBindCrtl/checkBindInfo",
+  tabletRequest.post("/IotBabletBindCrtl/checkBindInfo",
    {
       "verifyCode":verifyCode,
    })
