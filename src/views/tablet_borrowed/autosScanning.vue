@@ -12,23 +12,23 @@
           <span> 借用数量：10台</span>
           <span>借用时间：6月30日 </span>
         </div> -->
-        <div class="first">{{ borrowedInfo.mtName  ? borrowedInfo.mtName : "无会议信息" }}</div>
+        <div class="first">{{ borrowedInfo.mtName  ? borrowedInfo.mtName : "暂无会议信息" }}</div>
         <div class="second">
           <div>
-            会议时间：
+            会议时间：暂无会议时间
             <!-- {{
               borrowedInfo.borrowStartTime.slice(0, -3) +
               ' ～' +
               borrowedInfo.borrowEndTime.slice(10, -3)
             }} -->
           </div>
-          <div>借用地点：A2-110</div>
+          <div>借用地点：暂无会议地点</div>
         </div>
         <div class="third">
           <div>借用人：{{ borrowedInfo.userName }}</div>
           <div>借用数量：{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}台</div>
           <div>
-            借用时间：
+            借用时间：{{borrowedInfo.borrowTime?borrowedInfo.borrowTime.slice(0, -3):""}}
             <!-- {{
               borrowedInfo.borrowStartTime.slice(0, -3) +
               ' ～' +
@@ -70,11 +70,14 @@
               <span>自动扫描中</span>
               <!-- <img src="@/assets/tablet_borrowed/11.png" /> -->
               <div class="contain">
-                  <div class="zhizhen"></div>
+                  <div class="zhizhen1"></div>
               </div>
             </div>
-            <div v-else>
+            <div v-else class="topInfo1">
               <span>停止扫描</span>
+              <div class="contain">
+                  <div class="zhizhen2"></div>
+              </div>
             </div>
             <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{tableData.length}}</span>
             <span>/{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}</span>
@@ -91,9 +94,25 @@
               :header-cell-style="{ background: '#F5F9FC' }"
               ref="table"
             >
-              <el-table-column fixed type="index" min-width="8%" label="序号" />
-              <el-table-column prop="tabletID" label="设备序ID" min-width="30%" />
-              <el-table-column prop="tabletName" label="设备名称" min-width="20.5%" />
+              <el-table-column fixed type="index" min-width="8%" label="序号" >
+                 <template #default="scope">
+                    {{scope.$index+1}}
+                    <div class="isReturned" v-if="scope.row.borrowedStatus==3"></div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="tabletID" label="设备序ID" min-width="30%" >
+                 <template #default="scope">
+                    {{scope.row.tabletID}}
+                    <div class="isReturned" v-if="scope.row.borrowedStatus==3"></div>
+                 </template>
+              </el-table-column>
+              <el-table-column prop="tabletName" label="设备名称" min-width="20.5%" >
+                 <template #default="scope">
+                    {{scope.row.tabletName}}
+                    <div class="isReturned" v-if="scope.row.borrowedStatus==3"></div>
+                 </template>
+              </el-table-column>
+
               <el-table-column prop="borrowedStatus" label="设备借用状态" min-width="20.5%">
                 <!-- 自定义表头：设备状态 -->
                 <template #header>
@@ -118,6 +137,7 @@
                 </template>
                 <template #default="scope">
                   {{ getDayStateStr(scope.row.borrowedStatus) }}
+                  <div class="isReturned" v-if="scope.row.borrowedStatus==3"></div>
                 </template>
               </el-table-column>
               <el-table-column prop="" label="操作" min-width="16%">
@@ -133,6 +153,7 @@
                   >
                     删除
                   </el-button>
+                    <div class="isReturned" v-if="scope.row.borrowedStatus==3"></div>
                 </template>
               </el-table-column>
             </el-table>
@@ -186,6 +207,7 @@ const route = useRoute()
 import { request, noderedrequest ,tabletRequest,tabletWSRequest} from '@/utils/server.js'
 import {createWebSocket} from "@/utils/websocket.js"
 import { dataType } from 'element-plus/es/components/table-v2/src/common'
+var wsbaseURL=import.meta.env.VITE_BASE_URL4
 
 
 // 接收url query传参
@@ -270,11 +292,7 @@ const openScanDevice=()=>{
 }
 // 建立ws连接
 // debugger
-// var websocket=createWebSocket('ws://10.31.0.251:8082/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
-// var websocket=createWebSocket('ws://172.28.5.134:17040/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
-var websocket=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
-
- 
+var websocket=createWebSocket(wsbaseURL+'/websocket/'+repMsg,{onopen(e){
   console.log('建立了websocket连接')
   
   // 重新调用会议室最新消息列表-----------------------
@@ -435,7 +453,9 @@ const postsubmitScan = () => {
       console.log('平板借用绑定完成:', res)
       // 成功提示
       ElMessageBox.confirm(
-        '您已成功绑定' + tableData.value.length + '台平板至【' + borrowedInfo.value.mtName + '】下。',
+        // '您已成功绑定' + tableData.value.length + '台平板至【' + borrowedInfo.value.mtName + '】下。',
+        '您已成功绑定' + tableData.value.length + '台平板!',
+        
         '提示',
         {
           confirmButtonText: '确认',
@@ -656,7 +676,8 @@ const deleteitem = (v) => {
       background-color: rgba(24, 144, 255, 0.2);
       text-align: center;
       font-family: SourceHanSansSC-regular;
-
+      position: relative;
+      
       .first {
         width: (420/1920) * 100vw;
         // height: (98/1080) * 100vh;
@@ -666,6 +687,7 @@ const deleteitem = (v) => {
         font-size: (34/1920) * 100vw;
         text-align: center;
         font-family: SourceHanSansSC-regular;
+        word-wrap: break-word;
       }
       .second {
         height: (77/1080) * 100vh;
@@ -697,6 +719,8 @@ const deleteitem = (v) => {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
+        position: absolute;
+        bottom: (40/1080) * 100vh;
         :deep(.el-button) {
           width: (420/1920) * 100vw;
           height: (71/1080) * 100vh;
@@ -772,11 +796,40 @@ const deleteitem = (v) => {
                   transform: rotate(360deg) ;
                 }
               }
-              .zhizhen{
+              .zhizhen1{
                 width: (54/1920) * 100vw;
                 height: (3/1920) * 100vw;
                 flex: none;
                 animation: rotate 4s linear infinite;
+               
+                &::after{
+                    content: "";
+                    width: 6px;
+                    height: 3px;
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    margin-top: -3px;
+                    background-color: #011841;
+                }
+                &::before{
+                    content: "";
+                    width:calc(50% - 2px) ;
+                    height: 3px;
+                    position: absolute;
+                    left: 2px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background-color: #fff;
+                }
+                
+              }
+              .zhizhen2{
+                width: (54/1920) * 100vw;
+                height: (3/1920) * 100vw;
+                flex: none;
+                // animation: rotate 4s linear infinite;
                
                 &::after{
                     content: "";
@@ -814,7 +867,7 @@ const deleteitem = (v) => {
             display: inline-block;
           }
           span:nth-child(1) {
-            width: (170/1920) * 100vw;
+            // width: (170/1920) * 100vw;
           }
 
           img {
@@ -946,6 +999,10 @@ const deleteitem = (v) => {
                   background-color: rgba(24, 144, 255, 0.1);
                   margin-right: (10/1920) * 100vw;
                 }
+                .cell:has(.isReturned){
+                  background-color: rgba(90, 90, 90, 0.2);
+                  
+                } 
               }
             }
           }

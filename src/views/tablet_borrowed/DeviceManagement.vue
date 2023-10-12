@@ -719,7 +719,7 @@ const cancelItemEdit = () => {
 
             .el-button {
               color: rgba(24, 144, 255, 1);
-              font-size: 15%;
+              font-size: (18/1920) * 100vw;
               text-align: left;
               font-family: SourceHanSansSC-regular;
               

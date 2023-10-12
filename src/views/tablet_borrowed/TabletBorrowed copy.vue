@@ -137,23 +137,10 @@
             ref="table"
           >
             <el-table-column fixed type="index" min-width="11%" label="序号" />
-            <el-table-column prop="meetName" label="会议名称" min-width="34%" >
-              
-                <template #default="scope">
-                  <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    :content="scope.row.meetName?scope.row.meetName:'无会议名称'"
-                    placement="right"
-                  >
-                    <!-- 显示年月日时分 2023-8-23 00:00-00:00 -->
-                    {{scope.row.meetName?scope.row.meetName:"无会议名称"}}
-                  </el-tooltip>
-              </template>
-            </el-table-column>
-            <el-table-column prop="userName" label="借用人" min-width="15%" />
-            <el-table-column prop="borrowNum" label="借用数量" min-width="15%" />
-            <el-table-column prop="startTime" label="借用时间" min-width="33%">
+            <el-table-column prop="mtName" label="会议名称" min-width="34%" />
+            <el-table-column prop="borrowedName" label="借用人" min-width="15%" />
+            <el-table-column prop="quantityBorrowed" label="借用数量" min-width="15%" />
+            <el-table-column prop="borrowStartTime" label="借用时间" min-width="33%">
               <!-- 自定义表头：借用时间 -->
               <template #header>
                 <el-date-picker
@@ -166,12 +153,13 @@
                   placeholder="借用时间"
                   size="small"
                   :disabled-date="disabledDate"
+                  
                 >
                 </el-date-picker>
               </template>
               <template #default="scope">
                 <!-- 显示年月日时分 2023-8-23 00:00-00:00 -->
-                {{scope.row.startTime.slice(0, -3) +'~' +scope.row.endTime.split(" ")[1].slice(0, -3)}}
+                {{ formatBorrowTime(scope) }}
               </template>
             </el-table-column>
           </el-table>
@@ -196,8 +184,104 @@ import { Autoplay } from 'swiper/modules'
 
 const modules = [Autoplay]
 
+const dayGetList = () => {
+  // 获取当前时间，定义上午和下午的开始时间，结束时间
+  var d = new Date()
+  var Y = d.getFullYear()
+  var M = d.getMonth() + 1
+  if (M <= 9) {
+    M = '0' + M
+  }
+  var D = d.getDate()
+  if (D <= 9) {
+    D = '0' + D
+  }
+  var borrowStartTime
+  var borrowEndTime
+  if (dayTime.value != 1 && dayTime.value != 2) {
+    //全天
+    borrowStartTime = Y + '-' + M + '-' + D + ' ' + '00:00:00'
+    borrowEndTime = Y + '-' + M + '-' + D + ' ' + '23:59:59'
+  } else if (dayTime.value == 1) {
+    //上午
+    borrowStartTime = Y + '-' + M + '-' + D + ' ' + '00:00:00'
+    borrowEndTime = Y + '-' + M + '-' + D + ' ' + '12:00:00'
+  } else {
+    //下午
+    borrowStartTime = Y + '-' + M + '-' + D + ' ' + '12:00:01'
+    borrowEndTime = Y + '-' + M + '-' + D + ' ' + '23:59:59'
+  }
+  //  debugger
+  console.log('11111', borrowStartTime, borrowEndTime)
 
+  // noderedrequest.get("/tablet_borrowed/list?borrowStartTime="+borrowStartTime+"&borrowEndTime="+borrowEndTime+"&borrowedState="+dayState.value)
+  noderedrequest
+    .post('/tablet_borrowed/list', {
+      borrowStartTime: {
+        _gre: borrowStartTime,
+        _timestamp: true
+      },
+      borrowEndTime: {
+        _lee: borrowEndTime,
+        _timestamp: true
+      },
+      borrowedState: dayState.value,
+      order: { sortFeild: 'borrowStartTime', sortType: 'ASC', _timestamp: true }
+    })
+    .then((response) => {
+      console.log('当日借用信息按条件查询成功:', response.data)
 
+      dayTableData.length = 0
+      //使用push方法:结构后再赋值
+      dayTableData.push(...response.data.data.items)
+    })
+    .catch((error) => {
+      // debugger
+      console.log('当日借用信息按条件查询失败:', error)
+    })
+}
+const appointmentGetList = () => {
+  // 获取当天的时间 如：2020-8-29 00:00:00
+  var d = new Date()
+  var Y = d.getFullYear()
+  var M = d.getMonth() + 1
+  if (M <= 9) {
+    M = '0' + M
+  }
+  var D = d.getDate()
+  if (D <= 9) {
+    D = '0' + D
+  }
+  var time = Y + '-' + M + '-' + D + ' ' + '00:00:00'
+  // 选择借用时间 和 未选择借用时间：
+  var borrowStartTime
+  if (appointmentValue.value) {
+    borrowStartTime = {
+      _lk: appointmentValue.value
+    }
+  } else {
+    borrowStartTime = {
+      _gre: time,
+      _timestamp: true
+    }
+  }
+  //  noderedrequest.get("/tablet_borrowed/list?borrowStartTime="+appointmentTime.value)  ASC  DESC
+  noderedrequest
+    .post('/tablet_borrowed/list', {
+      borrowStartTime: borrowStartTime,
+      order: { sortFeild: 'borrowStartTime', sortType: 'ASC', _timestamp: true }
+    })
+    .then((response) => {
+      console.log('预约记录按条件查询成功:', response.data)
+
+      appointmentTableData.length = 0
+      //使用push方法:结构后再赋值
+      appointmentTableData.push(...response.data.data.items)
+    })
+    .catch((error) => {
+      console.log('预约记录按条件查询失败:', error)
+    })
+}
 
 //1.当日借用信息
 const today = ref('')
@@ -208,23 +292,23 @@ var d = time.getDate()
 today.value = y + '年' + m + '月' + d + '日'
 
 const dayTableData = reactive([
-  // {
-  //   "id": 1,
-  //   "personneId": 460003839,
-  //   "borrowedName": "张小小",
-  //   "borrowedNamePhone": "15295765073",
-  //   "quantityBorrowed": 12,
-  //   "borrowStartTime": "2022-8-8 17:00",
-  //   "borrowEndTime": "2022-8-8 19:00",
-  //   "borrowedState": 2,
-  //   "returnQuantity": null,
-  //   "returnTime": null,
-  //   "verificationCode": "3049",
-  //   "mtName": "8.8日测试会议",
-  //   "applyId": "340087888",
-  //   "roomId": "35999887",
-  //   "customTheme": null
-  // }
+  {
+    "id": 1,
+    "personneId": 460003839,
+    "borrowedName": "张小小",
+    "borrowedNamePhone": "15295765073",
+    "quantityBorrowed": 12,
+    "borrowStartTime": "2022-8-8 17:00",
+    "borrowEndTime": "2022-8-8 19:00",
+    "borrowedState": 2,
+    "returnQuantity": null,
+    "returnTime": null,
+    "verificationCode": "3049",
+    "mtName": "8.8日测试会议",
+    "applyId": "340087888",
+    "roomId": "35999887",
+    "customTheme": null
+  }
 ])
 //自定义表头 --时间
 const dayTime = ref('')
@@ -246,7 +330,7 @@ const dayTimeOptions = [
 const onChange1 = (v) => {
   dayTime.value = v
   console.log(22222)
-  // dayGetList()
+  dayGetList()
 }
 // 选择的借用时间序号 对应上午/下午
 const dayTimeStr = computed(() => {
@@ -273,6 +357,10 @@ const dayStateOptions = [
   {
     value: '1',
     label: '待借用'
+  },
+  {
+    value: '2',
+    label: '未审批'
   },
   {
     value: '3',
@@ -308,9 +396,8 @@ const getDayStateStr = (v) => {
 // 轮播图
 const isshow=ref(false)
 onMounted(() => {
-  // dayGetList()
-  
-  getAppointmentList()
+  dayGetList()
+  appointmentGetList()
   nextTick(()=>{
     isshow.value=true
   })
@@ -322,23 +409,6 @@ setInterval(function () {
 }, 5000)
 
 //2.预约记录
-// 2. 右侧预约记录 列表接口
-const getAppointmentList=()=>{
-  tabletRequest
-    .post('/IotDeviHisCrtl/queryBorrowHisRetultInfo', {
-        "endDayNum": 7,
-        "showNum": 30
-    })
-    .then((response) => {
-      // debugger
-      console.log('预约记录按条件查询成功:', response.data)
-      appointmentTableData.value=response.data.result
-     
-    })
-    .catch((error) => {
-      console.log('预约记录按条件查询失败:', error)
-    })
-}
 //自定义表头 --状态
 const appointmentTime = ref('')
 const appointmentOptions = []
@@ -346,7 +416,7 @@ const onChange3 = (v) => {
   appointmentTime.value = v
   appointmentGetList()
 }
-const appointmentTableData = ref([
+const appointmentTableData = reactive([
   // {
   //   "id": 1,
   //   "personneId": 460003839,
@@ -364,17 +434,17 @@ const appointmentTableData = ref([
   //   "roomId": "35999887",
   //   "customTheme": null
   // },
-  // {
-  //   "roomID": "8559878580142080",
-  //     "roomName": "A2-107",
-  //     "meetID": "8646084058906624",
-  //     "meetName": null,
-  //     "verifyCode": "8611",
-  //     "borrowNum": 3,
-  //     "userName": "伟康",
-  //     "startTime": "2023-10-13 08:00:00",
-  //     "endTime": "2023-10-13 11:00:00"
-  // }
+  {
+    "roomID": "8559878580142080",
+      "roomName": "A2-107",
+      "meetID": "8646084058906624",
+      "meetName": null,
+      "verifyCode": "8611",
+      "borrowNum": 3,
+      "userName": "伟康",
+      "startTime": "2023-10-13 08:00:00",
+      "endTime": "2023-10-13 11:00:00"
+  }
 ])
 // 今天之前的日期禁止选择
 const disabledDate = (time) => {
@@ -382,6 +452,22 @@ const disabledDate = (time) => {
 }
 const appointmentValue = ref('')
 // 预约记录 时间选择
+const formatBorrowTime = (scope) => {
+  if (scope.row.borrowStartTime && scope.row.borrowEndTime) {
+    return (
+      scope.row.borrowStartTime.split(' ')[0] +
+      ' ' +
+      // scope.row.borrowStartTime.split(' ')[1].slice(0, -3) +
+      // '～' +
+      // scope.row.borrowEndTime.split(' ')[1].slice(0, -3)
+      scope.row.borrowStartTime.split(' ')[1] +
+      '～' +
+      scope.row.borrowEndTime.split(' ')[1]
+    )
+  } else {
+    return ''
+  }
+}
 
 const customPrefix = shallowRef({
   render() {
@@ -593,7 +679,6 @@ watch(
         height: (44/1080) * 100vh;
         text-align: center;
         border-bottom: 0px;
-        padding:(5/1080) * 100vh 0;
       }
       thead {
         color: rgba(255, 255, 255, 1);
@@ -611,16 +696,7 @@ watch(
       }
       tbody {
         tr th {
-          // height: (44/1080) * 100vh;
-          
-          .cell {
-              height: (44/1080)*100vh;
-              line-height: (44/1080)*100vh;
-              white-space: nowrap;
-              background-color: rgba(24, 144, 255, 0.1);
-              margin-right: (10/1920) * 100vw;
-            }
-
+          height: (44/1080) * 100vh;
         }
       }
     }
@@ -790,7 +866,6 @@ watch(
             color: rgba(255, 255, 255, 1) !important;
             font-size: (18/1920) * 100vw;
           }
-
         }
       }
 

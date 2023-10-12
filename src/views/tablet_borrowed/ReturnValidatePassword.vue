@@ -165,6 +165,7 @@ const del=()=>{
         text-align: center;
         font-family: Roboto;
         border: 1px solid rgba(0, 142, 255, 0.8);
+        user-select: none;
       }
       & > div:nth-child(10){
         width: (500/1920) * 100vw;
