@@ -144,7 +144,7 @@
                     class="box-item"
                     effect="dark"
                     :content="scope.row.meetName?scope.row.meetName:'无会议名称'"
-                    placement="right"
+                    placement="left"
                   >
                     <!-- 显示年月日时分 2023-8-23 00:00-00:00 -->
                     {{scope.row.meetName?scope.row.meetName:"无会议名称"}}
@@ -417,6 +417,8 @@ watch(
   margin-left: (-36/1080) * 100vh !important;
   width: 300px!important;
   height: 300px!important;
+  // inset:(262/1080) * 100vh  auto auto (1005/1080) * 100vh!important;
+
   .el-date-picker {
     zoom: 0.8;
     background: #05456e !important;

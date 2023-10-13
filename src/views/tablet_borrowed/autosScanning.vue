@@ -72,21 +72,22 @@
               <div class="contain">
                   <div class="zhizhen1"></div>
               </div>
+              <span >扫描到 {{ willBorrowCount ? willBorrowCount : 0 }} 台 </span>
             </div>
             <div v-else class="topInfo1">
               <span>停止扫描</span>
               <div class="contain">
                   <div class="zhizhen2"></div>
               </div>
-            </div>
-            <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{tableData.length}}</span>
+              <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{tableData.length}}</span>
             <span>/{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}</span>
+            </div>    
           </div>
         </div>
         <!-- 设备扫描信息 -->
         <div class="scanning">
           <!-- 此处设置了滚动条组件 -->
-          <el-scrollbar>
+          <!-- <el-scrollbar> -->
             <!-- 2.2 设备列表-->
             <el-table
               :data="tableDataForRender"
@@ -157,7 +158,18 @@
                 </template>
               </el-table-column>
             </el-table>
-          </el-scrollbar>
+          <!-- </el-scrollbar> -->
+        </div>
+        <!-- 提示 -->
+        <div class="tips">
+           <span>提示：</span>
+           <!-- <span style="color:red;font-weight:800">红色字体</span>
+           <span>表示该借出的设备未被扫描检测到；</span> -->
+           <span style="font-weight:800">白色字体</span>
+           <span>表示该设备被扫描检测到或已被借取；</span>
+           <span style="color:rgba(255, 255, 255, 0.6)">黑色背景行</span>
+           <span>表示该借出的设备已经被归还。</span>
+           
         </div>
       </div>
       <!--以下为 手动添加-------弹出框  -->
@@ -248,17 +260,27 @@ const getBorrowInfo = () => {
 //       console.log('根据验证码查询归还数量失败:', error)
 //     })
 // }
+// 3.结算已扫描到的数量
+const willBorrowCount=computed(()=>{
+   let count=0
+   for(var i=0;i<tableData.value.length;i++){
+      if(tableData.value[i].borrowedStatus ==2){
+          count++ 
+      }
+   }
+   return count
+ })
 
 const borrowedInfo = ref({
-  "roomName": "8559878580142080",
-  "meetName": "8646084058906624",
-  "meetTime": null,
-  "userName": "维康",
-  "borrowNum": 2,
-  "borrowStartTime": "2023-10-08 11:00:00",
+  // "roomName": "8559878580142080",
+  // "meetName": "8646084058906624",
+  // "meetTime": null,
+  // "userName": "益伟康",
+  // "borrowNum": 2,
+  // "borrowStartTime": "2023-10-08 11:00:00",
 
-  "borrowEndTime": "2023-10-08 17:00:00",
-  "mtName":""   //会议名称
+  // "borrowEndTime": "2023-10-08 17:00:00",
+  // "mtName":""   //会议名称
 })
 
 onMounted(() => {
@@ -442,6 +464,14 @@ const continuetScan = () => {
 // 同时调用更新设备接口 借用状态->2使用中，和 更新平板预约借用接口 借用状态->3借用中 （隐含调用无纸化接口）
 // 1. 取平板 绑定完成 请求接口
 const postsubmitScan = () => {
+  // 如 扫描到的数量为0,则做如下提示
+  if(willBorrowCount.value==0){
+      ElMessage({
+        type: 'info',
+        message: '请扫描或添加要借取的设备'
+      })
+      return
+  }
   tabletRequest
     .post('/IotBabletBindCrtl/takeBabletBind', {
       "iotBindTabletList": tableData.value,
@@ -454,7 +484,7 @@ const postsubmitScan = () => {
       // 成功提示
       ElMessageBox.confirm(
         // '您已成功绑定' + tableData.value.length + '台平板至【' + borrowedInfo.value.mtName + '】下。',
-        '您已成功绑定' + tableData.value.length + '台平板!',
+        '您已成功绑定' + willBorrowCount.value + '台平板!',
         
         '提示',
         {
@@ -506,7 +536,7 @@ const submitScan = () => {
   }
   if (borrowedInfo.value.borrowNum - tableData.value.length < 0) {
     ElMessageBox.confirm(
-        '绑定失败！请先删除状态为【已借用】、【不可用】、【已超出】的设备。如有请删除！',
+        '绑定失败！已超出总借用数量。请删除超出部分！',
         '提示',
         {
           confirmButtonText: '确认',
@@ -783,7 +813,7 @@ const deleteitem = (v) => {
               border-radius: 50%;
               position: relative;
               box-sizing: border-box;
-             
+              margin-right:(30/1920) * 100vw ;
               display: flex;
               justify-content: center;
               align-items: center;
@@ -855,9 +885,7 @@ const deleteitem = (v) => {
                 
               }
             }
-          }
-          
-          span {
+            span {
             // height: (50/1080) * 100vh;
             // margin-right: (10/1920) * 100vw;
             color: rgba(255, 255, 255, 1);
@@ -865,15 +893,18 @@ const deleteitem = (v) => {
             text-align: left;
             font-family: SourceHanSansSC-regular;
             display: inline-block;
-          }
-          span:nth-child(1) {
-            // width: (170/1920) * 100vw;
-          }
+            }
+            span:nth-child(1) {
+              // width: (170/1920) * 100vw;
+            }
 
-          img {
-            width: (54/1920) * 100vw;
-            height: (54/1920) * 100vw;
+            img {
+              width: (54/1920) * 100vw;
+              height: (54/1920) * 100vw;
+            }
           }
+          
+          
         }
 
         
@@ -1008,6 +1039,22 @@ const deleteitem = (v) => {
           }
              
         }
+      }
+      //提示
+      .tips{
+        margin-top:(24/1080) * 100vh;
+         span{
+          color: rgba(255, 255, 255, 1);
+          font-size: 14px;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
+         }
+         span:nth-child(4){
+            display: inline-block;
+            height: (40/1080) * 100vh;
+            line-height: (40/1080) * 100vh;
+            background-color: rgba(90, 90, 90, 0.2);
+         }
       }
     }
     

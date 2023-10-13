@@ -70,17 +70,26 @@ const onChange=()=>{
 <style lang="less">
   // 通过自定义，修改select下拉框
    .el-popper.zdy_select_top{
-       width: 25%!important;
+       width: (400/1920)*100vw!important;
        background: #05456e!important;
        border: 0px!important;
        margin-top: (-40/1080)*100vh;
-       margin-left: -1%;
+       margin-left: (18/1920)*100vw;
        border-radius:0!important;
        
        .el-select-dropdown{
-            border-radius:0!important;
+          border-radius:0!important;
+       }
+
+       .el-select-dropdown__wrap{
+          max-height: none;
+       }
+       .el-select-dropdown__list{
+          margin: (6/1080)*100vh 0!important;
        }
       .el-select-dropdown__item{
+         width: (400/1920)*100vw!important;
+         
          color: rgba(255, 255, 255, 1)!important;
           font-size: (18/1920)*100vw!important;
           text-align: center!important;
