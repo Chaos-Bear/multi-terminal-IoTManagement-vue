@@ -21,7 +21,7 @@
                     class="w-50 m-2"
                     placeholder="搜索"
                     :prefix-icon="Search"
-                    @input.lazy="inputChange"
+                    @input="inputChange"
                   />
                 </div>
                 <!-- 1.1.1 搜索列表-->
@@ -37,7 +37,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- 1.2 -->
+                <!-- 1.2  根据chatState的已读/未读 ，判断是否显示红点 -->
                 <div  v-else  :id="'roomID'+item.roomID"
                   :class="['roomList', currentMeetingIndex == item.roomID ? 'active' : '', ( item && item.chatState&& item.chatState!='已读')?'hasmsg':'']"
                   v-for="(item, i) in roomInfo"
@@ -151,9 +151,10 @@
                             </div>
                           </div>
                         </div>
-                        <!-- 此处根据 会议状态接口返回的 会议开始时间，判断小于会议开始时间显示'历史记录'字样 -->
-                       
-                       <div class="historyInfo" v-if="item.lastw||(i<historyMsgList.length-1 && item.meetID != historyMsgList[i+1].meetID)">
+
+                      <!--  显示'历史记录'字样：根据会议meetID 的不同，判断是否显示，如果只有一个会议的历史记录，则没法判断----不显示 -->
+                       <!-- <div class="historyInfo" v-if="item.lastw||(i<historyMsgList.length-1 && item.meetID != historyMsgList[i+1].meetID)"> -->
+                       <div class="historyInfo" v-if="(i<historyMsgList.length-1 && item.meetID != historyMsgList[i+1].meetID)">
                           <span>
                             —  以上为{{item.chatTime.slice(0,-3)}}场次呼叫服务历史记录  —
                           </span>
@@ -271,6 +272,10 @@ import { useRoute } from 'vue-router';
 import {createWebSocket} from "@/utils/websocket.js";
 
 import {request,noderedrequest}  from "@/utils/server.js" 
+// 中间聊天区域wsbaseURL11
+var wsbaseURL11=import.meta.env.VITE_BASE_URL11
+// 右侧楼层区域wsbaseURL12
+var wsbaseURL12=import.meta.env.VITE_BASE_URL12
 
 // debugger
 const route = new useRoute()
@@ -375,6 +380,8 @@ const getHistoryInfo = () => {
       })
       // debugger
       historyMsgList.value.unshift(...list)
+
+      // 最新的历史记录 最后一条 ，加 lastw 字段 
       historyMsgList.value[historyMsgList.value.length-1].lastw=true
       
       if(isScrollToBottom.value){
@@ -478,7 +485,7 @@ const meetingInfo = ref({
 // 1.2点击左侧每个会议室
 const clickRoomName = (item) => {
   // debugger
-  item.hasMsg=false;
+  
   isScrollToBottom.value=true;
   // debugger
   console.log('33333333333333333333', item)
@@ -545,9 +552,9 @@ const onScroll = (top) => {
 // 开发环境
 // var websocket=createWebSocket('ws://10.31.0.240:53134/wsmq',{onopen(e){
 // 测试环境
-// var websocket=createWebSocket('ws://172.28.5.134:8282/wsmq',{onopen(e){
+var websocket=createWebSocket('ws://172.28.5.134:8282/wsmq',{onopen(e){
  
-var websocket=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/wsmq',{onopen(e){
+// var websocket=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/wsmq',{onopen(e){
   
   console.log('建立了websocket连接')
   console.log(e)
@@ -618,7 +625,8 @@ const onChangeMsgInfo = (e) => {
     meetID: meetingInfo.value.obj.meetID ? meetingInfo.value.obj.meetID : '',
     roomID: meetingInfo.value.obj.roomID,
     state:"1",
-    type: 'msg'
+    type: 'msg',
+    // chatState:'未读'
   }
   //点击按钮发送数据给服务器
   // debugger
@@ -657,10 +665,10 @@ var isLocked=true
 // 开发环境
 // var ws1=createWebSocket('ws://10.31.0.240:8081/call-service/websocket/4600072255',{onopen(e){
 // 测试环境
-// var ws1=createWebSocket('ws://172.28.5.134:8084/call-service/websocket/4600072255',{onopen(e){
+var ws1=createWebSocket('ws://172.28.5.134:8084/call-service/websocket/4600072255',{onopen(e){
 
 // 域名环境
-var ws1=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/call-service/websocket/'+userId.value,{onopen(e){
+// var ws1=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/call-service/websocket/'+userId.value,{onopen(e){
    console.log('建立了ws1连接')
    
 },onmessage(e){
@@ -678,18 +686,7 @@ var ws1=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/call-service/webso
       roomInfo.value=data.result
       
       // console.log("左侧会议室列表",roomInfo.value)
-       roomInfo.value.forEach((element,i) => {
-        if(element.lastChat && historyMsgList.length <= 0){
-          element.hasMsg =true
-           if(i==0){
-            element.hasMsg=false
-         }
-        }else{
-          element.hasMsg=false
-        }
-         
-      });
-      
+       
       //会议室列表初始化完毕，调用一次改默认第一个会议室 的点击事件，渲染中间部分
         if(isLocked){
           if(roomInfo.value.length>0){
@@ -1007,10 +1004,15 @@ const isOpen=(v,item1)=>{
           margin-bottom: (10/1080)*100vh;
           margin-right: (10/1920)*100vw;
           display: flex;
-          // align-items: center;
+          align-items:normal;
           justify-content: flex-end;
+          img{
+            width:(20/1920)*100vw;
+            height: (20/1920)*100vw;
+          }
           span{
             height: (20/1080)*100vh;
+            line-height: (26/1080)*100vh;
             margin-left: (4/1920)*100vw;
             color: rgba(255, 255, 255, 0.5);
             font-size: (14/1920)*100vw;

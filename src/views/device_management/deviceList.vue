@@ -86,7 +86,7 @@
             <el-form-item label="&nbsp;&nbsp;状态" :label-width="formLabelWidth" prop="status">
               <el-input v-model="newForm.status" autocomplete="off" placeholder="请输入状态" />
             </el-form-item>
-            <el-form-item label="&nbsp;&nbsp;设备类型" :label-width="formLabelWidth" prop="deviceType">
+            <!-- <el-form-item label="&nbsp;&nbsp;设备类型" :label-width="formLabelWidth" prop="deviceType">
               <el-select
                 v-model="newForm.deviceType"
                 placeholder="请选择设备类型"
@@ -99,7 +99,7 @@
                   :value="item.value"
                 />
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="&nbsp;&nbsp;订阅主题" :label-width="formLabelWidth" prop="topic">
               <el-input v-model="newForm.topic" autocomplete="off" placeholder="请输入订阅主题" />
             </el-form-item>
@@ -226,7 +226,7 @@
           <el-form-item label="&nbsp;&nbsp;状态" :label-width="formLabelWidth" prop="status">
             <el-input v-model="editForm.status" autocomplete="off" />
           </el-form-item>
-           <el-form-item label="&nbsp;&nbsp;设备类型" :label-width="formLabelWidth" prop="deviceType">
+          <!-- <el-form-item label="&nbsp;&nbsp;设备类型" :label-width="formLabelWidth" prop="deviceType">
               <el-select
                 v-model="editForm.deviceType"
                 placeholder="请选择设备类型"
@@ -239,7 +239,7 @@
                   :value="item.value"
                 />
               </el-select>
-            </el-form-item>
+          </el-form-item> -->
           <el-form-item label="&nbsp;&nbsp;订阅主题" :label-width="formLabelWidth" prop="topic">
             <el-input v-model="editForm.topic" autocomplete="off" placeholder="请输入订阅主题" />
           </el-form-item>
@@ -427,16 +427,16 @@ const tableRowClassName = ({row,rowIndex}) => {
 }
 
 // 3.1新增按钮弹框
-const deviceTypeOptions = ref([
-  {
-    value: 0,
-    label: '固定设备'
-  },
-  {
-    value: 1,
-    label: '移动设备'
-  }
-])
+// const deviceTypeOptions = ref([
+//   {
+//     value: 0,
+//     label: '固定设备'
+//   },
+//   {
+//     value: 1,
+//     label: '移动设备'
+//   }
+// ])
 const formLabelWidth = "32%";
 const newdialogFormVisible = ref(false)
 const newForm = reactive({
@@ -456,8 +456,8 @@ const newFormRef = ref(null)
 const newFormRules = reactive({
   deviceId: [{ required: true, message: '请输入', trigger: 'blur' }],
   deviceName: [{ required: true, message: '请输入', trigger: 'blur' }],
-  deviceIpAddress: [{ required: true, message: '请输入', trigger: 'blur' }],
-  port: [{ required: true, message: '请输入', trigger: 'blur' }],
+  deviceIpAddress: [{ required: true, message: '请输入', trigger: 'blur' },{ pattern:/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/, message: '情输入正确的ip地址', trigger: 'blur'}],
+  port: [{ required: true, message: '请输入', trigger: 'blur' },{ pattern:/^(([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5]))$/, message: '范围需在0-65535之间', trigger: 'blur'}],
   brand: [{ required: true, message: '请输入', trigger: 'blur' }],
   modelNumber: [{ required: true, message: '请输入', trigger: 'blur' }],
   // region: [{ required: true, message: '请输入', trigger: 'blur' }]
@@ -579,8 +579,8 @@ const editFormRef = ref(null)
 const editFormRules = reactive({
   deviceId: [{ required: true, message: '请输入', trigger: 'blur' }],
   deviceName: [{ required: true, message: '请输入', trigger: 'blur' }],
-  deviceIpAddress: [{ required: true, message: '请输入', trigger: 'blur' }],
-  port: [{ required: true, message: '请输入', trigger: 'blur' }],
+  deviceIpAddress: [{ required: true, message: '请输入', trigger: 'blur' },{ pattern:/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/, message: '情输入正确的ip地址', trigger: 'blur'}],
+  port: [{ required: true, message: '请输入', trigger: 'blur' },{ pattern:/^(([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5]))$/, message: '范围需在0-65535之间', trigger: 'blur'}],
   brand: [{ required: true, message: '请输入', trigger: 'blur' }],
   modelNumber: [{ required: true, message: '请输入', trigger: 'blur' }],
   region: [{ required: true, message: '请输入', trigger: 'blur' }]
@@ -874,6 +874,7 @@ const refresh=()=>{
 
         .el-form-item__label {
           justify-content: flex-start;
+          white-space: nowrap;
         }
       }
     }

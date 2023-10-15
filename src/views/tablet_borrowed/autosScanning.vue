@@ -3,7 +3,7 @@
     <!-- 1.左-->
     <div class="left">
       <!-- 1.1取平板 -->
-      <div class="tip">取平板</div>
+      <div class="tip">借用平板</div>
       <!-- 1.2会议信息 -->
       <div class="borrowedInfo">
         <!-- <div>集团2023年5月度工作例会</div>
@@ -114,18 +114,18 @@
                  </template>
               </el-table-column>
 
-              <el-table-column prop="borrowedStatus" label="设备借用状态" min-width="20.5%">
+              <el-table-column prop="borrowedStatus" label="设备状态" min-width="20.5%">
                 <!-- 自定义表头：设备状态 -->
                 <template #header>
                   <el-select
                     v-model="borrowedStatusValue"
-                    placeholder="设备借用状态"
+                    placeholder="设备状态"
                     style="width: 100%"
                     popper-class="zdy_select3"
                   >
                    
                    <template #prefix>
-                     设备借用状态
+                     设备状态
                    </template>
                     <el-option
                       v-for="item in deviceStateOptions"
@@ -161,16 +161,16 @@
           <!-- </el-scrollbar> -->
         </div>
         <!-- 提示 -->
-        <div class="tips">
+        <!-- <div class="tips">
            <span>提示：</span>
-           <!-- <span style="color:red;font-weight:800">红色字体</span>
-           <span>表示该借出的设备未被扫描检测到；</span> -->
+           <span style="color:red;font-weight:800">红色字体</span>
+           <span>表示该借出的设备未被扫描检测到；</span>
            <span style="font-weight:800">白色字体</span>
-           <span>表示该设备被扫描检测到或已被借取；</span>
+           <span>为该设备被扫描检测到或已被借出；</span>
            <span style="color:rgba(255, 255, 255, 0.6)">黑色背景行</span>
            <span>表示该借出的设备已经被归还。</span>
            
-        </div>
+        </div> -->
       </div>
       <!--以下为 手动添加-------弹出框  -->
     <el-dialog v-model="dialogFormVisible" title="手动添加">
@@ -216,7 +216,7 @@ import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
-import { request, noderedrequest ,tabletRequest,tabletWSRequest} from '@/utils/server.js'
+import { request, noderedrequest ,tabletRequest} from '@/utils/server.js'
 import {createWebSocket} from "@/utils/websocket.js"
 import { dataType } from 'element-plus/es/components/table-v2/src/common'
 var wsbaseURL=import.meta.env.VITE_BASE_URL4
@@ -1032,7 +1032,7 @@ const deleteitem = (v) => {
                 }
                 .cell:has(.isReturned){
                   background-color: rgba(90, 90, 90, 0.2);
-                  
+                  color: rgba(255,255,255,0.6);
                 } 
               }
             }

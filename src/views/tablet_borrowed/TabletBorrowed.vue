@@ -14,8 +14,6 @@
               <span>当日借用信息</span><span>({{ today }})</span>
               <img src="@/assets/tablet_borrowed/4.png" class="img4" />
               <div v-if="isshow">
-                <!-- <div v-if="isMorningOrAfternoon">上午剩余可借用：5台</div>
-                    <div v-else>下午剩余可借用：5台</div> -->
                 <Swiper
                   :modules="modules"
                   :autoplay="{
@@ -166,6 +164,7 @@
                   placeholder="借用时间"
                   size="small"
                   :disabled-date="disabledDate"
+                  :editable="false"
                 >
                 </el-date-picker>
               </template>
@@ -181,7 +180,7 @@
   </div>
 </template>
 <script setup lang="jsx">
-import { ref, reactive, onMounted, computed, watch, nextTick ,shallowRef,h} from 'vue'
+import { ref, reactive, onMounted, computed, watch, nextTick ,shallowRef,h,onUnmounted,onBeforeUnmount} from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 import axios from 'axios'
@@ -198,7 +197,22 @@ const modules = [Autoplay]
 
 
 
-
+// 1. 左侧当日借用信息 列表接口
+// const getTodayAppointmentList=()=>{
+//   tabletRequest
+//     .post('/', {
+        
+//     })
+//     .then((response) => {
+//       // debugger
+//       console.log('当日借用记录按条件查询成功:', response.data)
+//       dayTableData.value=response.data.result
+     
+//     })
+//     .catch((error) => {
+//       console.log('当日借用记录按条件查询失败:', error)
+//     })
+// }
 //1.当日借用信息
 const today = ref('')
 var time = new Date()
@@ -307,23 +321,62 @@ const getDayStateStr = (v) => {
 }
 // 轮播图
 const isshow=ref(false)
+
+// 轮询刷新
+const setTimeoutZdy=(option)=>{
+   setTimeout(function(){
+      console.log(1111)
+      // debugger
+      try{
+        if(typeof option.fn=="function"){
+          option.fn()
+          if(option.isClose){
+            return
+          }
+        }
+      }
+      catch{
+        
+      }
+    setTimeoutZdy(option)
+   },option.time||5000)
+}
+var option={isClose:false,fn:()=>{
+      // 调用接口
+      dayGetList()
+      getAppointmentList()
+      
+  },time:100000}
+
 onMounted(() => {
   // dayGetList()
-  
   getAppointmentList()
+
   nextTick(()=>{
     isshow.value=true
   })
+  
+  setTimeoutZdy(option)
+
+  // 定时刷新首页涉及接口
+  // timer=window.setInterval(()=>{
+  //    setTimeout(getAppointmentList(),0)
+  // },5000)
+  
 })
-// 上午/下午剩余台数
-const isMorningOrAfternoon = ref(true)
-setInterval(function () {
-  isMorningOrAfternoon.value = !isMorningOrAfternoon.value
-}, 5000)
+// 生命周期:销毁前
+onBeforeUnmount(()=>{
+  // clearInterval(timer)
+  // 退出页面 停止轮询
+  option.isClose=true
+  
+})
+
 
 //2.预约记录
 // 2. 右侧预约记录 列表接口
 const getAppointmentList=()=>{
+  
   tabletRequest
     .post('/IotDeviHisCrtl/queryBorrowHisRetultInfo', {
         "endDayNum": 7,
@@ -400,12 +453,12 @@ const returnTablet = () => {
     path: '/returnValidate-password'
   })
 }
-watch(
-  () => appointmentValue.value,
-  () => {
-    appointmentGetList()
-  }
-)
+// watch(
+//   () => appointmentValue.value,
+//   () => {
+//     appointmentGetList()
+//   }
+// )
 </script>
 
 <style lang="less">
@@ -414,7 +467,7 @@ watch(
   background: transparent !important;
   border: 0px !important ;
   margin-top: (-36/1080) * 100vh !important;
-  margin-left: (-36/1080) * 100vh !important;
+  margin-left: (0/1980) * 100vw !important;
   width: 300px!important;
   height: 300px!important;
   // inset:(262/1080) * 100vh  auto auto (1005/1080) * 100vh!important;
@@ -422,6 +475,7 @@ watch(
   .el-date-picker {
     zoom: 0.8;
     background: #05456e !important;
+    
   }
   .el-popper__arrow {
     display: none !important;

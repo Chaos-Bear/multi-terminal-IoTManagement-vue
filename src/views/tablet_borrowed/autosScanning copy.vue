@@ -188,7 +188,7 @@ import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
-import { request, noderedrequest ,tabletRequest,tabletWSRequest} from '@/utils/server.js'
+import { request, noderedrequest ,tabletRequest} from '@/utils/server.js'
 import {createWebSocket} from "@/utils/websocket.js"
 import { dataType } from 'element-plus/es/components/table-v2/src/common'
 

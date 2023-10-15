@@ -3,7 +3,7 @@
     <!-- 1.左-->
     <div class="left">
       <!-- 1.1还平板 -->
-      <div class="tip">还平板</div>
+      <div class="tip">归还平板</div>
       <!-- 1.2会议信息 -->
       <div class="meetingInfo">
         <div class="first">{{ borrowedInfo.mtName  ? borrowedInfo.mtName : "暂无会议信息"}}</div>
@@ -78,7 +78,17 @@
             <!-- <span :style="(tableData.length>borrowedInfo.borrowNum) ? 'color:red':''">{{ returnNum }}</span>
             <span>/{{ borrowedInfo.borrowNum ? borrowedInfo.borrowNum : 0 }}</span> -->
           </div>
-          
+          <!-- 提示 -->
+          <div class="tips">
+            <span>提示：</span>
+            <span style="color:red;font-weight:800">红色字体：</span>
+            <span>未扫描到；</span>
+            <span style="font-weight:800">白色字体：</span>
+            <span>已扫描到；</span>
+            <span style="color:rgba(255, 255, 255, 0.6)">黑色背景行：</span>
+            <span>已被归还。</span>
+            
+          </div>
         </div>
         <!-- 扫描信息 -->
         <div class="scanning">
@@ -100,7 +110,7 @@
               <el-table-column prop="tabletID" label="设备序列号" min-width="30%" >
                 <template #default="scope">
                   <!-- {{scope.row['isscaned']}} -->
-                  <div :style="(scope.row['isscaned'] || scope.row.borrowedStatus==3)? 'color:#fff':'color:red'">{{scope.row.tabletID}}</div>
+                  <div :style="getStyle(scope.row)">{{scope.row.tabletID}}</div>
                   <div class="isReturned" v-if="scope.row.borrowedStatus==3"></div>
                 </template>
               </el-table-column>
@@ -110,19 +120,19 @@
                   <div class="isReturned" v-if="scope.row.borrowedStatus==3"></div>
                 </template>
               </el-table-column>
-              <el-table-column prop="borrowedStatus" label="设备借用状态" min-width="20.5%">
+              <el-table-column prop="borrowedStatus" label="设备状态" min-width="20.5%">
                  <!-- 自定义表头：设备状态  @change="onChange1"-->
                 <template #header>
                   <el-select
                     v-model="borrowedStatusValue"
-                    placeholder="设备借用状态"
+                    placeholder="设备状态"
                    
                     style="width: 100%"
                     popper-class="zdy_select4"
                     class="zdy"
                   >
                    <template #prefix>
-                     设备借用状态
+                     设备状态
                    </template>
                     <el-option
                       v-for="item in deviceStateOptions"
@@ -167,17 +177,7 @@
             </el-table>
           <!-- </el-scrollbar> -->
         </div>
-        <!-- 提示 -->
-        <div class="tips">
-           <span>提示：</span>
-           <span style="color:red;font-weight:800">红色字体</span>
-           <span>表示该借出的设备未被扫描检测到；</span>
-           <span style="font-weight:800">白色字体</span>
-           <span>表示该借出的设备已被扫描到；</span>
-           <span style="color:rgba(255, 255, 255, 0.6)">黑色背景行</span>
-           <span>表示该借出的设备已经被归还。</span>
-           
-        </div>
+        
       </div>
     </div>
     <!--以下为 手动添加-------弹出框  -->
@@ -225,7 +225,7 @@ import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
-import { request, noderedrequest ,tabletRequest,tabletWSRequest} from '@/utils/server.js'
+import { request, noderedrequest ,tabletRequest} from '@/utils/server.js'
 import {createWebSocket} from "@/utils/websocket.js"
 var wsbaseURL=import.meta.env.VITE_BASE_URL4
 
@@ -709,7 +709,16 @@ const deleteitem = (v) => {
     }
   }
 }
-
+const getStyle=(row)=>{
+   (row['isscaned'] || row.borrowedStatus==3)? 'color:#fff':'color:red';
+   if(row.borrowedStatus==3){
+       return 'color:rgba(255,255,255,0.6)'
+   }else if(row['isscaned']){
+       return 'color:#fff'
+   }else{
+       return 'color:red' 
+   }
+}
 </script>
 <style lang="less">
   .el-popper.zdy_select4{
@@ -793,6 +802,7 @@ const deleteitem = (v) => {
         text-align: center;
         font-family: SourceHanSansSC-regular;
         word-wrap: break-word;
+        // word-break:break-all;
       }
       .second {
         height: (77/1080) * 100vh;
@@ -1085,7 +1095,7 @@ const deleteitem = (v) => {
 
                 .el-button {
                   color: rgba(24, 144, 255, 1);
-                  font-size: (14/1920) * 100vw;
+                  font-size: (18/1920) * 100vw;
                   text-align: left;
                   font-family: SourceHanSansSC-regular;
                   // :deep(.el-switch__label .is-active){
@@ -1107,6 +1117,7 @@ const deleteitem = (v) => {
                 }
                 .cell:has(.isReturned){
                   background-color: rgba(90, 90, 90, 0.2);
+                  color: rgba(255,255,255,0.6);
                 }
               }
             }
@@ -1127,10 +1138,10 @@ const deleteitem = (v) => {
       }
       //提示
       .tips{
-        margin-top:(24/1080) * 100vh;
+        // margin-top:(24/1080) * 100vh;
          span{
           color: rgba(255, 255, 255, 1);
-          font-size: 14px;
+          font-size: (14/1920) * 100vw;
           text-align: left;
           font-family: SourceHanSansSC-regular;
          }

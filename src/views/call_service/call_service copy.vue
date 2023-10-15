@@ -13,8 +13,32 @@
           <el-container>
             <!-- 1. 侧边栏 -->
             <el-aside style="width:19.167vw; height:83.33vh;margin-left:2.1212vw">
+              <!-- 1.1 搜索框 -->
               <el-scrollbar always height="83.33vh" view-class="call_service_scrollbar">
-                <div
+                <div class="search" >
+                  <el-input
+                    v-model="input1"
+                    class="w-50 m-2"
+                    placeholder="搜索"
+                    :prefix-icon="Search"
+                    @input="inputChange"
+                  />
+                </div>
+                <!-- 1.1.1 搜索列表-->
+                <div v-if="input1 !=''" class="searchList">
+                  <div>会议室 ({{roomNameList.length}})</div>
+                  <!-- 搜索到的会议室 -->
+                  <div>                 
+                    <div v-for="(item ,i) in roomNameList" @click="searchClick(item.data)" :key="i">
+                      <!-- <span class="jianxie">210</span>
+                      <span class="roomName">A2-210会议室</span> -->
+                      <span class="jianxie">{{item.roomName.split("-")[1]}}</span>
+                      <span class="roomName">{{item.roomName}}会议室</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- 1.2 -->
+                <div  v-else  :id="'roomID'+item.roomID"
                   :class="['roomList', currentMeetingIndex == item.roomID ? 'active' : '', ( item && item.chatState&& item.chatState!='已读')?'hasmsg':'']"
                   v-for="(item, i) in roomInfo"
                   @click="clickRoomName(item)"
@@ -99,6 +123,7 @@
                         <div class="othersMsg" v-if="item.userID != userId">
                           <div class="call_service_chat_messages_name">
                             <span>{{ item.userName ? item.userName : 'NARI' }}</span>
+                            <span>{{ item.chatTime.indexOf(dayTime)==-1 ? item.chatTime.slice(0,-3):item.chatTime.split(" ")[1].slice(0,-3)}}</span>
                           </div>
                           <div class="msgcont">
                             <div class="call_service_chat_messages">
@@ -112,11 +137,11 @@
                             <!-- <div>{{ item.chatTime.indexOf(dayTime)==-1 ? item.chatTime.slice(0,-3):item.chatTime.split(" ")[1].slice(0,-3)}}</div> -->
                           </div>
                         </div>
-                        <!-- 2.2.2 自己消息 -->
+                        <!-- 2.2.2 自己消息 v-if="item.chatTime!=historyMsgList[i+1].chatTime"-->
                         <div class="myMsg" v-else>
-                          <div class="call_service_chat_messages_name">
+                          <div class="call_service_chat_messages_name" >
                             <span>{{ item.userName ? item.userName : item.userID }} </span>
-                            <span>{{ item.chatTime.indexOf(dayTime)==-1 ? item.chatTime.slice(0,-3):item.chatTime.split(" ")[1].slice(0,-3)  }}</span>
+                            <span >{{ item.chatTime.indexOf(dayTime)==-1 ? item.chatTime.slice(0,-3):item.chatTime.split(" ")[1].slice(0,-3)  }}</span>
                           </div>
                           <div class="mymsgcont">
                             <div class="call_service_chat_messages">
@@ -238,13 +263,18 @@
 </template>
 
 <script setup>
-import { nextTick, onDeactivated, onMounted, reactive, ref } from 'vue'
-import { ChatDotRound } from '@element-plus/icons-vue'
+import { nextTick, onDeactivated, onMounted, reactive, ref ,computed} from 'vue'
+import { ChatDotRound,Search } from '@element-plus/icons-vue'
+import {ElMessage} from "element-plus";
 import axios from 'axios'
 import { useRoute } from 'vue-router';
 import {createWebSocket} from "@/utils/websocket.js";
 
 import {request,noderedrequest}  from "@/utils/server.js" 
+// 中间聊天区域wsbaseURL11
+var wsbaseURL11=import.meta.env.VITE_BASE_URL11
+// 右侧楼层区域wsbaseURL12
+var wsbaseURL12=import.meta.env.VITE_BASE_URL12
 
 // debugger
 const route = new useRoute()
@@ -353,7 +383,7 @@ const getHistoryInfo = () => {
       
       if(isScrollToBottom.value){
         nextTick(() => {
-          scrollbarRef.value.scrollTo(0, scrollbarRef.value.wrapRef.scrollHeight)
+          scrollbarRef.value && scrollbarRef.value.scrollTo(0, scrollbarRef.value.wrapRef.scrollHeight)
         })
         isScrollToBottom.value=false
       }
@@ -374,12 +404,82 @@ onMounted(() => {
   // getHistoryInfo()
 })
 
+// 1.1左侧顶部搜索框
+const input1 = ref('')
+function debounce(func, wait, immediate) {
+  let timeout
+  return function () {
+    let context = this
+    let args = arguments
+    if (timeout) {
+      clearTimeout(timeout)
+    }
+    if (immediate) {
+      let callNow = !timeout
+      timeout = setTimeout(() => {
+        timeout = null
+      }, wait)
+      if (callNow) {
+        typeof func === 'function' && func.apply(context, args)
+      }
+    } else {
+      timeout = setTimeout(() => {
+        typeof func === 'function' && func.apply(context, args)
+      }, wait)
+    }
+  }
+}
+
+const roomNameList=ref([])
+// roomInfo.value
+
+// 搜索框输入内容变化，搜索出对应会议室
+const inputChangeFn=()=>{
+  console.log(input1.value)
+  // debugger
+  if(input1.value!=''){
+    var arr=[]
+    for(var i=0;i<roomInfo.value.length;i++){
+      
+      if(roomInfo.value[i].roomName.indexOf(input1.value)>-1){
+        arr.push({
+          index:i,
+          roomName:roomInfo.value[i].roomName,
+          data:roomInfo.value[i]
+          })
+      }
+    }
+    roomNameList.value=arr
+  }
+  
+}
+const inputChange=debounce(inputChangeFn,300,false)
+
+// 点击搜索到的会议室
+const searchClick=(data)=>{
+  var room
+  for(var i=0;i<roomInfo.value.length;i++){
+      if(roomInfo.value[i].roomID==data.roomID){
+         room=i
+         break
+      }
+    }
+  // 调用点击事件--跳转到对应会议室
+  clickRoomName(roomInfo.value[room])
+  input1.value="",
+  roomNameList.value=[]
+  nextTick(()=>{
+    var element= document.getElementById('roomID'+roomInfo.value[room].roomID)
+    // 该方法支持，将元素滚动到浏览器可视窗口区域
+    element.scrollIntoView({block: "start", inline: "nearest"});
+  })
+}
+
 
 const meetingInfo = ref({
   obj: {}
 })
-// 点击左侧每个会议室
-
+// 1.2点击左侧每个会议室
 const clickRoomName = (item) => {
   // debugger
   item.hasMsg=false;
@@ -452,14 +552,25 @@ const onScroll = (top) => {
 var websocket=createWebSocket('ws://172.28.5.134:8282/wsmq',{onopen(e){
  
 // var websocket=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/wsmq',{onopen(e){
-
+  
   console.log('建立了websocket连接')
   console.log(e)
+  if(roomInfo.value.length>0){
+    let index
+    for(var i=0;i<roomInfo.value.length;i++){
+      if(currentMeetingIndex.value==roomInfo.value[i].roomID){
+        index=i
+        break
+      }
+    }
+    clickRoomName(roomInfo.value[index])
+  }
   // 重新调用会议室最新消息列表-----------------------
   // getmsgList()
 
 },onmessage(e){
-    // console.log('接收服务器消息：', e.data)
+  // debugger
+  console.log('接收服务器消息：', e.data)
   // 如果e.data是所有消息，则判断是否是当前会议室消息
   
   var data = JSON.parse(e.data)
@@ -475,20 +586,30 @@ var websocket=createWebSocket('ws://172.28.5.134:8282/wsmq',{onopen(e){
     }
   }
   nextTick(() => {
-    // debugger
-    scrollbarRef.value.scrollTo(0, scrollbarRef.value.wrapRef.scrollHeight)
+    scrollbarRef.value && scrollbarRef.value.scrollTo(0, scrollbarRef.value.wrapRef.scrollHeight)
     
   })
 },onerror(){
 
 },onclose(){
-
+  
 },onbeforeunload(){
    
+},onreconnect(ws){
+  websocket=ws
+ 
 }})
 
 // 监听输入框消息变化
 const onChangeMsgInfo = (e) => {
+  if(!inputMsg.value && e.target.innerHTML=='发送'){
+    ElMessage({
+      type: 'warning',
+      message: '请输入消息',
+      offset:16,
+    })
+    return
+  }
   var sendmsg = {
     callUser: {
       userID: userId.value,
@@ -496,7 +617,7 @@ const onChangeMsgInfo = (e) => {
       // userID: '4600072255',
       // userName: '益伟康'
     },
-    chatMsg: (inputMsg.value ? inputMsg.value : '' )||(e.target.innerHTML?e.target.innerHTML:'') ,
+    chatMsg: inputMsg.value||(e.target.innerHTML?e.target.innerHTML:''),
     // "chatTime": "2023-08-07 10:22:54",
     meetID: meetingInfo.value.obj.meetID ? meetingInfo.value.obj.meetID : '',
     roomID: meetingInfo.value.obj.roomID,
@@ -509,10 +630,9 @@ const onChangeMsgInfo = (e) => {
   console.log("常用于选择",e.target.innerHTML) 
   console.log('发送消息：', sendmsg)
   //数据是字符串、ArrayBuffer或Blob中的一种4
-  websocket.send(JSON.stringify(sendmsg))
- 
-  inputMsg.value = ''
   
+  websocket.send(JSON.stringify(sendmsg))
+  inputMsg.value = ''
 }
 
 // 断开重连
@@ -543,7 +663,7 @@ var isLocked=true
 // 测试环境
 var ws1=createWebSocket('ws://172.28.5.134:8084/call-service/websocket/4600072255',{onopen(e){
 
-// http环境
+// 域名环境
 // var ws1=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/call-service/websocket/'+userId.value,{onopen(e){
    console.log('建立了ws1连接')
    
@@ -587,19 +707,19 @@ var ws1=createWebSocket('ws://172.28.5.134:8084/call-service/websocket/460007225
       // 右侧楼层信息
       floorInfo.value=[]
       floorInfo.value=data.result
-      console.log("右侧楼层信息",floorInfo.value)
-
+      // console.log("右侧楼层信息",floorInfo.value)
      }
-   
   }
-  
 },onerror(){
      
 },onclose(){
    
 },onbeforeunload(){
    
-}})
+},onreconnect(ws){
+    ws1=ws
+}
+})
 
 // 3.右侧楼层
 // 3.1 右侧折叠栏默认打开
@@ -631,12 +751,12 @@ const isOpen=(v,item1)=>{
       {
         "message": v,
         "pubTopic": topic,
-        "qos": 0,
-        "retained": false
+        "qos": 2,
+        "retained": true
       }
     )
     .then((res) => {
-      console.log('控制设备发送成功', res)
+      // console.log('控制设备发送成功', res)
       
     })
     .catch((error) => {
@@ -657,6 +777,92 @@ const isOpen=(v,item1)=>{
     margin-top:(10/1080)*100vh ;
     // 1.左侧侧边栏
     // .el-side:nth-child(1){
+    // 1.1搜索框
+    .search{
+      width: (340/1920)*100vw;
+      margin-bottom: (20/1080)*100vh;
+      
+      .el-input{
+        height: (50/1080)*100vh;
+        border-radius: (8/1920)*100vw;
+        font-size: (18/1920)*100vw;
+        text-align: center;
+        font-family: Roboto;
+        border: 1px solid rgba(0, 207, 255, 1);
+        .el-input__wrapper{
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow:none;
+            .el-icon svg{
+              color: rgba(255, 255, 255, 0.8);;
+            }
+        } 
+        .el-input__inner{
+          color: rgba(255, 255, 255, 1);
+            &::-webkit-input-placeholder{
+              color: #fff;
+            }
+            &:-moz-placeholder{
+              color: #fff;
+            }
+            &::-moz-placeholder{
+              color: #fff;
+            }
+            &:-ms-input-placeholder{
+              color: #fff;
+            }
+        }
+      }
+    }
+    // 1.2搜索列表
+    .searchList{
+       &>div:nth-child(1){
+        height: (20/1080)*100vh;
+        line-height: (20/1080)*100vh;
+        margin-bottom: (10/1080)*100vh;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: (14/1920)*100vw;
+        text-align: left;
+        font-family: SourceHanSansSC-regular;
+       }
+       &>div:nth-child(2){
+          div{
+            width: (340/1920)*100vw;
+            height: (83/1080)*100vh;
+            margin-bottom: (10/1080)*100vh;
+            border-radius: (10/1920)*100vw;
+            background-color: rgba(24, 144, 255, 0.1);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            .jianxie{
+              width: (43/1920)*100vw;
+              height: (43/1920)*100vw;
+              line-height: (43/1080)*100vh;
+              margin-left:(34/1920)*100vw ;
+              margin-right:(11/1920)*100vw ;
+              border-radius: 50%;
+              background-color: rgba(24, 144, 255, 0.5);
+              color: rgba(255, 255, 255, 1);
+              font-size: (20/1920)*100vw;
+              text-align: center;
+              font-family: Roboto;
+            }
+            .roomName{
+              height: (26/1080)*100vh;
+              color: rgba(255, 255, 255, 1);
+              font-size: (18/1920)*100vw;
+              text-align: left;
+              font-family: SourceHanSansSC-regular;
+            }
+             &:hover{
+              background-color: rgba(22, 208, 255, 0.8);
+              }
+          }
+         
+       }
+    }
+
+    // 1.3会议室列表
     .roomList {
       display: flex;
       flex-direction: column;
@@ -764,13 +970,25 @@ const isOpen=(v,item1)=>{
         word-break: break-all;
         display: flex;
         margin-bottom: -(20/1080)*100vh;
+        display: flex;
+        align-items: center;
+        span:nth-child(1){
+           margin-right:(10/1920)*100vw ;
+        }
+        span:nth-child(2){
+          color: rgba(255, 255, 255, 0.8);
+          font-size: (14/1920)*100vw;
+          text-align: right;
+          font-family: SourceHanSansSC-regular;
+        }
       }
       .call_service_chat_messages {
         color: white;
         margin-bottom: (28/1080)*100vh;
         position: relative;
         min-height:(60/1080)*100vh;
-        margin-top: (25/1080)*100vh;
+        // margin-top: (25/1080)*100vh;
+        margin-top: (14/1080)*100vh;
         font-size: (18/1920)*100vw;
         word-break: break-all;
         display: flex;
@@ -793,10 +1011,15 @@ const isOpen=(v,item1)=>{
           margin-bottom: (10/1080)*100vh;
           margin-right: (10/1920)*100vw;
           display: flex;
-          align-items: center;
+          align-items:normal;
           justify-content: flex-end;
+          img{
+            width:(20/1920)*100vw;
+            height: (20/1920)*100vw;
+          }
           span{
             height: (20/1080)*100vh;
+            line-height: (26/1080)*100vh;
             margin-left: (4/1920)*100vw;
             color: rgba(255, 255, 255, 0.5);
             font-size: (14/1920)*100vw;
@@ -843,10 +1066,48 @@ const isOpen=(v,item1)=>{
           }
         }
       }
-      
-      
-
       //2.1 他人消息
+      .msgcont {
+        display: flex;
+        justify-content: space-between;
+        & > div{
+          margin-right: (20/1920)*100vw;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: (14/1920)*100vw;
+          text-align: right;
+          font-family: SourceHanSansSC-regular;
+          transform: translateY((14/1080)*100vh);
+        }
+        .call_service_chat{
+          text-align: left;
+        }
+      }
+      
+      //2.2 自己消息
+      .myMsg {
+        & > div {
+          justify-content: flex-end;
+          right: (20/1920)*100vw;
+
+          .call_service_chat {
+            border-radius: (20/1080)*100vh 0 (20/1080)*100vh (20/1920)*100vw;
+            right: (20/1920)*100vw;
+          }
+        }
+        .mymsgcont {
+          display: flex;
+          justify-content: flex-end !important;
+          & > div {
+            // height: (20/1080)*100vh;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: (14/1920)*100vw;
+            text-align: left;
+            font-family: SourceHanSansSC-regular;
+            transform: translateY((14/1080)*100vh);
+          }
+        }
+      }
+      //2.3 历史记录字样
       .historyInfo {
         text-align: center;
         span {
@@ -857,47 +1118,7 @@ const isOpen=(v,item1)=>{
           border-radius: 0 (20/1920)*100vw (20/1080)*100vh (20/1920)*100vw;
         }
       }
-      //2.2 自己消息
-      .myMsg {
-        .msgcont {
-        display: flex;
-        justify-content: space-between;
-        & > div:nth-child(2) {
-          // width: 104px;
-          height: (20/1080)*100vh;
-          margin-right: (20/1920)*100vw;
-          color: rgba(255, 255, 255, 0.8);
-          font-size: (14/1920)*100vw;
-          text-align: right;
-          font-family: SourceHanSansSC-regular;
-          transform: translateY((30/1080)*100vh);
-        }
-      }
-      .mymsgcont {
-        display: flex;
-        justify-content: flex-end;
-        & > div:nth-child(1) {
-          // width: 104px;
-          height: (20/1080)*100vh;
-          color: rgba(255, 255, 255, 0.8);
-          font-size: (14/1920)*100vw;
-          text-align: right;
-          font-family: SourceHanSansSC-regular;
-          transform: translateY((30/1080)*100vh);
-        }
-      }
-        & > div {
-          justify-content: flex-end;
-          right: (20/1920)*100vw;
-
-          .call_service_chat {
-            border-radius: (20/1080)*100vh 0 (20/1080)*100vh (20/1920)*100vw;
-            right: (20/1920)*100vw;
-          }
-        }
-      }
-
-      // 2.3 暂无记录
+      // 2.4 暂无记录
       .noMessageRecode {
         text-align: center;
         span {

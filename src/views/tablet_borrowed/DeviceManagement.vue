@@ -38,7 +38,7 @@
     <!-- 3.设备列表 -->
     <div class="deviceList">
       <!-- 此处设置了滚动条组件 -->
-      <el-scrollbar style="width: 100%">
+      <!-- <el-scrollbar style="width: 100%"> -->
         <!-- 3.2 设备列表-->
         <el-table
           :data="tableData"
@@ -100,7 +100,7 @@
             </template>
           </el-table-column>
         </el-table>
-      </el-scrollbar>
+      <!-- </el-scrollbar> -->
     </div>
     <!--新增弹框表单  -->
          <div class="tankuang">

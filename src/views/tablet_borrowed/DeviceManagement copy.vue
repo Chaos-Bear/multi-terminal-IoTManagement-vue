@@ -146,7 +146,7 @@ import { reactive, ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
-import {request,noderedrequest,tabletWSRequest}  from "@/utils/server.js" 
+import {request,noderedrequest}  from "@/utils/server.js" 
 
 const table = ref(null)
 const getList = () => {
