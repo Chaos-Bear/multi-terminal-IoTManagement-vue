@@ -551,6 +551,11 @@ const handleCurrentChange = (val) => {
              background-color: rgba(24, 144, 255, 0.1);
              margin-right: (10/1920)*100vw;
            }
+           .cell:has(.isReturned){
+             height: 1px;
+             background-color: transparent;
+              
+            } 
         }
       }
       }
