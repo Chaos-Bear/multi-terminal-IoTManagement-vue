@@ -6,26 +6,28 @@
       <div class="tip">归还平板</div>
       <!-- 1.2会议信息 -->
       <div class="meetingInfo">
-        <div class="first">{{ borrowedInfo.mtName  ? borrowedInfo.mtName : "暂无会议信息"}}</div>
+        <div class="first">{{ borrowedInfo.meetName  ? borrowedInfo.meetName : "暂无会议信息"}}</div>
         <div class="second">
           <div>
-            会议时间：暂无会议时间
-            <!-- {{
-              borrowedInfo.borrowStartTime.slice(0, -3) +' ～'+borrowedInfo.borrowEndTime.slice(10, -3)
-            }} -->
+            会议时间：
+           {{(borrowedInfo.meetStartTime&&borrowedInfo.meetEndTime) ?
+             ( borrowedInfo.meetStartTime.slice(0, -3) +
+              ' ～' +
+              borrowedInfo.meetEndTime.slice(10, -3)) :"暂无会议时间"
+            }}
           </div>
-          <div>借用地点：暂无会议地点</div>
+          <div>借用地点：{{borrowedInfo.roomName?borrowedInfo.roomName:"暂无会议地点"}}</div>
         </div>
         <div class="third">
           <div>借用人：{{ borrowedInfo.userName ? borrowedInfo.userName : "" }}</div>
           <div>借用数量：{{ borrowedInfo.borrowNum? borrowedInfo.borrowNum: 0}} 台</div>
           <div>
-            借用时间：{{borrowedInfo.borrowTime}}
-            <!-- {{
+            借用时间：
+            {{(borrowedInfo.borrowStartTime&&borrowedInfo.borrowEndTime) ? (
               borrowedInfo.borrowStartTime.slice(0, -3) +
-              ' ～' +:
-              borrowedInfo.borrowEndTime.slice(10, -3)
-            }} -->
+              ' ～' +
+              borrowedInfo.borrowEndTime.slice(10, -3)) :"暂无借用时间"
+            }}
           </div>
         </div>
         <div class="four">
@@ -225,7 +227,7 @@ import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
-import { request, noderedrequest ,tabletRequest} from '@/utils/server.js'
+import { request ,tabletRequest} from '@/utils/server.js'
 import {createWebSocket} from "@/utils/websocket.js"
 var wsbaseURL=import.meta.env.VITE_BASE_URL4
 
@@ -297,12 +299,14 @@ const num=computed(()=>{
 
 const borrowedInfo = ref(
   {
-    // "roomName": "8559878580142080",
-    // "meetName": "8646084058906624",
-    // "meetTime": null,
-    // "userName": "维康",
-    // "borrowNum": 1,
-    // "borrowTime": "2023-10-08 11:00:00"
+    "roomName": "A2-205",
+    "meetName": "江苏采集2.0建设研讨会",
+    "meetStartTime": "2023-01-20 16:00:00",
+    "meetEndTime": "2023-01-20 18:00:00",
+    "userName": "维康",
+    "borrowNum": 2,
+    "borrowStartTime": "2023-10-17 08:00:00",
+    "borrowEndTime": "2023-10-17 11:00:00"
   },
 )
 onMounted(() => {
@@ -627,8 +631,56 @@ const continueScan = () => {
   isSuccess.value = true
 }
 // 1.4.4 返回首页
+// 关闭设备接口
+const closeScanDevice=()=>{
+   tabletRequest
+    .post('/IotDeviRevertCrtl/closeScannDevice', 
+      {
+        "message": "OFF",
+        "closeTopic": "A2-206/206-RFID-DOWN",
+        "qos": 2,
+        "retained": false
+      }
+    )
+    .then((res) => {
+      // debugger
+      if(res.data.repCode==200){
+         console.log('扫描设备已关闭成功:', res)
+      }
+    })
+    .catch((error) => {
+      console.log('扫描设备已关闭失败:', error)
+    })
+}
+// 重置接口
+const resetScanDevice=()=>{
+   tabletRequest
+    .post('/IotDeviRevertCrtl/resetDeviceBind', 
+      {
+        "topic": repMsg,
+        "verifyCode": repCode
+      }
+    )
+    .then((res) => {
+      // debugger
+      if(res.data.repCode==200){
+         console.log('重置成功:', res)
+      }
+    })
+    .catch((error) => {
+      console.log('重置失败:', error)
+    })
+}
 const goBack = () => {
   router.push('/tablet')
+  // 调用Promise.all().then(res=>{})
+      Promise.all([closeScanDevice(), resetScanDevice()]).then((val) => {
+        
+	      console.log("关闭及重置成功",val)
+	   	  // 相关操作
+        }).catch((err)=>{
+        console.log("err",err)
+      });
 }
 
 //2.2 打开归还页面，直接获取该验证码对应的借用设备列表，并展示

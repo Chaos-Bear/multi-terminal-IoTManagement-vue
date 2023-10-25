@@ -47,6 +47,7 @@ function init(websocket,urlPath,events) {
 
   //连接发生错误的回调方法
   websocket.onerror = function (event) {
+    
     console.log('WebSocket:发生错误')
     typeof events.onerror == 'function' && events.onerror(event)
 
@@ -55,11 +56,18 @@ function init(websocket,urlPath,events) {
 
   //连接关闭的回调方法
   websocket.onclose = function (event) {
+    // debugger
     console.log('WebSocket:已关闭',event.code,event.reason)
     typeof events.onclose == 'function' && events.onclose(event)
 
-    heartCheck.reset() //心跳检测
-    reconnect(urlPath,events)
+    // 判断如果状态码1000，即正常关闭，则不再心跳检测 及 重连
+    if(event.code==1000){
+      return
+    }else{
+      heartCheck.reset() //心跳检测
+      reconnect(urlPath,events)
+    }
+    
   }
 
   //监听窗口关闭事件，当窗口关闭时，主动去closeWebSocket关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。

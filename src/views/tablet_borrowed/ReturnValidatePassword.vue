@@ -34,7 +34,7 @@ import axios from "axios";
 import { ElMessage,ElMessageBox } from 'element-plus';
 import {useRouter,useRoute} from "vue-router";
 const router=useRouter();
-import {request,noderedrequest,tabletRequest}  from "@/utils/server.js" 
+import {request,tabletRequest}  from "@/utils/server.js" 
 
 // 还平板前通过借还验证码查询预约信息接口
 const getList=()=>{

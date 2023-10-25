@@ -547,15 +547,10 @@ const onScroll = (top) => {
   }
 }
 
-// 2.2 websocket连接
+// 2.2 websocket连接 
 //--------创建中间聊天区域websocket对象
-// 开发环境
-// var websocket=createWebSocket('ws://10.31.0.240:53134/wsmq',{onopen(e){
-// 测试环境
-var websocket=createWebSocket('ws://172.28.5.134:8282/wsmq',{onopen(e){
+var websocket=createWebSocket(wsbaseURL11,{onopen(e){
  
-// var websocket=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/wsmq',{onopen(e){
-  
   console.log('建立了websocket连接')
   console.log(e)
   if(roomInfo.value.length>0){
@@ -661,14 +656,8 @@ const onCommonMsgInfo=(e)=>{
 
 var isLocked=true
 // 3 websocket连接
-//--------创建右侧websocket对象------***
-// 开发环境
-// var ws1=createWebSocket('ws://10.31.0.240:8081/call-service/websocket/4600072255',{onopen(e){
-// 测试环境
-var ws1=createWebSocket('ws://172.28.5.134:8084/call-service/websocket/4600072255',{onopen(e){
-
-// 域名环境
-// var ws1=createWebSocket('wss://d-nari-test.sgepri.sgcc.com.cn/call-service/websocket/'+userId.value,{onopen(e){
+//--------创建右侧websocket对象------*** 
+var ws1=createWebSocket(wsbaseURL12+'/websocket/'+userId.value,{onopen(e){
    console.log('建立了ws1连接')
    
 },onmessage(e){

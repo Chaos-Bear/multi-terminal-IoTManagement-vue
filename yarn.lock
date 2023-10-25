@@ -963,6 +963,11 @@ copy-anything@^2.0.1:
   dependencies:
     is-what "^3.14.1"
 
+core-js@^3.x:
+  version "3.33.0"
+  resolved "https://registry.npmmirror.com/core-js/-/core-js-3.33.0.tgz"
+  integrity sha512-HoZr92+ZjFEKar5HS6MC776gYslNOKHt75mEBKWKnPeFDpZ6nH5OeF3S6HFT1mUAUZKrzkez05VboaX8myjSuw==
+
 cross-spawn@^7.0.2:
   version "7.0.3"
   resolved "https://registry.npmmirror.com/cross-spawn/-/cross-spawn-7.0.3.tgz"
@@ -1018,12 +1023,21 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
+el-table-infinite-scroll@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.npmmirror.com/el-table-infinite-scroll/-/el-table-infinite-scroll-3.0.3.tgz"
+  integrity sha512-cmMHg4MxrNOV2dFziV3ISRo+rM/3tAH8TE3wWMGKd4ucjvk21Bfb6MJfPuNAicLOkq4fYZm+J+mr0NmDPnvolQ==
+  dependencies:
+    core-js "^3.x"
+    element-plus "^2.x"
+    vue "^3.x"
+
 electron-to-chromium@^1.4.431:
   version "1.4.441"
   resolved "https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.441.tgz"
   integrity sha512-LlCgQ8zgYZPymf5H4aE9itwiIWH4YlCiv1HFLmmcBeFYi5E+3eaIFnjHzYtcFQbaKfAW+CqZ9pgxo33DZuoqPg==
 
-element-plus@^2.3.7:
+element-plus@^2.3.7, element-plus@^2.x:
   version "2.3.7"
   resolved "https://registry.npmmirror.com/element-plus/-/element-plus-2.3.7.tgz"
   integrity sha512-h6TxclbaLUJxg/Bv5j/ZKsK+K5yadQliw5+R30HWyE69pXlqXTX24oYx+yw3pA4Dy+lqEDi5501FQ0CORk3OSA==
@@ -2095,7 +2109,7 @@ vue-router@^4.2.2:
   dependencies:
     "@vue/devtools-api" "^6.5.0"
 
-"vue@^2.6.14 || ^3.3.0", vue@^3.0.0, "vue@^3.0.0-0 || ^2.6.0", vue@^3.2.0, vue@^3.2.25, vue@^3.3.4, vue@3.3.4:
+"vue@^2.6.14 || ^3.3.0", vue@^3.0.0, "vue@^3.0.0-0 || ^2.6.0", vue@^3.2.0, vue@^3.2.25, vue@^3.3.4, vue@^3.x, vue@3.3.4:
   version "3.3.4"
   resolved "https://registry.npmmirror.com/vue/-/vue-3.3.4.tgz"
   integrity sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==

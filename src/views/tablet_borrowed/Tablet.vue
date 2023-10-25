@@ -153,11 +153,14 @@ const onChange=()=>{
                 text-align: center;
                 // font-family: SourceHanSansSC-regular;
               }
-            
+              .el-icon{
+                font-size:(30/1920)*100vw;
+                svg{
+                  color: rgba(255, 255, 255, 1);
+                }
+              } 
           }
-          .el-icon svg{
-            color: white;
-          }
+          
         }
        
       }

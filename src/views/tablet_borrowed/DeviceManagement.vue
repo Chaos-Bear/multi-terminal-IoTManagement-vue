@@ -733,6 +733,10 @@ const cancelItemEdit = () => {
               white-space: nowrap;
               background-color: rgba(24, 144, 255, 0.1);
               margin-right: (10/1920) * 100vw;
+
+              .el-switch--small .el-switch__label *{
+                font-size: (18/1920) * 100vw!important;
+              }
             }
           }
         }
@@ -740,6 +744,7 @@ const cancelItemEdit = () => {
       .switchClass{
         .el-switch__label{
           display: none;
+          
         }
         .is-active{
            display: inline-block;

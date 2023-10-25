@@ -27,12 +27,12 @@
         </el-form-item>
 
         <el-form-item label="借用人">
-          <el-input v-model="userNameValue" placeholder="请输入借用人" />
+          <el-input v-model="form.userName" placeholder="请输入借用人" />
 
         </el-form-item>
 
         <el-form-item label="借用状态">
-          <el-select v-model="borrowedStatusValue" placeholder="全部" popper-class="zdy_select">
+          <el-select v-model="form.borrowedStatus" placeholder="全部" popper-class="zdy_select">
             <el-option v-for="item in borrowedStatusOptions"
             :key="item.value"
             :label="item.label"
@@ -43,8 +43,8 @@
       </el-form>
 
       <div class="searchbtn">
-        <el-button type="primary" @click="searchbtn()">查询</el-button>
         <el-button @click="resetbtn()">重置</el-button>
+        <el-button type="primary" @click="searchbtn()">查询</el-button>
       </div>
     </div>
     <!-- 3.设备列表 -->
@@ -55,44 +55,95 @@
         <!-- <div ref="tableRef"> -->
           <el-table
             :data="tableData"
-            style="width: 100%;height:400px"
+            style="width: 100%"
             :header-cell-style="{ background: '#F5F9FC' }"
-            v-el-table-infinite-scroll="getList"
-            :infinite-scroll-disabled="disabled"
+            ref="tableRef"
           >
-            <el-table-column fixed type="index" min-width="5%" label="序号"/>
-            <el-table-column prop="meetName" label="会议名称" min-width="38%" >
-              <template #default="scope">
-                   {{scope.row.meetName?scope.row.meetName:"无会议名称"}}
+            <el-table-column fixed type="index" min-width="5%" label="序号">
+             <template #default="scope">
+                <template v-if="scope.row.elementID">
+                   <span  class="isRequset"></span>
+                </template>
+                <template v-else>
+                   {{scope.$index+1}}
+                </template>
               </template>
             </el-table-column>
-            <el-table-column prop="userName" label="借用人" min-width="8%" />
+            <el-table-column prop="meetName" label="会议名称" min-width="38%" >
+              <template #default="scope">
+                <template v-if="scope.row.elementID">
+                   <span v-html='("<div id="+scope.row.elementID+"></div>" )' class="isRequset"></span>
+                </template>
+                <template v-else>
+                   {{scope.row.meetName}}
+                </template>
+                
+              </template>
+            </el-table-column>
+            <el-table-column prop="userName" label="借用人" min-width="8%" >
+              <template #default="scope">
+                <template v-if="scope.row.elementID">
+                   <span  class="isRequset"></span>
+                </template>
+                <template v-else>
+                   {{scope.row.userName}}
+                </template>
+                
+              </template>
+            </el-table-column>
             <el-table-column prop="borrowNum" label="借用数量" min-width="9%" >
               <template #default="scope">
-                  {{scope.row.borrowNum}}
+                <template v-if="scope.row.elementID">
+                   <span  class="isRequset"></span>
+                </template>
+                <template v-else>
+                   {{scope.row.borrowNum}}
+                </template>
               </template>
             </el-table-column>
             <el-table-column prop="borrowTime" label="借用时间" min-width="12%" >
               <template #default="scope">
-                <!-- 显示年月日 2023-8-23 -->
-                {{scope.row.borrowTime ? scope.row.borrowTime.split(" ")[0] : 0}}
+                <template v-if="scope.row.elementID">
+                       <span  class="isRequset"></span>
+                </template>
+                <template v-else>
+                  <!-- 显示年月日 2023-8-23 -->
+                   {{scope.row.borrowTime ? scope.row.borrowTime.split(" ")[0] : 0}}
+                </template>
               </template>
             </el-table-column>
             <el-table-column prop="returnNum" label="归还数量" min-width="9%" >
               <template #default="scope">
-                  <!-- 未归还时，归还数量默认为0-->
+                <template v-if="scope.row.elementID">
+                       <span  class="isRequset"></span>
+                </template>
+                <template v-else>
+                   <!-- 未归还时，归还数量默认为0-->
                   {{scope.row.returnNum ?scope.row.returnNum :0 }}
+                </template>
+               
               </template> 
             </el-table-column>
             <el-table-column prop="returnTime" label="归还时间" min-width="12%" >
               <template #default="scope">
+                 <template v-if="scope.row.elementID">
+                       <span  class="isRequset"></span>
+                </template>
+                <template v-else>
                   <!-- 显示年月日 2023-8-23 -->
-                  {{scope.row.returnTime ? (scope.row.returnTime.split(" ")[0]) :"---" }}
+                  {{scope.row.returnTime ? (scope.row.returnTime.split(" ")[0]) :"-----" }}
+                </template>
+                
               </template>
             </el-table-column>
             <el-table-column prop="borrowedStatus" label="状态" min-width="8%" >
               <template #default="scope">
+                <template v-if="scope.row.elementID">
+                   <span  class="isRequset"></span>
+                </template>
+                <template v-else>
                    {{scope.row.borrowedStatus}}
+                </template>
               </template>
               <!--此处声明了一个getDayStateStr()方法，将接口返回的状态号，映射成对应得状态文字  -->
               <!-- <template #default="scope">
@@ -112,13 +163,56 @@ import { reactive, ref ,onMounted, nextTick} from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
-import {request,tabletRequest}  from "@/utils/server.js" 
-
-// table列表下拉刷新
-import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
+import {request,noderedrequest,tabletRequest}  from "@/utils/server.js" 
 
 
-// startTime及endTime 初始化默认值(每月1日-31日)
+//  const totalPage=ref();    //必填 总页数
+//  const totalRecord=ref();  //必填 总的记录数
+
+
+
+// ----获取初始化历史记录接口--------------
+const getList=(type)=>{
+  if(type=="more"){
+     form.pageNum++
+  }
+   tabletRequest.post("/IotDeviHisCrtl/queryBorrowInfoPage",form)
+  .then(response => {
+    console.log("初始化历史记录按条件查询成功:",response.data);
+    form.totalPage=response.data.totalPage?response.data.totalPage:0;
+    form.totalRecord=response.data.totalRecord?response.data.totalRecord:0;
+    if(form.pageNum==1){
+        tableData.value=[...response.data.data,a];
+    }else{
+        tableData.value.splice(tableData.value.length-2,0,...response.data.data);
+    }
+    
+  })
+  .catch(error => {
+    console.log("初始化历史记录按条件查询失败:",error);
+    if(type=="more"){
+      form.pageNum--
+    }
+  });
+}
+
+//2.按要求查询
+//借用时间
+const value1 = ref('')
+const form = reactive({
+  startTime: "2023-01-14 08:30:00",
+  endTime:"2023-11-14 08:30:00",
+  userName: '',
+  borrowedStatus: '',
+  
+  pageNum: 1,   //必填   第几页
+  pageSize: 30,  //必填  /条每页
+ 
+
+  totalPage:0,  //必填 总页数
+  totalRecord:0,  
+})
+// startTime及endTime 初始化默认值
   var currentTime=new Date()
   var ty=currentTime.getFullYear()
   // var tm=currentTime.getMonth()+1
@@ -134,64 +228,9 @@ import { default as vElTableInfiniteScroll } from "el-table-infinite-scroll";
      endTime1=ty+'-'+tm + '-30'+' 23:59:59';
   }
 
-const disabled = ref(false);
-// ----获取初始化历史记录接口--------------表格滚动到底刷新刷新
-const getList=()=>{
-   if (disabled.value) return;
-  
-   form.pageNum++
-  
-   tabletRequest.post("/IotDeviHisCrtl/queryBorrowInfoPage",form)
-  .then(response => {
-    console.log("历史记录按条件查询成功:",response.data);
-    // debugger
-    form.totalPage=response.data.totalPage;
-    form.totalRecord=response.data.totalRecord;
-    // debugger
-      if(tableData.value.length <= form.totalRecord){
-          tableData.value.push(...response.data.data);
-      } 
-      if(tableData.value.length == form.totalRecord ){
-        disabled.value=true
-      }
-
-  })
-  .catch(error => {
-    console.log("历史记录按条件查询失败:",error);
-    if(form.pageNum<=0){
-      return
-    }else{
-      form.pageNum--
-    }
-  });
-}
-// --------查询/重置接口--------
-const getList1=()=>{
-  form.pageNum=0
-  tableData.value=[]
-  disabled.value=false
-  
-  getList()
-}
-//2.按要求查询
-//借用时间 
-const value1 = ref('')
-const userNameValue=ref("")
-const borrowedStatusValue=ref("")
-
-const form = reactive({
-  startTime: startTime1,
-  endTime:endTime1,
-  userName: '',
-  borrowedStatus: '',
-  
-  pageNum: 0,   //必填   第几页
-  pageSize: 30,  //必填  /条每页
- 
-  totalPage:0,  //必填 总页数
-  totalRecord:0,  //总条数
-})
-
+  form.startTime = startTime1;
+  form.endTime=endTime1;
+  // debugger
 
 // 借用状态
 const borrowedStatusOptions = [
@@ -220,81 +259,126 @@ const borrowedStatusOptions = [
     label: '取消'
   }
 ]
-// const getDayStateStr=(v)=>{
-//   let a
-//   for(var i=0;i<borrowedStatusOptions.length;i++){
-//      if(v==borrowedStatusOptions[i].value){
-//         a= borrowedStatusOptions[i].label;
-//         break
-//      }
-//   }
-//   return a
-// }
-// 查询按钮
+const getDayStateStr=(v)=>{
+  let a
+  for(var i=0;i<borrowedStatusOptions.length;i++){
+     if(v==borrowedStatusOptions[i].value){
+        a= borrowedStatusOptions[i].label;
+        break
+     }
+  }
+  return a
+}
+// 条件查询(设备名称、设备id地址、区域)
+
+// console.log(value1.value[0],value1.value[1])
+
 const searchbtn=()=>{
-  
   // debugger
-  form.pageNum=1;
-  form.pageSize=30;
-  form.userName=userNameValue.value
-  form.borrowedStatus=borrowedStatusValue.value
-  if(value1.value ==""){
-      form.startTime = startTime1;
-      form.endTime=endTime1;
-  }else{
+  if(value1.value){
       form.startTime=value1.value[0];
       form.endTime=value1.value[1];
   }
-  // debugger
-  // 调用查询/重置接口
-  getList1()
+  
+  // console.log(form.userName,form.borrowedStatus);
+  getList()
     
 }
 // 今天及今天之后的日期禁用
 // const disabledDate=(time)=> {
 //   return time.getTime() > Date.now()- 8.64e7;
 // }
-// 重置按钮
+// 重置
 const resetbtn=()=>{
   form.startTime=startTime1;
   form.endTime=endTime1;
   // 重置 时分别清空输入框的 借用时间 借用人 借用状态,并重新调用历史列表
   value1.value="";
-  userNameValue.value="";
-  borrowedStatusValue.value="";
-  form.userName=''
-  form.borrowedStatus=''
-  form.pageNum=1;
-  form.pageSize=30;
+  form.userName="";
+  form.borrowedStatus="";
   // debugger
-  // 调用查询/重置接口
-  getList1()
+  // 重置调用初始化接口
+  getList()
+  
 }
 
 //3 设备信息
 // 3.2设备列表
-const tableData =ref([
-  // {borrowNum: 1,
-  // borrowTime: "2023-10-24 11:00:00",
-  // borrowedStatus: "待借用",
-  // endTime: null,
-  // meetID: null,
-  // meetName: "10.24-223-11:00-14:00第1次测试会议",
-  // returnNum: 0,
-  // returnTime: null,
-  // roomID: null,
-  // roomName: "A2-223",
-  // startTime: null,
-  // userName: "益伟康",
-  // verifyCode: "2960"
-  // }
+var a={"elementID":"productListBottom",}
+const tableData =ref( [
+  {
+    "elementID":"productListBottom",
+  }
 ])
+//----启用 禁用
+const isDisabled = ref(true)
 
+let domRef=null
 //初始化渲染
 onMounted(()=>{
+   nextTick(() => {
+    setTimeout(()=>{
+       let productListBottomDom = document.querySelector('#productListBottom')
+      domRef = new IntersectionObserver((dom) => {
+        dom.forEach((itm) => {
+          // if (pageData.loadingType == 2) {
+          //   pageData.dom.unobserve(productListBottomDom)
+          // }
+          if (itm.intersectionRatio > 0) {
+            if (tableData.value.length > 1) {
+              getList('more')
+            } else {
+              getList()
+            }
+          }
+        })
+      })
+      domRef.observe(productListBottomDom)
+    },0)
+      
+    })
   // getList()
   
 });
+
+const scrollBarRef=ref(null)
+const tableRef=ref(null)
+
+// 获取表格对象
+  // let dom = document.querySelector(".el-table__body-wrapper");
+  // let that = this;
+  // dom.addEventListener("scroll", () =>{
+  //   if(!that.addLoading) {
+  //     const scrollDistance =
+  //         dom.scrollHeight - dom.scrollTop - dom.clientHeight;
+  //        // 判断是否到底，可以加载下一页
+  //        if (scrollDistance <= 0) {
+  //          // 判断是否全部加载完成
+  //          if (that.pageParams.page >= that.totalPage) {
+  //            that.$message.warning("已经见底了 ～");
+  //          }
+  //          if (that.pageParams.page < that.totalPage) {
+  //            that.addLoading = true;
+  //            //当前页数小于总页数就请求
+  //            that.pageParams.page++; //当前页数自增
+  //            // 加载下一页方法
+  //            that.getNextList();
+  //          }
+  //        }
+  //      }
+  //   });
+ 
+// const handleScroll=(v)=>{
+   
+  //  console.log(v)
+  
+  
+  //  if(tableRef.value.offsetHeight - v.scrollTop -scrollBarRef.value.wrapRef.offsetHeight <=50){
+    
+  //   // getList()
+  //   console.log(111)
+  //  }
+// }
 
 // 4.分页
 const currentPage = ref(1);
@@ -363,11 +447,8 @@ const handleCurrentChange = (val) => {
             color: #fff;
           }
         }
-    .el-picker-panel{
+    .el-picker-panel,{
        color:#ffffff;
-    }
-    .el-date-table td.in-range .el-date-table-cell{
-      background-color: rgba(255,255,255,0.2);
     }
   }
   
@@ -443,16 +524,7 @@ const handleCurrentChange = (val) => {
          width: (550/1920)*100vw;
       }
     }
-    :deep(.el-date-editor){
-      .el-range-input,.el-range-separator{
-        color: rgba(255, 255, 255, 0.9);
-      }
-    } 
-    :deep(.el-input__inner){
-      
-        color: rgba(255, 255, 255, 1);
-      
-    }
+
     .searchbtn {
       display: flex;
       justify-content: flex-end;
@@ -470,7 +542,7 @@ const handleCurrentChange = (val) => {
         border: 1px solid rgba(15, 204, 249, 1);
         font-family: Roboto;
       }
-      .el-button:nth-child(1) {
+      .el-button:nth-child(2) {
         border-radius: 2px;
         background-color: rgba(15, 204, 249, 0.3);
         color: rgba(255, 255, 255, 1);

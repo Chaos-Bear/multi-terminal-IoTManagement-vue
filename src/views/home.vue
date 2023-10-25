@@ -38,7 +38,12 @@
         </div>
         <div>平板借还</div>
       </div>
-
+      <div class="item">
+        <a href="/#/tablet" target="_blank">
+          <img src="@/assets/home/2.png" />
+        </a>
+        <div>平板借还测试</div>
+      </div>
   
     </div>
     <!-- 2. 头部 -->

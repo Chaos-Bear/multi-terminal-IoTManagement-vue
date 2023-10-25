@@ -39,7 +39,11 @@
               >
                 <el-table-column fixed type="index" min-width="11%" label="序号" />
                 <el-table-column prop="userName" label="借用人" min-width="17%" />
-                <el-table-column prop="borrowNum" label="借用数量" min-width="20%" />
+                <el-table-column prop="borrowNum" label="借用数量" min-width="17%">
+                    <template #default="scope">
+                        {{scope.row.borrowNum}}台
+                    </template>
+                </el-table-column>
                 <el-table-column prop="startTime" label="借用时间" min-width="28%">
                   <template #default="scope">
                     <!-- 显示时分 00:00 -->
@@ -52,7 +56,7 @@
                   <!-- 自定义表头：借用时间 -->
                   <template #header>
                     <el-select
-                      :model-value="'借用时间' + (dayTime ? '(' + dayTimeStr + ')' : '')"
+                      :model-value="'借用时间' + (dayTime ? '(' + dayTimeStr + ')' : '(全部)')"
                       placeholder="借用时间"
                       @change="onChange1"
                       style="width: 100%"
@@ -68,14 +72,14 @@
                     </el-select>
                   </template>
                 </el-table-column>
-                <el-table-column prop="borrowedStatus" label="借用状态" min-width="25%">
+                <el-table-column prop="borrowedStatus" label="借用状态" min-width="28%">
                   <!-- <template #default="scope">
                     {{scope.row.borrowedStatus}}
                   </template> -->
                   <!-- 自定义表头：借用状态 -->
                   <template #header>
                     <el-select
-                      model-value="借用状态"
+                      :model-value="'借用状态' + (dayState ? '(' + dayStateStr + ')' : '(全部)')"
                       placeholder="借用状态"
                       @change="onChange2"
                       style="width: 100%"
@@ -146,7 +150,11 @@
               </template>
             </el-table-column>
             <el-table-column prop="userName" label="借用人" min-width="15%" />
-            <el-table-column prop="borrowNum" label="借用数量" min-width="15%" />
+            <el-table-column prop="borrowNum" label="借用数量" min-width="15%" >
+              <template #default="scope">
+                  {{scope.row.borrowNum}}台
+              </template>
+            </el-table-column>
             <el-table-column prop="startTime" label="借用时间" min-width="33%">
               <!-- 自定义表头：借用时间 -->
               <!-- <template #header>
@@ -165,8 +173,15 @@
                 </el-date-picker>
               </template> -->
               <template #default="scope">
-                <!-- 显示年月日时分 2023-8-23 00:00-00:00 -->
-                {{scope.row.startTime.slice(0, -3) +'~' +scope.row.endTime.split(" ")[1].slice(0, -3)}}
+                <el-tooltip
+                    class="box-item"
+                    effect="dark"
+                    :content="(scope.row.startTime.slice(0, -3) +'~' +scope.row.endTime.split(' ')[1].slice(0, -3))"
+                    placement="left"
+                  >
+                     <!-- 显示年月日时分 2023-8-23 00:00-00:00 -->
+                     {{scope.row.startTime.slice(0, -3) +'~' +scope.row.endTime.split(" ")[1].slice(0, -3)}}
+                  </el-tooltip>
               </template>
             </el-table-column>
           </el-table>
@@ -182,7 +197,7 @@ const router = useRouter()
 import axios from 'axios'
 import quertstring from 'querystring'
 // import { el } from 'element-plus/es/locale';
-import { request, noderedrequest ,tabletRequest} from '@/utils/server.js'
+import { request ,tabletRequest} from '@/utils/server.js'
 // 轮播图
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // Import Swiper styles
@@ -196,11 +211,11 @@ const getDayList=()=>{
   tabletRequest
     .post('/IotDeviHisCrtl/queryCurentHisRetulInfo', { 
       "borrowTime": dayTime.value,
-      "borrowedStatus": dayState.value
+      "borrowedStatus": dayState.value,
     })
     .then((response) => {
       // debugger
-      console.log('当日借用记录按条件查询成功:', response.data.result)
+      // console.log('当日借用记录按条件查询成功:', response.data.result)
       // 轮播图处 全天/上午/下午 分别剩余可用的平板数量
       alldayNum.value=response.data.result.alldayNum
       mornNum.value=response.data.result.mornNum
@@ -237,15 +252,14 @@ const setTimeoutZdy=(option)=>{
         
       }
     setTimeoutZdy(option)
-   },option.time||5000)
+   },option.time||60000)
 }
 var option={isClose:false,fn:()=>{
       // 调用接口
-      // getDayList()
-      // getAppointmentList()
+      getDayList()
+      getAppointmentList()
       
-  },time:100000}
-
+  },time:300000}
 
 onMounted(() => {
   getDayList()
@@ -258,9 +272,6 @@ onMounted(() => {
   setTimeoutZdy(option)
 
   // 定时刷新首页涉及接口
-  // timer=window.setInterval(()=>{
-  //    setTimeout(getAppointmentList(),0)
-  // },5000)
   
 })
 
@@ -272,7 +283,6 @@ onBeforeUnmount(()=>{
   
 })
 
-
 //2.当日借用信息
 const today = ref('')
 var time = new Date()
@@ -282,14 +292,14 @@ var d = time.getDate()
 today.value = y + '年' + m + '月' + d + '日'
 
 const dayTableData = ref([
-  {
-        "borrowNum": 1,
-        "borrowedStatus": "借用",
-        "userName": "维康",
-        "startTime": "2023-10-14 08:00:00",
-        "startTime": "2023-10-16 08:00:00",
-        "endTime": "2023-10-15 14:03:32"
-      }
+  // {
+  //       "borrowNum": 1,
+  //       "borrowedStatus": "借用",
+  //       "userName": "维康",
+  //       "startTime": "2023-10-14 08:00:00",
+  //       "startTime": "2023-10-16 08:00:00",
+  //       "endTime": "2023-10-15 14:03:32"
+  //     }
 ])
 //自定义表头 --时间
 const dayTime = ref('')
@@ -318,7 +328,7 @@ const onChange1 = (v) => {
 const dayTimeStr = computed(() => {
   var x
   if (dayTime.value == '全部') {
-    return ''
+    return '全部'
   }
   for (var i = 0; i < dayTimeOptions.length; i++) {
     if (dayTime.value == dayTimeOptions[i].label) {
@@ -357,6 +367,21 @@ const dayStateOptions = [
     label: '取消'
   }
 ]
+const dayStateStr=computed(()=>{
+  var x
+  if(dayState.value=="全部"){
+     return "全部"
+  }
+  for(var i=0;i<dayStateOptions.length;i++){
+     if(dayState.value==dayStateOptions[i].value){
+        x=dayStateOptions[i].label
+        break
+     }
+  }
+  return x
+})
+
+
 const onChange2 = (v) => {
   dayState.value = v
   getDayList()
@@ -374,7 +399,7 @@ const getAppointmentList=()=>{
     })
     .then((response) => {
       // debugger
-      console.log('预约记录按条件查询成功:', response.data)
+      // console.log('预约记录按条件查询成功:', response.data)
       appointmentTableData.value=response.data.result
      
     })
@@ -510,7 +535,7 @@ const returnTablet = () => {
 // 左侧 借用状态下拉框
 .el-popper.zdy_select2 {
   // width: calc((182 / 1920) * 100vw - 12px) !important;
-  width: calc((168 / 1920) * 100vw) !important;
+  width: calc((188 / 1920) * 100vw) !important;
   background: #05456e !important;
   border: 0px !important;
   margin-top: -10px;

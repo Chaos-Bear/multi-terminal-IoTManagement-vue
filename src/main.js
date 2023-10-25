@@ -14,10 +14,15 @@ import axios from 'axios';
 // 如果您正在使用CDN引入，请删除下面一行。
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
+// 引入table列表下拉加载插件
+import ElTableInfiniteScroll from "el-table-infinite-scroll";
+
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+
+app.use(ElTableInfiniteScroll);
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)

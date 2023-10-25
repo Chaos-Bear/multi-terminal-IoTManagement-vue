@@ -753,7 +753,24 @@ const formatDate=(date)=>{
     :deep(.custom-table-head) {
       background-color: #f5f9fc;
     }
-    
+    :deep(.el-table) {
+      .el-table__header-wrapper{
+        thead {
+          .cell{
+            color: rgba(51, 51, 51, 1);
+            font-size: 14px;
+            text-align: left;
+            font-family: SourceHanSansSC-regular;
+            white-space: nowrap;
+            overflow: hidden;
+            border-left: 1px solid rgba(206, 206, 206, 1);
+          }
+          th:nth-child(1) .cell{
+            border-left: none;
+          }
+        } 
+      }
+    }
     a {
       text-decoration: none;
       color: rgb(24, 144, 255);
