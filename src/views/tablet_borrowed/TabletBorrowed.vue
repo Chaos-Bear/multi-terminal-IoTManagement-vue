@@ -17,15 +17,15 @@
                 <Swiper
                   :modules="modules"
                   :autoplay="{
-                  delay: 3000,
-                  disableOnInteraction:false,
+                    delay: 3000,
+                    disableOnInteraction: false
                   }"
                   :direction="'vertical'"
                   :loop="true"
                 >
-                  <SwiperSlide> 全天剩余可借用：{{alldayNum}}台 </SwiperSlide>
-                  <SwiperSlide> 上午剩余可借用：{{mornNum}}台 </SwiperSlide>
-                  <SwiperSlide> 下午剩余可借用：{{afterNum}}台 </SwiperSlide>
+                  <SwiperSlide> 全天剩余可借用：{{ alldayNum }}台 </SwiperSlide>
+                  <SwiperSlide> 上午剩余可借用：{{ mornNum }}台 </SwiperSlide>
+                  <SwiperSlide> 下午剩余可借用：{{ afterNum }}台 </SwiperSlide>
                 </Swiper>
               </div>
             </div>
@@ -40,17 +40,17 @@
                 <el-table-column fixed type="index" min-width="11%" label="序号" />
                 <el-table-column prop="userName" label="借用人" min-width="17%" />
                 <el-table-column prop="borrowNum" label="借用数量" min-width="17%">
-                    <template #default="scope">
-                        {{scope.row.borrowNum}}台
-                    </template>
+                  <template #default="scope"> {{ scope.row.borrowNum }}台 </template>
                 </el-table-column>
                 <el-table-column prop="startTime" label="借用时间" min-width="28%">
                   <template #default="scope">
                     <!-- 显示时分 00:00 -->
-                    {{(scope.row.startTime&&scope.row.endTime)?
-                      (scope.row.startTime.split(' ')[1].slice(0, -3) +
-                      '～' +
-                      scope.row.endTime.split(' ')[1].slice(0, -3)):""
+                    {{
+                      scope.row.startTime && scope.row.endTime
+                        ? scope.row.startTime.split(' ')[1].slice(0, -3) +
+                          '～' +
+                          scope.row.endTime.split(' ')[1].slice(0, -3)
+                        : ''
                     }}
                   </template>
                   <!-- 自定义表头：借用时间 -->
@@ -135,25 +135,22 @@
             ref="table"
           >
             <el-table-column fixed type="index" min-width="11%" label="序号" />
-            <el-table-column prop="meetName" label="会议名称" min-width="34%" >
-              
-                <template #default="scope">
-                  <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    :content="scope.row.meetName?scope.row.meetName:'无会议名称'"
-                    placement="left"
-                  >
-                    <!-- 显示年月日时分 2023-8-23 00:00-00:00 -->
-                    {{scope.row.meetName?scope.row.meetName:"无会议名称"}}
-                  </el-tooltip>
+            <el-table-column prop="meetName" label="会议名称" min-width="34%">
+              <template #default="scope">
+                <el-tooltip
+                  class="box-item"
+                  effect="dark"
+                  :content="scope.row.meetName ? scope.row.meetName : '无会议名称'"
+                  placement="left"
+                >
+                  <!-- 显示年月日时分 2023-8-23 00:00-00:00 -->
+                  {{ scope.row.meetName ? scope.row.meetName : '无会议名称' }}
+                </el-tooltip>
               </template>
             </el-table-column>
             <el-table-column prop="userName" label="借用人" min-width="15%" />
-            <el-table-column prop="borrowNum" label="借用数量" min-width="15%" >
-              <template #default="scope">
-                  {{scope.row.borrowNum}}台
-              </template>
+            <el-table-column prop="borrowNum" label="借用数量" min-width="15%">
+              <template #default="scope"> {{ scope.row.borrowNum }}台 </template>
             </el-table-column>
             <el-table-column prop="startTime" label="借用时间" min-width="33%">
               <!-- 自定义表头：借用时间 -->
@@ -174,14 +171,22 @@
               </template> -->
               <template #default="scope">
                 <el-tooltip
-                    class="box-item"
-                    effect="dark"
-                    :content="(scope.row.startTime.slice(0, -3) +'~' +scope.row.endTime.split(' ')[1].slice(0, -3))"
-                    placement="left"
-                  >
-                     <!-- 显示年月日时分 2023-8-23 00:00-00:00 -->
-                     {{scope.row.startTime.slice(0, -3) +'~' +scope.row.endTime.split(" ")[1].slice(0, -3)}}
-                  </el-tooltip>
+                  class="box-item"
+                  effect="dark"
+                  :content="
+                    scope.row.startTime.slice(0, -3) +
+                    '~' +
+                    scope.row.endTime.split(' ')[1].slice(0, -3)
+                  "
+                  placement="left"
+                >
+                  <!-- 显示年月日时分 2023-8-23 00:00-00:00 -->
+                  {{
+                    scope.row.startTime.slice(0, -3) +
+                    '~' +
+                    scope.row.endTime.split(' ')[1].slice(0, -3)
+                  }}
+                </el-tooltip>
               </template>
             </el-table-column>
           </el-table>
@@ -191,13 +196,24 @@
   </div>
 </template>
 <script setup lang="jsx">
-import { ref, reactive, onMounted, computed, watch, nextTick ,shallowRef,h,onUnmounted,onBeforeUnmount} from 'vue'
+import {
+  ref,
+  reactive,
+  onMounted,
+  computed,
+  watch,
+  nextTick,
+  shallowRef,
+  h,
+  onUnmounted,
+  onBeforeUnmount
+} from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 import axios from 'axios'
 import quertstring from 'querystring'
 // import { el } from 'element-plus/es/locale';
-import { request ,tabletRequest} from '@/utils/server.js'
+import { request, tabletRequest } from '@/utils/server.js'
 // 轮播图
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // Import Swiper styles
@@ -207,22 +223,21 @@ import { Autoplay } from 'swiper/modules'
 const modules = [Autoplay]
 
 // 1. ----------左侧当日借用信息 列表接口--------------
-const getDayList=()=>{
+const getDayList = () => {
   tabletRequest
-    .post('/IotDeviHisCrtl/queryCurentHisRetulInfo', { 
-      "borrowTime": dayTime.value,
-      "borrowedStatus": dayState.value,
+    .post('/IotDeviHisCrtl/queryCurentHisRetulInfo', {
+      borrowTime: dayTime.value,
+      borrowedStatus: dayState.value
     })
     .then((response) => {
       // debugger
       // console.log('当日借用记录按条件查询成功:', response.data.result)
       // 轮播图处 全天/上午/下午 分别剩余可用的平板数量
-      alldayNum.value=response.data.result.alldayNum
-      mornNum.value=response.data.result.mornNum
-      afterNum.value=response.data.result.afterNum
+      alldayNum.value = response.data.result.alldayNum
+      mornNum.value = response.data.result.mornNum
+      afterNum.value = response.data.result.afterNum
 
-      dayTableData.value=response.data.result.data
-     
+      dayTableData.value = response.data.result.data
     })
     .catch((error) => {
       console.log('当日借用记录按条件查询失败:', error)
@@ -230,57 +245,55 @@ const getDayList=()=>{
 }
 
 // 2.轮播图
-const isshow=ref(false)
-const alldayNum=ref(0)
-const mornNum=ref(0)
-const afterNum=ref(0)
+const isshow = ref(false)
+const alldayNum = ref(0)
+const mornNum = ref(0)
+const afterNum = ref(0)
 
 // 轮询刷新
-const setTimeoutZdy=(option)=>{
-   setTimeout(function(){
-      console.log(1111)
-      // debugger
-      try{
-        if(typeof option.fn=="function"){
-          option.fn()
-          if(option.isClose){
-            return
-          }
+const setTimeoutZdy = (option) => {
+  setTimeout(function () {
+    console.log(1111)
+    // debugger
+    try {
+      if (typeof option.fn == 'function') {
+        option.fn()
+        if (option.isClose) {
+          return
         }
       }
-      catch{
-        
-      }
+    } catch {}
     setTimeoutZdy(option)
-   },option.time||60000)
+  }, option.time || 60000)
 }
-var option={isClose:false,fn:()=>{
-      // 调用接口
-      getDayList()
-      getAppointmentList()
-      
-  },time:300000}
+var option = {
+  isClose: false,
+  fn: () => {
+    // 调用接口
+    getDayList()
+    getAppointmentList()
+  },
+  time: 300000
+}
 
 onMounted(() => {
   getDayList()
   getAppointmentList()
 
-  nextTick(()=>{
-    isshow.value=true
+  nextTick(() => {
+    isshow.value = true
   })
-  
+
   setTimeoutZdy(option)
 
   // 定时刷新首页涉及接口
-  
 })
 
 // 生命周期:销毁前
-onBeforeUnmount(()=>{
+onBeforeUnmount(() => {
   // clearInterval(timer)
   // 退出页面 停止轮询
-  option.isClose=true
-  
+  option.isClose = true
 })
 
 //2.当日借用信息
@@ -367,41 +380,37 @@ const dayStateOptions = [
     label: '取消'
   }
 ]
-const dayStateStr=computed(()=>{
+const dayStateStr = computed(() => {
   var x
-  if(dayState.value=="全部"){
-     return "全部"
+  if (dayState.value == '全部') {
+    return '全部'
   }
-  for(var i=0;i<dayStateOptions.length;i++){
-     if(dayState.value==dayStateOptions[i].value){
-        x=dayStateOptions[i].label
-        break
-     }
+  for (var i = 0; i < dayStateOptions.length; i++) {
+    if (dayState.value == dayStateOptions[i].value) {
+      x = dayStateOptions[i].label
+      break
+    }
   }
   return x
 })
-
 
 const onChange2 = (v) => {
   dayState.value = v
   getDayList()
 }
 
-
 //3.预约记录
 // 3. ----------右侧预约记录 列表接口----------
-const getAppointmentList=()=>{
-  
+const getAppointmentList = () => {
   tabletRequest
     .post('/IotDeviHisCrtl/queryBorrowHisRetultInfo', {
-        "endDayNum": 7,
-        "showNum": 30
+      endDayNum: 7,
+      showNum: 30
     })
     .then((response) => {
       // debugger
       // console.log('预约记录按条件查询成功:', response.data)
-      appointmentTableData.value=response.data.result
-     
+      appointmentTableData.value = response.data.result
     })
     .catch((error) => {
       console.log('预约记录按条件查询失败:', error)
@@ -453,8 +462,12 @@ const appointmentValue = ref('')
 
 const customPrefix = shallowRef({
   render() {
-    return <el-icon><ArrowDown /></el-icon>
-  },
+    return (
+      <el-icon>
+        <ArrowDown />
+      </el-icon>
+    )
+  }
 })
 
 //3.跳转到取平板/还平板
@@ -483,14 +496,13 @@ const returnTablet = () => {
   border: 0px !important ;
   margin-top: (-36/1080) * 100vh !important;
   margin-left: (0/1980) * 100vw !important;
-  width: 300px!important;
-  height: 300px!important;
+  width: 300px !important;
+  height: 300px !important;
   // inset:(262/1080) * 100vh  auto auto (1005/1080) * 100vh!important;
 
   .el-date-picker {
     zoom: 0.8;
     background: #05456e !important;
-    
   }
   .el-popper__arrow {
     display: none !important;
@@ -560,7 +572,7 @@ const returnTablet = () => {
   }
 }
 </style>
-<style lang="less"  scoped>
+<style lang="less" scoped>
 /* @media (min-width: 1024px) {
   .about {
     min-height: 100vh;
@@ -608,7 +620,7 @@ const returnTablet = () => {
     }
     div {
       height: (30/1080) * 100vh;
-      line-height:(30/1080) * 100vh;
+      line-height: (30/1080) * 100vh;
       color: rgba(255, 255, 255, 1);
       font-size: (16/1920) * 100vw;
       white-space: nowrap;
@@ -664,7 +676,7 @@ const returnTablet = () => {
         height: (44/1080) * 100vh;
         text-align: center;
         border-bottom: 0px;
-        padding:(5/1080) * 100vh 0;
+        padding: (5/1080) * 100vh 0;
       }
       thead {
         color: rgba(255, 255, 255, 1);
@@ -683,15 +695,14 @@ const returnTablet = () => {
       tbody {
         tr th {
           // height: (44/1080) * 100vh;
-          
-          .cell {
-              height: (44/1080)*100vh;
-              line-height: (44/1080)*100vh;
-              white-space: nowrap;
-              background-color: rgba(24, 144, 255, 0.1);
-              margin-right: (10/1920) * 100vw;
-            }
 
+          .cell {
+            height: (44/1080) * 100vh;
+            line-height: (44/1080) * 100vh;
+            white-space: nowrap;
+            background-color: rgba(24, 144, 255, 0.1);
+            margin-right: (10/1920) * 100vw;
+          }
         }
       }
     }
@@ -763,8 +774,8 @@ const returnTablet = () => {
             white-space: nowrap;
             position: absolute;
             top: 50%;
-            left:50%;
-            transform: translate(-50%,-50%);
+            left: 50%;
+            transform: translate(-50%, -50%);
           }
         }
         div:nth-child(1) {
@@ -786,13 +797,12 @@ const returnTablet = () => {
   .appointmentRecord {
     width: 50%;
     height: 100%;
-    padding-right:  (76/1920) * 100vw;
+    padding-right: (76/1920) * 100vw;
     box-sizing: border-box;
     :deep(.el-table) {
       width: (765/1920) * 100vw;
       height: (800/1080) * 100vh !important;
-      
-      
+
       .el-table__inner-wrapper {
         height: auto !important;
       }
@@ -826,22 +836,19 @@ const returnTablet = () => {
             }
           }
         }
-        
       }
       .el-date-editor.el-input {
-        width:100% ;
+        width: 100%;
         height: (44/1080) * 100vh;
         transform: translateX((-16/1980) * 100vw);
         text-align: center;
-        &[aria-expanded=true]{
-           .el-input__wrapper .el-input__prefix{
-
-               .el-icon{
-                   transform: rotate(180deg); 
-                   transform-origin: center center;  
-               }
-  
-           }
+        &[aria-expanded='true'] {
+          .el-input__wrapper .el-input__prefix {
+            .el-icon {
+              transform: rotate(180deg);
+              transform-origin: center center;
+            }
+          }
         }
         .el-input__wrapper {
           background-color: transparent;
@@ -849,19 +856,19 @@ const returnTablet = () => {
           padding-left: (30/1920) * 100vw;
           padding-right: (30/1920) * 100vw;
 
-          .el-input__prefix{
+          .el-input__prefix {
             position: absolute;
             right: 0;
           }
-          .el-input__prefix-inner>:first-child, .el-input__prefix-inner>:first-child.el-input__icon{
-            margin-left: 0!important;
+          .el-input__prefix-inner > :first-child,
+          .el-input__prefix-inner > :first-child.el-input__icon {
+            margin-left: 0 !important;
           }
           .el-input__inner {
             text-align: center;
             color: rgba(255, 255, 255, 1) !important;
             font-size: (18/1920) * 100vw;
           }
-
         }
       }
 

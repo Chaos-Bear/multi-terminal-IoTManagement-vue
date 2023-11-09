@@ -12,7 +12,7 @@
           <span> 借用数量：10台</span>
           <span>借用时间：6月30日 </span>
         </div> -->
-        <div class="first">{{ borrowedInfo.mtName  ? borrowedInfo.mtName : "无会议信息" }}</div>
+        <div class="first">{{ borrowedInfo.mtName ? borrowedInfo.mtName : '无会议信息' }}</div>
         <div class="second">
           <div>
             会议时间：
@@ -78,14 +78,14 @@
               <span>自动扫描中</span>
               <!-- <img src="@/assets/tablet_borrowed/11.png" /> -->
               <div class="contain">
-                  <div class="zhizhen"></div>
+                <div class="zhizhen"></div>
               </div>
             </div>
             <div v-else>
               <span>绑定完成</span>
             </div>
             <span>{{ borrowedInfo.usedNum + tableData.length }}</span>
-            <span>/{{ borrowedInfo.quantityBorrowed?borrowedInfo.quantityBorrowed:0 }}</span>
+            <span>/{{ borrowedInfo.quantityBorrowed ? borrowedInfo.quantityBorrowed : 0 }}</span>
           </div>
         </div>
         <!-- 设备扫描信息 -->
@@ -143,60 +143,61 @@
         </div>
       </div>
       <!--以下为 手动添加-------弹出框  -->
-    <el-dialog v-model="dialogFormVisible" title="手动添加">
-      <el-form :model="form">
-        <el-form-item label="选择设备&nbsp;&nbsp;&nbsp;" :label-width="formLabelWidth">
-          <el-select
-            v-model="form.deviceName"
-            placeholder="请选择设备"
-            @change="onDeviceNameChange"
-            multiple
-          >
-            <el-option
-              v-for="item in deviceList"
-              :key="item.id"
-              :label="item.deviceName"
-              :value="item.id"
-              :disabled="ishas(item)"
+      <el-dialog v-model="dialogFormVisible" title="手动添加">
+        <el-form :model="form">
+          <el-form-item label="选择设备&nbsp;&nbsp;&nbsp;" :label-width="formLabelWidth">
+            <el-select
+              v-model="form.deviceName"
+              placeholder="请选择设备"
+              @change="onDeviceNameChange"
+              multiple
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="设备序列号" :label-width="formLabelWidth">
-          <!-- <el-input v-model="form.modelNumber" autocomplete="off" /> -->
-          <template v-for="(item1, ii) in form.deviceName" :key="ii">{{ii==0?'':','}}
-            <template v-for="(item, i) in deviceList" :key="i">
-              <span v-if="item.id == item1">{{ item.modelNumber }}</span>
+              <el-option
+                v-for="item in deviceList"
+                :key="item.id"
+                :label="item.deviceName"
+                :value="item.id"
+                :disabled="ishas(item)"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="设备序列号" :label-width="formLabelWidth">
+            <!-- <el-input v-model="form.modelNumber" autocomplete="off" /> -->
+            <template v-for="(item1, ii) in form.deviceName" :key="ii"
+              >{{ ii == 0 ? '' : ',' }}
+              <template v-for="(item, i) in deviceList" :key="i">
+                <span v-if="item.id == item1">{{ item.modelNumber }}</span>
+              </template>
             </template>
-          </template>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="cancelHandOperated">取消</el-button>
-          <el-button type="primary" @click="submitHandOperated"> 确定 </el-button>
-        </span>
-      </template>
-    </el-dialog>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="cancelHandOperated">取消</el-button>
+            <el-button type="primary" @click="submitHandOperated"> 确定 </el-button>
+          </span>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
-<script setup >
+<script setup>
 import { ref, reactive, onMounted, onBeforeMount, computed, markRaw } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
-import { request, noderedrequest ,tabletRequest} from '@/utils/server.js'
-import {createWebSocket} from "@/utils/websocket.js"
+import { request, noderedrequest, tabletRequest } from '@/utils/server.js'
+import { createWebSocket } from '@/utils/websocket.js'
 import { dataType } from 'element-plus/es/components/table-v2/src/common'
 
 // 接收url query传参
 console.log('借用query传参', route.query)
 // 用于ws连接参数
-const repCode=route.query.verifyCode
-const repMsg=route.query.repMsg
+const repCode = route.query.verifyCode
+const repMsg = route.query.repMsg
 
 // 1. 取平板前通过借还验证码查询预约信息接口,渲染左侧会议信息
 const getBorrowInfo = () => {
@@ -213,38 +214,36 @@ const getBorrowInfo = () => {
     })
 }
 const borrowedInfo = ref({
-  "roomName": "8559878580142080",
-  "meetName": "8646084058906624",
-  "meetTime": null,
-  "userName": "维康",
-  "borrowNum": 2,
-  "borrowStartTime": "2023-10-08 11:00:00",
+  roomName: '8559878580142080',
+  meetName: '8646084058906624',
+  meetTime: null,
+  userName: '维康',
+  borrowNum: 2,
+  borrowStartTime: '2023-10-08 11:00:00',
 
-  "borrowEndTime": "2023-10-08 17:00:00",
-  "mtName":""   //会议名称
+  borrowEndTime: '2023-10-08 17:00:00',
+  mtName: '' //会议名称
 })
 
 onMounted(() => {
   getBorrowInfo()
-  
+
   // 进入扫描页面，立即调用打开扫描设备接口
   openScanDevice()
 })
-const openScanDevice=()=>{
-   tabletRequest
-    .post('/IotBabletBindCrtl/startBindBorroFlow', 
-      {
-        "message": "ON",
-        "openTopic": "A2-206/206-RFID-DOWN",
-        "qos": 2,
-        "topic": repMsg,
-        "verifyCode":repCode 
-      }
-    )
+const openScanDevice = () => {
+  tabletRequest
+    .post('/IotBabletBindCrtl/startBindBorroFlow', {
+      message: 'ON',
+      openTopic: 'A2-206/206-RFID-DOWN',
+      qos: 2,
+      topic: repMsg,
+      verifyCode: repCode
+    })
     .then((res) => {
       // debugger
-      if(res.data.repCode==200){
-         console.log('扫描设备已打开成功:', res)
+      if (res.data.repCode == 200) {
+        console.log('扫描设备已打开成功:', res)
       }
     })
     .catch((error) => {
@@ -253,37 +252,37 @@ const openScanDevice=()=>{
 }
 // 建立ws连接
 // debugger
-var websocket=createWebSocket('ws://10.31.0.251:8082/tablet-borrowed-service/websocket/'+repMsg,{onopen(e){
- 
-  console.log('建立了websocket连接')
-  
-  // 重新调用会议室最新消息列表-----------------------
+var websocket = createWebSocket(
+  'ws://10.31.0.251:8082/tablet-borrowed-service/websocket/' + repMsg,
+  {
+    onopen(e) {
+      console.log('建立了websocket连接')
 
-},onmessage(e){
-  // debugger
-  // console.log('接收服务器消息：', e.data)
-  // 如果e.data是所有消息，则判断是否是当前会议室消息
-  if(e.data=='HeartBeat'){
-     return
-  }else{
-    var list = JSON.parse(e.data)
-    
-    tableData.length=0
-    tableData.push(...list.data)
-   
-    console.log('接收设备扫描信息：', tableData)
+      // 重新调用会议室最新消息列表-----------------------
+    },
+    onmessage(e) {
+      // debugger
+      // console.log('接收服务器消息：', e.data)
+      // 如果e.data是所有消息，则判断是否是当前会议室消息
+      if (e.data == 'HeartBeat') {
+        return
+      } else {
+        var list = JSON.parse(e.data)
+
+        tableData.length = 0
+        tableData.push(...list.data)
+
+        console.log('接收设备扫描信息：', tableData)
+      }
+    },
+    onerror() {},
+    onclose() {},
+    onbeforeunload() {},
+    onreconnect(ws) {
+      websocket = ws
+    }
   }
-  
-},onerror(){
-
-},onclose(){
-  
-},onbeforeunload(){
-   
-},onreconnect(ws){
-  websocket=ws
- 
-}})
+)
 
 // 1.4.1 手动添加
 const formLabelWidth = '(542/1920)*100vw'
@@ -293,13 +292,20 @@ const form = reactive({
   deviceName: '',
   modelNumber: ''
 })
-const deviceList = ref([{
-  id:1,deviceName:1
-},{
-  id:2,deviceName:2
-},{
-  id:3,deviceName:3
-}])
+const deviceList = ref([
+  {
+    id: 1,
+    deviceName: 1
+  },
+  {
+    id: 2,
+    deviceName: 2
+  },
+  {
+    id: 3,
+    deviceName: 3
+  }
+])
 // 监听选择的设备名称，发请求获取该设备名称对应的设备序列号，展示在设备序列号输入框
 // 声明手动选择的 设备id
 var id
@@ -369,15 +375,14 @@ const continuetScan = () => {
 const postsubmitScan = () => {
   tabletRequest
     .post('/IotBabletBindCrtl/takeBabletBind', {
-      "bindNum": 0,
-      "iotBindTabletList": tableData,
-      "topic": repMsg,
-      "verifyCode":repCode,
+      bindNum: 0,
+      iotBindTabletList: tableData,
+      topic: repMsg,
+      verifyCode: repCode
     })
     .then((res) => {
       // debugger
       console.log('平板借用绑定完成:', res)
-      
     })
     .catch((error) => {
       console.log('平板借用绑定失败:', error)
@@ -480,7 +485,6 @@ const goBack = () => {
   router.push('/tablet')
 }
 
-
 //2.获取平板设备列表接口
 const getList = () => {
   //查询 设备列表中，借用状态是1 ->可用设备 的设备列表，设备状态1 ->启用 设备类型"deviceType": 1  展示在手动添加的 下拉设备下拉选项中
@@ -574,35 +578,35 @@ const deleteitem = (v) => {
 }
 </script>
 <style lang="less">
-  .el-popper.zdy_select3{
-      // width: calc((261/1920)*100vw - 12px)!important;
-      width: calc((240/1920)*100vw)!important;
-       background: #05456e!important;
-       border: 0px!important;
-       margin-top: -10px;
-       margin-left: -12px!important;
-       border-radius:0!important;
-       
-       .el-select-dropdown{
-            border-radius:0!important;
-       }
-      .el-select-dropdown__item{
-         color: rgba(255, 255, 255, 1)!important;
-          font-size: (18/1920)*100vw!important;
-          text-align: center!important;
-          font-family: Microsoft Yahei!important;
-        &.hover, &:hover{
-           background-color: rgba(255, 255, 255, 0.1)!important;
-        }
-      }
-      .el-popper__arrow{
-         display: none!important;
-      }
-      
+.el-popper.zdy_select3 {
+  // width: calc((261/1920)*100vw - 12px)!important;
+  width: calc((240 / 1920) * 100vw) !important;
+  background: #05456e !important;
+  border: 0px !important;
+  margin-top: -10px;
+  margin-left: -12px !important;
+  border-radius: 0 !important;
+
+  .el-select-dropdown {
+    border-radius: 0 !important;
   }
+  .el-select-dropdown__item {
+    color: rgba(255, 255, 255, 1) !important;
+    font-size: (18/1920) * 100vw !important;
+    text-align: center !important;
+    font-family: Microsoft Yahei !important;
+    &.hover,
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+  }
+  .el-popper__arrow {
+    display: none !important;
+  }
+}
 </style>
 <style lang="less" scoped>
-*{
+* {
   margin: 0;
   // padding: 0;
 }
@@ -627,7 +631,7 @@ const deleteitem = (v) => {
     background-position-x: left;
     background-position-y: (599/1080) * 100vh;
     //1.1 取平板
-    .tip{
+    .tip {
       // margin-top: (69/1080) * 100vh;
       margin-top: (57/1080) * 100vh;
       margin-bottom: (22/1080) * 100vh;
@@ -641,7 +645,7 @@ const deleteitem = (v) => {
     .borrowedInfo {
       height: (879/1080) * 100vh;
       // border: 1px solid red;
-      
+
       padding: (40/1080) * 100vh (0/1920) * 100vw (40/1080) * 100vh (40/1920) * 100vw;
       color: rgba(255, 255, 255, 1);
       background-color: rgba(24, 144, 255, 0.2);
@@ -692,7 +696,7 @@ const deleteitem = (v) => {
           width: (420/1920) * 100vw;
           height: (71/1080) * 100vh;
           margin-bottom: (20/1080) * 100vh;
-          margin-left: (0/1920) * 100vw!important;
+          margin-left: (0/1920) * 100vw !important;
           color: rgba(255, 255, 255, 1);
           border: (1/1920) * 100vw solid rgba(15, 204, 249, 1);
           border-radius: (2/1920) * 100vw;
@@ -715,7 +719,7 @@ const deleteitem = (v) => {
       }
     }
   }
-  
+
   // 2.中间区域
   .content {
     width: (1274/1920) * 100vw;
@@ -727,7 +731,7 @@ const deleteitem = (v) => {
     //2.2 扫描信息
     .scanningInfo {
       width: (1174/1920) * 100vw;
-      
+
       .scanningBtn {
         height: (50/1080) * 100vh;
         margin-top: (26/1080) * 100vh;
@@ -738,11 +742,11 @@ const deleteitem = (v) => {
         .topInfo {
           display: flex;
           align-items: center;
-          .topInfo1{
+          .topInfo1 {
             margin-right: (20/1920) * 100vw;
             display: flex;
             align-items: center;
-            .contain{
+            .contain {
               width: (54/1920) * 100vw;
               height: (54/1920) * 100vw;
               margin-left: (10/1920) * 100vw;
@@ -750,51 +754,50 @@ const deleteitem = (v) => {
               border-radius: 50%;
               position: relative;
               box-sizing: border-box;
-             
+
               display: flex;
               justify-content: center;
               align-items: center;
 
               @keyframes rotate {
                 from {
-                  transform: rotate(0deg) ;
+                  transform: rotate(0deg);
                 }
                 to {
-                  transform: rotate(360deg) ;
+                  transform: rotate(360deg);
                 }
               }
-              .zhizhen{
+              .zhizhen {
                 width: (54/1920) * 100vw;
                 height: (3/1920) * 100vw;
                 flex: none;
                 animation: rotate 4s linear infinite;
-               
-                &::after{
-                    content: "";
-                    width: 6px;
-                    height: 3px;
-                    position: absolute;
-                    left: 0;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    margin-top: -3px;
-                    background-color: #011841;
+
+                &::after {
+                  content: '';
+                  width: 6px;
+                  height: 3px;
+                  position: absolute;
+                  left: 0;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  margin-top: -3px;
+                  background-color: #011841;
                 }
-                &::before{
-                    content: "";
-                    width:calc(50% - 2px) ;
-                    height: 3px;
-                    position: absolute;
-                    left: 2px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    background-color: #fff;
+                &::before {
+                  content: '';
+                  width: calc(50% - 2px);
+                  height: 3px;
+                  position: absolute;
+                  left: 2px;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  background-color: #fff;
                 }
-                
               }
             }
           }
-          
+
           span {
             // height: (50/1080) * 100vh;
             // margin-right: (10/1920) * 100vw;
@@ -813,8 +816,6 @@ const deleteitem = (v) => {
             height: (54/1920) * 100vw;
           }
         }
-
-        
       }
       .scanning {
         width: 100%;
@@ -828,27 +829,27 @@ const deleteitem = (v) => {
           font-family: Roboto;
           .el-select {
             .el-input {
-                .el-icon svg {
-                  color: #fff;
+              .el-icon svg {
+                color: #fff;
               }
             }
-            .el-input__wrapper{
-              height: (44/1080)*100vh;
+            .el-input__wrapper {
+              height: (44/1080) * 100vh;
               border-radius: 0px;
               padding: 0;
               background-color: transparent;
-              box-shadow:none!important;
-                .el-input__inner{
-                  width: 5em;
-                  height: 100%;
-                  flex: none;
-                  color: rgba(255, 255, 255, 1)!important;
-                  font-size: (18/1920)*100vw;
-                  text-align: center;
-                }
+              box-shadow: none !important;
+              .el-input__inner {
+                width: 5em;
+                height: 100%;
+                flex: none;
+                color: rgba(255, 255, 255, 1) !important;
+                font-size: (18/1920) * 100vw;
+                text-align: center;
+              }
             }
-            .el-input__suffix-inner>:first-child {
-                // margin-left: 0px; 
+            .el-input__suffix-inner > :first-child {
+              // margin-left: 0px;
             }
             .el-input__inner {
               &::-webkit-input-placeholder {
@@ -865,7 +866,7 @@ const deleteitem = (v) => {
               }
             }
           }
-         
+
           .el-table__inner-wrapper {
             &::before {
               background-color: transparent;
@@ -878,7 +879,7 @@ const deleteitem = (v) => {
               }
             }
             .el-table__cell {
-              height: (44/1080) * 100vh!important;
+              height: (44/1080) * 100vh !important;
               text-align: center;
               border-bottom: 0px !important;
             }
@@ -887,8 +888,8 @@ const deleteitem = (v) => {
               tr th {
                 border: (5/1920) * 100vw solid transparent;
                 .cell {
-                  height: (44/1080) * 100vh!important;
-                  line-height: (44/1080) * 100vh!important;
+                  height: (44/1080) * 100vh !important;
+                  line-height: (44/1080) * 100vh !important;
                   background: radial-gradient(
                     0.5% 0.5% at 50% 50%,
                     rgba(0, 207, 255, 0.1) 0%,
@@ -929,93 +930,90 @@ const deleteitem = (v) => {
               }
             }
           }
-             
         }
       }
     }
-    
-    
   }
-  
+
   :deep(.el-dialog) {
-          width: (542/1920) * 100vw;
-          // height: (327/1080) * 100vh;
-          margin-top: (417/1080) * 100vh;
-          .el-dialog__header {
-            padding-left: (24/1920) * 100vw;
-            padding-top: (14/1080) * 100vh;
-            padding-bottom: (14/1080) * 100vh;
-            border-bottom: 1px solid rgba(239, 239, 239, 1);
-            span {
-              color: rgba(0, 0, 0, 1);
-              font-size: (18/1920) * 100vw;
-              text-align: left;
-              font-family: SourceHanSansSC-regular;
-            }
-            .el-dialog__headerbtn {
-              // width: (18/1920)*100vw!important;
-              height: (18/1080) * 100vw;
-              right: (-10/1920) * 100vw;
-              top: (10/1080) * 100vw;
-            }
+    width: (542/1920) * 100vw;
+    // height: (327/1080) * 100vh;
+    margin-top: (417/1080) * 100vh;
+    .el-dialog__header {
+      padding-left: (24/1920) * 100vw;
+      padding-top: (14/1080) * 100vh;
+      padding-bottom: (14/1080) * 100vh;
+      border-bottom: 1px solid rgba(239, 239, 239, 1);
+      span {
+        color: rgba(0, 0, 0, 1);
+        font-size: (18/1920) * 100vw;
+        text-align: left;
+        font-family: SourceHanSansSC-regular;
+      }
+      .el-dialog__headerbtn {
+        // width: (18/1920)*100vw!important;
+        height: (18/1080) * 100vw;
+        right: (-10/1920) * 100vw;
+        top: (10/1080) * 100vw;
+      }
+    }
+    .el-dialog__body {
+      padding: (24/1080) * 100vh (48/1920) * 100vw (1/1080) * 100vh (48/1920) * 100vw;
+      .el-form-item {
+        // height: (32/1080) * 100vh;
+        margin-bottom: (36/1080) * 100vh;
+        position: relative;
+        .el-form-item__label {
+          height: (32/1080) * 100vh;
+          line-height: (47/1080) * 100vh;
+          color: rgba(79, 79, 79, 1);
+          font-size: (14/1920) * 100vw;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
+        }
+        .el-input__wrapper {
+          // height: (42/1080) * 100vh;
+          .el-input__inner {
+            font-size: (14/1920) * 100vw;
+            text-align: left;
+            font-family: SourceHanSansSC-regular;
           }
-          .el-dialog__body {
-            padding: (24/1080) * 100vh (48/1920) * 100vw (1/1080) * 100vh (48/1920) * 100vw;
-            .el-form-item {
-              // height: (32/1080) * 100vh;
-              margin-bottom: (36/1080) * 100vh;
-              position: relative;
-              .el-form-item__label {
-                height: (32/1080) * 100vh;
-                line-height: (47/1080) * 100vh;
-                color: rgba(79, 79, 79, 1);
-                font-size: (14/1920) * 100vw;
-                text-align: left;
-                font-family: SourceHanSansSC-regular;
-              }
-              .el-input__wrapper {
-                // height: (42/1080) * 100vh;
-                .el-input__inner {
-                  font-size: (14/1920) * 100vw;
-                  text-align: left;
-                  font-family: SourceHanSansSC-regular;
-                }
-              }
-              // 手动添加弹框中的序列号
-              span {
-                color: #4f4f4f;
-                font-size: (14/1920) * 100vw;
-              }
-            }
-            .el-form-item:nth-child(2) {
-              .el-input__wrapper {
-                box-shadow: none;
-              }
-            }
-          }
-          .el-dialog__footer {
-            padding-top: 0px;
-            & > span {
-              margin-right: (127/1920) * 100vw;
-              .el-button {
-                width: (90/1920) * 100vw;
-                height: (42/1080) * 100vh;
-                // line-height: 20px;
-                // margin-right: (2/1920)*100vw;
-                border-radius: (2/1920) * 100vw;
-                background-color: rgba(79, 168, 249, 1);
-                color: rgba(255, 255, 255, 1);
-                font-size: (14/1920) * 100vw;
-                text-align: center;
-                font-family: Roboto;
-              }
-              .el-button:nth-child(1) {
-                color: rgba(51, 51, 51, 1);
-                background-color: rgba(217, 217, 217, 1);
-                border: 1px solid rgba(206, 206, 206, 1);
-              }
-            }
-          }
+        }
+        // 手动添加弹框中的序列号
+        span {
+          color: #4f4f4f;
+          font-size: (14/1920) * 100vw;
+        }
+      }
+      .el-form-item:nth-child(2) {
+        .el-input__wrapper {
+          box-shadow: none;
+        }
+      }
+    }
+    .el-dialog__footer {
+      padding-top: 0px;
+      & > span {
+        margin-right: (127/1920) * 100vw;
+        .el-button {
+          width: (90/1920) * 100vw;
+          height: (42/1080) * 100vh;
+          // line-height: 20px;
+          // margin-right: (2/1920)*100vw;
+          border-radius: (2/1920) * 100vw;
+          background-color: rgba(79, 168, 249, 1);
+          color: rgba(255, 255, 255, 1);
+          font-size: (14/1920) * 100vw;
+          text-align: center;
+          font-family: Roboto;
+        }
+        .el-button:nth-child(1) {
+          color: rgba(51, 51, 51, 1);
+          background-color: rgba(217, 217, 217, 1);
+          border: 1px solid rgba(206, 206, 206, 1);
+        }
+      }
+    }
   }
 }
 </style>

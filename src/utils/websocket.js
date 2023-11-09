@@ -1,4 +1,3 @@
-
 /**
  * websocket启动
  */
@@ -6,7 +5,7 @@
 function createWebSocket(url, events) {
   let urlPath = url
   let websocket
-  
+
   try {
     if ('WebSocket' in window) {
       websocket = new WebSocket(url)
@@ -15,10 +14,10 @@ function createWebSocket(url, events) {
     } else {
       websocket = new SockJS(url)
     }
-    init(websocket,urlPath,events)
+    init(websocket, urlPath, events)
   } catch (e) {
     console.log('catch' + e)
-    reconnect(urlPath,events)
+    reconnect(urlPath, events)
   } finally {
     if (websocket) {
       return websocket
@@ -27,7 +26,7 @@ function createWebSocket(url, events) {
   }
 }
 
-function init(websocket,urlPath,events) {
+function init(websocket, urlPath, events) {
   //连接成功建立的回调方法
   websocket.onopen = function (event) {
     // console.log('WebSocket:已连接')
@@ -47,27 +46,25 @@ function init(websocket,urlPath,events) {
 
   //连接发生错误的回调方法
   websocket.onerror = function (event) {
-    
     console.log('WebSocket:发生错误')
     typeof events.onerror == 'function' && events.onerror(event)
 
-    reconnect(urlPath,events)
+    reconnect(urlPath, events)
   }
 
   //连接关闭的回调方法
   websocket.onclose = function (event) {
     // debugger
-    console.log('WebSocket:已关闭',event.code,event.reason)
+    console.log('WebSocket:已关闭', event.code, event.reason)
     typeof events.onclose == 'function' && events.onclose(event)
 
     // 判断如果状态码1000，即正常关闭，则不再心跳检测 及 重连
-    if(event.code==1000){
+    if (event.code == 1000) {
       return
-    }else{
+    } else {
       heartCheck.reset() //心跳检测
-      reconnect(urlPath,events)
+      reconnect(urlPath, events)
     }
-    
   }
 
   //监听窗口关闭事件，当窗口关闭时，主动去closeWebSocket关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
@@ -93,7 +90,7 @@ var lockReconnect = false,
 /**
  * websocket重连
  */
-function reconnect(urlPath,events) {
+function reconnect(urlPath, events) {
   // debugger
   if (lockReconnect) {
     return
@@ -103,8 +100,8 @@ function reconnect(urlPath,events) {
   tt = setTimeout(function () {
     console.log('重连中...')
     lockReconnect = false
-    let websocket=createWebSocket(urlPath, events)
-    
+    let websocket = createWebSocket(urlPath, events)
+
     typeof events.onreconnect == 'function' && events.onreconnect(websocket)
   }, 4000)
 }

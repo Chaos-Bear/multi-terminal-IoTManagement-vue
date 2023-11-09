@@ -37,4 +37,4 @@ function request(config) {
   return instance
 }
 
-export default  request;
+export default request

@@ -14,19 +14,19 @@
         </div>
         <div>设备管理</div>
       </div>
-      <!-- <div class="item">
-        <a href="/#/callService" target="_self">
+      <div class="item">
+        <a href="/iot-client/#/callService" target="__blank">
           <img src="@/assets/home/3.png" />
         </a>
         <div>呼叫服务</div>
       </div>
       <div class="item">
-        <a href="/#/tablet" target="_blank">
+        <a href="/iot-client/#/tablet" target="_blank">
           <img src="@/assets/home/2.png" />
         </a>
         <div>平板借还</div>
-      </div> -->
-       <div class="item">
+      </div>
+      <!-- <div class="item">
         <div>
           <img src="@/assets/home/3.png" @click="router.push('/callService')" />
         </div>
@@ -37,14 +37,13 @@
           <img src="@/assets/home/2.png" @click="router.push('/tablet')" />
         </div>
         <div>平板借还</div>
+      </div> -->
+       <div class="item">
+        <div>
+          <img src="@/assets/xxfb/screenshots/10.png" @click="router.push('/xxfb-monitorlist')" />
+        </div>
+        <div>发布屏监控</div>
       </div>
-      <div class="item">
-        <a href="/#/tablet" target="_blank">
-          <img src="@/assets/home/2.png" />
-        </a>
-        <div>平板借还测试</div>
-      </div>
-  
     </div>
     <!-- 2. 头部 -->
     <div class="top">
@@ -131,7 +130,9 @@
                   @click="deleteMeeting(item)"
                 />
               </div>
-              <div class="detailInfo">{{item.roomClassNum}}个项目，{{item.roomContNum}}个发布页</div>
+              <div class="detailInfo">
+                {{ item.roomClassNum }}个项目，{{ item.roomContNum }}个发布页
+              </div>
             </div>
           </div>
         </div>
@@ -240,7 +241,6 @@ const router = useRouter()
 // import axios from 'axios'
 
 import { request, noderedrequest } from '@/utils/server.js'
-
 
 // 会议室配置信息
 var floorOptions = ref([])
@@ -664,7 +664,7 @@ const refresh = () => {
       display: flex;
       flex-direction: column;
       align-items: center;
-      // & > a,
+      & > a,
       & > div:nth-child(1) {
         width: 45px;
         height: 45px;
@@ -694,7 +694,14 @@ const refresh = () => {
     & > div {
       margin-top: 11px;
     }
+
+    :deep(.el-form){
+      .el-form-item__content{
+        flex-wrap: nowrap;
+      }
+    }
   }
+
   .avatar-uploader .avatar {
     width: 178px;
     height: 178px;

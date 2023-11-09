@@ -1,0 +1,2505 @@
+<template>
+  <div class="div" id="path">
+    <div class="div2" id="div2">
+      <div class="div2-1">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道
+      </div>
+      <div class="div2-2" id="div2-2">
+        <div class="left">
+          <div class="left1">
+            <br />过<br />
+            道
+          </div>
+          <!-- 会议室1区 -->
+          <div class="left2">
+            <div class="left2-1">
+              <div></div>
+              <img src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%2013@2x.png" />
+              <div>
+                <img src="http://39.105.179.38:9797/noderad/huoti.png" />
+              </div>
+            </div>
+            <div class="left2-2">
+              <div></div>
+              <div>
+                <div>
+                  <div id="A2208" data-roomname="A2208">A2-208</div>
+                  <!-- 单扇门 下  上 -->
+                  <img
+                    class="door"
+                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%202%20Copy%206@2x%20-%20%E5%89%AF%E6%9C%AC.png"
+                  />
+                  <img
+                    class="door"
+                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%20Copy%203@2x.png"
+                  />
+                </div>
+                <div>
+                  <div id="A2207" data-roomname="A2207">A2-207</div>
+                  <!-- 单扇门 下  上 -->
+                  <img
+                    class="door"
+                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%202%20Copy%206@2x%20-%20%E5%89%AF%E6%9C%AC.png"
+                  />
+                  <img
+                    class="door"
+                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%20Copy%203@2x.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="left2-3">
+              <div>
+                <div id="A2211" v-if="props.roomName=='A2-211'" :class="[(props.roomName=='A2-211') ? 'active-startA2211':'']">A2-211</div>
+                <div id="A2211" v-else data-roomName="A2211">A2-211</div>
+                <img
+                  class="hdoubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                />
+                <img
+                  class="hdoubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                />
+              </div>
+              <div>
+                <div id="A2206" data-roomname="A2206">
+                  <br />A2-206<br />
+                  音控室
+                </div>
+                <!-- 单门 上 -->
+                <img
+                  class="door"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%202%20Copy%206@2x.png"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="left3">
+            <br />过<br />
+            道
+          </div>
+          <!-- 会议室2区 -->
+          <div class="left4">
+            <div class="left4-1">
+              <div></div>
+              <img src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%2013@2x.png" />
+            </div>
+            <div class="left4-2">
+              <div>
+                <div id="A2204" data-roomname="A2204">A2-204</div>
+
+                <!-- 竖 双排门 -->
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+              </div>
+              <div>
+                <div id="A2202" data-roomname="A2202">
+                  <br />A2-202<br />
+                  服务室
+                </div>
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+              </div>
+            </div>
+            <div class="left4-3">
+              <div>
+                <div id="A2205" data-roomname="A2205">A2-205</div>
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+              </div>
+              <div>
+                <div id="A2201" data-roomname="A2201">A2-201</div>
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+              </div>
+            </div>
+            <div class="left4-4">
+              <div>
+                <div id="A2212" v-if="props.roomName=='A2-212'" :class="[(props.roomName=='A2-212') ? 'active-startA2212':'']">A2-212</div>
+                <div id="A2212" v-else data-roomName="A2212">A2-212</div>
+                <!-- 横 双排门 -->
+                <img
+                  class="hdoubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                />
+                <img
+                  class="hdoubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                />
+              </div>
+              <div></div>
+            </div>
+          </div>
+          <div class="left5">
+            <div><br />过<br />道</div>
+            <div>
+              <div>
+                <div>
+                  <!-- 需改图片 -->
+                  <img src="http://39.105.179.38:9797/noderad/iconPark-boy.png" />
+                </div>
+                <div>
+                  <!-- 需改图片 -->
+                  <img src="http://39.105.179.38:9797/noderad/iconPark-girl.png" />
+                </div>
+              </div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+        <div class="middle">
+          <div>
+            <div>
+              <div>
+                <img src="http://39.105.179.38:9797/noderad/shoufuti2.png" />
+              </div>
+            </div>
+          </div>
+          <div>
+            <img src="http://39.105.179.38:9797/noderad/dblouti.png" />
+
+            <div>
+              <img src="http://39.105.179.38:9797/noderad/dianti.png" />
+              <img src="http://39.105.179.38:9797/noderad/dianti.png" />
+              <img src="http://39.105.179.38:9797/noderad/huoti.png" />
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          <div class="right1">
+            <div><br />过<br />道</div>
+            <div>
+              <div></div>
+              <div>
+                <div>
+                  <!-- 需改图片 -->
+                  <img src="http://39.105.179.38:9797/noderad/peidianjian.png" />
+                </div>
+                <div>
+                  <!-- 需改图片 -->
+                  <img src="http://39.105.179.38:9797/noderad/peidianjian.png" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right2">
+            <div class="right2-1">
+              <img src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%2013@2x.png" />
+              <div></div>
+            </div>
+            <div class="right2-2">
+              <div>
+                <div id="A2216" data-roomname="A2216">
+                  <br />A2-216<br />
+                  工作间
+                </div>
+                <!-- 单扇门 下  上 -->
+                <img
+                  class="door"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%202%20Copy%206@2x%20-%20%E5%89%AF%E6%9C%AC.png"
+                />
+                <img
+                  class="door"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%20Copy%203@2x.png"
+                />
+              </div>
+              <div>
+                <div id="A2219" data-roomname="A2219">A2-219</div>
+                <!-- 竖 双排门 -->
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+              </div>
+            </div>
+            <div class="right2-3">
+              <div>
+                <div id="A2215" data-roomname="A2215">A2-215</div>
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+              </div>
+              <div>
+                <div id="A2220" data-roomname="A2220">A2-220</div>
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+              </div>
+            </div>
+            <div class="right2-4">
+              <div>
+                <div id="A2229" v-if="props.roomName=='A2-229'" :class="[(props.roomName=='A2-229') ? 'active-startA2229':'']">A2-229</div>
+                <div id="A2229" v-else data-roomName="A2229">A2-229</div>
+                <!-- 横 双排门 -->
+                <img
+                  class="hdoubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                />
+                <img
+                  class="hdoubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                />
+              </div>
+              <div>
+                <div id="A2221" data-roomname="A2221">A2-221</div>
+                <img
+                  class="doubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="right3">
+            <br />过<br />
+            道
+          </div>
+          <div class="right4">
+            <div class="right4-1">
+              <div></div>
+              <img src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%2013@2x.png" />
+            </div>
+            <div class="right4-2">
+              <div>
+                <div>
+                  <div id="A2223" data-roomname="A2223">A2-223</div>
+                  <!-- 竖 双排门 -->
+                  <img
+                    class="doubledoor"
+                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  />
+                </div>
+                <div>
+                  <div id="A2222" data-roomname="A2222">A2-222</div>
+                  <!-- 竖 双排门 -->
+                  <img
+                    class="doubledoor"
+                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  />
+                </div>
+              </div>
+              <div>
+                <div>
+                  <div id="A2225" data-roomname="A2225">A2-225</div>
+                  <!-- 竖 双排门 -->
+                  <img
+                    class="doubledoor"
+                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  />
+                </div>
+                <div>
+                  <div id="A2226" data-roomname="A2226">A2-226</div>
+                  <!-- 竖 双排门 -->
+                  <img
+                    class="doubledoor"
+                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  />
+                </div>
+                <div>
+                  <div id="A2227" data-roomname="A2227">A2-227</div>
+                  <!-- 竖 双排门 -->
+                  <img
+                    class="doubledoor"
+                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  />
+                </div>
+                <div></div>
+              </div>
+            </div>
+            <div class="right4-3">
+              <div>
+                <div id="A2228" v-if="props.roomName=='A2-228'" :class="[(props.roomName=='A2-228') ? 'active-startA2228':'']">A2-228</div>
+                <div id="A2228" v-else data-roomName="A2228">A2-228</div>
+                <!-- 横 双排门 -->
+                <img
+                  class="hdoubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                />
+                <img
+                  class="hdoubledoor"
+                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                />
+              </div>
+              <div>
+                <div>
+                  <img
+                    src="http://39.105.179.38:9797/noderad/%E5%9B%BE%E7%89%87%202@2x%20(1).png"
+                  />
+                  <img
+                    src="http://39.105.179.38:9797/noderad/%E5%9B%BE%E7%89%87%202@2x%20(1).png"
+                  />
+                  <img
+                    src="http://39.105.179.38:9797/noderad/%E5%9B%BE%E7%89%87%202@2x%20(1).png"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right5">
+            <br />过<br />
+            道
+          </div>
+        </div>
+      </div>
+      <div class="div2-3">
+        <div>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道
+        </div>
+      </div>
+      <div class="arrowPoint" id="zuobiao" :style="getzbdStyle">
+        <span>左</span>
+        <img src="http://39.105.179.38:9797/noderad/md-forward@2x.png" />
+        <div>
+          <img id="zuobiaodian" src="http://39.105.179.38:9797/noderad/zhishi.png" />
+        </div>
+        <img src="http://39.105.179.38:9797/noderad/md-forward@2x%20(1).png" />
+        <span>右</span>
+      </div>
+    </div>
+    <div class="div3">
+      <ul>
+        <li><img src="http://39.105.179.38:9797/noderad/dianti.png" /><span>电梯</span></li>
+        <li><img src="http://39.105.179.38:9797/noderad/louti.png" /><span>楼梯</span></li>
+        <li><img src="http://39.105.179.38:9797/noderad/shoufudt.png" /><span>手扶电梯</span></li>
+        <li><img src="http://39.105.179.38:9797/noderad/huoti.png" /><span>货梯</span></li>
+        <li><img src="http://39.105.179.38:9797/noderad/wc.png" /><span>卫生间</span></li>
+        <li><img src="http://39.105.179.38:9797/noderad/peidianjian.png" /><span>配电间</span></li>
+        <li>
+          <!-- <img
+                              src="http://39.105.179.38:9797/noderad/dangqian.png"/> -->
+          <span></span>
+          <span>当前所在位置</span>
+        </li>
+      </ul>
+    </div>
+    <div class="div1">
+      <div>
+        <img src="http://172.27.35.3:1880/images/path/200.png" />
+        <span>温馨提示：请说导航到xxx会议室或说xxx会议室怎么走。</span>
+      </div>
+      <img src="http://172.27.35.3:1880/images/path/1.png" />
+    </div>
+  </div>
+</template>
+
+<script setup>
+// 二楼横反：A2-211   A2-228    A2-229 A2-212
+import { ref, reactive, watch, computed, onMounted, nextTick } from 'vue'
+import $ from 'jquery'
+const props=defineProps({
+    roomName:{
+        type:String,
+        default(){
+            return ''
+        }
+    },
+    form:{
+      type:Object,
+        default(){
+            return ''
+        }
+    }
+})
+
+const getzbdStyle=computed(()=>{
+    if(props.roomName=="A2-228"){
+      return {
+       left:"1490px",
+       top:"694px",
+      }
+    }
+    if(props.roomName=="A2-229"){
+      return {
+       left:"1206px",
+       top:"694px",
+      }
+    }
+    if(props.roomName=="A2-211"){
+      return {
+       left:"144px",
+       top:"694px",
+      }
+    }
+    if(props.roomName=="A2-212"){
+      return {
+       left:"548px",
+       top:"694px",
+      }
+    }
+    
+})
+onMounted(() => {
+  nextTick(() => {
+    // 声明会议室坐标点
+    var CoordPoint = {
+      // A2-228会议室
+      // 一区
+      A2228_A2208: [
+          [1592, 711],
+          [430, 711],
+          [430, 711],
+          [430, 300],
+          [435, 300],
+          [412, 300],
+      ],
+      A2228_A2207: [
+          [1592, 711],
+          [430, 711],
+          [430, 711],
+          [430, 468],
+          [435, 468],
+          [412, 468],
+      ],
+      A2228_A2211: [
+          [1592, 711],
+          [244, 711],
+      ],
+      A2228_A2206: [
+          [1592, 711],
+          [430, 711],
+          [430, 711],
+          [430, 540],
+          [435, 540],
+          [412, 540],
+      ],
+      //二区
+      A2228_A2204: [
+          [1592, 711],
+          [435, 711],
+          [435, 711],
+          [435, 226],
+          [435, 226],
+          [459, 226],
+      ],
+      A2228_A2205: [
+          [1592, 711],
+          [435, 711],
+          [435, 711],
+          [435, 462],
+          [435, 462],
+          [459, 462],
+      ],
+      A2228_A2202: [
+          [1592, 711],
+          [875, 711],
+          [875, 711],
+          [875, 230],
+          [880, 230],
+          [810, 230],
+      ],
+      A2228_A2201: [
+          [1592, 711],
+          [875, 711],
+          [875, 711],
+          [875, 460],
+          [880, 460],
+          [810, 460],
+      ],
+      A2228_A2212: [
+          [1592, 711],
+          [648, 711],
+      ],
+      //3区
+      A2228_A2216: [
+          [1592, 711],
+          [1083, 711],
+          [1083, 711],
+          [1083, 276],
+          [1083, 276],
+          [1152, 276],
+      ],
+      A2228_A2215: [
+          [1592, 711],
+          [1083, 711],
+          [1083, 711],
+          [1083, 460],
+          [1083, 460],
+          [1152, 460],
+      ],
+      A2228_A2229: [
+          [1592, 711],
+          [1306, 711],
+      ],
+      A2228_A2219: [
+          [1592, 711],
+          [1506, 711],
+          [1506, 711],
+          [1506, 210],
+          [1511, 210],
+          [1486, 210],
+      ],
+      A2228_A2220: [
+          [1592, 711],
+          [1506, 711],
+          [1506, 711],
+          [1506, 462],
+          [1511, 462],
+          [1486, 462],
+      ],
+      A2228_A2221: [
+          [1592, 711],
+          [1506, 711],
+          [1506, 711],
+          [1506, 630],
+          [1511, 630],
+          [1486, 630],
+      ],
+
+      //4区
+      A2228_A2223: [
+          [1592, 711],
+          [1506, 711],
+          [1506, 711],
+          [1506, 210],
+          [1506, 210],
+          [1534, 210],
+      ],
+      A2228_A2222: [
+          [1592, 711],
+          [1506, 711],
+          [1506, 711],
+          [1506, 378],
+          [1506, 378],
+          [1534, 378],
+      ],
+      A2228_A2228: [
+
+      ],
+      A2228_A2225: [
+          [1592, 711],
+          [1866, 711],
+          [1861, 711],
+          [1861, 202],
+          [1866, 202],
+          [1846, 202],
+      ],
+      A2228_A2226: [
+          [1592, 711],
+          [1866, 711],
+          [1861, 711],
+          [1861, 312],
+          [1866, 312],
+          [1846, 312],
+      ],
+      A2228_A2227: [
+          [1592, 711],
+          [1866, 711],
+          [1861, 711],
+          [1861, 464],
+          [1866, 464],
+          [1846, 464],
+
+      ],
+      
+      
+      //A2-229-------待定位坐标
+      // 一区
+      A2229_A2208: [
+          [1306, 711],
+          [430, 711],
+          [430, 711],
+          [430, 300],
+          [435, 300],
+          [412, 300],
+      ],
+      A2229_A2207: [
+          [1306, 711],
+          [430, 711],
+          [430, 711],
+          [430, 468],
+          [435, 468],
+          [412, 468],
+      ],
+      A2229_A2211: [
+          [1306, 711],
+          [244, 711],
+      ],
+      A2229_A2206: [
+          [1306, 711],
+          [430, 711],
+          [430, 711],
+          [430, 540],
+          [435, 540],
+          [412, 540],
+      ],
+      //二区
+      A2229_A2204: [
+          [1306, 711],
+          [435, 711],
+          [435, 711],
+          [435, 226],
+          [435, 226],
+          [459, 226],
+      ],
+      A2229_A2205: [
+          [1306, 711],
+          [435, 711],
+          [435, 711],
+          [435, 462],
+          [435, 462],
+          [459, 462],
+      ],
+      A2229_A2202: [
+          [1306, 711],
+          [875, 711],
+          [875, 711],
+          [875, 230],
+          [880, 230],
+          [810, 230],
+      ],
+      A2229_A2201: [
+          [1306, 711],
+          [875, 711],
+          [875, 711],
+          [875, 460],
+          [880, 460],
+          [810, 460],
+      ],
+      A2229_A2212: [
+          [1306, 711],
+          [648, 711],
+      ],
+      //3区
+      A2229_A2216: [
+          [1306, 711],
+          [1083, 711],
+          [1083, 711],
+          [1083, 276],
+          [1083, 276],
+          [1152, 276],
+      ],
+      A2229_A2215: [
+          [1306, 711],
+          [1083, 711],
+          [1083, 711],
+          [1083, 460],
+          [1083, 460],
+          [1152, 460],
+      ],
+      A2229_A2229: [
+          
+      ],
+      A2229_A2219: [
+          [1306, 711],
+          [1511, 711],
+          [1506, 711],
+          [1506, 210],
+          [1511, 210],
+          [1486, 210],
+      ],
+      A2229_A2220: [
+          [1306, 711],
+          [1511, 711],
+          [1506, 711],
+          [1506, 462],
+          [1511, 462],
+          [1486, 462],
+      ],
+      A2229_A2221: [
+          [1306, 711],
+          [1511, 711],
+          [1506, 711],
+          [1506, 630],
+          [1511, 630],
+          [1486, 630],
+      ],
+
+      //4区
+      A2229_A2223: [
+          [1306, 711],
+          [1511, 711],
+          [1506, 711],
+          [1506, 210],
+          [1506, 210],
+          [1534, 210],
+      ],
+      A2229_A2222: [
+          [1306, 711],
+          [1511, 711],
+          [1506, 711],
+          [1506, 378],
+          [1506, 378],
+          [1534, 378],
+      ],
+      A2229_A2228: [
+          [1306, 711],
+          [1592, 711],
+      ],
+      A2229_A2225: [
+          [1306, 711],
+          [1866, 711],
+          [1861, 711],
+          [1861, 202],
+          [1866, 202],
+          [1846, 202],
+      ],
+      A2229_A2226: [
+          [1306, 711],
+          [1866, 711],
+          [1861, 711],
+          [1861, 312],
+          [1866, 312],
+          [1846, 312],
+      ],
+      A2229_A2227: [
+          [1306, 711],
+          [1866, 711],
+          [1861, 711],
+          [1861, 464],
+          [1866, 464],
+          [1846, 464],
+
+      ],
+      
+      // A2-211-----待定位坐标
+      // 一区
+    A2211_A2208: [
+        [244, 711],
+        [435, 711],
+        [430, 711],
+        [430, 300],
+        [435, 300],
+        [412, 300],
+    ],
+    A2211_A2207: [
+        [244, 711],
+        [435, 711],
+        [430, 711],
+        [430, 468],
+        [435, 468],
+        [412, 468],
+    ],
+    A2211_A2211: [
+
+    ],
+    A2211_A2206: [
+        [244, 711],
+        [435, 711],
+        [430, 711],
+        [430, 540],
+        [435, 540],
+        [412, 540],
+    ],
+    //二区
+    A2211_A2204: [
+        [244, 711],
+        [435, 711],
+        [430, 711],
+          [430, 226],
+          [430, 226],
+          [459, 226],
+    ],
+    A2211_A2205: [
+        [244, 711],
+        [435, 711],
+         [430, 711],
+          [430, 462],
+          [430, 462],
+          [459, 462],
+    ],
+    A2211_A2202: [
+        [244, 711],
+        [880, 711],
+        [875, 711],
+        [875, 230],
+        [880, 230],
+        [810, 230],
+    ],
+    A2211_A2201: [
+        [244, 711],
+        [880, 711],
+          [875, 711],
+          [875, 460],
+          [880, 460],
+          [810, 460],
+    ],
+    A2211_A2212: [
+        [244, 711],
+        [508, 711],
+    ],
+    //3区
+    A2211_A2216: [
+        [244, 711],
+        [1083, 711],
+          [1078, 711],
+          [1078, 276],
+          [1078, 276],
+          [1152, 276],
+    ],
+    A2211_A2215: [
+        [244, 711],
+        [1083, 711],
+          [1078, 711],
+          [1078, 460],
+          [1078, 460],
+          [1152, 460],
+    ],
+    A2211_A2229: [
+        [244, 711],
+        [1206, 711],
+    ],
+    A2211_A2219: [
+        [244, 711],
+        [1506, 711],
+          [1501, 711],
+          [1501, 210],
+          [1506, 210],
+          [1486, 210],
+    ],
+    A2211_A2220: [
+        [244, 711],
+        [1506, 711],
+          [1501, 711],
+          [1501, 462],
+          [1506, 462],
+          [1486, 462],
+    ],
+    A2211_A2221: [
+        [244, 711],
+       [1506, 711],
+          [1501, 711],
+          [1501, 630],
+          [1506, 630],
+          [1486, 630],
+    ],
+
+    //4区
+    A2211_A2223: [
+        [244, 711],
+        [1511, 711],
+          [1506, 711],
+          [1506, 210],
+          [1506, 210],
+          [1534, 210],
+    ],
+    A2211_A2222: [
+        [244, 711],
+        [1511, 711],
+          [1506, 711],
+          [1506, 378],
+          [1506, 378],
+          [1534, 378],
+    ],
+    A2211_A2228: [
+        [244, 711],
+        [1592, 711],
+    ],
+    A2211_A2225: [
+        [244, 711],
+        [1866, 711],
+          [1861, 711],
+          [1861, 202],
+          [1866, 202],
+          [1846, 202],
+    ],
+    A2211_A2226: [
+        [244, 711],
+        [1866, 711],
+          [1861, 711],
+          [1861, 312],
+          [1866, 312],
+          [1846, 312],
+    ],
+    A2211_A2227: [
+        [244, 711],
+        [1866, 711],
+          [1861, 711],
+          [1861, 464],
+          [1866, 464],
+          [1846, 464],
+
+    ],
+
+
+      // A2212会议室------------
+      A2212_A2208: [
+        [648, 711],
+        [430, 711],
+        [430, 711],
+        [430, 300],
+        [435, 300],
+        [412, 300],
+    ],
+    A2212_A2207: [
+        [648, 711],
+        [430, 711],
+        [430, 711],
+          [430, 468],
+          [430, 468],
+          [412, 468],
+    ],
+    A2212_A2211: [
+       [648, 711],
+       [244, 711],
+    ],
+    A2212_A2206: [
+        [648, 711],
+        [430, 711],
+        [430, 711],
+        [430, 540],
+        [430, 540],
+        [412, 540],
+    ],
+    //二区
+    A2212_A2204: [
+        [648, 711],
+        [430, 711],
+        [430, 711],
+          [430, 226],
+          [430, 226],
+          [459, 226],
+    ],
+    A2212_A2205: [
+        [648, 711],
+        [430, 711],
+         [430, 711],
+          [430, 462],
+          [430, 462],
+          [459, 462],
+    ],
+    A2212_A2202: [
+        [648, 711],
+        [880, 711],
+        [875, 711],
+        [875, 230],
+        [880, 230],
+        [810, 230],
+    ],
+    A2212_A2201: [
+        [648, 711],
+        [880, 711],
+          [875, 711],
+          [875, 460],
+          [880, 460],
+          [810, 460],
+    ],
+    A2212_A2212: [
+        
+    ],
+    //3区
+    A2212_A2216: [
+        [648, 711],
+        [1083, 711],
+          [1078, 711],
+          [1078, 276],
+          [1078, 276],
+          [1152, 276],
+    ],
+    A2212_A2215: [
+        [648, 711],
+        [1083, 711],
+          [1078, 711],
+          [1078, 460],
+          [1078, 460],
+          [1152, 460],
+    ],
+    A2212_A2229: [
+        [648, 711],
+        [1206, 711],
+    ],
+    A2212_A2219: [
+        [648, 711],
+        [1506, 711],
+          [1501, 711],
+          [1501, 210],
+          [1506, 210],
+          [1486, 210],
+    ],
+    A2212_A2220: [
+        [648, 711],
+        [1506, 711],
+          [1501, 711],
+          [1501, 462],
+          [1506, 462],
+          [1486, 462],
+    ],
+    A2212_A2221: [
+       [648, 711],
+       [1506, 711],
+          [1501, 711],
+          [1501, 630],
+          [1506, 630],
+          [1486, 630],
+    ],
+
+    //4区
+    A2212_A2223: [
+        [648, 711],
+        [1511, 711],
+          [1506, 711],
+          [1506, 210],
+          [1506, 210],
+          [1534, 210],
+    ],
+    A2212_A2222: [
+        [648, 711],
+        [1511, 711],
+          [1506, 711],
+          [1506, 378],
+          [1506, 378],
+          [1534, 378],
+    ],
+    A2212_A2228: [
+        [648, 711],
+        [1592, 711],
+    ],
+    A2212_A2225: [
+        [648, 711],
+        [1866, 711],
+          [1861, 711],
+          [1861, 202],
+          [1866, 202],
+          [1846, 202],
+    ],
+    A2212_A2226: [
+        [648, 711],
+        [1866, 711],
+          [1861, 711],
+          [1861, 312],
+          [1866, 312],
+          [1846, 312],
+    ],
+    A2212_A2227: [
+        [648, 711],
+        [1866, 711],
+          [1861, 711],
+          [1861, 464],
+          [1866, 464],
+          [1846, 464],
+
+    ],
+    }
+    $('[data-roomname]').on("click", function (e) {
+    if ($("body").attr("locked") == 1) {
+        return
+    };
+
+    $("body").attr("locked", 1);
+
+    $('[data-roomname]').css("background-color", "rgba(52, 127, 122, 1)");
+
+    $(".line").remove()
+    $(".endimg").remove()
+    $(".startimg").remove()
+    document.getElementById("zuobiaodian").style.opacity = "1";
+
+    clearTimeout($("body").attr("timeout"));
+
+    var end = $(this).attr("data-roomname");
+    console.log(end)
+    start_end(props.roomName.replace('-','')+'_' + end, end)
+})
+    function start_end(xy, end) {
+      for (var i = 0; i < CoordPoint[xy].length; i = i + 2) {
+        // console.log(CoordPoint[xy][i]);
+
+        if (i + 2 <= CoordPoint[xy].length) {
+          drawLine(CoordPoint[xy][i], CoordPoint[xy][i + 1], i)
+        } else {
+          //   end(CoordPoint[xy][i][0], CoordPoint[xy][i][1]);
+        }
+      }
+
+      // var length = $(".line").length;
+      if ($('.line').length == 1) {
+        document.getElementById('zuobiaodian').style.opacity = '0'
+        $('#div2').append(
+          "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
+            (CoordPoint[xy][0][0] - 15) +
+            'px;top:' +
+            (CoordPoint[xy][0][1] - 15) +
+            "px';>"
+        )
+        // 如果是1条线
+        re($('.line').eq(0), function () {
+          $('#div2').append(
+            "<img class='endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+              (CoordPoint[xy][i - 1][0] - 15) +
+              'px;top:' +
+              (CoordPoint[xy][i - 1][1] - 15) +
+              "px';>"
+          )
+          $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
+
+          $('body').removeAttr('locked')
+          var timeout = setTimeout(function () {
+            $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
+            $('.line').remove()
+            $('.endimg').remove()
+            $('.startimg').remove()
+            document.getElementById('zuobiaodian').style.opacity = '1'
+
+            //动态路径展示完毕，调用放大缩小全屏展示函数
+            scrollSwiper()
+          }, 15000)
+          // 给body添加路径展示定时器 标识
+          $('body').attr('timeout', timeout)
+
+          // var scaletimeout = setTimeout(function () {
+          //     $("#div2").css("zoom", 1.972);
+          //     let ele = document.getElementById('div2cont');
+          //     ele.scrollTop = 1080;
+          // }, 10000);
+          // $("body").attr("timeout-scale", scaletimeout);
+        })
+      } else if ($('.line').length == 2) {
+        document.getElementById('zuobiaodian').style.opacity = '0'
+        $('#div2').append(
+          "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
+            (CoordPoint[xy][0][0] - 15) +
+            'px;top:' +
+            (CoordPoint[xy][0][1] - 15) +
+            "px';>"
+        )
+        // 如果是2条线
+        re($('.line').eq(0), function () {
+          re($('.line').eq(1), function () {
+            $('#div2').append(
+              "<img class='endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+                (CoordPoint[xy][i - 1][0] - 15) +
+                'px;top:' +
+                (CoordPoint[xy][i - 1][1] - 15) +
+                "px';>"
+            )
+            $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
+
+            $('body').removeAttr('locked')
+            var timeout = setTimeout(function () {
+              $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
+              $('.line').remove()
+              $('.endimg').remove()
+              $('.startimg').remove()
+              document.getElementById('zuobiaodian').style.opacity = '1'
+
+              //动态路径展示完毕，调用放大缩小全屏展示函数
+              scrollSwiper()
+            }, 15000)
+            // 给body添加路径展示定时器 标识
+            $('body').attr('timeout', timeout)
+
+            // var scaletimeout = setTimeout(function () {
+            //     $("#div2").css("zoom", 1.972);
+            //     let ele = document.getElementById('div2cont');
+            //     ele.scrollTop = 1080;
+            // }, 10000);
+            // $("body").attr("timeout-scale", scaletimeout);
+          })
+        })
+      } else if ($('.line').length == 3) {
+        document.getElementById('zuobiaodian').style.opacity = '0'
+        $('#div2').append(
+          "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
+            (CoordPoint[xy][0][0] - 15) +
+            'px;top:' +
+            (CoordPoint[xy][0][1] - 15) +
+            "px';>"
+        )
+        // 如果是3条线
+        re($('.line').eq(0), function () {
+          re($('.line').eq(1), function () {
+            re($('.line').eq(2), function () {
+              $('#div2').append(
+                "<img class='endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+                  (CoordPoint[xy][i - 1][0] - 18) +
+                  'px;top:' +
+                  (CoordPoint[xy][i - 1][1] - 15) +
+                  "px';>"
+              )
+              $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
+
+              $('body').removeAttr('locked')
+              var timeout = setTimeout(function () {
+                $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
+                $('.line').remove()
+                $('.endimg').remove()
+                $('.startimg').remove()
+                document.getElementById('zuobiaodian').style.opacity = '1'
+
+                //动态路径展示完毕，调用放大缩小全屏展示函数
+                scrollSwiper()
+              }, 15000)
+              // 给body添加路径展示定时器 标识
+              $('body').attr('timeout', timeout)
+
+              // var scaletimeout = setTimeout(function () {
+              //     $("#div2").css("zoom", 1.972);
+              //     let ele = document.getElementById('div2cont');
+              //     ele.scrollTop = 1080;
+              // }, 10000);
+              // $("body").attr("timeout-scale", scaletimeout);
+            })
+          })
+        })
+      } else if ($('.line').length == 4) {
+        document.getElementById('zuobiaodian').style.opacity = '0'
+        $('#div2').append(
+          "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
+            (CoordPoint[xy][0][0] - 15) +
+            'px;top:' +
+            (CoordPoint[xy][0][1] - 15) +
+            "px';>"
+        )
+        // 如果是4条线
+        re($('.line').eq(0), function () {
+          re($('.line').eq(1), function () {
+            re($('.line').eq(2), function () {
+              re($('.line').eq(3), function () {
+                //  debugger
+                $('#div2').append(
+                  "<img class='endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+                    (CoordPoint[xy][i - 1][0] - 15) +
+                    'px;top:' +
+                    (CoordPoint[xy][i - 1][1] - 15) +
+                    "px';>"
+                )
+                $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
+
+                $('body').removeAttr('locked')
+                var timeout = setTimeout(function () {
+                  $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
+                  $('.line').remove()
+                  $('.endimg').remove()
+                  $('.startimg').remove()
+                  document.getElementById('zuobiaodian').style.opacity = '1'
+
+                  //动态路径展示完毕，调用放大缩小全屏展示函数
+                  scrollSwiper()
+                }, 15000)
+                // 给body添加路径展示定时器 标识
+                $('body').attr('timeout', timeout)
+
+                // var scaletimeout = setTimeout(function () {
+                //     $("#div2").css("zoom", 1.972);
+                //     let ele = document.getElementById('div2cont');
+                //     ele.scrollTop = 1080;
+                // }, 10000);
+                // $("body").attr("timeout-scale", scaletimeout);
+              })
+            })
+          })
+        })
+      } else if ($('.line').length == 5) {
+        document.getElementById('zuobiaodian').style.opacity = '0'
+        $('#div2').append(
+          "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
+            (CoordPoint[xy][0][0] - 15) +
+            'px;top:' +
+            (CoordPoint[xy][0][1] - 15) +
+            "px';>"
+        )
+        // 如果是5条线
+        re($('.line').eq(0), function () {
+          re($('.line').eq(1), function () {
+            re($('.line').eq(2), function () {
+              re($('.line').eq(3), function () {
+                re($('.line').eq(4), function () {
+                  $('#div2').append(
+                    "<img class'endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+                      (CoordPoint[xy][i - 1][0] - 15) +
+                      'px;top:' +
+                      (CoordPoint[xy][i - 1][1] - 15) +
+                      "px';>"
+                  )
+                  $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
+
+                  $('body').removeAttr('locked')
+                  var timeout = setTimeout(function () {
+                    $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
+                    $('.line').remove()
+                    $('.endimg').remove()
+                    $('.startimg').remove()
+                    document.getElementById('zuobiaodian').style.opacity = '1'
+
+                    //动态路径展示完毕，调用放大缩小全屏展示函数
+                    scrollSwiper()
+                  }, 15000)
+                  // 给body添加路径展示定时器 标识
+                  $('body').attr('timeout', timeout)
+
+                  // var scaletimeout = setTimeout(function () {
+                  //     $("#div2").css("zoom", 1.972);
+                  //     let ele = document.getElementById('div2cont');
+                  //     ele.scrollTop = 1080;
+                  // }, 10000);
+                  // $("body").attr("timeout-scale", scaletimeout);
+                })
+              })
+            })
+          })
+        })
+      }
+
+      function re($line, callback) {
+        if ($line.attr('data-type') == 'x') {
+          $line
+            .find('div')
+            .stop()
+            .animate({ width: $line.width() }, 'fast', 'linear', function () {
+              callback()
+            })
+        } else if ($line.attr('data-type') == 'y') {
+          $line
+            .find('div')
+            .stop()
+            .animate({ height: $line.height() }, 'fast', 'linear', function () {
+              callback()
+            })
+        } else {
+        }
+      }
+    }
+    function drawLine(start, end) {
+      var div = document.createElement('div')
+      div.style.position = 'absolute'
+      div.className = 'line'
+
+      // div.style.backgroundColor = "red";
+      //添加子div
+      var children = document.createElement('div')
+      children.style.backgroundColor = 'orange'
+
+      div.appendChild(children)
+
+      var div2 = document.getElementById('div2')
+      div2.appendChild(div)
+
+      // 如果线与Y轴平行
+      if (start[0] == end[0]) {
+        div.setAttribute('data-type', 'y')
+        if (start[1] > end[1]) {
+          // 反方向
+          div.setAttribute('data-forword', 'minus')
+          div.style.transform = 'rotate(180deg)'
+        } else {
+          // 同方向
+          div.setAttribute('data-forword', 'add')
+        }
+
+        div.style.width = 5 + 'px'
+        div.style.height = Math.abs(start[1] - end[1]) + 'px'
+        children.style.height = 0
+        children.style.width = 5 + 'px'
+
+        // 判断起点 终点距离 分别与原点比较
+        var abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
+        var abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
+        if (abs1 > abs2) {
+          // debugger
+          div.style.top = end[1] + 'px'
+          div.style.left = end[0] + 'px'
+        } else {
+          div.style.top = start[1] + 'px'
+          div.style.left = start[0] + 'px'
+        }
+      } else if (start[1] == end[1]) {
+        div.setAttribute('data-type', 'x')
+        if (start[0] > end[0]) {
+          // 反方向
+          div.setAttribute('data-forword', 'minus')
+          div.style.transform = 'rotate(180deg)'
+        } else {
+          // 同方向
+          div.setAttribute('data-forword', 'add')
+        }
+        //如果与 x轴平行
+        div.style.width = Math.abs(start[0] - end[0]) + 'px'
+        div.style.height = 5 + 'px'
+
+        children.style.height = 5 + 'px'
+        children.style.width = 0
+        // 判断起点 终点距离 分别与原点比较
+        var abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
+        var abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
+        if (abs1 > abs2) {
+          div.style.top = end[1] + 'px'
+          div.style.left = end[0] + 'px'
+        } else {
+          div.style.top = start[1] + 'px'
+          div.style.left = start[0] + 'px'
+        }
+      } else {
+      }
+    }
+  })
+})
+
+
+</script>
+
+<style lang="less" scoped>
+ul,li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.div {
+  width: 1920px;
+  height: 1080px;
+  background-color: #2c6965;
+  /* border: 1px solid red; */
+  /*zoom: 0.345545454;*/
+  display: block;
+  zoom: 0.367054;
+  position: relative;
+}
+
+.div1 {
+  width: 100%;
+  height: 50px;
+  margin-left: 94px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.div1 > div > img {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  margin-right: 10px;
+  background-color: transparent;
+}
+
+.div1 > img {
+  height: 180px;
+  width: 180px;
+  position: absolute;
+  right: 44px;
+  bottom: 13px;
+  background-color: transparent;
+}
+
+.div1 > div > span {
+  width: 1054px;
+  height: 50px;
+  color: rgba(255, 255, 255, 1);
+  font-size: 34px;
+  text-align: left;
+  font-family: SourceHanSansSC-regular;
+}
+
+/* 第2层 */
+.div2 {
+  width: 1900px;
+  height: 780px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0.04);
+  position: relative;
+}
+
+/* 中间中部 */
+.div2 img {
+  margin: 0;
+  vertical-align: top;
+  background-color: transparent;
+}
+
+/* 2层上边 */
+.div2 .div2-1,
+.div2 .div2-3 {
+  width: 100%;
+  height: 98px;
+  line-height: 98px;
+  color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.04);
+  font-size: 28px;
+  text-align: center;
+  font-family: Roboto;
+  position: relative;
+}
+
+/* 2层中间 */
+.div2 .div2-2 {
+  width: 100%;
+  height: calc(100% - 197px);
+  overflow: hidden;
+  display: flex;
+  justify-content: space-around;
+}
+
+/* 中间左区 */
+.div2 .div2-2 .left {
+  /* width: 896.5px; */
+  height: 100%;
+  /* border:1px solid red; */
+  display: flex;
+  justify-content: flex-start;
+  /* 所有会议室公用 */
+  color: rgba(255, 255, 255, 1);
+  font-size: 30px;
+  text-align: center;
+  font-family: Roboto;
+}
+
+.div2 .div2-2 .left .left1,
+.div2 .div2-2 .right .right5 {
+  width: 68px;
+  line-height: 115px;
+  background-color: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 24px;
+  text-align: center;
+  font-family: Roboto;
+}
+
+.div2 .div2-2 .left .left3,
+.div2 .div2-2 .right .right3 {
+  width: 76px;
+  line-height: 115px;
+  background-color: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 24px;
+  text-align: center;
+  font-family: Roboto;
+}
+
+.div2 .div2-2 .left .left5,
+.div2 .div2-2 .right .right1 {
+  width: 128px;
+  height: 405px;
+  line-height: 100px;
+  background-color: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 24px;
+  text-align: center;
+  font-family: Roboto;
+}
+
+/* 会议室1区 */
+.div2 .div2-2 .left .left2 {
+  /* width: 316px; */
+  background-color: #2c6965;
+  padding: 6px;
+}
+
+.div2 .div2-2 .left .left2 .left2-1 {
+  width: 100%;
+  height: 66px;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 2px;
+}
+
+.div2 .div2-2 .left .left2 .left2-1 div:nth-child(1) {
+  width: 126px;
+  height: 100%;
+  margin-right: 2px;
+  border-radius: 4px;
+  background-color: rgba(65, 116, 116, 1);
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .left .left2 .left2-1 > img {
+  width: 133px;
+  height: 100%;
+  margin-right: 2px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .left .left2 .left2-1 div:nth-child(3) {
+  width: 54px;
+  height: 100%;
+  line-height: 54px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .left .left2 .left2-1 div:nth-child(3) img {
+  width: 34px;
+  height: 34px;
+  margin-top: 12px;
+}
+
+.div2 .div2-2 .left .left2 .left2-2 {
+  width: 100%;
+  height: 334px;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 2px;
+}
+
+.div2 .div2-2 .left .left2 .left2-2 > div:nth-child(1) {
+  width: 65px;
+  height: 100%;
+  border-radius: 4px;
+  background-color: rgba(65, 116, 116, 1);
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  margin-right: 2px;
+}
+
+.div2 .div2-2 .left .left2 .left2-2 > div:nth-child(2) > div {
+  position: relative;
+}
+
+.div2 .div2-2 .left .left2 .left2-2 > div:nth-child(2) > div {
+  width: 250px;
+  height: 166px;
+  line-height: 166px;
+  border-radius: 4px;
+  background-color: rgba(52, 127, 122, 1);
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  margin-bottom: 2px;
+}
+
+.div2 .div2-2 .left .left2 .left2-2 > div:nth-child(2) > div img:nth-child(2) {
+  position: absolute;
+  top: 25px;
+  right: 0;
+}
+
+.div2 .div2-2 .left .left2 .left2-2 > div:nth-child(2) > div img:nth-child(3) {
+  position: absolute;
+  bottom: 25px;
+  right: 0;
+}
+
+.div2 .div2-2 .left .left2 .left2-3 {
+  width: 100%;
+  height: 165px;
+  /* border: 1px soild red; */
+  display: flex;
+  justify-content: flex-start;
+}
+
+.div2 .div2-2 .left .left2 .left2-3 > div:nth-child(1) {
+  position: relative;
+}
+
+.div2 .div2-2 .left .left2 .left2-3 > div:nth-child(1) div {
+  width: 214px;
+  height: 100%;
+  line-height: 165px;
+  border-radius: 4px;
+  background-color: rgba(52, 127, 122, 1);
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  margin-right: 2px;
+}
+
+.div2 .div2-2 .left .left2 .left2-3 > div:nth-child(1) img:nth-child(2) {
+  position: absolute;
+  bottom: 0px;
+  left: 22px;
+}
+
+.div2 .div2-2 .left .left2 .left2-3 > div:nth-child(1) img:nth-child(3) {
+  position: absolute;
+  bottom: 0px;
+  right: 22px;
+}
+
+.div2 .div2-2 .left .left2 .left2-3 > div:nth-child(2) {
+  position: relative;
+}
+
+.div2 .div2-2 .left .left2 .left2-3 > div:nth-child(2) div {
+  width: 100px;
+  height: 100%;
+  font-size: 26px;
+  line-height: 41px;
+  border-radius: 4px;
+  background-color: rgba(52, 127, 122, 1);
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.door {
+  width: 6px;
+  height: 20px;
+  border-radius: 1px;
+  opacity: 0.6;
+}
+
+.div2 .div2-2 .left .left2 .left2-3 > div:nth-child(2) img {
+  position: absolute;
+  top: 25px;
+  right: 0;
+}
+
+/* 会议室2区 */
+.div2 .div2-2 .left .left4 {
+  /*width: 310px;*/
+  background-color: #2c6965;
+  padding: 6px;
+}
+
+.div2 .div2-2 .left .left4 .left4-1,
+.div2 .div2-2 .left .left4 .left4-2,
+.div2 .div2-2 .left .left4 .left4-3,
+.div2 .div2-2 .left .left4 .left4-4 {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2px;
+}
+
+.div2 .div2-2 .left .left4 .left4-1 div:nth-child(1) {
+  width: 170px;
+  height: 66px;
+  margin-right: 2px;
+  border-radius: 4px;
+  background-color: rgba(65, 116, 116, 1);
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .left .left4 .left4-1 > img {
+  width: 138px;
+  height: 66px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .left .left4 .left4-2 > div:nth-child(1) {
+  position: relative;
+}
+
+.div2 .div2-2 .left .left4 .left4-2 > div:nth-child(1) > div {
+  width: 154px;
+  height: 129px;
+  line-height: 129px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+  margin-right: 2px;
+}
+
+.div2 .div2-2 .left .left4 .left4-2 > div:nth-child(1) img {
+  position: absolute;
+  left: 0;
+  top: 40px;
+  width: 6px;
+  height: 42px;
+}
+
+.div2 .div2-2 .left .left4 .left4-2 div:nth-child(2) {
+  position: relative;
+}
+
+.div2 .div2-2 .left .left4 .left4-2 div:nth-child(2) div {
+  width: 154px;
+  height: 129px;
+  font-size: 26px;
+  line-height: 33px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+}
+
+.div2 .div2-2 .left .left4 .left4-2 div:nth-child(2) img {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  width: 6px;
+  height: 42px;
+}
+
+/* 双排门 */
+.doubledoor {
+  width: 6px;
+  height: 42px;
+}
+
+.div2 .div2-2 .left .left4 .left4-3 div:nth-child(1),
+.div2 .div2-2 .left .left4 .left4-3 div:nth-child(2) {
+  position: relative;
+}
+
+.div2 .div2-2 .left .left4 .left4-3 div:nth-child(1) div {
+  width: 154px;
+  height: 201px;
+  line-height: 201px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+  margin-right: 2px;
+}
+
+.div2 .div2-2 .left .left4 .left4-3 div:nth-child(1) img:nth-child(2) {
+  position: absolute;
+  top: 17px;
+  left: 0px;
+}
+
+.div2 .div2-2 .left .left4 .left4-3 div:nth-child(1) img:nth-child(3) {
+  position: absolute;
+  bottom: 19px;
+  left: 0;
+}
+
+.div2 .div2-2 .left .left4 .left4-3 div:nth-child(2) div {
+  width: 154px;
+  height: 201px;
+  line-height: 201px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+}
+
+.div2 .div2-2 .left .left4 .left4-3 div:nth-child(2) img:nth-child(2) {
+  position: absolute;
+  top: 17px;
+  right: 0px;
+}
+
+.div2 .div2-2 .left .left4 .left4-3 div:nth-child(2) img:nth-child(3) {
+  position: absolute;
+  bottom: 19px;
+  right: 0;
+}
+
+.div2 .div2-2 .left .left4 .left4-4 {
+  margin-bottom: 0px;
+}
+
+.div2 .div2-2 .left .left4 .left4-4 div:nth-child(1) {
+  position: relative;
+}
+
+.div2 .div2-2 .left .left4 .left4-4 div:nth-child(1) div {
+  width: 208px;
+  height: 165px;
+  line-height: 165px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+  margin-right: 2px;
+}
+
+/* 横双排门 通用 */
+.hdoubledoor {
+  width: 42px;
+  height: 6px;
+}
+
+.div2 .div2-2 .left .left4 .left4-4 div:nth-child(1) img:nth-child(2) {
+  position: absolute;
+  bottom: 0px;
+  left: 16px;
+}
+
+.div2 .div2-2 .left .left4 .left4-4 div:nth-child(1) img:nth-child(3) {
+  position: absolute;
+  bottom: 0px;
+  right: 16px;
+}
+
+.div2 .div2-2 .left .left4 .left4-4 div:nth-child(2) {
+  width: 100px;
+  height: 165px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(65, 116, 116, 1);
+}
+
+/* 卫生间 配电间 */
+.div2 .div2-2 .left .left5 > div:nth-child(1),
+.div2 .div2-2 .right .right1 > div:nth-child(1) {
+  height: 405px;
+}
+
+.div2 .div2-2 .left .left5 > div:nth-child(2),
+.div2 .div2-2 .right .right1 > div:nth-child(2) {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.div2 .div2-2 .left .left5 > div:nth-child(2) > div:nth-child(1),
+.div2 .div2-2 .right .right1 > div:nth-child(2) > div:nth-child(2) {
+  width: 60px;
+  height: 179px;
+  background-color: #2c6965;
+}
+
+.div2 .div2-2 .right .right1 > div:nth-child(2) > div:nth-child(2) {
+  margin-left: 6px;
+}
+
+.div2 .div2-2 .left .left5 > div:nth-child(2) > div:nth-child(1) div,
+.div2 .div2-2 .right .right1 > div:nth-child(2) > div:nth-child(2) div {
+  width: 50px;
+  height: 80px;
+  margin-top: 6px;
+  border-radius: 4px;
+  background-color: rgba(65, 116, 116, 1);
+  text-align: center;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .right .right1 > div:nth-child(2) > div:nth-child(2) div {
+  margin-right: 0px;
+}
+
+.div2 .div2-2 .left .left5 > div:nth-child(2) > div:nth-child(1) div:nth-child(2),
+.div2 .div2-2 .right .right1 > div:nth-child(2) > div:nth-child(2) div:nth-child(2) {
+  margin-top: 2px;
+}
+
+.div2 .div2-2 .left .left5 > div:nth-child(2) > div:nth-child(1) div img,
+.div2 .div2-2 .right .right1 > div:nth-child(2) > div:nth-child(2) div img {
+  width: 22px;
+  height: 22px;
+  margin: 28px 14px;
+}
+
+.div2 .div2-2 .left .left5 > div:nth-child(2) > div:nth-child(2),
+.div2 .div2-2 .right .right1 > div:nth-child(2) > div:nth-child(1) {
+  width: 85px;
+  height: 179px;
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+/* 中间楼梯 */
+.div2 .div2-2 .middle {
+  width: 060272%;
+  width: 115px;
+  height: 70%;
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.div2 .div2-2 .middle > div:nth-child(1) {
+  width: 117px;
+  height: 304px;
+  background-color: #2c6965;
+}
+
+.div2 .div2-2 .middle > div:nth-child(1) > div {
+  width: 104px;
+  height: 100%;
+  margin: 0 6px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.div2 .div2-2 .middle > div:nth-child(1) div div {
+  /* width: 104px;
+            height: 104px;
+            border-radius: 50%;
+            opacity: 0.4;
+            background-color: rgba(28, 75, 72, 1);
+            box-shadow: 1px 1px 4px 2px rgba(0, 0, 0, 0.4); */
+}
+
+.div2 .div2-2 .middle > div:nth-child(1) div div img {
+  width: 115px;
+  height: 115px;
+  margin-left: -2px;
+  margin-top: 55px;
+}
+
+.div2 .div2-2 .middle > div:nth-child(2) {
+  width: 127px;
+  height: 177px;
+  margin-top: 103px;
+  background-color: #2c6965;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.div2 .div2-2 .middle > div:nth-child(2) > img:nth-child(1) {
+   width: 115px;
+  // height: 80px;
+  margin: 10px 6px 0px 6px;
+  margin-bottom: 10px;
+}
+
+.div2 .div2-2 .middle > div:nth-child(2) > div {
+  width: 115px;
+  height: 80px;
+  border-radius: 4px;
+  margin-left: 6px;
+  background-color: rgba(65, 116, 116, 1);
+  text-align: center;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .middle > div:nth-child(2) > div img {
+  width: 35px;
+  height: 35px;
+  margin-top: 22px;
+}
+
+/* 中间右区 */
+.div2 .div2-2 .right {
+  /* width:0.46986373%; */
+  width: 896.5px;
+  height: 100%;
+  /* border:1px solid red; */
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* 右区 1部会议室 */
+.div2 .div2-2 .right .right2 {
+  /*width: 292px;*/
+  background-color: #2c6965;
+  padding: 6px;
+  color: rgba(255, 255, 255, 1);
+  font-size: 30px;
+  text-align: center;
+}
+
+.div2 .div2-2 .right .right2 .right2-1,
+.div2 .div2-2 .right .right2 .right2-2,
+.div2 .div2-2 .right .right2 .right2-3,
+.div2 .div2-2 .right .right2 .right2-4 {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 2px;
+}
+
+.div2 .div2-2 .right .right2 .right2-1 > img {
+  width: 145px;
+  height: 66px;
+  margin-right: 2px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .right .right2 .right2-1 div {
+  width: 145px;
+  height: 66px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(65, 116, 116, 1);
+}
+
+.div2 .div2-2 .right .right2 .right2-2 > div:nth-child(1) {
+  position: relative;
+}
+
+.div2 .div2-2 .right .right2 .right2-2 > div:nth-child(1) div {
+  width: 145px;
+  height: 129px;
+  font-size: 26px;
+  line-height: 33px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+  margin-right: 2px;
+}
+
+.div2 .div2-2 .right .right2 .right2-2 > div:nth-child(1) img:nth-child(2) {
+  position: absolute;
+  left: 0;
+  top: 13px;
+  width: 6px;
+  height: 20px;
+  border-radius: 1px;
+}
+
+.div2 .div2-2 .right .right2 .right2-2 > div:nth-child(1) img:nth-child(3) {
+  position: absolute;
+  left: 0;
+  bottom: 13px;
+  width: 6px;
+  height: 20px;
+  border-radius: 1px;
+}
+
+.div2 .div2-2 .right .right2 .right2-2 > div:nth-child(2) {
+  position: relative;
+}
+
+.div2 .div2-2 .right .right2 .right2-2 > div:nth-child(2) div {
+  width: 145px;
+  height: 129px;
+  line-height: 129px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+}
+
+.div2 .div2-2 .right .right2 .right2-2 > div:nth-child(2) img {
+  position: absolute;
+  right: 0;
+  top: 18px;
+  width: 6px;
+  height: 42px;
+}
+
+.div2 .div2-2 .right .right2 .right2-3 div:nth-child(1),
+.div2 .div2-2 .right .right2 .right2-3 div:nth-child(2) {
+  position: relative;
+}
+
+.div2 .div2-2 .right .right2 .right2-3 div:nth-child(1) div {
+  width: 145px;
+  height: 201px;
+  line-height: 201px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+  margin-right: 2px;
+}
+
+.div2 .div2-2 .right .right2 .right2-3 div:nth-child(1) img:nth-child(2) {
+  position: absolute;
+  top: 17px;
+  left: 0px;
+}
+
+.div2 .div2-2 .right .right2 .right2-3 div:nth-child(1) img:nth-child(3) {
+  position: absolute;
+  bottom: 19px;
+  left: 0;
+}
+
+.div2 .div2-2 .right .right2 .right2-3 div:nth-child(2) div {
+  width: 145px;
+  height: 201px;
+  line-height: 201px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+}
+
+.div2 .div2-2 .right .right2 .right2-3 div:nth-child(2) img:nth-child(2) {
+  position: absolute;
+  top: 17px;
+  right: 0px;
+}
+
+.div2 .div2-2 .right .right2 .right2-3 div:nth-child(2) img:nth-child(3) {
+  position: absolute;
+  bottom: 19px;
+  right: 0;
+}
+
+.div2 .div2-2 .right .right2 .right2-4 {
+  margin-bottom: 0px;
+}
+
+.div2 .div2-2 .right .right2 .right2-4 > div:nth-child(1) {
+  position: relative;
+  height: 165px;
+}
+
+.div2 .div2-2 .right .right2 .right2-4 > div:nth-child(1) > div {
+  width: 173px;
+  height: 165px;
+  line-height: 165px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+  margin-right: 2px;
+}
+
+.div2 .div2-2 .right .right2 .right2-4 > div:nth-child(1) > img:nth-child(2) {
+  position: absolute;
+  bottom: 0px;
+  left: 16px;
+}
+
+.div2 .div2-2 .right .right2 .right2-4 > div:nth-child(1) > img:nth-child(3) {
+  position: absolute;
+  bottom: 0px;
+  right: 16px;
+}
+
+.div2 .div2-2 .right .right2 .right2-4 div:nth-child(2) {
+  position: relative;
+}
+
+.div2 .div2-2 .right .right2 .right2-4 div:nth-child(2) > div {
+  width: 117px;
+  height: 165px;
+  line-height: 165px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(52, 127, 122, 1);
+  margin-right: 2px;
+}
+
+.div2 .div2-2 .right .right2 .right2-4 div:nth-child(2) img {
+  position: absolute;
+  bottom: 19px;
+  right: 0px;
+}
+
+/* 右部 2区会议室 */
+.div2 .div2-2 .right .right4 {
+  width: 282px;
+  background-color: #2c6965;
+  /* padding: 6px; */
+  color: rgba(255, 255, 255, 1);
+  font-size: 30px;
+  text-align: center;
+  font-family: Roboto;
+}
+
+.div2 .div2-2 .right .right4 .right4-1,
+.div2 .div2-2 .right .right4 .right4-2,
+.div2 .div2-2 .right .right2 .right4-3 {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.div2 .div2-2 .right .right4 .right4-1 {
+  margin: 6px;
+  margin-bottom: 2px;
+}
+
+.div2 .div2-2 .right .right4 .right4-2 {
+  margin-left: 6px;
+  margin-right: 6px;
+  margin-bottom: 2px;
+}
+
+.div2 .div2-2 .right .right4 .right4-1 > img {
+  width: 145px;
+  height: 66px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .right .right4 .right4-1 > div {
+  width: 145px;
+  height: 66px;
+  margin-right: 2px;
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  background-color: rgba(65, 116, 116, 1);
+}
+
+.div2 .div2-2 .right .right4 .right4-2 {
+  /* width: 268px; */
+  height: 334px;
+}
+
+.div2 .div2-2 .right .right4 .right4-2 > div {
+  width: 134px;
+  height: 100%;
+  margin-right: 2px;
+}
+
+.div2 .div2-2 .right .right4 .right4-2 > div > div {
+  position: relative;
+}
+
+.div2 .div2-2 .right .right4 .right4-2 > div:nth-child(1) div div {
+  width: 134px;
+  height: 166px;
+  margin-bottom: 2px;
+  line-height: 166px;
+  border-radius: 4px;
+  background-color: rgba(52, 127, 122, 1);
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .right .right4 .right4-2 > div:nth-child(1) div img {
+  position: absolute;
+  left: 0;
+  top: 18px;
+}
+
+.div2 .div2-2 .right .right4 .right4-2 > div:nth-child(2) div div {
+  width: 134px;
+  height: 110px;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  line-height: 110px;
+  border-radius: 4px;
+  background-color: rgba(52, 127, 122, 1);
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.div2 .div2-2 .right .right4 .right4-2 > div:nth-child(2) > div:nth-child(1) img,
+.div2 .div2-2 .right .right4 .right4-2 > div:nth-child(2) > div:nth-child(2) img {
+  position: absolute;
+  right: 0;
+  top: 13px;
+}
+
+.div2 .div2-2 .right .right4 .right4-2 > div:nth-child(2) > div:nth-child(3) img {
+  position: absolute;
+  right: 0;
+  bottom: 13px;
+}
+
+.div2 .div2-2 .right .right4 .right4-3 {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.div2 .div2-2 .right .right4 .right4-3 > div:nth-child(1) {
+  width: 202px;
+  height: 165px;
+  margin-left: 6px;
+  line-height: 165px;
+  background-color: rgba(52, 127, 122, 1);
+  box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.div2 .div2-2 .right .right4 .right4-3 > div:nth-child(1) img:nth-child(2) {
+  position: absolute;
+  bottom: 0;
+  left: 19px;
+}
+
+.div2 .div2-2 .right .right4 .right4-3 > div:nth-child(1) img:nth-child(3) {
+  position: absolute;
+  bottom: 0;
+  right: 19px;
+}
+
+.div2 .div2-2 .right .right4 .right4-3 > div:nth-child(2) {
+  width: 74px;
+  height: 172px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.div2 .div2-2 .right .right4 .right4-3 > div:nth-child(2) div {
+  width: 36px;
+  height: 130px;
+  background-color: #2c6965;
+}
+
+.div2 .div2-2 .right .right4 .right4-3 > div:nth-child(2) div img {
+  width: 28px;
+  height: 28px;
+}
+
+.div2 .div2-2 .right .right5 {
+  width: 71px;
+}
+
+/* 2层下边 */
+.div2 .arrowPoint {
+  display: flex;
+  justify-content: space-between;
+  width: 190px;
+}
+
+.div2 .arrowPoint span {
+  height: 41px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 28px;
+  text-align: left;
+  font-family: SourceHanSansSC-regular;
+}
+
+.div2 .arrowPoint > img {
+  width: 44px;
+  height: 44px;
+  vertical-align: middle;
+}
+
+.div2 .arrowPoint > div img {
+  width: 33px;
+  height: 80px;
+  margin-top: -16px;
+}
+
+/* 第3层 */
+.div3 {
+  width: 100%;
+  height: 84px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.div3 ul {
+  height: 84px;
+  line-height: 84px;
+  margin-left: 94px;
+  display: flex;
+}
+
+.div3 ul li {
+  margin-right: 68px;
+  display: flex;
+  align-items: center;
+}
+
+.div3 ul li img {
+  width: 44px;
+  height: 44px;
+  /* vertical-align: middle;*/
+  margin: 0;
+  margin-right: 10px;
+  /* margin-top: 2px;*/
+  background-color: transparent;
+}
+
+.div3 ul li:nth-child(1) img {
+  width: 56px;
+  height: 56px;
+}
+
+.div3 ul li:nth-child(4) img {
+  background-color: rgba(52, 127, 122, 1);
+}
+
+.div3 ul li span {
+  display: inline-block;
+  /* width: 120px; */
+  height: 44px;
+  line-height: 44px;
+  margin-right: 6px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 30px;
+  text-align: left;
+  font-family: SourceHanSansSC-regular;
+}
+
+.div3 ul li:last-child span:nth-child(1) {
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 145, 0, 1);
+  /*margin-top:24px;*/
+}
+
+.div3 ul li:last-child span:nth-child(2) {
+  /*transform: translateY(-12px);*/
+}
+
+#zuobiao {
+  position: absolute;
+  left: 1490px;
+  top: 694px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* 起点的激活样式 */
+.active-startA2228 {
+  width: 202px !important;
+  height: 165px !important;
+  /*line-height: 225px !important;*/
+  line-height: 165px !important;
+  background-color: rgba(255, 145, 0, 1) !important;
+  /*font-size: 28px;*/
+  font-size: 30px;
+  /*background-image: url(http://39.105.179.38:9797/noderad/dangqian.png);
+            background-repeat: no-repeat;
+            background-position: center 14%;*/
+}
+.active-startA2229 {
+  width: 173px !important;
+  height: 165px !important;
+  line-height: 165px !important;
+  background-color: rgba(255, 145, 0, 1) !important;
+  font-size: 30px;
+}
+.active-startA2211 {
+  width: 214px !important;
+  height: 165px !important;
+  line-height: 165px !important;
+  background-color: rgba(255, 145, 0, 1) !important;
+  font-size: 30px;
+ 
+}
+.active-startA2212 {
+  width: 208px !important;
+  height: 165px !important;
+  line-height: 165px !important;
+  background-color: rgba(255, 145, 0, 1) !important;
+  font-size: 30px;
+ 
+}
+
+</style>

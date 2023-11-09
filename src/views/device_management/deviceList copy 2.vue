@@ -19,12 +19,7 @@
         <el-form-item label="区域">
           <el-select v-model="form.region" placeholder="全部">
             <!-- <el-option v-for="(item,id) in tableData"  label="item.region" value="item.region" :key="id"/> -->
-            <el-option
-                  v-for="item in meetingRoomlist"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-              />
+            <el-option v-for="item in meetingRoomlist" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -37,56 +32,54 @@
     </div>
     <!-- 3.1新增/删除-->
     <div class="addAndDel">
-        <!-- 新增 -->
-        <el-button type="primary" text @click="add()" :class="['addbtn',selectList.length != 0?'addbtnActive':'']" :disabled="selectList.length != 0">新增</el-button>
-        <!--新增弹框表单  -->
-        <el-dialog v-model="newdialogFormVisible" title="新增">
-          <el-form :model="newForm" ref="newFormRef" :rules="newFormRules">
-            <el-form-item label="设备ID" :label-width="formLabelWidth" prop="deviceId">
-              <el-input v-model="newForm.deviceId" autocomplete="off" placeholder="请输入设备id" />
-            </el-form-item>
-            <el-form-item label="品牌" :label-width="formLabelWidth" prop="brand">
-              <el-input v-model="newForm.brand" autocomplete="off" placeholder="请输入品牌" />
-            </el-form-item>
-            <el-form-item label="设备名称" :label-width="formLabelWidth" prop="deviceName">
-              <el-input
-                v-model="newForm.deviceName"
-                autocomplete="off"
-                placeholder="请输入设备名称"
-              />
-            </el-form-item>
-            <el-form-item label="型号" :label-width="formLabelWidth" prop="modelNumber">
-              <el-input v-model="newForm.modelNumber" autocomplete="off" placeholder="请输入型号" />
-            </el-form-item>
-            <el-form-item label="设备IP地址" :label-width="formLabelWidth" prop="deviceIpAddress">
-              <el-input
-                v-model="newForm.deviceIpAddress"
-                autocomplete="off"
-                placeholder="请输入IP地址"
-              />
-            </el-form-item>
-            <el-form-item label="&nbsp;&nbsp;会议室" :label-width="formLabelWidth" prop="region">
-              <el-select
-                v-model="newForm.region"
-                placeholder="请输入会议室名称"
-                style="width: 100%"
-              >
-                <!-- multiple -->
-                <el-option
-                  v-for="item in meetingRoomlist"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="端口号" :label-width="formLabelWidth" prop="port">
-              <el-input v-model="newForm.port" autocomplete="off" placeholder="请输入端口号" />
-            </el-form-item>
-            <el-form-item label="&nbsp;&nbsp;状态" :label-width="formLabelWidth" prop="status">
-              <el-input v-model="newForm.status" autocomplete="off" placeholder="请输入状态" />
-            </el-form-item>
-            <!-- <el-form-item label="&nbsp;&nbsp;设备类型" :label-width="formLabelWidth" prop="deviceType">
+      <!-- 新增 -->
+      <el-button
+        type="primary"
+        text
+        @click="add()"
+        :class="['addbtn', selectList.length != 0 ? 'addbtnActive' : '']"
+        :disabled="selectList.length != 0"
+        >新增</el-button
+      >
+      <!--新增弹框表单  -->
+      <el-dialog v-model="newdialogFormVisible" title="新增">
+        <el-form :model="newForm" ref="newFormRef" :rules="newFormRules">
+          <el-form-item label="设备ID" :label-width="formLabelWidth" prop="deviceId">
+            <el-input v-model="newForm.deviceId" autocomplete="off" placeholder="请输入设备id" />
+          </el-form-item>
+          <el-form-item label="品牌" :label-width="formLabelWidth" prop="brand">
+            <el-input v-model="newForm.brand" autocomplete="off" placeholder="请输入品牌" />
+          </el-form-item>
+          <el-form-item label="设备名称" :label-width="formLabelWidth" prop="deviceName">
+            <el-input
+              v-model="newForm.deviceName"
+              autocomplete="off"
+              placeholder="请输入设备名称"
+            />
+          </el-form-item>
+          <el-form-item label="型号" :label-width="formLabelWidth" prop="modelNumber">
+            <el-input v-model="newForm.modelNumber" autocomplete="off" placeholder="请输入型号" />
+          </el-form-item>
+          <el-form-item label="设备IP地址" :label-width="formLabelWidth" prop="deviceIpAddress">
+            <el-input
+              v-model="newForm.deviceIpAddress"
+              autocomplete="off"
+              placeholder="请输入IP地址"
+            />
+          </el-form-item>
+          <el-form-item label="&nbsp;&nbsp;会议室" :label-width="formLabelWidth" prop="region">
+            <el-select v-model="newForm.region" placeholder="请输入会议室名称" style="width: 100%">
+              <!-- multiple -->
+              <el-option v-for="item in meetingRoomlist" :key="item" :label="item" :value="item" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="端口号" :label-width="formLabelWidth" prop="port">
+            <el-input v-model="newForm.port" autocomplete="off" placeholder="请输入端口号" />
+          </el-form-item>
+          <el-form-item label="&nbsp;&nbsp;状态" :label-width="formLabelWidth" prop="status">
+            <el-input v-model="newForm.status" autocomplete="off" placeholder="请输入状态" />
+          </el-form-item>
+          <!-- <el-form-item label="&nbsp;&nbsp;设备类型" :label-width="formLabelWidth" prop="deviceType">
               <el-select
                 v-model="newForm.deviceType"
                 placeholder="请选择设备类型"
@@ -100,81 +93,82 @@
                 />
               </el-select>
             </el-form-item> -->
-            <el-form-item label="&nbsp;&nbsp;订阅主题" :label-width="formLabelWidth" prop="topic">
-              <el-input v-model="newForm.topic" autocomplete="off" placeholder="请输入订阅主题" />
-            </el-form-item>
-          </el-form>
-          <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="cancelItem()">取消</el-button>
-              <el-button type="primary" @click="addItem()">确认</el-button>
-            </span>
-          </template>
-        </el-dialog>
-        <!-- 删除 -->
-        <el-button @click="deletebtn()" :class="['deletebtn',selectList.length != 0?'delbtnActive':'']" :disabled="selectList.length == 0"
-          >删除</el-button
-        >
+          <el-form-item label="&nbsp;&nbsp;订阅主题" :label-width="formLabelWidth" prop="topic">
+            <el-input v-model="newForm.topic" autocomplete="off" placeholder="请输入订阅主题" />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="cancelItem()">取消</el-button>
+            <el-button type="primary" @click="addItem()">确认</el-button>
+          </span>
+        </template>
+      </el-dialog>
+      <!-- 删除 -->
+      <el-button
+        @click="deletebtn()"
+        :class="['deletebtn', selectList.length != 0 ? 'delbtnActive' : '']"
+        :disabled="selectList.length == 0"
+        >删除</el-button
+      >
     </div>
     <!-- 3.设备列表 -->
     <div class="deviceList">
-     
-    <!-- 3.2 设备列表-->
-    <el-table
-            :data="tableData"
-            style="width: 100%"
-            height="100%"
-            :header-cell-style="{ background: '#F5F9FC' }"
-            @select="handleSelectionChange"
-            @select-all="selectAll"
-            ref="table"
-            :row-class-name="tableRowClassName"
-          >
-            <el-table-column type="selection" prop="sec" label="" min-width="30" />
-            <el-table-column fixed prop="deviceId" label="设备ID" min-width="80" />
-            <el-table-column prop="deviceName" label="设备名称" min-width="120" />
-            <el-table-column prop="deviceIpAddress" label="设备ip地址" min-width="120" />
-            <el-table-column prop="port" label="端口号" min-width="70" />
-            <el-table-column prop="brand" label="品牌" min-width="60" />
-            <el-table-column prop="modelNumber" label="型号" min-width="150" />
-            <el-table-column prop="region" label="区域" min-width="120" />
-            <el-table-column prop="createTime" label="添加时间" min-width="170" >
-              <template #default="scope">
-                {{getcreateTime(scope.row.createTime)}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="state" label="状态" min-width="150">
-              <template #default="scope">
-                <el-switch
-                  class="ml-2"
-                  size="small"
-                  v-model="scope.row.state"
-                  style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
-                  active-text="开启"
-                  inactive-text="关闭"
-                  active-value="ON"
-                  inactive-value="OFF"
-                  @change="
-                    (v) => {
-                      isOpen(v, scope.row)
-                    }
-                  "
-                />
-              </template>
-            </el-table-column>
-            <el-table-column prop="opration" label="操作" min-width="120" fixed="right">
-              <!-- scope.row   -->
-              <template #default="scope">
-                <el-button link type="primary" size="small" @click.prevent="edititem(scope.row)">
-                  编辑
-                </el-button>
-                <el-button link type="primary" size="small" @click.prevent="deleteitem(scope.row)">
-                  删除
-                </el-button>
-              </template>
-            </el-table-column>
-    </el-table>
-      
+      <!-- 3.2 设备列表-->
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        height="100%"
+        :header-cell-style="{ background: '#F5F9FC' }"
+        @select="handleSelectionChange"
+        @select-all="selectAll"
+        ref="table"
+        :row-class-name="tableRowClassName"
+      >
+        <el-table-column type="selection" prop="sec" label="" min-width="30" />
+        <el-table-column fixed prop="deviceId" label="设备ID" min-width="80" />
+        <el-table-column prop="deviceName" label="设备名称" min-width="120" />
+        <el-table-column prop="deviceIpAddress" label="设备ip地址" min-width="120" />
+        <el-table-column prop="port" label="端口号" min-width="70" />
+        <el-table-column prop="brand" label="品牌" min-width="60" />
+        <el-table-column prop="modelNumber" label="型号" min-width="150" />
+        <el-table-column prop="region" label="区域" min-width="120" />
+        <el-table-column prop="createTime" label="添加时间" min-width="170">
+          <template #default="scope">
+            {{ getcreateTime(scope.row.createTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="state" label="状态" min-width="150">
+          <template #default="scope">
+            <el-switch
+              class="ml-2"
+              size="small"
+              v-model="scope.row.state"
+              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
+              active-text="开启"
+              inactive-text="关闭"
+              active-value="ON"
+              inactive-value="OFF"
+              @change="
+                (v) => {
+                  isOpen(v, scope.row)
+                }
+              "
+            />
+          </template>
+        </el-table-column>
+        <el-table-column prop="opration" label="操作" min-width="120" fixed="right">
+          <!-- scope.row   -->
+          <template #default="scope">
+            <el-button link type="primary" size="small" @click.prevent="edititem(scope.row)">
+              编辑
+            </el-button>
+            <el-button link type="primary" size="small" @click.prevent="deleteitem(scope.row)">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
     <!-- 4.分页 -->
     <div class="pagination-block">
@@ -188,12 +182,12 @@
         @current-change="handleCurrentChange"
       />
       <el-button type="primary">确定</el-button>
-      <img src="@/assets/index/deviceList/refresh.png" @click="refresh()"/>
+      <img src="@/assets/index/deviceList/refresh.png" @click="refresh()" />
     </div>
-     <!--编辑弹框表单  -->
-   <div class="tankuang">
+    <!--编辑弹框表单  -->
+    <div class="tankuang">
       <el-dialog v-model="editdialogFormVisible" title="编辑">
-        <el-form :model="editForm" ref="editFormRef" :rules="editFormRules" >
+        <el-form :model="editForm" ref="editFormRef" :rules="editFormRules">
           <el-form-item label="设备ID" :label-width="formLabelWidth" prop="deviceId">
             <el-input v-model="editForm.deviceId" autocomplete="off" />
           </el-form-item>
@@ -212,12 +206,7 @@
           <el-form-item label="会议室" :label-width="formLabelWidth" prop="region">
             <el-select v-model="editForm.region" placeholder="请输入会议室名称" style="width: 100%">
               <!-- multiple -->
-              <el-option
-                  v-for="item in meetingRoomlist"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-              />
+              <el-option v-for="item in meetingRoomlist" :key="item" :label="item" :value="item" />
             </el-select>
           </el-form-item>
           <el-form-item label="端口号" :label-width="formLabelWidth" prop="port">
@@ -262,7 +251,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
 
-import {request,noderedrequest}  from "@/utils/server.js" 
+import { request, noderedrequest } from '@/utils/server.js'
 
 const table = ref(null)
 
@@ -270,13 +259,12 @@ const table = ref(null)
 const meetingRoomlist = ref([])
 const getmeetingRoomList = () => {
   request
-    .post('/IOTRoomCrtl/queryAllIotRoomList', { })
+    .post('/IOTRoomCrtl/queryAllIotRoomList', {})
     .then((res) => {
       console.log('设备管理会议室列表查询成功:', res.data)
-      for(var i=0;i<res.data.length;i++){
-         meetingRoomlist.value.push(res.data[i].roomName+'会议室')
+      for (var i = 0; i < res.data.length; i++) {
+        meetingRoomlist.value.push(res.data[i].roomName + '会议室')
       }
-
     })
     .catch((error) => {
       console.log('设备管理会议室列表查询失败:', error)
@@ -296,11 +284,11 @@ const getList = () => {
       region: form.region,
       page: currentPage.value,
       limit: pageSize.value,
-      deviceType: 0,
+      deviceType: 0
     })
     .then((response) => {
       console.log('设备管理列表按条件查询成功:', response.data)
-      total.value = response.data.data.total;
+      total.value = response.data.data.total
       tableData.length = 0
       //使用push方法:结构后再赋值
       // debugger
@@ -321,27 +309,27 @@ const getList = () => {
     })
 }
 // 添加时间
-const getcreateTime=(createTime)=>{
-  if(createTime){
+const getcreateTime = (createTime) => {
+  if (createTime) {
     // 现在的时间
-    var currentTime=new Date()
-    var ty=currentTime.getFullYear()
-    var tm=currentTime.getMonth()+1
-    var td=currentTime.getDate()
+    var currentTime = new Date()
+    var ty = currentTime.getFullYear()
+    var tm = currentTime.getMonth() + 1
+    var td = currentTime.getDate()
     // 创建时间
     // debugger
-    var time=new Date(createTime)
-    
-    var y=time.getFullYear()
-    var m=time.getMonth()+1
-    var d=time.getDate()
+    var time = new Date(createTime)
+
+    var y = time.getFullYear()
+    var m = time.getMonth() + 1
+    var d = time.getDate()
     // console.log(time,y,m,d )
-    if(currentTime.getTime() - new Date(createTime).getTime() <5*60*1000){
-      return "刚刚"
-    }else if(ty==y&&tm==m&&td==d){
-      return "今天 "+time.getHours()+':'+time.getMinutes()
-    }else { 
-      return m+'月'+d+'日 ' +time.getHours()+':'+time.getMinutes()
+    if (currentTime.getTime() - new Date(createTime).getTime() < 5 * 60 * 1000) {
+      return '刚刚'
+    } else if (ty == y && tm == m && td == d) {
+      return '今天 ' + time.getHours() + ':' + time.getMinutes()
+    } else {
+      return m + '月' + d + '日 ' + time.getHours() + ':' + time.getMinutes()
     }
   }
 }
@@ -401,8 +389,8 @@ const deletebtn = () => {
           if (response.data.code == 200) {
             //重新发请求，渲染设备列表
             getList()
-            
-            selectList.value=[]
+
+            selectList.value = []
             // 清除勾选
             table.value.clearSelection()
           }
@@ -417,8 +405,8 @@ const deletebtn = () => {
     })
 }
 // 3.2 row-class-name 属性来为 Table 中的某一行添加 class， 这样就可以自定义每一行的样式了
-const tableRowClassName = ({row,rowIndex}) => {
-  if (rowIndex %2 == 0) {
+const tableRowClassName = ({ row, rowIndex }) => {
+  if (rowIndex % 2 == 0) {
     return 'warning-row'
   } else if (rowIndex % 2 == 1) {
     return 'success-row'
@@ -437,7 +425,7 @@ const tableRowClassName = ({row,rowIndex}) => {
 //     label: '移动设备'
 //   }
 // ])
-const formLabelWidth = "32%";
+const formLabelWidth = '32%'
 const newdialogFormVisible = ref(false)
 const newForm = reactive({
   deviceId: '',
@@ -447,7 +435,7 @@ const newForm = reactive({
   brand: '',
   modelNumber: '',
   region: '',
-  deviceType:'',
+  deviceType: '',
   state: '',
   topic: ''
 })
@@ -456,10 +444,25 @@ const newFormRef = ref(null)
 const newFormRules = reactive({
   deviceId: [{ required: true, message: '请输入', trigger: 'blur' }],
   deviceName: [{ required: true, message: '请输入', trigger: 'blur' }],
-  deviceIpAddress: [{ required: true, message: '请输入', trigger: 'blur' },{ pattern:/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/, message: '情输入正确的ip地址', trigger: 'blur'}],
-  port: [{ required: true, message: '请输入', trigger: 'blur' },{ pattern:/^(([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5]))$/, message: '范围需在0-65535之间', trigger: 'blur'}],
+  deviceIpAddress: [
+    { required: true, message: '请输入', trigger: 'blur' },
+    {
+      pattern:
+        /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/,
+      message: '情输入正确的ip地址',
+      trigger: 'blur'
+    }
+  ],
+  port: [
+    { required: true, message: '请输入', trigger: 'blur' },
+    {
+      pattern: /^(([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5]))$/,
+      message: '范围需在0-65535之间',
+      trigger: 'blur'
+    }
+  ],
   brand: [{ required: true, message: '请输入', trigger: 'blur' }],
-  modelNumber: [{ required: true, message: '请输入', trigger: 'blur' }],
+  modelNumber: [{ required: true, message: '请输入', trigger: 'blur' }]
   // region: [{ required: true, message: '请输入', trigger: 'blur' }]
   // state: [{required: true, message:'请输入', trigger: 'blur'}],
 })
@@ -482,7 +485,7 @@ const addItem = () => {
             state: newForm.state,
             topic: newForm.topic,
             // deviceType: '0
-            deviceType: newForm.deviceType,
+            deviceType: newForm.deviceType
           }
         })
         .then((res) => {
@@ -512,13 +515,12 @@ const add = () => {
   newForm.deviceName = ''
   newForm.deviceIpAddress = ''
   newForm.port = ''
-  newForm.brand = '', 
-  newForm.modelNumber = ''
+  ;(newForm.brand = ''), (newForm.modelNumber = '')
   newForm.region = ''
-  newForm.deviceTypeOptions=''
+  newForm.deviceTypeOptions = ''
   newForm.state = ''
   newForm.topic = ''
-  
+
   newdialogFormVisible.value = true
 }
 
@@ -544,8 +546,8 @@ const deleteitem = (row) => {
           if (response.data.code == 200) {
             //重新发请求，渲染设备列表
             getList()
-            
-            selectList.value=[]
+
+            selectList.value = []
             // 清除勾选
             table.value.clearSelection()
           }
@@ -570,7 +572,7 @@ const editForm = reactive({
   brand: '',
   modelNumber: '',
   region: '',
-  deviceType:'',
+  deviceType: '',
   state: '',
   topic: ''
 })
@@ -579,8 +581,23 @@ const editFormRef = ref(null)
 const editFormRules = reactive({
   deviceId: [{ required: true, message: '请输入', trigger: 'blur' }],
   deviceName: [{ required: true, message: '请输入', trigger: 'blur' }],
-  deviceIpAddress: [{ required: true, message: '请输入', trigger: 'blur' },{ pattern:/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/, message: '情输入正确的ip地址', trigger: 'blur'}],
-  port: [{ required: true, message: '请输入', trigger: 'blur' },{ pattern:/^(([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5]))$/, message: '范围需在0-65535之间', trigger: 'blur'}],
+  deviceIpAddress: [
+    { required: true, message: '请输入', trigger: 'blur' },
+    {
+      pattern:
+        /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/,
+      message: '情输入正确的ip地址',
+      trigger: 'blur'
+    }
+  ],
+  port: [
+    { required: true, message: '请输入', trigger: 'blur' },
+    {
+      pattern: /^(([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5]))$/,
+      message: '范围需在0-65535之间',
+      trigger: 'blur'
+    }
+  ],
   brand: [{ required: true, message: '请输入', trigger: 'blur' }],
   modelNumber: [{ required: true, message: '请输入', trigger: 'blur' }],
   region: [{ required: true, message: '请输入', trigger: 'blur' }]
@@ -596,12 +613,12 @@ const edititem = (row) => {
   editForm.deviceName = row.deviceName
   editForm.deviceIpAddress = row.deviceIpAddress
   editForm.port = row.port
-  editForm.brand = row.brand,
-  editForm.modelNumber = row.modelNumber,
-  editForm.region = row.region,
-  editForm.deviceType=row.deviceType==0?"固定设备":"移动设备",
-  editForm.state = row.state,
-  editForm.topic = row.topic
+  ;(editForm.brand = row.brand),
+    (editForm.modelNumber = row.modelNumber),
+    (editForm.region = row.region),
+    (editForm.deviceType = row.deviceType == 0 ? '固定设备' : '移动设备'),
+    (editForm.state = row.state),
+    (editForm.topic = row.topic)
 }
 const editIteminfo = () => {
   editFormRef.value.validate((valid) => {
@@ -619,7 +636,7 @@ const editIteminfo = () => {
             brand: editForm.brand,
             modelNumber: editForm.modelNumber,
             region: editForm.region,
-            deviceType:editForm.deviceType,
+            deviceType: editForm.deviceType,
             state: editForm.state,
             topic: editForm.topic
           }
@@ -699,30 +716,24 @@ const selectAll = (e) => {
   handleSelectionChange(e)
 }
 
-
 const isOpen = (v, item) => {
   // debugger
-  if(item.topic!=""){
-     request
-    .post('/MqttCrtl/crtIotopic', 
-      {
-        "message": v,
-        "pubTopic": item.topic,
-        "qos": 2,
-        "retained": true
-      }
-    )
-    .then((res) => {
-      console.log('控制设备发送成功', res)
-      
-    })
-    .catch((error) => {
-      console.log('控制设备发送失败',error)
-    })
+  if (item.topic != '') {
+    request
+      .post('/MqttCrtl/crtIotopic', {
+        message: v,
+        pubTopic: item.topic,
+        qos: 2,
+        retained: true
+      })
+      .then((res) => {
+        console.log('控制设备发送成功', res)
+      })
+      .catch((error) => {
+        console.log('控制设备发送失败', error)
+      })
   }
-  
 }
-
 
 // 4.分页
 const currentPage = ref(1)
@@ -739,10 +750,9 @@ const handleCurrentChange = (val) => {
   getList()
 }
 // 刷新按钮
-const refresh=()=>{
+const refresh = () => {
   //重新发请求，渲染设备列表
   getList()
-
 }
 </script>
 <style lang="less" scoped>
@@ -830,7 +840,7 @@ const refresh=()=>{
   }
   // 3.新增/删除按钮
   // 编辑/删除按钮
-  .addAndDel{
+  .addAndDel {
     height: 72px;
     border-top: 1px solid rgba(239, 239, 239, 1);
     border-bottom: 1px solid rgba(239, 239, 239, 1);
@@ -849,18 +859,18 @@ const refresh=()=>{
       text-align: center;
       font-family: Roboto;
     }
-    .addbtn{
-       &.addbtnActive{
-        background-color: #bfbfbf!important;
+    .addbtn {
+      &.addbtnActive {
+        background-color: #bfbfbf !important;
         color: #ffffff;
       }
     }
     .deletebtn {
       background-color: rgba(191, 191, 191, 1);
       color: rgba(255, 255, 255, 1);
-     
-      &.delbtnActive{
-         background-color: red;
+
+      &.delbtnActive {
+        background-color: red;
       }
     }
     //编辑弹窗
@@ -887,8 +897,7 @@ const refresh=()=>{
     flex: 1;
     overflow: hidden;
     width: 100%;
-  
-    
+
     //3.2设备列表
     :deep(.el-table) {
       .cell {
@@ -918,13 +927,12 @@ const refresh=()=>{
       }
 
       .warning-row {
-        background-color: transparent!important;
+        background-color: transparent !important;
       }
       .success-row {
-        background-color: #F5F9FC!important;
+        background-color: #f5f9fc !important;
       }
     }
-  
   }
   // 4.分页
   .pagination-block {
@@ -950,22 +958,21 @@ const refresh=()=>{
       margin-top: 14px;
     }
   }
-  
 }
-.tankuang{
-    //编辑弹窗
-    :deep(.el-form) {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
+.tankuang {
+  //编辑弹窗
+  :deep(.el-form) {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 
-      .el-form-item {
-        width: 45%;
+    .el-form-item {
+      width: 45%;
 
-        .el-form-item__label {
-          justify-content: flex-start;
-        }
+      .el-form-item__label {
+        justify-content: flex-start;
       }
     }
   }
+}
 </style>
