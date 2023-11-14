@@ -90,7 +90,9 @@
                 </div>
                 <div></div>
               </div>
-              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道</div>
+              <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道
+              </div>
             </div>
           </div>
           <div class="middle">
@@ -119,7 +121,9 @@
                   <div></div>
                 </div>
               </div>
-              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道</div>
+              <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道
+              </div>
             </div>
             <div class="right2">
               <!-- 1 -->
@@ -134,7 +138,13 @@
                 </div>
                 <div>
                   <div>
-                    <div id="A2117" v-if="props.roomName=='A2-117'" :class="[(props.roomName=='A2-117') ? 'active-startA2117':'']">A2-117</div>
+                    <div
+                      id="A2117"
+                      v-if="props.roomName == 'A2-117'"
+                      :class="[props.roomName == 'A2-117' ? 'active-startA2117' : '']"
+                    >
+                      A2-117
+                    </div>
                     <div id="A2117" v-else data-roomName="A2117">A2-117</div>
                     <!-- 竖 双排门 -->
                     <img
@@ -219,9 +229,7 @@
                 </div>
               </div>
             </div>
-            <div class="right3">
-              
-            </div>
+            <div class="right3"></div>
             <div class="right4">
               <div>
                 <div>
@@ -341,13 +349,13 @@ const props = defineProps({
   }
 })
 
-const getzbdStyle=computed(()=>{
-    if(props.roomName=="A2-117"){
-      return {
-       left:"70px",
-       top:"797px",
-      }
+const getzbdStyle = computed(() => {
+  if (props.roomName == 'A2-117') {
+    return {
+      left: '70px',
+      top: '797px'
     }
+  }
 })
 
 onMounted(() => {
@@ -391,7 +399,7 @@ onMounted(() => {
         [250, 806],
         [250, 1000],
         [255, 1000],
-        [238, 1000],
+        [238, 1000]
       ],
       A2117_A2115: [
         [126, 806],
@@ -399,7 +407,7 @@ onMounted(() => {
         [250, 806],
         [250, 944],
         [255, 944],
-        [238, 944],
+        [238, 944]
       ],
       A2117_A2113: [
         [126, 806],
@@ -407,7 +415,7 @@ onMounted(() => {
         [250, 806],
         [250, 886],
         [250, 886],
-        [270, 886],
+        [270, 886]
       ],
       //二区
       A2117_A2117: [],
@@ -417,7 +425,7 @@ onMounted(() => {
         [279, 811],
         [279, 704],
         [279, 704],
-        [266, 704],
+        [266, 704]
       ],
       A2117_A2107: [
         [126, 806],
@@ -425,7 +433,7 @@ onMounted(() => {
         [279, 811],
         [279, 754],
         [279, 754],
-        [266, 754],
+        [266, 754]
       ],
       A2117_A2104: [
         [126, 806],
@@ -441,7 +449,7 @@ onMounted(() => {
         [279, 811],
         [279, 754],
         [279, 754],
-        [296, 754],
+        [296, 754]
       ],
       A2117_A2108: [
         [126, 806],
@@ -449,7 +457,7 @@ onMounted(() => {
         [279, 811],
         [279, 704],
         [279, 704],
-        [296, 704],
+        [296, 704]
       ],
       A2117_A2105: [
         [126, 806],
@@ -839,7 +847,8 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
-ul,li {
+ul,
+li {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -953,7 +962,6 @@ ul,li {
   display: flex;
   justify-content: space-between;
   // zoom: 1.972;
-
 }
 /* 中间中部 */
 .div2 img {
@@ -1705,7 +1713,7 @@ ul,li {
   top: 786px;
 }
 
-// 起点的激活样式 
+// 起点的激活样式
 .active-startA2117 {
   width: 150px !important;
   height: 100px !important;
@@ -1713,6 +1721,4 @@ ul,li {
   background-color: rgba(255, 145, 0, 1) !important;
   font-size: 24px;
 }
-
-
 </style>

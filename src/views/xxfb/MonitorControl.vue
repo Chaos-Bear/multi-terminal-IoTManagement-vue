@@ -4,7 +4,7 @@
     <div class="top">
       <div class="name">
         <img src="@/assets/xxfb/screenshots/8.png" />
-        <div>{{roomName}}</div>
+        <div>{{ roomName }}</div>
       </div>
       <div class="btn">
         <div @click="router.push('/xxfb-monitorlist?roomName=' + roomName + '&roomID=' + roomId)">
@@ -19,11 +19,11 @@
       <el-scrollbar height="100%" width="443px" class="preScrollBar">
         <div class="pre">
           <div class="preTop">
-             <div>发布屏状态：</div>
-             <div>30s  后截屏自动更新</div>
+            <div>发布屏状态：</div>
+            <div>点击截图后自动更新</div>
           </div>
           <div class="screenshots">
-            <!-- <img src="@/assets/xxfb/4.png" /> -->
+            <img :src="'data:image/png;base64,' + imgSrc" />
           </div>
         </div>
       </el-scrollbar>
@@ -34,27 +34,41 @@
           <div class="controlArea">
             <div class="top1">发布屏控制</div>
             <div class="controlInfo">
-              <div class="controlItem" @click="isOpenOrClose" >
+              <div class="controlItem" @click="isOpenOrClose">
                 <img v-if="isOpenOrCloseValue" src="@/assets/xxfb/screenshots/1.png" />
                 <img v-else src="@/assets/xxfb/screenshots/5.png" />
                 <div v-if="isOpenOrCloseValue">开机</div>
                 <div v-else>关机</div>
               </div>
-              <div class="controlItem" @click="isrestart" :style="!isOpenOrCloseValue?'pointer-events: none;':''">
-                <img  src="@/assets/xxfb/screenshots/2.png" />
+              <div
+                class="controlItem"
+                @click="isrestart"
+                :style="!isOpenOrCloseValue ? 'pointer-events: none;' : ''"
+              >
+                <img src="@/assets/xxfb/screenshots/2.png" />
                 <div>重启</div>
               </div>
-              <div class="controlItem" @click="isbrightScreen" :style="!isOpenOrCloseValue?'pointer-events: none;':''">
+              <div
+                class="controlItem"
+                @click="isbrightScreen"
+                :style="!isOpenOrCloseValue ? 'pointer-events: none;' : ''"
+              >
                 <img v-if="isbrightScreenValue" src="@/assets/xxfb/screenshots/3.png" />
                 <img v-else src="@/assets/xxfb/screenshots/6.png" />
                 <div v-if="isbrightScreenValue">亮屏</div>
                 <div v-else>熄屏</div>
               </div>
-              <div class="controlItem" @click="isrefresh" :style="!isOpenOrCloseValue?'pointer-events: none;':''">
+              <div
+                class="controlItem"
+                @click="isrefresh"
+                :style="
+                  !isOpenOrCloseValue || isrefreshValue == false ? 'pointer-events: none;' : ''
+                "
+              >
                 <img v-if="isrefreshValue" src="@/assets/xxfb/screenshots/4.png" />
                 <img v-else src="@/assets/xxfb/screenshots/7.png" />
-                <div v-if="isrefreshValue">刷新</div>
-                <div v-else>刷新中...</div>
+                <div v-if="isrefreshValue">截图</div>
+                <div v-else>截图中...</div>
               </div>
             </div>
           </div>
@@ -65,7 +79,7 @@
     <!--2.关机弹框  -->
     <div class="closeDialog">
       <el-dialog v-model="closeDialogVisible" title="">
-        <div class="tips" >
+        <div class="tips">
           <img src="@/assets/xxfb/screenshots/12.png" />
           <div>关机</div>
           <span>Windows将在1分钟内关闭</span>
@@ -81,7 +95,7 @@
     <!--2.重启弹框  -->
     <div class="closeDialog">
       <el-dialog v-model="restartDialogVisible" title="">
-        <div class="tips" >
+        <div class="tips">
           <img src="@/assets/xxfb/screenshots/12.png" />
           <div>重启</div>
           <span>Windows将在1分钟内重启</span>
@@ -99,156 +113,124 @@
 
 <script setup>
 import PreEdit from '@/components/xxfb/PreEdit.vue'
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
-import { request,  releaseRequest} from '@/utils/server.js'
+import { request, releaseRequest } from '@/utils/server.js'
 const roomName = route.query.roomName
 const roomId = route.query.roomID
 
-// debugger
-// 1.----获取会议接口------
-//   const getMeetingList=()=>{
-//   tabletRequest
-//     .post('', {
-//       "borrowTime": dayTime.value,
-//       "borrowedStatus": dayState.value,
-//     })
-//     .then((response) => {
-//       // debugger
-//       // console.log('当日借用记录按条件查询成功:', response.data.result)
+// -------1.发布屏设备控制接口-------
+const imgSrc = ref('')
 
-//     })
-//     .catch((error) => {
-//       console.log('当日借用记录按条件查询失败:', error)
-//     })
-// }
-// 2. ----------保存接口------------
-// const saveRequest=()=>{
-//   tabletRequest
-//     .post('', {
-//       "borrowTime": '',
-//       "borrowedStatus": '',
-//     })
-//     .then(() => {
-//       ElMessage({
-//         type: 'success',
-//         message: '保存成功'
-//       })
-
-//     })
-//     .catch(() => {
-//       ElMessage({
-//         type: 'error',
-//         message: '保存失败'
-//       })
-//     })
-// }
-// -------3.发布屏设备控制接口-------
-  const terminalControlRequest=(operateType)=>{
+const terminalControlRequest = (operateType) => {
   releaseRequest
-    // .post('/TerminalCtrl/opert', {
-    .post('', {
-        "operate": operateType,
-        "openTopic": "A2-206/206-RFID-UP",
-        "ip": "10.31.0.239"
+    .post('/TerminalCtrl/opert', {
+      // .post('', {
+      operate: operateType,
+      // "openTopic": "A2-206/206-RFID-UP",
+      openTopic: 'screen/test',
+      // "ip": "10.31.0.239"
+      ip: '192.168.42.154'
     })
     .then((response) => {
       // debugger
       // console.log('发布屏设备控制成功:', response.data.result)
-      
+      if (operateType == 'screenshot' && response.data.repCode == 200) {
+        imgSrc.value = ''
+        imgSrc.value = response.data.result
+        isrefreshValue.value = true
+      }
+      if (operateType == 'screenshot' && response.data.repCode != 200) {
+        ElMessage.error(response.data.repMsg)
+      }
     })
     .catch((error) => {
       console.log('发布屏设备控制成功失败:', error)
+      if (operateType == 'screenshot') {
+        ElMessage.error('截图失败！')
+      }
     })
 }
-
-const controlForm=ref({
-
+onMounted(() => {
+  terminalControlRequest('screenshot')
 })
 
 // 关机弹出框
-const closeDialogVisible=ref(false)
+const closeDialogVisible = ref(false)
 
 // 1.开关机
-const isOpenOrCloseValue=ref(true)
+const isOpenOrCloseValue = ref(true)
 // 点击关机按钮
-const isOpenOrClose=()=>{
+const isOpenOrClose = () => {
   // debugger
   // 如是开机状态点击 则展示关机弹框
-  if(isOpenOrCloseValue.value==true){
-    closeDialogVisible.value=true
-  }else{
+  if (isOpenOrCloseValue.value == true) {
+    closeDialogVisible.value = true
+  } else {
     // 直接调用开机接口
-    isOpenOrCloseValue.value=true
-
-
-
+    isOpenOrCloseValue.value = true
   }
-  
-} 
+}
 // 关机弹框中的 确认 按钮
-const confirmClose=()=>{
+const confirmClose = () => {
   //调用发布屏设备控制 关机接口
   terminalControlRequest('shutdown')
-  
-  isOpenOrCloseValue.value=!isOpenOrCloseValue.value
-  closeDialogVisible.value=false
+
+  isOpenOrCloseValue.value = !isOpenOrCloseValue.value
+  closeDialogVisible.value = false
 }
 // 关机弹框中的 取消 按钮
-const cancelClose=()=>{
-  closeDialogVisible.value=false
-  isOpenOrCloseValue.value=true
+const cancelClose = () => {
+  terminalControlRequest('cancel')
+  closeDialogVisible.value = false
+  isOpenOrCloseValue.value = true
 }
 
 // 2.重启
 // 重启弹出框
-const restartDialogVisible=ref(false)
+const restartDialogVisible = ref(false)
 
 // 点击重启按钮
-const isrestart=()=>{
-  restartDialogVisible.value=true
-} 
+const isrestart = () => {
+  restartDialogVisible.value = true
+}
 
 // 重启弹框中的 确认 按钮
-const confirmRestart=()=>{
+const confirmRestart = () => {
   // 调用重启接口
   terminalControlRequest('restart')
-  
-  restartDialogVisible.value=false
+
+  restartDialogVisible.value = false
 }
 // 重启弹框中的 取消 按钮
-const cancelRestart=()=>{
-  restartDialogVisible.value=false
-  
+const cancelRestart = () => {
+  terminalControlRequest('cancel')
+  restartDialogVisible.value = false
 }
 
 // 3.息屏/亮屏
-const isbrightScreenValue=ref(true)
-const isbrightScreen=()=>{
+const isbrightScreenValue = ref(true)
+const isbrightScreen = () => {
   //调用发布屏设备控制接口
-  if(isbrightScreenValue.value==true){
+  if (isbrightScreenValue.value == true) {
     // 息屏
     terminalControlRequest('bright_screen.bat')
-  }else{
+  } else {
     // 亮屏
     terminalControlRequest('wake_screen.bat')
   }
-  isbrightScreenValue.value=!isbrightScreenValue.value
-  
-} 
-// 4.刷新
-const isrefreshValue=ref(true)
-const isrefresh=()=>{
-  isrefreshValue.value=!isrefreshValue.value
+  isbrightScreenValue.value = !isbrightScreenValue.value
 }
-
-
-
-
+// 4.截图
+const isrefreshValue = ref(true)
+const isrefresh = () => {
+  terminalControlRequest('screenshot')
+  isrefreshValue.value = false
+}
 </script>
 
 <style lang="less" scoped>
@@ -264,20 +246,20 @@ const isrefresh=()=>{
     justify-content: space-between;
     justify-items: center;
 
-    .name{
+    .name {
       display: flex;
       align-items: center;
-       img{
-          width: 24px;
-          height: 24px;
-          margin-right: 8px;
-       }
-       div{
+      img {
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+      }
+      div {
         color: rgba(16, 16, 16, 1);
         font-size: 20px;
         text-align: left;
         font-family: SourceHanSansSC-regular;
-       }
+      }
     }
     .btn {
       height: 60px;
@@ -327,12 +309,16 @@ const isrefresh=()=>{
       .preTop {
         display: flex;
         justify-content: space-between;
-        margin-right:34px;
+        margin-right: 34px;
       }
       .screenshots {
         width: 375px;
         height: 675px;
         border: 1px solid blue;
+        img {
+          width: 375px;
+          height: 675px;
+        }
       }
     }
 
@@ -364,8 +350,8 @@ const isrefresh=()=>{
       .controlInfo {
         display: flex;
         flex-wrap: wrap;
-        
-        .controlItem{
+
+        .controlItem {
           width: 180px;
           height: 120px;
           margin-top: 23px;
@@ -377,27 +363,26 @@ const isrefresh=()=>{
           display: flex;
           flex-direction: column;
           align-items: center;
-          img{
+          img {
             width: 34px;
             height: 34px;
             margin-top: 24px;
             margin-bottom: 14px;
           }
-          div{
+          div {
             color: rgba(16, 16, 16, 1);
             font-size: 18px;
             text-align: center;
             font-family: SourceHanSansSC-regular;
           }
-          &:hover{
-           border: 1px solid rgba(24, 144, 255, 0.5);
-
+          &:hover {
+            border: 1px solid rgba(24, 144, 255, 0.5);
           }
         }
       }
     }
   }
-  
+
   // 3.关机/重启 弹出框
   .closeDialog {
     :deep(.el-dialog) {
@@ -433,8 +418,8 @@ const isrefresh=()=>{
       }
       .el-dialog__footer {
         text-align: center;
-        
-        .el-button{
+
+        .el-button {
           width: 80px;
           height: 32px;
           line-height: 20px;
@@ -443,7 +428,7 @@ const isrefresh=()=>{
           text-align: center;
           font-family: Roboto;
         }
-        .el-button:nth-child(1){
+        .el-button:nth-child(1) {
           background-color: rgba(217, 217, 217, 1);
           color: rgba(51, 51, 51, 1);
           border: 1px solid rgba(206, 206, 206, 1);
@@ -453,4 +438,3 @@ const isrefresh=()=>{
   }
 }
 </style>
-

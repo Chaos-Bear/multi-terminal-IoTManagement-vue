@@ -58,18 +58,14 @@
         </el-form>
       </div>
     </div>
-    <!-- 2.发布屏监控列表 -->
+    <!-- 2.发布屏监控列表 :src="'data:image/jpg;base64,'+"-->
     <div class="tableBox">
       <el-scrollbar height="100%">
         <div class="meetingList" v-if="meetingList.length > 0">
           <div v-for="(item, index) in meetingList" :key="index" class="meetingroom">
-            <img
-              src="@/assets/xxfb/screenshots/11.png"
-              @click="gotomonitorList(item)"
-            />
-            
-            <div class="roomName">{{ item.roomName }}信息发布屏</div>
+            <img src="@/assets/xxfb/screenshots/11.png" @click="gotomonitorList(item)" />
 
+            <div class="roomName">{{ item.roomName }}信息发布屏</div>
           </div>
         </div>
         <!-- 暂无监控列表 -->
@@ -484,7 +480,6 @@ const refresh = () => {
   //重新发请求，渲染设备列表
   // getList()
 }
-
 </script>
 <style lang="less" scoped>
 .xxfb-monitorlist {
@@ -492,7 +487,7 @@ const refresh = () => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  
+
   // 1. 顶部
   .top {
     padding: 16px 0px 20px 20px;
@@ -502,13 +497,13 @@ const refresh = () => {
     & > div {
       margin-top: 11px;
     }
-    :deep(.el-form){
-      .el-form-item__content{
+    :deep(.el-form) {
+      .el-form-item__content {
         flex-wrap: nowrap;
       }
     }
   }
-  
+
   // 2. 发布屏监控列表
   .tableBox {
     flex: 1;
@@ -596,5 +591,4 @@ const refresh = () => {
     }
   }
 }
-
 </style>

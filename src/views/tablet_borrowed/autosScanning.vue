@@ -368,7 +368,7 @@ const getList = () => {
   tabletRequest
     .post('/IotBabletEditCrtl/queryMageBablet', {
       borrowedStatus: '2',
-      tabletState:1,
+      tabletState: 1
     })
     .then((response) => {
       console.log('空闲中设备列表查询成功:', response.data.result)
@@ -493,7 +493,7 @@ const postsubmitScan = () => {
           cancelButtonText: ' 取消',
           type: 'success',
           'custom-class': 'zdyclass',
-          "show-cancel-button":false
+          'show-cancel-button': false
         }
       )
         .then(() => {
@@ -539,8 +539,7 @@ const submitScan = () => {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
       type: 'warning',
-      "show-cancel-button":false
-
+      'show-cancel-button': false
     })
       .then(() => {})
       .catch(() => {})
@@ -1094,7 +1093,6 @@ const deleteitem = (v) => {
       }
     }
   }
-  
 
   :deep(.el-dialog) {
     width: (542/1920) * 100vw;
@@ -1179,13 +1177,12 @@ const deleteitem = (v) => {
 }
 
 // 提示取消按钮
-:deep(.el-overlay.is-message-box){
-    .el-message-box__btns{
-      .el-button{
-        display: none!important;
-        border: 0px;
-      }
+:deep(.el-overlay.is-message-box) {
+  .el-message-box__btns {
+    .el-button {
+      display: none !important;
+      border: 0px;
     }
   }
-
+}
 </style>

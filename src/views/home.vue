@@ -38,7 +38,7 @@
         </div>
         <div>平板借还</div>
       </div> -->
-       <div class="item">
+      <div class="item">
         <div>
           <img src="@/assets/xxfb/screenshots/10.png" @click="router.push('/xxfb-monitorlist')" />
         </div>
@@ -695,8 +695,8 @@ const refresh = () => {
       margin-top: 11px;
     }
 
-    :deep(.el-form){
-      .el-form-item__content{
+    :deep(.el-form) {
+      .el-form-item__content {
         flex-wrap: nowrap;
       }
     }

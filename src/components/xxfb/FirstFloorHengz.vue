@@ -343,47 +343,45 @@
 // 一楼横正：
 import { ref, reactive, watch, computed, onMounted, nextTick } from 'vue'
 import $ from 'jquery'
-const props=defineProps({
-    roomName:{
-        type:String,
-        default(){
-            return ''
-        }
-    },
-    form:{
-      type:Object,
-        default(){
-            return ''
-        }
+const props = defineProps({
+  roomName: {
+    type: String,
+    default() {
+      return ''
     }
+  },
+  form: {
+    type: Object,
+    default() {
+      return ''
+    }
+  }
 })
 
 onMounted(() => {
   nextTick(() => {
     // 声明会议室坐标点
-    var CoordPoint = {
-      
-    }
-    $('[data-roomname]').on("click", function (e) {
-    if ($("body").attr("locked") == 1) {
+    var CoordPoint = {}
+    $('[data-roomname]').on('click', function (e) {
+      if ($('body').attr('locked') == 1) {
         return
-    };
+      }
 
-    $("body").attr("locked", 1);
+      $('body').attr('locked', 1)
 
-    $('[data-roomname]').css("background-color", "rgba(52, 127, 122, 1)");
+      $('[data-roomname]').css('background-color', 'rgba(52, 127, 122, 1)')
 
-    $(".line").remove()
-    $(".endimg").remove()
-    $(".startimg").remove()
-    document.getElementById("zuobiaodian").style.opacity = "1";
+      $('.line').remove()
+      $('.endimg').remove()
+      $('.startimg').remove()
+      document.getElementById('zuobiaodian').style.opacity = '1'
 
-    clearTimeout($("body").attr("timeout"));
+      clearTimeout($('body').attr('timeout'))
 
-    var end = $(this).attr("data-roomname");
-    console.log(end)
-    start_end(props.roomName.replace('-','')+'_' + end, end)
-})
+      var end = $(this).attr('data-roomname')
+      console.log(end)
+      start_end(props.roomName.replace('-', '') + '_' + end, end)
+    })
     function start_end(xy, end) {
       for (var i = 0; i < CoordPoint[xy].length; i = i + 2) {
         // console.log(CoordPoint[xy][i]);
@@ -717,7 +715,6 @@ onMounted(() => {
     }
   })
 })
-
 </script>
 
 <style lang="less" scoped>

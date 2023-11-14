@@ -545,7 +545,7 @@ const postsubmitScan = () => {
           cancelButtonText: ' 取消',
           type: 'success',
           'custom-class': 'zdyclass',
-          "show-cancel-button":false
+          'show-cancel-button': false
         }
       )
         .then(() => {
@@ -604,7 +604,7 @@ const submitScan = () => {
         confirmButtonText: '确认',
         cancelButtonText: ' 取消',
         type: 'warning',
-        "show-cancel-button":false
+        'show-cancel-button': false
       }
     )
       .then(() => {})

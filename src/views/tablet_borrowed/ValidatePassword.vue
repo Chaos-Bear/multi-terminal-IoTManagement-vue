@@ -54,14 +54,13 @@ const getList = () => {
         // res.result.startTime为申请的借用开始时间
         var startTime = new Date(res.result.meetStartTime).getTime()
         // if((startTime-nowTime) <=2*60*60*1000  && (startTime-nowTime)>=0){
-        if((startTime-nowTime) <=2*60*60*1000){
+        if (startTime - nowTime <= 2 * 60 * 60 * 1000) {
           //验证码校验成功，跳转到扫描页,并使用query传参
           router.push('/auto-scanning?verifyCode=' + verifyCode + '&repMsg=' + res.repMsg)
-
-        }else{
+        } else {
           ElMessage({
             type: 'error',
-            message: '会议开始前2小时之内可以借用',
+            message: '会议开始前2小时之内可以借用'
           })
         }
       } else {

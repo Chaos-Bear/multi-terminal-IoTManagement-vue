@@ -396,11 +396,11 @@
 
 <script setup>
 // 二楼竖反：204、205、215、216、222、223   //待修改
-
 </script>
 
 <style lang="less" scoped>
-ul,li {
+ul,
+li {
   list-style: none;
   margin: 0;
   padding: 0;

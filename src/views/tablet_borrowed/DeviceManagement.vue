@@ -362,7 +362,6 @@ const createbtn = () => {
   createdialogFormVisible.value = true
   // 打开新增弹框后，清除上一次校验规则
   createFormRef.value.clearValidate()
-
   ;(createForm.tabletID = ''),
     (createForm.tabletName = ''),
     (createForm.tabletModel = ''),
@@ -509,7 +508,6 @@ const edititem = (row) => {
   console.log(row)
 
   editdialogFormVisible.value = true
-
   ;(editForm.tabletID = row.tabletID),
     (editForm.tabletName = row.tabletName),
     (editForm.tabletModel = row.tabletModel),

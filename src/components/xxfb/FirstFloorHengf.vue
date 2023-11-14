@@ -79,7 +79,7 @@
             />
           </div>
         </div>
-        
+
         <div class="middle">
           <div>
             <div>
@@ -113,7 +113,7 @@
           <div class="left3">
             <!-- 3 -->
             <div>
-               <!-- 2 -->
+              <!-- 2 -->
               <div>
                 <div>
                   <img
@@ -162,9 +162,7 @@
               </div>
             </div>
             <!-- 2 -->
-            <div>
-              
-            </div>
+            <div></div>
             <!-- 1 -->
             <div>
               <div>
@@ -219,15 +217,15 @@
                   过&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道
                 </div>
                 <div>
-                <!-- 竖 双排门 -->
+                  <!-- 竖 双排门 -->
                   <img
                     class="doubledoor"
                     src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
                   />
                   <img
-                  class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
-                />
+                    class="doubledoor"
+                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  />
                 </div>
               </div>
               <div>
@@ -236,8 +234,14 @@
                 <div></div>
               </div>
               <div>
-                <div id="A2113" v-if="props.roomName=='A2-113'" :class="[(props.roomName=='A2-113') ? 'active-startA2113':'']">A2-113</div>
-                    <div id="A2113" v-else data-roomName="A2117">A2-113</div>
+                <div
+                  id="A2113"
+                  v-if="props.roomName == 'A2-113'"
+                  :class="[props.roomName == 'A2-113' ? 'active-startA2113' : '']"
+                >
+                  A2-113
+                </div>
+                <div id="A2113" v-else data-roomName="A2117">A2-113</div>
                 <!-- 横 双排门 -->
                 <img
                   class="hdoubledoor"
@@ -289,12 +293,12 @@
           </div>
         </div>
         <div class="arrowPoint" id="zuobiao" :style="getzbdStyle">
-              <span>左</span>
-              <img src="http://39.105.179.38:9797/noderad/md-forward@2x.png" />
+          <span>左</span>
+          <img src="http://39.105.179.38:9797/noderad/md-forward@2x.png" />
 
-              <img id="zuobiaodian" src="http://39.105.179.38:9797/noderad/zhishi.png" />
-              <img src="http://39.105.179.38:9797/noderad/md-forward@2x%20(1).png" />
-              <span>右</span>
+          <img id="zuobiaodian" src="http://39.105.179.38:9797/noderad/zhishi.png" />
+          <img src="http://39.105.179.38:9797/noderad/md-forward@2x%20(1).png" />
+          <span>右</span>
         </div>
       </div>
       <div class="div2-1">
@@ -347,27 +351,27 @@
 // 一楼横反：A2-113
 import { ref, reactive, watch, computed, onMounted, nextTick } from 'vue'
 import $ from 'jquery'
-const props=defineProps({
-    roomName:{
-        type:String,
-        default(){
-            return ''
-        }
-    },
-    form:{
-      type:Object,
-        default(){
-            return ''
-        }
+const props = defineProps({
+  roomName: {
+    type: String,
+    default() {
+      return ''
     }
+  },
+  form: {
+    type: Object,
+    default() {
+      return ''
+    }
+  }
 })
-const getzbdStyle=computed(()=>{
-    if(props.roomName=="A2-113"){
-      return {
-       left:"1538px",
-       top:"344px",
-      }
+const getzbdStyle = computed(() => {
+  if (props.roomName == 'A2-113') {
+    return {
+      left: '1538px',
+      top: '344px'
     }
+  }
 })
 
 onMounted(() => {
@@ -376,35 +380,33 @@ onMounted(() => {
     var CoordPoint = {
       // A2-113会议室
       // 一区
-    A2113_A2118: [
+      A2113_A2118: [
         [1639, 364],
         [1536, 364],
         [1536, 364],
         [1536, 574],
         [1536, 574],
-        [1566, 574],
-    ],
-    A2113_A2114: [
+        [1566, 574]
+      ],
+      A2113_A2114: [
         [1639, 364],
-        [1830, 364],
-    ],
-    A2113_A2115: [
+        [1830, 364]
+      ],
+      A2113_A2115: [
         [1639, 364],
-        [1735, 364],
-    ],
-    A2113_A2113: [
-
-    ],
-    //二区
-    A2113_A2117: [
+        [1735, 364]
+      ],
+      A2113_A2113: [],
+      //二区
+      A2113_A2117: [
         [1639, 364],
         [1536, 364],
         [1536, 364],
         [1536, 480],
         [1541, 480],
-        [1506, 480],
-    ],
-    A2113_A2109: [
+        [1506, 480]
+      ],
+      A2113_A2109: [
         [1639, 364],
         [1536, 364],
         [1536, 364],
@@ -412,9 +414,9 @@ onMounted(() => {
         [1536, 310],
         [1328, 310],
         [1328, 310],
-        [1328, 324],
-    ],
-    A2113_A2107: [
+        [1328, 324]
+      ],
+      A2113_A2107: [
         [1639, 364],
         [1536, 364],
         [1536, 364],
@@ -422,10 +424,9 @@ onMounted(() => {
         [1536, 310],
         [1422, 310],
         [1422, 310],
-        [1422, 324],
-       
-    ],
-    A2113_A2104: [
+        [1422, 324]
+      ],
+      A2113_A2104: [
         [1639, 364],
         [1536, 364],
         [1536, 364],
@@ -433,10 +434,9 @@ onMounted(() => {
         [1536, 310],
         [1078, 310],
         [1078, 310],
-        [1078, 390],
-        
-    ],
-    A2113_A2110: [
+        [1078, 390]
+      ],
+      A2113_A2110: [
         [1639, 364],
         [1536, 364],
         [1536, 364],
@@ -444,10 +444,9 @@ onMounted(() => {
         [1536, 310],
         [1422, 310],
         [1422, 310],
-        [1422, 290],
-        
-    ],
-    A2113_A2108: [
+        [1422, 290]
+      ],
+      A2113_A2108: [
         [1639, 364],
         [1536, 364],
         [1536, 364],
@@ -455,9 +454,9 @@ onMounted(() => {
         [1536, 310],
         [1328, 310],
         [1328, 310],
-        [1328, 290],
-    ],
-    A2113_A2105: [
+        [1328, 290]
+      ],
+      A2113_A2105: [
         [1639, 364],
         [1536, 364],
         [1536, 364],
@@ -465,10 +464,10 @@ onMounted(() => {
         [1536, 310],
         [1078, 310],
         [1078, 310],
-        [1078, 226],
-    ],
-    //3区
-    A2113_A2103: [
+        [1078, 226]
+      ],
+      //3区
+      A2113_A2103: [
         [1639, 364],
         [1536, 364],
         [1536, 364],
@@ -480,10 +479,9 @@ onMounted(() => {
         [1049, 430],
         [824, 430],
         [824, 430],
-        [824, 704],
-       
-    ],
-    A2113_A2101: [
+        [824, 704]
+      ],
+      A2113_A2101: [
         [1639, 364],
         [1536, 364],
         [1536, 364],
@@ -493,30 +491,29 @@ onMounted(() => {
         [1044, 310],
         [1044, 420],
         [1049, 420],
-        [744, 420],
-        
-    ],
+        [744, 420]
+      ]
     }
-    $('[data-roomname]').on("click", function (e) {
-    if ($("body").attr("locked") == 1) {
+    $('[data-roomname]').on('click', function (e) {
+      if ($('body').attr('locked') == 1) {
         return
-    };
+      }
 
-    $("body").attr("locked", 1);
+      $('body').attr('locked', 1)
 
-    $('[data-roomname]').css("background-color", "rgba(52, 127, 122, 1)");
+      $('[data-roomname]').css('background-color', 'rgba(52, 127, 122, 1)')
 
-    $(".line").remove()
-    $(".endimg").remove()
-    $(".startimg").remove()
-    document.getElementById("zuobiaodian").style.opacity = "1";
+      $('.line').remove()
+      $('.endimg').remove()
+      $('.startimg').remove()
+      document.getElementById('zuobiaodian').style.opacity = '1'
 
-    clearTimeout($("body").attr("timeout"));
+      clearTimeout($('body').attr('timeout'))
 
-    var end = $(this).attr("data-roomname");
-    console.log(end)
-    start_end(props.roomName.replace('-','')+'_' + end, end)
-})
+      var end = $(this).attr('data-roomname')
+      console.log(end)
+      start_end(props.roomName.replace('-', '') + '_' + end, end)
+    })
     function start_end(xy, end) {
       for (var i = 0; i < CoordPoint[xy].length; i = i + 2) {
         // console.log(CoordPoint[xy][i]);
@@ -755,7 +752,7 @@ onMounted(() => {
             })
           })
         })
-      }else if ($('.line').length == 6) {
+      } else if ($('.line').length == 6) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
           "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
@@ -770,39 +767,39 @@ onMounted(() => {
             re($('.line').eq(2), function () {
               re($('.line').eq(3), function () {
                 re($('.line').eq(4), function () {
-                re($('.line').eq(5), function () {
-                  $('#div2').append(
-                    "<img class'endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
-                      (CoordPoint[xy][i - 1][0] - 15) +
-                      'px;top:' +
-                      (CoordPoint[xy][i - 1][1] - 15) +
-                      "px';>"
-                  )
-                  $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
+                  re($('.line').eq(5), function () {
+                    $('#div2').append(
+                      "<img class'endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+                        (CoordPoint[xy][i - 1][0] - 15) +
+                        'px;top:' +
+                        (CoordPoint[xy][i - 1][1] - 15) +
+                        "px';>"
+                    )
+                    $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
 
-                  $('body').removeAttr('locked')
-                  var timeout = setTimeout(function () {
-                    $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
-                    $('.line').remove()
-                    $('.endimg').remove()
-                    $('.startimg').remove()
-                    document.getElementById('zuobiaodian').style.opacity = '1'
+                    $('body').removeAttr('locked')
+                    var timeout = setTimeout(function () {
+                      $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
+                      $('.line').remove()
+                      $('.endimg').remove()
+                      $('.startimg').remove()
+                      document.getElementById('zuobiaodian').style.opacity = '1'
 
-                    //动态路径展示完毕，调用放大缩小全屏展示函数
-                    scrollSwiper()
-                  }, 15000)
-                  // 给body添加路径展示定时器 标识
-                  $('body').attr('timeout', timeout)
+                      //动态路径展示完毕，调用放大缩小全屏展示函数
+                      scrollSwiper()
+                    }, 15000)
+                    // 给body添加路径展示定时器 标识
+                    $('body').attr('timeout', timeout)
 
-                  // var scaletimeout = setTimeout(function () {
-                  //     $("#div2").css("zoom", 1.972);
-                  //     let ele = document.getElementById('div2cont');
-                  //     ele.scrollTop = 1080;
-                  // }, 10000);
-                  // $("body").attr("timeout-scale", scaletimeout);
+                    // var scaletimeout = setTimeout(function () {
+                    //     $("#div2").css("zoom", 1.972);
+                    //     let ele = document.getElementById('div2cont');
+                    //     ele.scrollTop = 1080;
+                    // }, 10000);
+                    // $("body").attr("timeout-scale", scaletimeout);
+                  })
                 })
               })
-            })
             })
           })
         })
@@ -901,11 +898,11 @@ onMounted(() => {
     }
   })
 })
-
 </script>
 
 <style lang="less" scoped>
-ul,li {
+ul,
+li {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -927,7 +924,7 @@ ul,li {
   margin-left: 94px;
   display: flex;
   justify-content: space-between;
-  &>div{
+  & > div {
     display: flex;
     align-items: center;
   }
@@ -1143,9 +1140,9 @@ ul,li {
   position: relative;
   margin-bottom: 4px;
 }
-.div2 .div2-2 .left .left1 > div:nth-child(3) > div:nth-child(1) > div > div:nth-child(2){
-    margin-left: 4px;
-    margin-right: 4px;
+.div2 .div2-2 .left .left1 > div:nth-child(3) > div:nth-child(1) > div > div:nth-child(2) {
+  margin-left: 4px;
+  margin-right: 4px;
 }
 .div2 .div2-2 .left .left1 > div:nth-child(3) > div:nth-child(1) > div img {
   position: absolute;
@@ -1153,7 +1150,14 @@ ul,li {
   left: 20px;
 }
 
-.div2 .div2-2 .left .left1 > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) {
+.div2
+  .div2-2
+  .left
+  .left1
+  > div:nth-child(3)
+  > div:nth-child(1)
+  > div:nth-child(1)
+  > div:nth-child(1) {
   width: 112px;
   height: 83px;
   // position: absolute;
@@ -1287,26 +1291,40 @@ ul,li {
   height: 62px;
   // line-height: 123px;
   margin-bottom: 4px;
-  
+
   position: relative;
 }
-.div2 .div2-2 .left .left1 > div:nth-child(1) > div:nth-child(1)>div:nth-child(2){
+.div2 .div2-2 .left .left1 > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) {
   width: 178px;
   height: 66px;
   line-height: 29px;
   border-radius: 4px;
   background-color: rgba(54, 111, 107, 1);
-  position:absolute;
+  position: absolute;
   top: 0;
   right: 0;
 }
-.div2 .div2-2 .left .left1 > div:nth-child(1) > div:nth-child(1)>div:nth-child(2) img:nth-child(1) {
+.div2
+  .div2-2
+  .left
+  .left1
+  > div:nth-child(1)
+  > div:nth-child(1)
+  > div:nth-child(2)
+  img:nth-child(1) {
   position: absolute;
   top: 15px;
   left: 0;
 }
 
-.div2 .div2-2 .left .left1 > div:nth-child(1) > div:nth-child(1)>div:nth-child(2) img:nth-child(2) {
+.div2
+  .div2-2
+  .left
+  .left1
+  > div:nth-child(1)
+  > div:nth-child(1)
+  > div:nth-child(2)
+  img:nth-child(2) {
   position: absolute;
   top: 15px;
   right: 0;
@@ -1394,7 +1412,7 @@ ul,li {
   img:nth-child(2) {
   position: absolute;
   bottom: 30px;
-  right:0 ;
+  right: 0;
 }
 
 .div2
@@ -1407,7 +1425,7 @@ ul,li {
   img:nth-child(3) {
   position: absolute;
   top: 30px;
-  right:0 ;
+  right: 0;
 }
 
 .div2 .div2-2 .left .left3 > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) {
@@ -1465,7 +1483,6 @@ ul,li {
   line-height: 68px;
   background-color: rgba(54, 111, 107, 1);
 }
-
 
 /* 3 */
 .div2 .div2-2 .left .left3 > div:nth-child(1) {
@@ -1597,7 +1614,6 @@ ul,li {
   height: 148px;
   background-color: #2c6965;
   padding-top: 6px;
- 
 }
 
 .div2 .div2-2 .right .right1 > div:nth-child(2) {
@@ -1684,7 +1700,7 @@ ul,li {
   // margin-bottom: 110px;
   background-color: #2c6965;
 }
-.div2 .div2-2 .middle > div:nth-child(2)>div{
+.div2 .div2-2 .middle > div:nth-child(2) > div {
   width: 115px;
   height: 65px;
   line-height: 29px;
@@ -1713,7 +1729,7 @@ ul,li {
 }
 
 .div2 .div2-2 .left .left4 > div:nth-child(2) {
-   margin-left: 72px;
+  margin-left: 72px;
   padding-left: 6px;
 }
 
@@ -1826,7 +1842,6 @@ ul,li {
   position: absolute;
   bottom: -3px;
   right: 0;
-
 }
 
 .div2 .div2-2 .right .right2 > div > div:nth-child(2) .right2-1 > div > img:nth-child(3),
@@ -1978,6 +1993,4 @@ ul,li {
   background-color: rgba(255, 145, 0, 1) !important;
   /*font-size: 28px;*/
 }
-
-
 </style>

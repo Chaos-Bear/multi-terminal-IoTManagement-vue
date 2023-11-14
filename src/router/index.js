@@ -83,12 +83,12 @@ const router = createRouter({
     // 4. 信息发布模块
     {
       path: '/xxfb',
-      name:"Xxfb",
+      name: 'Xxfb',
       component: () => import('../views/xxfb/edit.vue')
     },
     {
       path: '/monitor-control',
-      name:"MonitorControl",
+      name: 'MonitorControl',
       component: () => import('../views/xxfb/MonitorControl.vue')
     },
     {
@@ -97,7 +97,7 @@ const router = createRouter({
     },
     {
       path: '/xxfb-monitorlist',
-      name:"XxfbMonitorlist",
+      name: 'XxfbMonitorlist',
       component: () => import('../views/xxfb/home.vue')
     },
     // hash设置默认路由

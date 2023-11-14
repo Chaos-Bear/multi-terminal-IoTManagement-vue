@@ -29,16 +29,18 @@ export default defineConfig({
   // },
   // vue.config.js
   
-  devServer: {
-    // proxy: {
-    //   '/v2': {
-    //     target: 'http://10.31.0.239:8080', // 指定代理服务器
-    //     changeOrigin: true,
-    //     // pathRewrite: {
-    //     //   '^/api-docs': '' // 将/api替换为空
-    //     // }
-    //   }
-    // }
+  server: {
+    port: 5173,
+    strictPort: false,
+    // host: "10.31.0.247",
+    proxy: {
+      // '/sweet-api': {
+      //   target: 'http://39.105.179.38:8080', // 指定代理服务器
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/sweet-api/, '')
+      // }
+    },
+    watch: {},
   }
 
 })

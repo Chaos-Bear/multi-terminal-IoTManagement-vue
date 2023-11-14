@@ -15,7 +15,7 @@
     <div class="first" id="imageback">
       <div class="first1">
         <span id="newdate" class="newdate">{{ time ? time : '2023年11月1日 上午8:00' }}</span>
-        <div class="title" id="room">{{ props.form.roomName }}会议室</div>
+        <div class="title" id="room">{{ props.form.roomName || roomName}}会议室</div>
         <div class="ch">MEETING ROOM</div>
       </div>
       <div class="first2">
@@ -32,7 +32,7 @@
         <div class="first2-2"></div>
         <div class="first2-3">
           <!-- <div id="status">空闲中</div> -->
-          <div id="status">{{ props.form.meetStatus }}</div>
+          <div id="status">{{ props.form.meetStatus==1?"使用中":"空闲中" }}</div>
           <span>状态</span>
         </div>
       </div>
@@ -40,78 +40,72 @@
     <!-- 二层 -->
     <div class="second" id="second">
       <!-- 1.有会议 -->
-      <div v-if="props.form.mtAreaList.length > 0">
+      <div v-if="props.form.mtAreaList && props.form.mtAreaList.length > 0">
         <!-- 第一行同步与否 1同步 0不同步 -->
         <div>
           <!-- 同步1 getLine1FontSize 'font-size': props.form.mtAreaList[0].fontSize + 'px',-->
           <div
-            v-if="
-              props.form.mtAreaList[0].syncStatus == 1 && props.isshowlineValue.isshowline1Value
-            "
+            v-if="props.form.mtAreaList[0].syncStatus == 1"
             class="main_title_of_meeting"
             :style="{
               'font-size': props.form.mtAreaList[0].fontSize + 'px',
               color: props.form.mtAreaList[0].textColor,
-              'text-align': props.form.mtAreaList[0].showLocat
+              'text-align': props.form.mtAreaList[0].showLocat,
+              visibility:props.form.mtAreaList[0].isShow=='1'?'visible':'hidden'
             }"
           >
             {{ props.form.mtAreaList[0].textConent }}
           </div>
           <!-- 不同步0 -->
           <div
-            v-if="
-              props.form.mtAreaList[0].syncStatus == 0 && props.isshowlineValue.isshowline1Value
-            "
+            v-if="props.form.mtAreaList[0].syncStatus == 0"
             class="main_title_of_meeting"
+            :style="{
+              visibility:props.form.mtAreaList[0].isShow=='1'?'visible':'hidden'
+            }"
           >
-            <div class="zdy" :style="{
-              'font-size': props.form.mtAreaList[0].fontSize + 'px',
-              color: props.form.mtAreaList[0].textColor,
-              'text-align': props.form.mtAreaList[0].showLocat
-            }">{{ props.form.mtAreaList[0].textConent.split('；')[0]}}</div>
-            <div class="zdy" :style="{
-              'font-size': props.form.mtAreaList[0].fontSize + 'px',
-              color: props.form.mtAreaList[0].textColor,
-              'text-align': props.form.mtAreaList[0].showLocat
-            }">{{ props.form.mtAreaList[0].textConent.split('；')[1] }}</div>
-            <div class="zdy" :style="{
-              'font-size': props.form.mtAreaList[0].fontSize + 'px',
-              color: props.form.mtAreaList[0].textColor,
-              'text-align': props.form.mtAreaList[0].showLocat
-            }">{{ props.form.mtAreaList[0].textConent.split('；')[2] }}</div>
-            <div class="zdy" :style="{
-              'font-size': props.form.mtAreaList[0].fontSize + 'px',
-              color: props.form.mtAreaList[0].textColor,
-              'text-align': props.form.mtAreaList[0].showLocat
-            }">{{ props.form.mtAreaList[0].textConent.split('；')[3] }}</div>
+            <div
+              class="zdy"
+              v-for="(item,i) in props.form.mtAreaList[0].textConent.split('；')"  :key="i"
+              :style="{
+                'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                color: props.form.mtAreaList[0].textColor,
+                'text-align': props.form.mtAreaList[0].showLocat
+              }"
+            >
+              {{ item }}
+            </div>
+
           </div>
         </div>
         <!-- 第二行同步与否 会议开始时间，结束时间  -->
         <div>
           <div
             v-if="
-              props.form.mtAreaList[1].syncStatus == 1 && props.isshowlineValue.isshowline2Value
+             props.form && props.form.mtAreaList && props.form.mtAreaList[1].syncStatus == 1
             "
             class="startTime_endTime"
             id="startTime_endTime1"
             :style="{
               'font-size': props.form.mtAreaList[1].fontSize + 'px',
               color: props.form.mtAreaList[1].textColor,
-              'text-align': props.form.mtAreaList[1].showLocat
+              'text-align': props.form.mtAreaList[1].showLocat,
+              visibility:props.form.mtAreaList[1].isShow=='1'?'visible':'hidden'
             }"
           >
             {{ '会议时间：' + props.form.mtAreaList[1].textConent }}
           </div>
           <div
             v-if="
-              props.form.mtAreaList[1].syncStatus == 0 && props.isshowlineValue.isshowline2Value
+              props.form && props.form.mtAreaList && props.form.mtAreaList[1].syncStatus == 0
             "
             class="startTime_endTime"
             id="startTime_endTime1"
             :style="{
               'font-size': props.form.mtAreaList[1].fontSize + 'px',
               color: props.form.mtAreaList[1].textColor,
-              'text-align': props.form.mtAreaList[1].showLocat
+              'text-align': props.form.mtAreaList[1].showLocat,
+              visibility:props.form.mtAreaList[1].isShow=='1'?'visible':'hidden'
             }"
           >
             {{ props.form.mtAreaList[1].textConent }}
@@ -121,26 +115,28 @@
         <div>
           <div
             v-if="
-              props.form.mtAreaList[2].syncStatus == 1 && props.isshowlineValue.isshowline3Value
+             props.form && props.form.mtAreaList &&  props.form.mtAreaList[2].syncStatus == 1 
             "
             class="hostUnit"
             :style="{
               'font-size': props.form.mtAreaList[2].fontSize + 'px',
               color: props.form.mtAreaList[2].textColor,
-              'text-align': props.form.mtAreaList[2].showLocat
+              'text-align': props.form.mtAreaList[2].showLocat,
+              visibility:props.form.mtAreaList[2].isShow=='1'?'visible':'hidden'
             }"
           >
             主办方：{{ props.form.mtAreaList[2].textConent }}
           </div>
           <div
             v-if="
-              props.form.mtAreaList[2].syncStatus == 0 && props.isshowlineValue.isshowline3Value
+              props.form && props.form.mtAreaList && props.form.mtAreaList[2].syncStatus == 0
             "
             class="hostUnit"
             :style="{
               'font-size': props.form.mtAreaList[2].fontSize + 'px',
               color: props.form.mtAreaList[2].textColor,
-              'text-align': props.form.mtAreaList[2].showLocat
+              'text-align': props.form.mtAreaList[2].showLocat,
+              visibility:props.form.mtAreaList[2].isShow=='1'?'visible':'hidden'
             }"
           >
             {{ props.form.mtAreaList[2].textConent }}
@@ -148,12 +144,12 @@
         </div>
       </div>
       <!-- 2.暂无会议 -->
-      <div v-else>暂无会议</div>
+      <div v-else  class="noMeeting">当前暂无<br>会议信息</div>
     </div>
     <!-- 三层 -->
     <div class="third">
       <!-- 导览图 *****************-->
-      <div v-if="props.form.imgShow == 1">
+      <div v-if="props.form.imgShow == '1'">
         <!-- 二楼  -->
         <SecondFloorShuz
           v-if="isSecondFloorShuz"
@@ -187,13 +183,6 @@
       </div>
       <!-- 轮播图 -->
       <div class="swiper-container" id="swiper" v-else>
-        <!-- <div class="swiper-wrapper">
-          <div class="swiper-slide"><img src="http://39.105.179.38:9797/noderad/3.jpg" /></div>
-          <div class="swiper-slide"><img src="http://39.105.179.38:9797/noderad/3.jpg" /></div>
-        </div> -->
-        <!--autoplay默认true  autoplay :loop="true"
-        <video> 元素支持三种视频格式：MP4、WebM、Ogg。
-        -->
         <el-carousel
           indicator-position="none"
           :interval="props.form.playGap"
@@ -202,10 +191,10 @@
           ref="carouselRef"
         >
           <el-carousel-item v-for="(item, i) in props.form.mediaAreaList" :key="i">
-            <img v-if="item.playImg != ''" :src="item.playImg" />
+            <img v-if="item.type == 'img'" :src="item.url" />
             <video
               v-else
-              src="@/assets/xxfb/cat.mp4"
+              :src="item.url"
               width="684"
               height="385"
               controls
@@ -223,7 +212,7 @@
 import { ref, reactive, watch, computed } from 'vue'
 // import {} from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
-const router = useRouter
+const route = useRoute()
 import SecondFloorShuz from '@/components/xxfb/SecondFloorShuz.vue'
 import SecondFloorShuf from '@/components/xxfb/SecondFloorShuf.vue' //待修改
 import SecondFloorHengf from '@/components/xxfb/SecondFloorHengf.vue'
@@ -232,82 +221,20 @@ import FirstFloorHengf from '@/components/xxfb/FirstFloorHengf.vue'
 import FirstFloorShuz from '@/components/xxfb/FirstFloorShuz.vue' //待修改
 import { rowProps } from 'element-plus'
 
+const roomName = route.query.roomName
+const roomIdzdy = route.query.roomID
+
 const props = defineProps({
   form: {
     type: Object,
     default() {
       return {
-        // "publishTime": "2023年10月31日 15:40:00",
-        // "roomId": "",
-        // "roomName": '',
-        // "meetID": "",
-        // "meetName": "人资部会议",
-        // "roomTemp": 25,
-        // "roomHum": "60%",
-        // 'brightNess':100,
-        // "meetStatus": "进行",
-        // "imgShow": 1,     //1.导览图 2 轮播图
-        // "mtAreaList": [
-        //         {
-        //             "TextLocat": "第一行文本",
-        //             "textConent": "11月度工作会议",
-        //             "fontSize": 54,
-        //             "textColor": "#3333333",
-        //             "textVgt": 100,
-        //             "showLocat": "center",
-        //             "syncStatus": 1,   //1同步 0不同步
-        //             "isShow": 1       //1显示 2隐藏
-        //         },
-        //         {
-        //             "textLocat": "第二行文本",
-        //             "textConent": "会议时间:8:00-12:00",
-        //             "fontSize": 40,
-        //             "textColor": "#3333333",
-        //             "textVgt": 100,
-        //             "showLocat": "center",
-        //             "syncStatus": 1,
-        //             "isShow": 1
-        //         },
-        //         {
-        //             "textLocat": "第三行文本",
-        //             "textConent": "主办方：集成公司",
-        //             "fontSize": 40,
-        //             "textColor": "#3333333",
-        //             "textVgt": 100,
-        //             "showLocat": "center",
-        //             "syncStatus": 1,
-        //             "isShow": 1
-        //         }
-        //     ],
-        // "mediaAreaList": [
-        //         {
-        //             "roomId": 7781766872039424,
-        //             "meetID": 665786301885014016,
-        //             "playImg": "CFRARARA",
-        //             "playVideoID": "518wqww22121cee",
-        //         }
-        // ],
-        // // 提前发布时间
-        // prePubTime: 1,
-        // // 是否开启轮播图
-        // imgShow: '',
-        // playGap: '5000'
+       
       }
     }
   },
-  isshowlineValue: {
-    type: Object,
-    default() {
-      return {
-        isshowline1Value: '',
-        isshowline2Value: '',
-        isshowline3Value: ''
-      }
-    }
-  }
 })
 // debugger
-// props.isshowlineValue
 // 二楼竖正：A2-206、207、208、201、202、221、220、219、227、226、225    A2-206/202未写，其余ok
 // 二楼竖反：204、205、215、216、222、223     全部待修改布局
 // 二楼横反：A2-211 A2-228 A2-229 A2-212     A2-228ok  A2-211/A2-229待修改布局  A2-212未写
@@ -391,39 +318,49 @@ const getLine1FontSize = computed(() => {
 })
 
 //19个字/34px ，当会议主题长度大于19时，字号修改为28px
-const getLine3FontSize = computed(() => {
-  if (props.form.mtAreaList[2].textConent && props.form.mtAreaList[2].textConent.length >= 19 && props.form.mtAreaList[2].textConent.length <= 40) {
-    props.form.mtAreaList[2].fontSize = "28px";
-  } else if (props.form.mtAreaList[2].textConent && props.form.mtAreaList[2].textConent.length >= 41) {
-    props.form.mtAreaList[2].fontSize = "24px";
-  }
-})
+// const getLine3FontSize = computed(() => {
+//   if (props.form.mtAreaList[2].textConent && props.form.mtAreaList[2].textConent.length >= 19 && props.form.mtAreaList[2].textConent.length <= 40) {
+//     props.form.mtAreaList[2].fontSize = "28px";
+//   } else if (props.form.mtAreaList[2].textConent && props.form.mtAreaList[2].textConent.length >= 41) {
+//     props.form.mtAreaList[2].fontSize = "24px";
+//   }
+// })
 
 
 const autoplay = ref(true)
 
 const carouselRef = ref(null)
 const isVideo = (v) => {
-  if (props.form.mediaAreaList[v].playVideoID != '') {
+  if (props.form.mediaAreaList[v].type == 'video') {
     autoplay.value = false
     var domVideo1 = document.getElementById(props.form.mediaAreaList[v].domId)
-    domVideo1.play()
-    domVideo1.addEventListener(
-      'ended',
-      function () {
-        //结束
-        console.log('播放结束')
-        carouselRef.value.next()
-        autoplay.value = true
-      },
-      false
-    )
+    console.log(domVideo1,props.form.mediaAreaList[v].playVideoID)
+    // debugger
+    
+      domVideo1.play()
+      domVideo1.addEventListener(
+        'ended',
+        function () {
+          //结束
+          console.log('播放结束')
+          carouselRef.value.next()
+          autoplay.value = true
+        },
+        false
+      )
+
   } else {
     autoplay.value = true
     // document.getElementById(props.form.mediaAreaList[v].domId).pause()
   }
-  console.log(autoplay.value, v)
+ 
 }
+
+// const getUrl=(url)=>{
+//   return URL.createObjectURL(url)
+  
+// }
+
 </script>
 
 <style lang="less" scoped>
@@ -486,7 +423,7 @@ section {
 .roomInfo .first .first1 .newdate {
   height: 36px;
   padding-top: 6px;
-  margin-left: 406px;
+  margin-left: 396px;
   opacity: 0.8;
   color: rgba(255, 255, 255, 1);
   font-size: 24px;
@@ -620,7 +557,7 @@ section {
   font-family: SourceHanSansSC-regular;
 }
 
-.roomInfo .second .nomeeting {
+.roomInfo .second .noMeeting {
   width: 636px;
   line-height: 100px;
   margin-top: 80px;

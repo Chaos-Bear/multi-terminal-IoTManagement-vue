@@ -25,4 +25,4 @@ const releaseRequest = http({
   baseURL: import.meta.env.VITE_BASE_URL6
 })
 
-export { request, tabletRequest, noderedrequest, deviceRequest,releaseRequest }
+export { request, tabletRequest, noderedrequest, deviceRequest, releaseRequest }

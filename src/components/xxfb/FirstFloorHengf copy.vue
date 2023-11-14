@@ -346,19 +346,19 @@
 // 一楼横反：A2-113
 import { ref, reactive, watch, computed, onMounted, nextTick } from 'vue'
 import $ from 'jquery'
-const props=defineProps({
-    roomName:{
-        type:String,
-        default(){
-            return ''
-        }
-    },
-    form:{
-      type:Object,
-        default(){
-            return ''
-        }
+const props = defineProps({
+  roomName: {
+    type: String,
+    default() {
+      return ''
     }
+  },
+  form: {
+    type: Object,
+    default() {
+      return ''
+    }
+  }
 })
 
 onMounted(() => {
@@ -367,40 +367,37 @@ onMounted(() => {
     var CoordPoint = {
       // A2-113会议室
       // 一区
-    A2113_A2118: [
+      A2113_A2118: [
         [264, 364],
         [373, 364],
         [368, 364],
         [368, 196],
         [373, 196],
-        [338, 196],
-    ],
-    A2113_A2114: [
+        [338, 196]
+      ],
+      A2113_A2114: [
         [264, 364],
         [84, 364],
         [84, 364],
-        [84, 339],
-
-    ],
-    A2113_A2115: [
+        [84, 339]
+      ],
+      A2113_A2115: [
         [264, 364],
         [176, 364],
         [176, 364],
-        [176, 339],
-    ],
-    A2113_A2113: [
-
-    ],
-    //二区
-    A2113_A2117: [
+        [176, 339]
+      ],
+      A2113_A2113: [],
+      //二区
+      A2113_A2117: [
         [264, 364],
         [373, 364],
         [368, 364],
         [368, 256],
         [368, 256],
-        [405, 256],
-    ],
-    A2113_A2109: [
+        [405, 256]
+      ],
+      A2113_A2109: [
         [264, 364],
         [373, 364],
         [373, 364],
@@ -408,9 +405,9 @@ onMounted(() => {
         [373, 430],
         [500, 430],
         [495, 430],
-        [495, 400],
-    ],
-    A2113_A2107: [
+        [495, 400]
+      ],
+      A2113_A2107: [
         [264, 364],
         [373, 364],
         [373, 364],
@@ -418,9 +415,9 @@ onMounted(() => {
         [373, 430],
         [592, 430],
         [588, 430],
-        [588, 400],
-    ],
-    A2113_A2104: [
+        [588, 400]
+      ],
+      A2113_A2104: [
         [264, 364],
         [373, 364],
         [373, 364],
@@ -428,9 +425,9 @@ onMounted(() => {
         [373, 430],
         [824, 430],
         [819, 435],
-        [819, 350],
-    ],
-    A2113_A2110: [
+        [819, 350]
+      ],
+      A2113_A2110: [
         [264, 364],
         [373, 364],
         [373, 364],
@@ -438,9 +435,9 @@ onMounted(() => {
         [373, 430],
         [500, 430],
         [495, 430],
-        [495, 450],
-    ],
-    A2113_A2108: [
+        [495, 450]
+      ],
+      A2113_A2108: [
         [264, 364],
         [373, 364],
         [373, 364],
@@ -448,9 +445,9 @@ onMounted(() => {
         [373, 430],
         [592, 430],
         [588, 430],
-        [588, 450],
-    ],
-    A2113_A2105: [
+        [588, 450]
+      ],
+      A2113_A2105: [
         [264, 364],
         [373, 364],
         [373, 364],
@@ -458,10 +455,10 @@ onMounted(() => {
         [373, 430],
         [824, 430],
         [819, 430],
-        [819, 506],
-    ],
-    //3区
-    A2113_A2103: [
+        [819, 506]
+      ],
+      //3区
+      A2113_A2103: [
         [264, 364],
         [373, 364],
         [373, 364],
@@ -474,9 +471,9 @@ onMounted(() => {
         [849, 290],
         [1084, 290],
         [1079, 290],
-        [1079, 30],
-    ],
-    A2113_A2101: [
+        [1079, 30]
+      ],
+      A2113_A2101: [
         [264, 364],
         [373, 364],
         [373, 364],
@@ -487,30 +484,29 @@ onMounted(() => {
         [849, 295],
 
         [849, 295],
-        [1150, 295],
-
-    ],
+        [1150, 295]
+      ]
     }
-    $('[data-roomname]').on("click", function (e) {
-    if ($("body").attr("locked") == 1) {
+    $('[data-roomname]').on('click', function (e) {
+      if ($('body').attr('locked') == 1) {
         return
-    };
+      }
 
-    $("body").attr("locked", 1);
+      $('body').attr('locked', 1)
 
-    $('[data-roomname]').css("background-color", "rgba(52, 127, 122, 1)");
+      $('[data-roomname]').css('background-color', 'rgba(52, 127, 122, 1)')
 
-    $(".line").remove()
-    $(".endimg").remove()
-    $(".startimg").remove()
-    document.getElementById("zuobiaodian").style.opacity = "1";
+      $('.line').remove()
+      $('.endimg').remove()
+      $('.startimg').remove()
+      document.getElementById('zuobiaodian').style.opacity = '1'
 
-    clearTimeout($("body").attr("timeout"));
+      clearTimeout($('body').attr('timeout'))
 
-    var end = $(this).attr("data-roomname");
-    console.log(end)
-    start_end(props.roomName.replace('-','')+'_' + end, end)
-})
+      var end = $(this).attr('data-roomname')
+      console.log(end)
+      start_end(props.roomName.replace('-', '') + '_' + end, end)
+    })
     function start_end(xy, end) {
       for (var i = 0; i < CoordPoint[xy].length; i = i + 2) {
         // console.log(CoordPoint[xy][i]);
@@ -844,11 +840,11 @@ onMounted(() => {
     }
   })
 })
-
 </script>
 
 <style lang="less" scoped>
-ul,li {
+ul,
+li {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -870,7 +866,7 @@ ul,li {
   margin-left: 94px;
   display: flex;
   justify-content: space-between;
-  &>div{
+  & > div {
     display: flex;
     align-items: center;
   }
@@ -1929,7 +1925,6 @@ ul,li {
   line-height: 165px !important;
   background-color: rgba(255, 145, 0, 1) !important;
   font-size: 30px;
- 
 }
 .active-startA2212 {
   width: 208px !important;
@@ -1937,6 +1932,5 @@ ul,li {
   line-height: 165px !important;
   background-color: rgba(255, 145, 0, 1) !important;
   font-size: 30px;
- 
 }
 </style>
