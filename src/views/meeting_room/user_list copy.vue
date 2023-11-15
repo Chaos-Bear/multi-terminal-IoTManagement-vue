@@ -466,77 +466,77 @@ const deleteBtn = () => {
 
 // 3. 用户列表展示
 const tableData = ref([
-  {
-    id: 2,
-    classificationName: '信息发布',
-    associatedDevice: '',
-    updateTime: '',
-    categoryOrPage: '分类',
-    auth: '',
-    type: 1,
+  // {
+  //   id: 2,
+  //   classificationName: '信息发布',
+  //   associatedDevice: '',
+  //   updateTime: '',
+  //   categoryOrPage: '分类',
+  //   auth: '',
+  //   type: 1,
 
-    children: [
-      {
-        id: 22,
-        childficationName: ' 信息发布控制页面',
-        associatedDevice: '',
-        updateTime: '',
-        categoryOrPage: '页面',
-        auth: '',
-        publishPath: 'http://10.31.0.101:1880/A2-227/',
-        processEditPath: 'http://10.31.0.101:1880/#flow/52c3354996b6a408',
-        type: 2
-      },
-      {
-        id: 22,
-        childficationName: ' 信息发布页面',
-        associatedDevice: '信息发布屏',
-        updateTime: '',
-        categoryOrPage: '页面',
-        auth: '',
-        publishPath: 'http://10.31.0.101:1880/ui/#!/2?socketid=1y_-U_HB66ieufZxAAB9',
-        processEditPath: 'http://10.31.0.101:1880/#flow/52c3354996b6a408',
-        type: 2
-      },
-      {
-        id: 22,
-        childficationName: ' 设备控制页面',
-        associatedDevice: '设备控制',
-        updateTime: '',
-        categoryOrPage: '页面',
-        auth: '',
-        publishPath: 'https://172.27.35.3:1880/#flow/7668578d5ada24c3',
-        processEditPath: 'https://172.27.35.3:1880/ui/#!/20?socketid=P1VvgoGe1cj4mJ0kAACx',
-        type: 2
-      }
-    ]
-  },
-  {
-    classID: '3000001336943648',
-    className: '信息发布',
-    classType: '分类',
+  //   children: [
+  //     {
+  //       id: 22,
+  //       childficationName: ' 信息发布控制页面',
+  //       associatedDevice: '',
+  //       updateTime: '',
+  //       categoryOrPage: '页面',
+  //       auth: '',
+  //       publishPath: 'http://10.31.0.101:1880/A2-227/',
+  //       processEditPath: 'http://10.31.0.101:1880/#flow/52c3354996b6a408',
+  //       type: 2
+  //     },
+  //     {
+  //       id: 22,
+  //       childficationName: ' 信息发布页面',
+  //       associatedDevice: '信息发布屏',
+  //       updateTime: '',
+  //       categoryOrPage: '页面',
+  //       auth: '',
+  //       publishPath: 'http://10.31.0.101:1880/ui/#!/2?socketid=1y_-U_HB66ieufZxAAB9',
+  //       processEditPath: 'http://10.31.0.101:1880/#flow/52c3354996b6a408',
+  //       type: 2
+  //     },
+  //     {
+  //       id: 22,
+  //       childficationName: ' 设备控制页面',
+  //       associatedDevice: '设备控制',
+  //       updateTime: '',
+  //       categoryOrPage: '页面',
+  //       auth: '',
+  //       publishPath: 'https://172.27.35.3:1880/#flow/7668578d5ada24c3',
+  //       processEditPath: 'https://172.27.35.3:1880/ui/#!/20?socketid=P1VvgoGe1cj4mJ0kAACx',
+  //       type: 2
+  //     }
+  //   ]
+  // },
+  // {
+  //   classID: '3000001336943648',
+  //   className: '信息发布',
+  //   classType: '分类',
 
-    list: [
-      {
-        classID: '3000001336943648',
-        contID: '3000001161688196',
-        contName: '设置页面',
-        contType: '页面',
-        editPath: 'http://10.31.0.101:1880/#flow/52c3354996b6a408',
-        pubPath: 'http://10.31.0.101:1880/A2-227/',
-        updateTime: '2023-09-10 16:48:09'
-      },
-      {
-        classID: '3000001336943648',
-        contID: '3000001161688196',
-        contName: '设置页面',
-        contType: '页面',
-        editPath: 'http://10.31.0.101:1880/#flow/52c3354996b6a408',
-        pubPath: 'http://10.31.0.101:1880/A2-227/',
-        updateTime: '2023-09-10 16:48:09'
-      }
-    ]
-  }
+  //   list: [
+  //     {
+  //       classID: '3000001336943648',
+  //       contID: '3000001161688196',
+  //       contName: '设置页面',
+  //       contType: '页面',
+  //       editPath: 'http://10.31.0.101:1880/#flow/52c3354996b6a408',
+  //       pubPath: 'http://10.31.0.101:1880/A2-227/',
+  //       updateTime: '2023-09-10 16:48:09'
+  //     },
+  //     {
+  //       classID: '3000001336943648',
+  //       contID: '3000001161688196',
+  //       contName: '设置页面',
+  //       contType: '页面',
+  //       editPath: 'http://10.31.0.101:1880/#flow/52c3354996b6a408',
+  //       pubPath: 'http://10.31.0.101:1880/A2-227/',
+  //       updateTime: '2023-09-10 16:48:09'
+  //     }
+  //   ]
+  // }
 ])
 // 跨页勾选, 删除时选中行
 var selectRows = ref([])

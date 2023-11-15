@@ -170,6 +170,7 @@
           <el-input v-model="addPageForm.contName" placeholder="请输入页面名称" />
         </el-form-item>
         <el-form-item label="&nbsp;&nbsp;&nbsp;关联设备" prop="">
+          <!-- multiple -->
           <el-select
             v-model="addPageForm.iotDeviceList"
             style="width: 100%"
@@ -178,9 +179,9 @@
           >
             <el-option
               v-for="item in deviceList"
-              :key="item.index"
+              :key="item.deviceID"
               :label="item.deviceName"
-              :value="item.deviceId"
+              :value="item.deviceID"
             />
           </el-select>
         </el-form-item>
@@ -218,7 +219,7 @@ import { storeToRefs } from 'pinia'
 const router = useRouter()
 const route = useRoute()
 
-import { request, noderedrequest } from '@/utils/server.js'
+import { request ,releaseRequest} from '@/utils/server.js'
 // 1.顶部会议室名称/会议室id展示
 // debugger
 // const titleName = localStorage.getItem('name')
@@ -268,15 +269,18 @@ const delPage = (params) => {
   })
 }
 
+//获取设备列表zuixin
+
+
 //获取设备列表
 const deviceList = ref([{ index: '', deviceName: '' }])
 const getDeviceList = () => {
-  noderedrequest
-    .post('/device/list', {})
-    .then((response) => {
+  releaseRequest
+    .post('/PublishFlowCtrl/queryIotDevicePageInfo', {})
+    .then((res) => {
       // debugger
-      console.log('设备管理列表成功:', response.data)
-      deviceList.value = response.data.data.items
+      console.log('设备管理列表成功:', res.data)
+      deviceList.value = res.data.result
     })
     .catch((error) => {
       console.log('设备管理列表失败:', error)
@@ -414,7 +418,7 @@ const meetingModifyVisual = ref(false)
 // ---3. 新增/修改 页面
 const pagetype = ref('add')
 const addPageBtn = (row) => {
-  // getDeviceList()
+  getDeviceList()
   addPageForm.classID = row.classID
   addPageForm.contID = ''
   addPageForm.contName = ''
@@ -465,17 +469,20 @@ const addMeetingPage = () => {
   createPageFormRef.value.validate((valid) => {
     if (valid) {
       var iotDeviceList = []
-      addPageForm.iotDeviceList.forEach((deviceId) => {
+      // debugger
+      addPageForm.iotDeviceList.forEach((deviceID) => {
         for (var i = 0; i < deviceList.value.length; i++) {
-          if (deviceList.value[i].deviceId == deviceId) {
-            let { deviceId, modelNumber, deviceName, deviceType } = deviceList.value[i]
+  
+          if (deviceList.value[i].deviceID == deviceID) {
+            let { contID,deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
             var obj = {
               contID: addPageForm.contID,
-              deviceID: deviceId,
-              deviceModel: modelNumber,
+              deviceID: deviceID,
+              deviceModel: deviceModel,
               deviceName: deviceName,
               deviceType: deviceType
             }
+            // debugger
             iotDeviceList.push(obj)
             break
           }
@@ -512,7 +519,7 @@ const addMeetingPage = () => {
 // 3.1  ---修改页面按钮
 const handlePageEdit = (row) => {
   // debugger
-  // getDeviceList()
+  getDeviceList()
   addPageForm.classID = row.classID
   addPageForm.contID = row.contID
   addPageForm.contName = row.contName
@@ -538,14 +545,14 @@ const updateMeetingPage = () => {
   createPageFormRef.value.validate((valid) => {
     if (valid) {
       var iotDeviceList = []
-      addPageForm.iotDeviceList.forEach((deviceId) => {
+      addPageForm.iotDeviceList.forEach((deviceID) => {
         for (var i = 0; i < deviceList.value.length; i++) {
-          if (deviceList.value[i].deviceId == deviceId) {
-            let { deviceId, modelNumber, deviceName, deviceType } = deviceList.value[i]
+          if (deviceList.value[i].deviceID == deviceID) {
+            let { contID,deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
             var obj = {
               contID: addPageForm.contID,
-              deviceID: deviceId,
-              deviceModel: modelNumber,
+              deviceID: deviceID,
+              deviceModel: deviceModel,
               deviceName: deviceName,
               deviceType: deviceType
             }
@@ -718,6 +725,7 @@ const formatDate = (date) => {
     return m + '月' + d + '日 ' + h + ':' + s
   }
 }
+
 </script>
 
 <style lang="less" scoped>

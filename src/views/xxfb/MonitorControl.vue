@@ -133,8 +133,8 @@ const terminalControlRequest = (operateType) => {
       operate: operateType,
       // "openTopic": "A2-206/206-RFID-UP",
       openTopic: 'screen/test',
-      // "ip": "10.31.0.239"
-      ip: '192.168.42.154'
+      "ip": "10.31.0.241"
+      // ip: '192.168.42.154'
     })
     .then((response) => {
       // debugger
@@ -152,6 +152,10 @@ const terminalControlRequest = (operateType) => {
       console.log('发布屏设备控制成功失败:', error)
       if (operateType == 'screenshot') {
         ElMessage.error('截图失败！')
+
+        
+          isrefreshValue.value = true
+        
       }
     })
 }

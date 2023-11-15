@@ -14,9 +14,9 @@
           <div class="left2">
             <div class="left2-1">
               <div></div>
-              <img src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%2013@2x.png" />
+              <img src="@/assets/xxfb/path/9.png" />
               <div>
-                <img src="http://39.105.179.38:9797/noderad/huoti.png" />
+                <img src="@/assets/xxfb/path/huoti.png" />
               </div>
             </div>
             <div class="left2-2">
@@ -27,11 +27,11 @@
                   <!-- 单扇门 下  上 -->
                   <img
                     class="door"
-                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%202%20Copy%206@2x%20-%20%E5%89%AF%E6%9C%AC.png"
+                    src="@/assets/xxfb/path/2.png"
                   />
                   <img
                     class="door"
-                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%20Copy%203@2x.png"
+                    src="@/assets/xxfb/path/5.png"
                   />
                 </div>
                 <div>
@@ -39,11 +39,11 @@
                   <!-- 单扇门 下  上 -->
                   <img
                     class="door"
-                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%202%20Copy%206@2x%20-%20%E5%89%AF%E6%9C%AC.png"
+                    src="@/assets/xxfb/path/2.png"
                   />
                   <img
                     class="door"
-                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%20Copy%203@2x.png"
+                    src="@/assets/xxfb/path/5.png"
                   />
                 </div>
               </div>
@@ -60,11 +60,11 @@
                 <div id="A2211" v-else data-roomName="A2211">A2-211</div>
                 <img
                   class="hdoubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                  src="@/assets/xxfb/path/6.png"
                 />
                 <img
                   class="hdoubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                  src="@/assets/xxfb/path/6.png"
                 />
               </div>
               <div>
@@ -75,7 +75,7 @@
                 <!-- 单门 上 -->
                 <img
                   class="door"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%202%20Copy%206@2x.png"
+                  src="@/assets/xxfb/path/5.png"
                 />
               </div>
             </div>
@@ -88,7 +88,7 @@
           <div class="left4">
             <div class="left4-1">
               <div></div>
-              <img src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%2013@2x.png" />
+              <img src="@/assets/xxfb/path/9.png" />
             </div>
             <div class="left4-2">
               <div>
@@ -97,7 +97,7 @@
                 <!-- 竖 双排门 -->
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
               </div>
               <div>
@@ -107,7 +107,7 @@
                 </div>
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
               </div>
             </div>
@@ -116,22 +116,22 @@
                 <div id="A2205" data-roomname="A2205">A2-205</div>
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
               </div>
               <div>
                 <div id="A2201" data-roomname="A2201">A2-201</div>
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
               </div>
             </div>
@@ -148,11 +148,11 @@
                 <!-- 横 双排门 -->
                 <img
                   class="hdoubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                  src="@/assets/xxfb/path/6.png"
                 />
                 <img
                   class="hdoubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                  src="@/assets/xxfb/path/6.png"
                 />
               </div>
               <div></div>
@@ -164,11 +164,11 @@
               <div>
                 <div>
                   <!-- 需改图片 -->
-                  <img src="http://39.105.179.38:9797/noderad/iconPark-boy.png" />
+                  <img src="@/assets/xxfb/path/iconPark-boy.png" />
                 </div>
                 <div>
                   <!-- 需改图片 -->
-                  <img src="http://39.105.179.38:9797/noderad/iconPark-girl.png" />
+                  <img src="@/assets/xxfb/path/iconPark-girl.png" />
                 </div>
               </div>
               <div></div>
@@ -179,17 +179,17 @@
           <div>
             <div>
               <div>
-                <img src="http://39.105.179.38:9797/noderad/shoufuti2.png" />
+                <img src="@/assets/xxfb/path/shoufuti2.png" />
               </div>
             </div>
           </div>
           <div>
-            <img src="http://39.105.179.38:9797/noderad/dblouti.png" />
+            <img src="@/assets/xxfb/path/dblouti.png" />
 
             <div>
-              <img src="http://39.105.179.38:9797/noderad/dianti.png" />
-              <img src="http://39.105.179.38:9797/noderad/dianti.png" />
-              <img src="http://39.105.179.38:9797/noderad/huoti.png" />
+              <img src="@/assets/xxfb/path/dianti.png" />
+              <img src="@/assets/xxfb/path/dianti.png" />
+              <img src="@/assets/xxfb/path/huoti.png" />
             </div>
           </div>
         </div>
@@ -201,18 +201,18 @@
               <div>
                 <div>
                   <!-- 需改图片 -->
-                  <img src="http://39.105.179.38:9797/noderad/peidianjian.png" />
+                  <img src="@/assets/xxfb/path/peidianjian.png" />
                 </div>
                 <div>
                   <!-- 需改图片 -->
-                  <img src="http://39.105.179.38:9797/noderad/peidianjian.png" />
+                  <img src="@/assets/xxfb/path/peidianjian.png" />
                 </div>
               </div>
             </div>
           </div>
           <div class="right2">
             <div class="right2-1">
-              <img src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%2013@2x.png" />
+              <img src="@/assets/xxfb/path/9.png" />
               <div></div>
             </div>
             <div class="right2-2">
@@ -224,11 +224,11 @@
                 <!-- 单扇门 下  上 -->
                 <img
                   class="door"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%202%20Copy%206@2x%20-%20%E5%89%AF%E6%9C%AC.png"
+                  src="@/assets/xxfb/path/2.png"
                 />
                 <img
                   class="door"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%20Copy%203@2x.png"
+                  src="@/assets/xxfb/path/5.png"
                 />
               </div>
               <div>
@@ -236,7 +236,7 @@
                 <!-- 竖 双排门 -->
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
               </div>
             </div>
@@ -245,22 +245,22 @@
                 <div id="A2215" data-roomname="A2215">A2-215</div>
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
               </div>
               <div>
                 <div id="A2220" data-roomname="A2220">A2-220</div>
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
               </div>
             </div>
@@ -277,18 +277,18 @@
                 <!-- 横 双排门 -->
                 <img
                   class="hdoubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                  src="@/assets/xxfb/path/6.png"
                 />
                 <img
                   class="hdoubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                  src="@/assets/xxfb/path/6.png"
                 />
               </div>
               <div>
                 <div id="A2221" data-roomname="A2221">A2-221</div>
                 <img
                   class="doubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                  src="@/assets/xxfb/path/7.png"
                 />
               </div>
             </div>
@@ -300,7 +300,7 @@
           <div class="right4">
             <div class="right4-1">
               <div></div>
-              <img src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%2013@2x.png" />
+              <img src="@/assets/xxfb/path/9.png" />
             </div>
             <div class="right4-2">
               <div>
@@ -309,7 +309,7 @@
                   <!-- 竖 双排门 -->
                   <img
                     class="doubledoor"
-                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                    src="@/assets/xxfb/path/7.png"
                   />
                 </div>
                 <div>
@@ -317,7 +317,7 @@
                   <!-- 竖 双排门 -->
                   <img
                     class="doubledoor"
-                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                    src="@/assets/xxfb/path/7.png"
                   />
                 </div>
               </div>
@@ -327,7 +327,7 @@
                   <!-- 竖 双排门 -->
                   <img
                     class="doubledoor"
-                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                    src="@/assets/xxfb/path/7.png"
                   />
                 </div>
                 <div>
@@ -335,7 +335,7 @@
                   <!-- 竖 双排门 -->
                   <img
                     class="doubledoor"
-                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                    src="@/assets/xxfb/path/7.png"
                   />
                 </div>
                 <div>
@@ -343,7 +343,7 @@
                   <!-- 竖 双排门 -->
                   <img
                     class="doubledoor"
-                    src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%2025@2x.png"
+                    src="@/assets/xxfb/path/7.png"
                   />
                 </div>
                 <div></div>
@@ -362,23 +362,23 @@
                 <!-- 横 双排门 -->
                 <img
                   class="hdoubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                  src="@/assets/xxfb/path/6.png"
                 />
                 <img
                   class="hdoubledoor"
-                  src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%205%20Copy%204@2x.png"
+                  src="@/assets/xxfb/path/6.png"
                 />
               </div>
               <div>
                 <div>
                   <img
-                    src="http://39.105.179.38:9797/noderad/%E5%9B%BE%E7%89%87%202@2x%20(1).png"
+                    src="@/assets/xxfb/path/11.png"
                   />
                   <img
-                    src="http://39.105.179.38:9797/noderad/%E5%9B%BE%E7%89%87%202@2x%20(1).png"
+                    src="@/assets/xxfb/path/11.png"
                   />
                   <img
-                    src="http://39.105.179.38:9797/noderad/%E5%9B%BE%E7%89%87%202@2x%20(1).png"
+                    src="@/assets/xxfb/path/11.png"
                   />
                 </div>
               </div>
@@ -397,25 +397,25 @@
       </div>
       <div class="arrowPoint" id="zuobiao" :style="getzbdStyle">
         <span>左</span>
-        <img src="http://39.105.179.38:9797/noderad/md-forward@2x.png" />
+        <img src="@/assets/xxfb/path/left.png" />
         <div>
-          <img id="zuobiaodian" src="http://39.105.179.38:9797/noderad/zhishi.png" />
+          <img id="zuobiaodian" src="@/assets/xxfb/path/zhishi.png" />
         </div>
-        <img src="http://39.105.179.38:9797/noderad/md-forward@2x%20(1).png" />
+        <img src="@/assets/xxfb/path/right.png" />
         <span>右</span>
       </div>
     </div>
     <div class="div3">
       <ul>
-        <li><img src="http://39.105.179.38:9797/noderad/dianti.png" /><span>电梯</span></li>
-        <li><img src="http://39.105.179.38:9797/noderad/louti.png" /><span>楼梯</span></li>
-        <li><img src="http://39.105.179.38:9797/noderad/shoufudt.png" /><span>手扶电梯</span></li>
-        <li><img src="http://39.105.179.38:9797/noderad/huoti.png" /><span>货梯</span></li>
-        <li><img src="http://39.105.179.38:9797/noderad/wc.png" /><span>卫生间</span></li>
-        <li><img src="http://39.105.179.38:9797/noderad/peidianjian.png" /><span>配电间</span></li>
+        <li><img src="@/assets/xxfb/path/dianti.png" /><span>电梯</span></li>
+        <li><img src="@/assets/xxfb/path/louti.png" /><span>楼梯</span></li>
+        <li><img src="@/assets/xxfb/path/shoufudt.png" /><span>手扶电梯</span></li>
+        <li><img src="@/assets/xxfb/path/huoti.png" /><span>货梯</span></li>
+        <li><img src="@/assets/xxfb/path/wc.png" /><span>卫生间</span></li>
+        <li><img src="@/assets/xxfb/path/peidianjian.png" /><span>配电间</span></li>
         <li>
           <!-- <img
-                              src="http://39.105.179.38:9797/noderad/dangqian.png"/> -->
+                              src="@/assets/xxfb/path/dangqian.png"/> -->
           <span></span>
           <span>当前所在位置</span>
         </li>
@@ -423,10 +423,10 @@
     </div>
     <div class="div1">
       <div>
-        <img src="http://172.27.35.3:1880/images/path/200.png" />
+        <img src="@/assets/xxfb/path/200.png" />
         <span>温馨提示：请说导航到xxx会议室或说xxx会议室怎么走。</span>
       </div>
-      <img src="http://172.27.35.3:1880/images/path/1.png" />
+      <img src="@/assets/xxfb/path/1.png" />
     </div>
   </div>
 </template>
@@ -1138,7 +1138,7 @@ onMounted(() => {
       if ($('.line').length == 1) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
-          "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][0][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][0][1] - 15) +
@@ -1147,7 +1147,7 @@ onMounted(() => {
         // 如果是1条线
         re($('.line').eq(0), function () {
           $('#div2').append(
-            "<img class='endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+            "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
               (CoordPoint[xy][i - 1][0] - 15) +
               'px;top:' +
               (CoordPoint[xy][i - 1][1] - 15) +
@@ -1179,7 +1179,7 @@ onMounted(() => {
       } else if ($('.line').length == 2) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
-          "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][0][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][0][1] - 15) +
@@ -1189,7 +1189,7 @@ onMounted(() => {
         re($('.line').eq(0), function () {
           re($('.line').eq(1), function () {
             $('#div2').append(
-              "<img class='endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+              "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
                 (CoordPoint[xy][i - 1][0] - 15) +
                 'px;top:' +
                 (CoordPoint[xy][i - 1][1] - 15) +
@@ -1222,7 +1222,7 @@ onMounted(() => {
       } else if ($('.line').length == 3) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
-          "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][0][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][0][1] - 15) +
@@ -1233,7 +1233,7 @@ onMounted(() => {
           re($('.line').eq(1), function () {
             re($('.line').eq(2), function () {
               $('#div2').append(
-                "<img class='endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+                "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
                   (CoordPoint[xy][i - 1][0] - 18) +
                   'px;top:' +
                   (CoordPoint[xy][i - 1][1] - 15) +
@@ -1267,7 +1267,7 @@ onMounted(() => {
       } else if ($('.line').length == 4) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
-          "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][0][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][0][1] - 15) +
@@ -1280,7 +1280,7 @@ onMounted(() => {
               re($('.line').eq(3), function () {
                 //  debugger
                 $('#div2').append(
-                  "<img class='endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+                  "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
                     (CoordPoint[xy][i - 1][0] - 15) +
                     'px;top:' +
                     (CoordPoint[xy][i - 1][1] - 15) +
@@ -1315,7 +1315,7 @@ onMounted(() => {
       } else if ($('.line').length == 5) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
-          "<img class='startimg' src='http://39.105.179.38:9797/noderad/start1.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][0][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][0][1] - 15) +
@@ -1328,7 +1328,7 @@ onMounted(() => {
               re($('.line').eq(3), function () {
                 re($('.line').eq(4), function () {
                   $('#div2').append(
-                    "<img class'endimg' src='http://39.105.179.38:9797/noderad/end1.png' style='position:absolute;width:38px;height:38px;left:" +
+                    "<img class'endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
                       (CoordPoint[xy][i - 1][0] - 15) +
                       'px;top:' +
                       (CoordPoint[xy][i - 1][1] - 15) +
@@ -1483,7 +1483,10 @@ li {
   display: flex;
   justify-content: space-between;
 }
-
+.div1 > div{
+  display: flex;
+  align-items: center;
+}
 .div1 > div > img {
   width: 44px;
   height: 44px;
@@ -1514,8 +1517,8 @@ li {
 .div2 {
   width: 1900px;
   height: 780px;
-  margin-left: 10px;
-  margin-right: 10px;
+  // margin-left: 10px;
+  // margin-right: 10px;
   background-color: rgba(255, 255, 255, 0.04);
   position: relative;
 }
@@ -2482,7 +2485,7 @@ li {
   background-color: rgba(255, 145, 0, 1) !important;
   /*font-size: 28px;*/
   font-size: 30px;
-  /*background-image: url(http://39.105.179.38:9797/noderad/dangqian.png);
+  /*background-image: url(@/assets/xxfb/path/dangqian.png);
             background-repeat: no-repeat;
             background-position: center 14%;*/
 }

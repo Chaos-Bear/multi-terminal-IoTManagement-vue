@@ -100,6 +100,12 @@ const router = createRouter({
       name: 'XxfbMonitorlist',
       component: () => import('../views/xxfb/home.vue')
     },
+    {
+      path: '/guide-page',
+      name: 'Guide',
+      component: () => import('../views/xxfb/GuidePage.vue')
+    },
+
     // hash设置默认路由
     {
       path: '/:pathMatch(.*)',

@@ -1,5 +1,5 @@
 <template>
-  <div class="roomInfo">
+  <div class="roomInfo" >
     <!-- 顶部 -->
     <div class="A2_top">
       <div
@@ -303,19 +303,19 @@ var timer = window.setInterval(function () {
 
 //会议预约字符总长度：125    11个字/58px
 //当会议主题长度大于23时，字号修改为36px  17个字/36px
-// const getLine1FontSize = computed(() => {
-//   // debugger
-//   if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 23 && props.form.mtAreaList[0].textConent.length <= 52) {
-//     props.form.mtAreaList[0].fontSize = '36px'
-//   } else if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 53 && props.form.mtAreaList[0].textConent.length <= 84) {
-//     // 21个字/30px
-//     props.form.mtAreaList[0].fontSize = '30px'
-//   } else if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 85) {
-//     props.form.mtAreaList[0].fontSize= '24px'
-//   }else{
+const getLine1FontSize = computed(() => {
+  // debugger
+  if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 23 && props.form.mtAreaList[0].textConent.length <= 52) {
+    props.form.mtAreaList[0].fontSize = '36px'
+  } else if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 53 && props.form.mtAreaList[0].textConent.length <= 84) {
+    // 21个字/30px
+    props.form.mtAreaList[0].fontSize = '30px'
+  } else if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 85) {
+    props.form.mtAreaList[0].fontSize= '24px'
+  }else{
    
-//   }
-// })
+  }
+})
 
 //19个字/34px ，当会议主题长度大于19时，字号修改为28px
 // const getLine3FontSize = computed(() => {
@@ -385,8 +385,8 @@ section {
   height: 1280px;
   margin: 0 auto;
   background-color: rgba(44, 105, 101, 1);
-  zoom: 0.53;
-  // zoom: 1;
+  // zoom: 0.53;
+  zoom: 1;
   display: flex;
   flex-direction: column;
   align-items: center;

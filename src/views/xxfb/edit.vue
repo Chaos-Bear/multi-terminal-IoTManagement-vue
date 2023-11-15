@@ -276,7 +276,7 @@
 
 <script setup>
 import PreEdit from '@/components/xxfb/PreEdit.vue'
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted, computed ,watch} from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
@@ -334,10 +334,10 @@ const getMeetingList = () => {
               type: 'img'
             },
           ] 
-          for (var i = 0; i < form.value.mediaAreaList.length; i++) {
+          // for (var i = 0; i < form.value.mediaAreaList.length; i++) {
             
-            // downLoad(form.value.mediaAreaList[i])
-          }
+          //   // downLoad(form.value.mediaAreaList[i])
+          // }
         }
         
       }
@@ -491,15 +491,18 @@ const meetingList = ref([
 ])
 const meetingOptionvalue = ref('')
 
-const form=computed(()=>{
+const form=ref({roomName:''})
+
+watch(()=>meetingOptionvalue.value,()=>{
   var res={roomName:''}
   for(var i=0;i<meetingList.value.length;i++){
     if(meetingList.value[i].meetID==meetingOptionvalue.value){
        res=meetingList.value[i]
     }
   }
-  return res
+  form.value=res
 })
+
 
 // 2.2.1会议信息区域
 // const form = ref({})
@@ -530,7 +533,7 @@ const issyncSwiperChange = () => {}
 // 轮播间隔时间
 const playGapValue = ref(5000)
 const onTimeChange = (v) => {
-  debugger
+  // debugger
   if(typeof v == 'number'){
     form.value.playGap=v
   }else{
@@ -541,7 +544,6 @@ const onTimeChange = (v) => {
       form.value.playGap = Number(v.replace('ms',''))
     }
   }
-  
 }
 
 // 1.保存
@@ -660,9 +662,17 @@ const downLoad = (item) => {
       a.style.display = "none";
       document.body.appendChild(a);
       a.click();
+      
+      // 在浏览器端，通过使用XMLHttpRequest对象和Blob对象，可以实现下载文件并获取文件的绝对路径：
+      // window.URL.revokeObjectURL(url);
+      
+      // resolve(a.href); // 返回文件路径
+
       a.remove();
+      // debugger
     }
   }
+  // debugger
   xhr.send()
 }
 onMounted(() => {
@@ -670,6 +680,10 @@ onMounted(() => {
   getMeetingList()
   
 })
+// console.log("C:/Users/55462/Downloads/cat(20).mp4")
+// console.log("C:/Users/win10/Downloads/cat(3).mp4")
+
+
 </script>
 
 <style lang="less" scoped>
@@ -786,6 +800,7 @@ onMounted(() => {
       .preInfo {
         width: 375px;
         height: 675px;
+        
       }
     }
 
