@@ -9,9 +9,7 @@
         <li><img src="@/assets/xxfb/path/huoti.png" /><span>货梯</span></li>
         <li><img src="@/assets/xxfb/path/wc.png" /><span>卫生间</span></li>
         <li><img src="@/assets/xxfb/path/peidianjian.png" /><span>配电间</span></li>
-        <li>
-          <img src="@/assets/xxfb/path/dangqian.png" /><span>当前所在位置</span>
-        </li>
+        <li><img src="@/assets/xxfb/path/dangqian.png" /><span>当前所在位置</span></li>
       </ul>
     </div>
     <div class="div2" id="div2">
@@ -31,73 +29,46 @@
                 <div>
                   <div id="A2225" data-roomName="A2225">A2-225</div>
                   <!-- 横 双排门 -->
-                  <img
-                    class="doubledoor"
-                    src="@/assets/xxfb/path/6.png"
-                  />
+                  <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                 </div>
 
                 <div>
                   <div id="A2226" data-roomName="A2226">A2-226</div>
                   <!-- 横 双排门 -->
-                  <img
-                    class="doubledoor"
-                    src="@/assets/xxfb/path/6.png"
-                  />
+                  <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                 </div>
                 <div>
                   <div id="A2227" data-roomName="A2227">A2-227</div>
                   <!-- 横 双排门 -->
-                  <img
-                    class="doubledoor"
-                    src="@/assets/xxfb/path/6.png"
-                  />
+                  <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                 </div>
               </div>
               <div>
                 <div>
                   <div id="A2222" data-roomName="A2222" class="active-start">A2-222</div>
                   <!-- 横 双排门 -->
-                  <img
-                    class="doubledoor"
-                    src="@/assets/xxfb/path/6.png"
-                  />
+                  <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                 </div>
                 <div>
                   <div id="A2223" data-roomName="A2223">A2-223</div>
                   <!-- 横 双排门 -->
-                  <img
-                    class="doubledoor"
-                    src="@/assets/xxfb/path/6.png"
-                  />
+                  <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                 </div>
               </div>
             </div>
             <div class="left2-3">
               <div>
                 <div>
-                  <img
-                    src="@/assets/xxfb/path/11.png"
-                  />
-                  <img
-                    src="@/assets/xxfb/path/11.png"
-                  />
-                  <img
-                    src="@/assets/xxfb/path/11.png"
-                  />
+                  <img src="@/assets/xxfb/path/11.png" />
+                  <img src="@/assets/xxfb/path/11.png" />
+                  <img src="@/assets/xxfb/path/11.png" />
                 </div>
               </div>
               <div>
                 <div id="A2228" data-roomName="A2228">A2-228</div>
                 <!-- 竖 双排门 -->
-                <img
-                  class="hdoubledoor"
-                  src="@/assets/xxfb/path/7.png"
-                />
-                <img
-                  class="hdoubledoor"
-                  src="@/assets/xxfb/path/7.png"
-                />
+                <img class="hdoubledoor" src="@/assets/xxfb/path/7.png" />
+                <img class="hdoubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
           </div>
@@ -110,65 +81,38 @@
             <div class="right2-3">
               <div>
                 <div id="A2219" data-roomName="A2219">A2-219</div>
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
                 <div id="A2216" data-roomName="A2216"><br />A2-216<br />工作室</div>
                 <!-- 横 双排门 -->
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
             </div>
             <div class="right2-2">
               <div>
                 <div id="A2220" data-roomName="A2220">A2-220</div>
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
                 <div id="A2215" data-roomName="A2215">A2-215</div>
                 <!-- 横 双门 -->
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
             </div>
             <div class="right2-1">
               <div>
                 <div id="A2221" data-roomName="A2221">A2-221</div>
                 <!-- 横 双门 -->
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
                 <div id="A2229" data-roomName="A2229">A2-229</div>
                 <!-- 竖 双排门 -->
-                <img
-                  class="hdoubledoor"
-                  src="@/assets/xxfb/path/7.png"
-                />
-                <img
-                  class="hdoubledoor"
-                  src="@/assets/xxfb/path/7.png"
-                />
+                <img class="hdoubledoor" src="@/assets/xxfb/path/7.png" />
+                <img class="hdoubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
           </div>
@@ -237,43 +181,25 @@
                   <br />A2-202<br />
                   服务室
                 </div>
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
                 <div id="A2204" data-roomName="A2204">A2-204</div>
                 <!-- 横 双排门 -->
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
             </div>
             <div class="left4-2">
               <div>
                 <div id="A2201" data-roomName="A2201">A2-201</div>
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
                 <div id="A2205" data-roomName="A2205">A2-205</div>
                 <!-- 横 双门 -->
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
+                <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
             </div>
             <div class="left4-1">
@@ -281,14 +207,8 @@
               <div>
                 <div id="A2212" data-roomName="A2212">A2-212</div>
                 <!-- 竖 双排门 -->
-                <img
-                  class="hdoubledoor"
-                  src="@/assets/xxfb/path/7.png"
-                />
-                <img
-                  class="hdoubledoor"
-                  src="@/assets/xxfb/path/7.png"
-                />
+                <img class="hdoubledoor" src="@/assets/xxfb/path/7.png" />
+                <img class="hdoubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
           </div>
@@ -308,26 +228,14 @@
                 <div>
                   <div id="A2207" data-roomName="A2207">A2-207</div>
                   <!-- 单扇门 下  上 -->
-                  <img
-                    class="door"
-                    src="@/assets/xxfb/path/4.png"
-                  />
-                  <img
-                    class="door"
-                    src="@/assets/xxfb/path/3.png "
-                  />
+                  <img class="door" src="@/assets/xxfb/path/4.png" />
+                  <img class="door" src="@/assets/xxfb/path/3.png " />
                 </div>
                 <div>
                   <div id="A2208" data-roomName="A2208">A2-208</div>
                   <!-- 单扇门 下  上 -->
-                  <img
-                    class="door"
-                    src="@/assets/xxfb/path/2.png"
-                  />
-                  <img
-                    class="door"
-                    src="@/assets/xxfb/path/5.png"
-                  />
+                  <img class="door" src="@/assets/xxfb/path/2.png" />
+                  <img class="door" src="@/assets/xxfb/path/5.png" />
                 </div>
               </div>
               <div></div>
@@ -339,23 +247,14 @@
                   音控室
                 </div>
                 <!-- 单门 左 -->
-                <img
-                  class="door"
-                  src="@/assets/xxfb/path/3.png "
-                />
+                <img class="door" src="@/assets/xxfb/path/3.png " />
               </div>
               <div>
                 <div id="A2211" data-roomName="A2211">A2-211</div>
                 <!-- 竖双门 -->
-                <img
-                  class="hdoubledoor"
-                  src="@/assets/xxfb/path/7.png "
-                />
+                <img class="hdoubledoor" src="@/assets/xxfb/path/7.png " />
                 <!-- 竖双门 -->
-                <img
-                  class="hdoubledoor"
-                  src="@/assets/xxfb/path/7.png "
-                />
+                <img class="hdoubledoor" src="@/assets/xxfb/path/7.png " />
               </div>
             </div>
           </div>

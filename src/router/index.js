@@ -105,6 +105,13 @@ const router = createRouter({
       name: 'Guide',
       component: () => import('../views/xxfb/GuidePage.vue')
     },
+    // {
+    //   path: '/video',
+    //   name: 'Video',
+    //   component: () => import('../views/xxfb/video.vue')
+    // },
+
+
 
     // hash设置默认路由
     {

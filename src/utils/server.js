@@ -28,5 +28,4 @@ const pubRequest = http({
   baseURL: import.meta.env.VITE_BASE_URL7
 })
 
-
-export { request, tabletRequest, noderedrequest, deviceRequest, releaseRequest,pubRequest }
+export { request, tabletRequest, noderedrequest, deviceRequest, releaseRequest, pubRequest }

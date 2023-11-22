@@ -15,13 +15,19 @@
         <div>设备管理</div>
       </div>
       <div class="item">
-        <a href="/iot-client/#/callService" target="__blank">
+        <!-- <a href="/iot-client/#/callService" target="__blank">
+          <img src="@/assets/home/3.png" />
+        </a> -->
+        <a href="/#/callService" target="__blank">
           <img src="@/assets/home/3.png" />
         </a>
         <div>呼叫服务</div>
       </div>
       <div class="item">
-        <a href="/iot-client/#/tablet" target="_blank">
+        <!-- <a href="/iot-client/#/tablet" target="_blank">
+          <img src="@/assets/home/2.png" />
+        </a> -->
+        <a href="/#/tablet" target="_blank">
           <img src="@/assets/home/2.png" />
         </a>
         <div>平板借还</div>

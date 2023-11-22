@@ -219,7 +219,7 @@ import { storeToRefs } from 'pinia'
 const router = useRouter()
 const route = useRoute()
 
-import { request ,releaseRequest} from '@/utils/server.js'
+import { request, releaseRequest } from '@/utils/server.js'
 // 1.顶部会议室名称/会议室id展示
 // debugger
 // const titleName = localStorage.getItem('name')
@@ -270,7 +270,6 @@ const delPage = (params) => {
 }
 
 //获取设备列表zuixin
-
 
 //获取设备列表
 const deviceList = ref([{ index: '', deviceName: '' }])
@@ -472,9 +471,8 @@ const addMeetingPage = () => {
       // debugger
       addPageForm.iotDeviceList.forEach((deviceID) => {
         for (var i = 0; i < deviceList.value.length; i++) {
-  
           if (deviceList.value[i].deviceID == deviceID) {
-            let { contID,deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
+            let { contID, deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
             var obj = {
               contID: addPageForm.contID,
               deviceID: deviceID,
@@ -548,7 +546,7 @@ const updateMeetingPage = () => {
       addPageForm.iotDeviceList.forEach((deviceID) => {
         for (var i = 0; i < deviceList.value.length; i++) {
           if (deviceList.value[i].deviceID == deviceID) {
-            let { contID,deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
+            let { contID, deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
             var obj = {
               contID: addPageForm.contID,
               deviceID: deviceID,
@@ -725,7 +723,6 @@ const formatDate = (date) => {
     return m + '月' + d + '日 ' + h + ':' + s
   }
 }
-
 </script>
 
 <style lang="less" scoped>

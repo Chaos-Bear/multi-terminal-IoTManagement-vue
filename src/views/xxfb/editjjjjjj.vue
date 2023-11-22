@@ -1,18 +1,13 @@
 <template>
-  <div class="edit">
+  <div class="edit" v-loading="loading">
     <!-- 1. 顶部 -->
     <div class="top">
       <div class="pubTime">
         <img src="@/assets/xxfb/1.png" />
-        <span>定时发布 ：{{ form.publishTime ? form.publishTime : '' }}</span>
+        <span>定时发布 ：{{ form.publishTime ? form.publishTime.split('~')[0] : '' }}</span>
       </div>
       <div class="selectInfo">
-        <el-select
-          v-model="meetingOptionvalue"
-          placeholder="请选择会议"
-          @change="onChange"
-          style="width: auto"
-        >
+        <el-select v-model="meetingOptionvalue" placeholder="请选择会议" style="width: auto">
           <el-option
             v-for="item in meetingList"
             :key="item.meetID"
@@ -30,20 +25,20 @@
           <img src="@/assets/xxfb/3.png" />
           <div>发布</div>
         </div>
-        <div @click="router.push('/meetingUserList?roomName=' + roomName + '&roomID=' + roomId)">
+        <div @click="router.push('/meetingUserList?roomName=' + roomName + '&roomID=' + roomIdzdy)">
           <img src="@/assets/xxfb/4.png" />
           <div>返回</div>
         </div>
       </div>
     </div>
-    <!-- 2. 预览及编辑区 -->
-    <div class="content" v-if="meetingList.length > 0">
+    <!-- 2. 预览及编辑区 v-if="meetingList.length > 0"-->
+    <div class="content" >
       <!-- 2.1 预览 -->
       <el-scrollbar height="100%" width="443px" class="preScrollBar">
         <div class="pre">
           <div class="preTop">预览效果：</div>
           <div class="preInfo">
-            <PreEdit :form="form" :isshowlineValue="isshowlineValue"></PreEdit>
+            <PreEdit :form="form"></PreEdit>
           </div>
         </div>
       </el-scrollbar>
@@ -54,21 +49,21 @@
           <div class="meetingArea">
             <div class="top1">会议信息区域</div>
             <div class="meetingInfo">
-              <!-- 1.第一行文本 -->
-              <div>
-                <!--同步 第一行文本按钮 -->
+              <!-- 1.文本 -->
+              <div v-for="(item, i) in form.mtAreaList" :key="i">
+                <!--文本按钮 -->
                 <div>
                   <img
-                    v-if="isshowlineValue.isshowline1Value"
+                    v-if="item.isShow == '1'"
                     src="@/assets/xxfb/5.png"
-                    @click="isshowline1"
+                    @click="isshowline1(item, '0')"
                   />
-                  <img v-else src="@/assets/xxfb/10.png" @click="isshowline1" />
-                  <span>标题</span>
+                  <img v-else src="@/assets/xxfb/10.png" @click="isshowline1(item, '1')" />
+                  <span>{{ item.textLocat }}</span>
                   <el-switch
                     class="ml-2"
                     size="small"
-                    v-model="form.mtAreaList[0].syncStatus"
+                    v-model="item.syncStatus"
                     style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
                     active-text=""
                     inactive-text=""
@@ -76,30 +71,30 @@
                     :inactive-value="0"
                     @change="
                       (v) => {
-                        issyncLine1(v, item1)
+                        issyncLine(v, item)
                       }
                     "
-                    :disabled="!isshowlineValue.isshowline1Value"
+                    :disabled="item.isShow == '0'"
                   />
-                  <span>同步会议标题</span>
+                  <span>同步会议{{ item.textLocat }}</span>
                 </div>
-                <!--同步 第一行文本 信息修改  -->
+                <!--文本 信息修改  -->
                 <div>
                   <el-form>
                     <el-form-item label="" prop="">
                       <el-input
                         v-if="form.mtAreaList.length >= 1"
                         style="width: 340px"
-                        v-model="form.mtAreaList[0].textConent"
-                        :disabled="form.mtAreaList[0].syncStatus == 1"
+                        v-model="item.textConent"
+                        :disabled="item.syncStatus == 1"
                       />
                       <el-input v-else style="width: 340px" :disabled="true" />
                     </el-form-item>
+
                     <el-form-item label="">
                       <el-select
-                        v-model="form.mtAreaList[0].fontSize"
+                        v-model="item.fontSize"
                         placeholder="请选择字号"
-                        @change="line1FontSizeonChange"
                         style="width: auto"
                       >
                         <el-option v-for="item in 70" :key="item" :label="item" :value="item" />
@@ -108,29 +103,23 @@
                     <!-- show-alpha -->
                     <el-form-item label="">
                       <span class="demonColor">{{ form.mtAreaList[0].textColor }}</span>
-                      <el-color-picker
-                        v-model="form.mtAreaList[0].textColor"
-                        @change="line1TextColorChange"
-                        show-alpha
-                      />
+                      <el-color-picker v-model="item.textColor" show-alpha />
                     </el-form-item>
                     <el-form-item label="" prop="" class="textAlign">
                       <img
                         src="@/assets/xxfb/left.png"
                         data-textAlign="left"
-                        @click="line1textAlign($event)"
+                        @click="line1textAlign(item, 'left')"
                         :style="
-                          form.mtAreaList[0].showLocat == 'left'
-                            ? 'background-color: rgba(3, 154, 252, 1);'
-                            : ''
+                          item.showLocat == 'left' ? 'background-color: rgba(3, 154, 252, 1);' : ''
                         "
                       />
                       <img
                         src="@/assets/xxfb/center.png"
                         data-textAlign="center"
-                        @click="line1textAlign($event)"
+                        @click="line1textAlign(item, 'center')"
                         :style="
-                          form.mtAreaList[0].showLocat == 'center'
+                          item.showLocat == 'center'
                             ? 'background-color: rgba(3, 154, 252, 1);'
                             : ''
                         "
@@ -138,19 +127,17 @@
                       <img
                         src="@/assets/xxfb/right.png"
                         data-textAlign="right"
-                        @click="line1textAlign($event)"
+                        @click="line1textAlign(item, 'right')"
                         :style="
-                          form.mtAreaList[0].showLocat == 'right'
-                            ? 'background-color: rgba(3, 154, 252, 1);'
-                            : ''
+                          item.showLocat == 'right' ? 'background-color: rgba(3, 154, 252, 1);' : ''
                         "
                       />
                       <img
                         src="@/assets/xxfb/6.png"
                         data-textAlign="justify"
-                        @click="line1textAlign($event)"
+                        @click="line1textAlign(item, 'justify')"
                         :style="
-                          form.mtAreaList[0].showLocat == 'justify'
+                          item.showLocat == 'justify'
                             ? 'background-color: rgba(3, 154, 252, 1);'
                             : ''
                         "
@@ -159,227 +146,6 @@
                   </el-form>
                 </div>
               </div>
-              <!-- 2.第二行文本 -->
-              <div>
-                <!--同步 第二行文本按钮 -->
-                <div>
-                  <img
-                    v-if="isshowlineValue.isshowline2Value"
-                    src="@/assets/xxfb/5.png"
-                    @click="isshowline2"
-                  />
-                  <img v-else src="@/assets/xxfb/10.png" @click="isshowline2" />
-                  <span>时间</span>
-                  <el-switch
-                    v-if="form.mtAreaList.length >= 2"
-                    class="ml-2"
-                    size="small"
-                    v-model="form.mtAreaList[1].syncStatus"
-                    style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
-                    active-text=""
-                    inactive-text=""
-                    :active-value="1"
-                    :inactive-value="0"
-                    @change="
-                      (v) => {
-                        issyncLine2(v, item1)
-                      }
-                    "
-                  />
-                  <el-switch
-                    v-else
-                    :disabled="true"
-                    class="ml-2"
-                    size="small"
-                    style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
-                    active-text=""
-                    inactive-text=""
-                    :active-value="1"
-                    :inactive-value="0"
-                  />
-                  <span>同步会议时间</span>
-                </div>
-                <!--同步 第二行文本 信息修改  -->
-                <div>
-                  <el-form>
-                    <el-form-item label="" prop="">
-                      <el-input
-                        style="width: 340px"
-                        v-model="form.mtAreaList[1].textConent.split(' ')[1]"
-                        :disabled="form.mtAreaList[1].syncStatus == 1"
-                      />
-                    </el-form-item>
-                    <el-form-item label="">
-                      <el-select
-                        v-model="form.mtAreaList[1].fontSize"
-                        placeholder="请选择字号"
-                        @change="line2FontSizeonChange"
-                        style="width: auto"
-                      >
-                        <el-option v-for="item in 70" :key="item" :label="item" :value="item" />
-                      </el-select>
-                    </el-form-item>
-                    <!-- show-alpha -->
-                    <el-form-item label="">
-                      <span class="demonColor">{{ form.mtAreaList[1].textColor }}</span>
-                      <el-color-picker v-model="form.mtAreaList[1].textColor" show-alpha />
-                    </el-form-item>
-                    <el-form-item label="" prop="" class="textAlign">
-                      <img
-                        src="@/assets/xxfb/left.png"
-                        data-textAlign="left"
-                        @click="line2textAlign($event)"
-                        :style="
-                          form.mtAreaList[1].showLocat == 'left'
-                            ? 'background-color: rgba(3, 154, 252, 1);'
-                            : ''
-                        "
-                      />
-                      <img
-                        src="@/assets/xxfb/center.png"
-                        data-textAlign="center"
-                        @click="line2textAlign($event)"
-                        :style="
-                          form.mtAreaList[1].showLocat == 'center'
-                            ? 'background-color: rgba(3, 154, 252, 1);'
-                            : ''
-                        "
-                      />
-                      <img
-                        src="@/assets/xxfb/right.png"
-                        data-textAlign="right"
-                        @click="line2textAlign($event)"
-                        :style="
-                          form.mtAreaList[1].showLocat == 'right'
-                            ? 'background-color: rgba(3, 154, 252, 1);'
-                            : ''
-                        "
-                      />
-                      <img
-                        src="@/assets/xxfb/6.png"
-                        data-textAlign="justify"
-                        @click="line2textAlign($event)"
-                        :style="
-                          form.mtAreaList[1].showLocat == 'justify'
-                            ? 'background-color: rgba(3, 154, 252, 1);'
-                            : ''
-                        "
-                      />
-                    </el-form-item>
-                  </el-form>
-                </div>
-              </div>
-              <!-- 3.第三行文本 -->
-              <div>
-                <!--同步 第三行文本按钮 -->
-                <div>
-                  <img
-                    v-if="isshowlineValue.isshowline3Value"
-                    src="@/assets/xxfb/5.png"
-                    @click="isshowline3"
-                  />
-                  <img v-else src="@/assets/xxfb/10.png" @click="isshowline3" />
-                  <span>主办方</span>
-                  <el-switch
-                    v-if="form.mtAreaList.length >= 3"
-                    class="ml-2"
-                    size="small"
-                    v-model="form.mtAreaList[2].syncStatus"
-                    style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
-                    active-text=""
-                    inactive-text=""
-                    :active-value="1"
-                    :inactive-value="0"
-                    @change="
-                      (v) => {
-                        issyncLine3(v, item1)
-                      }
-                    "
-                  />
-                  <el-switch
-                    v-else
-                    :disabled="true"
-                    class="ml-2"
-                    size="small"
-                    style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
-                    active-text=""
-                    inactive-text=""
-                    :active-value="1"
-                    :inactive-value="0"
-                  />
-                  <span>同步会议主办方</span>
-                </div>
-                <!--同步 第三行文本 信息修改  -->
-                <div>
-                  <el-form>
-                    <el-form-item label="" prop="">
-                      <el-input
-                        style="width: 340px"
-                        v-model="form.mtAreaList[2].textConent"
-                        :disabled="form.mtAreaList[2].syncStatus == 1"
-                      />
-                    </el-form-item>
-                    <el-form-item label="">
-                      <el-select
-                        v-model="form.mtAreaList[2].fontSize"
-                        placeholder="请选择字号"
-                        @change="line3FontSizeonChange"
-                        style="width: auto"
-                      >
-                        <el-option v-for="item in 70" :key="item" :label="item" :value="item" />
-                      </el-select>
-                    </el-form-item>
-                    <!-- show-alpha -->
-                    <el-form-item label="">
-                      <span class="demonColor">{{ form.mtAreaList[2].textColor }}</span>
-                      <el-color-picker v-model="form.mtAreaList[2].textColor" show-alpha />
-                    </el-form-item>
-                    <el-form-item label="" prop="" class="textAlign">
-                      <img
-                        src="@/assets/xxfb/left.png"
-                        data-textAlign="left"
-                        @click="line3textAlign($event)"
-                        :style="
-                          form.mtAreaList[2].showLocat == 'left'
-                            ? 'background-color: rgba(3, 154, 252, 1);'
-                            : ''
-                        "
-                      />
-                      <img
-                        src="@/assets/xxfb/center.png"
-                        data-textAlign="center"
-                        @click="line3textAlign($event)"
-                        :style="
-                          form.mtAreaList[2].showLocat == 'center'
-                            ? 'background-color: rgba(3, 154, 252, 1);'
-                            : ''
-                        "
-                      />
-                      <img
-                        src="@/assets/xxfb/right.png"
-                        data-textAlign="right"
-                        @click="line3textAlign($event)"
-                        :style="
-                          form.mtAreaList[2].showLocat == 'right'
-                            ? 'background-color: rgba(3, 154, 252, 1);'
-                            : ''
-                        "
-                      />
-                      <img
-                        src="@/assets/xxfb/6.png"
-                        data-textAlign="justify"
-                        @click="line3textAlign($event)"
-                        :style="
-                          form.mtAreaList[2].showLocat == 'justify'
-                            ? 'background-color: rgba(3, 154, 252, 1);'
-                            : ''
-                        "
-                      />
-                    </el-form-item>
-                  </el-form>
-                </div>
-              </div>
-              <!-- </template> -->
             </div>
           </div>
           <!-- 2.2.2媒体信息 -->
@@ -395,8 +161,8 @@
                   style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
                   active-text=""
                   inactive-text=""
-                  :active-value="2"
-                  :inactive-value="1"
+                  :active-value="'2'"
+                  :inactive-value="'1'"
                   @change="
                     (v) => {
                       issyncSwiperChange(v, item1)
@@ -409,9 +175,12 @@
                   placeholder="请选择轮播间隔时间"
                   @change="onTimeChange"
                   style="width: auto"
+                  filterable
+                  allow-create
+                  default-first-option
                 >
                   <el-option
-                    v-for="item in [1000, 2000, 3000, 4000, 5000]"
+                    v-for="item in [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000]"
                     :key="item"
                     :label="item + 'ms'"
                     :value="item"
@@ -422,15 +191,17 @@
                 <!-- list-type：'text' | 'picture' | 'picture-card' 文件列表的类型
                     on-preview：点击文件列表中已上传的文件时的钩子
                     on-remove：移除
-                  -->
+                  form.mediaAreaList   accept="image/png"-->  
                 <el-upload
-                  v-model:file-list="fileList"
+                  
+                  v-model:file-list="imageList"
                   list-type="picture-card"
                   :http-request="() => {}"
                   :auto-upload="false"
                   :on-preview="handlePictureCardPreview"
                   :on-remove="handleRemove"
                   :on-change="beforeAvatarUpload"
+                  accept=".jpg,.jpeg,.png,.gif,webp"
                 >
                   <el-icon><Plus /></el-icon>
                 </el-upload>
@@ -443,26 +214,22 @@
         </div>
       </el-scrollbar>
     </div>
-    <div v-else class="noMeeting">暂无会议</div>
+    <!-- <div v-else class="noMeeting">暂无会议</div> -->
     <!--1.发布弹框  -->
     <div class="pubFormDialog">
       <el-dialog v-model="pubFormVisible" title="发布确认">
         <div>发布时间：</div>
-        <el-radio-group v-model="form.prePubTime" class="ml-4" @change="radioOptionChange">
-          <el-radio label="0.5" size="large">会前0.5小时</el-radio>
-          <el-radio label="1" size="large">会前1小时</el-radio>
-          <el-radio label="1.5" size="large">会前1.5小时</el-radio>
-          <el-radio label="2" size="large">会前2小时</el-radio>
-          <el-radio label="3" size="large">
+        <!-- {{ form.publishTimeNum }} -->
+        <el-radio-group v-model="form.publishTimeNum" class="ml-4" @change="radioOptionChange">
+          <el-radio :label="-0.5" size="large">会前0.5小时</el-radio>
+          <el-radio :label="-1" size="large">会前1小时</el-radio>
+          <el-radio :label="-1.5" size="large">会前1.5小时</el-radio>
+          <el-radio :label="-2" size="large">会前2小时</el-radio>
+          <el-radio :label="num" size="large">
             <template #default>
+              <!-- :max="12" -->
               <span>自定义时间：</span>
-              <el-input-number
-                v-model="num"
-                :min="0"
-                :max="10"
-                :step="0.5"
-                @change="handleNumChange"
-              />
+              <el-input-number v-model="num" :max="0" :step="0.5" @change="handleNumChange" />
             </template>
           </el-radio>
         </el-radio-group>
@@ -477,7 +244,7 @@
     <!--2.发布成功弹框  -->
     <div class="pubSuccessDialog">
       <el-dialog v-model="pubSuccessVisible" title="">
-        <div class="pubSuccessTips" v-if="false">
+        <div class="pubSuccessTips" v-if="pubSuccessVisible">
           <img src="@/assets/xxfb/8.png" />
           <div>发布成功</div>
           <span>{{ roomName }}门口信息发布屏配置发布成功～</span>
@@ -499,20 +266,22 @@
 
 <script setup>
 import PreEdit from '@/components/xxfb/PreEdit.vue'
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
 import { releaseRequest } from '@/utils/server.js'
+
 const roomName = route.query.roomName
-const roomId = route.query.roomID
+const roomIdzdy = route.query.roomID
+const roomId = ref('')
+
+const loading = ref(true)
+const isshowimg=ref(false)
 
 // debugger
-var title = ''
-var time = ''
-var uinhost = ''
 // 1.----根据会议名称 获取会议场次接口------
 const getMeetingList = () => {
   releaseRequest
@@ -525,138 +294,414 @@ const getMeetingList = () => {
       // debugger
       // console.log('按会议场次查询成功:', res.data.result)
       if (res.data.repCode == 200) {
-        // 1.选择会议列表
-        meetingList.value = res.data.result
+
+        //结束loading加载图
+        // setTimeout(function(){
+          loading.value=false
+        // },3000)
+       
+        // 1.选择会议列表 res.data.result为所有会议
+        meetingList.value = res.data.result || []
         //默认选中最近的一场会议
-        meetingOptionvalue.value = res.data.result[0].meetID
+        if (meetingList.value.length > 0) {
+          meetingOptionvalue.value = res.data.result[0].meetID
 
-        // 2.会议信息区域
-        // debugger
-        form.value = res.data.result[0]
-        console.log(form.value, form.value.mtAreaList[0].syncStatus)
+          roomId.value = res.data.result[0].roomID
 
-        // 此处 将会议初始标题，时间，主办方记录下来,再次点击同步时，需要展示初始信息
-        title = form.value.mtAreaList[0].textConent
-        time = form.value.mtAreaList[1].textConent
-        uinhost = form.value.mtAreaList[2].textConent
+          // 2.会议信息区域,默认为最近的一场
+          // debugger
+          form.value = res.data.result[0]
+            
+          preNum.value = form.value.publishTimeNum
+          console.log(form.value, form.value.mtAreaList[0].syncStatus)
+          if(form.value.mediaAreaList.length>0){
+              downloadReleaseMedia(form.value.mediaAreaList)
+          } 
+          
+          // for (var i = 0; i < form.value.mediaAreaList.length; i++) {
+          //   downLoad(form.value.mediaAreaList[i])
+          // }
+        }
       }
     })
     .catch((error) => {
       // debugger
       console.log('按会议场次查询失败:', error)
+      
+    })
+}
+// ---6.下载图片/视频接口-------
+// imageList为上传组件需要的图片列表字段
+const imageList=ref([])
+const downloadReleaseMedia = (mediaAreaList) => {
+  releaseRequest
+    .post('/IotPageEditCrtl/download', {
+      mediaAreaList: mediaAreaList
+    })
+    .then((res) => {
+      // debugger
+      if (res.data.repCode == 200) {
+        console.log('下载图片/视频成功:', res.data.result)
+      
+        for(var i=0;i<res.data.result.length;i++){
+          // obsFileType  为 1图片 时则修改字段为upload组件识别的name和url字段  2视频
+          if(res.data.result[i].obsFileType==1){
+            res.data.result[i].name=res.data.result[i].obsFileName
+            res.data.result[i].url='data:image/jpg;base64,' + res.data.result[i].base64
+          }
+          // debugger
+          imageList.value=res.data.result 
+          // 注意：form.value.mediaAreaList需要重新赋值，把name和url字段 及base64 传给子组件
+          form.value.mediaAreaList=imageList.value
+        }
+
+        if(imageList.value.length==0){
+            isshowimg.value=true
+        }else{
+          const promiseArr=[]
+          imageList.value.forEach((item)=>{
+             promiseArr.push(getImage(item.url)) 
+          })
+          Promise.all(promiseArr).then(()=>{
+              isshowimg.value=true
+          }).catch(()=>{
+              isshowimg.value=true
+          })
+        }
+        
+      }
+    })
+    .catch((error) => {
+      // debugger
+      console.log('下载图片/视频失败:', error)
+    })
+}
+
+const getImage=()=>{
+  return new Promise((resolve,reject)=>{
+    var image=new Image()
+   
+    image.onload=()=>{
+        resolve()      
+      }
+    image.onerror=()=>{
+        reject()      
+      }
+    image.src=src
+    if(image.complete){
+      resolve()
+    }
+  })
+}
+
+// 2.----修改编辑页信息接口------
+const updateEditList = () => {
+  var updatamediaAreaList=[]
+
+  for(var i=0;i<form.value.mediaAreaList.length;i++){
+    var item={}
+     item.roomID=form.value.mediaAreaList[i].roomID
+     item.meetID=form.value.mediaAreaList[i].meetID
+     item.obsFileID=form.value.mediaAreaList[i].obsFileID
+     item.obsFileName=form.value.mediaAreaList[i].obsFileName
+     item.obsFileType=form.value.mediaAreaList[i].obsFileType
+     updatamediaAreaList.push(item);
+  }
+
+  releaseRequest
+    .post('/IotPageEditCrtl/editReleasePageInfo', {
+      roomID: roomId.value,
+      meetID: meetingOptionvalue.value,
+      imgShow: form.value.imgShow,
+      dataSource:form.value.dataSource,
+      playGap: form.value.playGap ? form.value.playGap : 5000,
+      mtAreaList: form.value.mtAreaList,
+      mediaAreaList: updatamediaAreaList   //此处后端要求传空数组
+    })
+    .then((res) => {
+      // debugger
+      if (res.data.repCode == 200) {
+        console.log('修改发布页信息成功:', res.data.result)
+        // 调用列表接口
+        // getMeetingList()
+        ElMessage.success('保存成功！')
+        
+        
+        // meetingOptionvalue.value=
+      }
+    })
+    .catch((error) => {
+      // debugger
+      console.log('修改发布页信息失败:', error)
+      ElMessage.error('保存失败！')
+    })
+}
+// 3.----查询会议预约接口获取同步信息------
+const getSyncInfo = (item) => {
+  releaseRequest
+    .post('/IotPageEditCrtl/queryReleasePageInfoByMeet', {
+      startTime: form.value.startTime,
+      roomID: roomId.value,
+      meetID: meetingOptionvalue.value,
+      textLocat: item.textLocat
+    })
+    .then((res) => {
+      // debugger
+      if (res.data.repCode == 200) {
+        console.log('获取同步信息成功:', res.data.result)
+
+        item.textConent = res.data.result.textConent
+      }
+    })
+    .catch((error) => {
+      // debugger
+      console.log('获取同步信息信息失败:', error)
+    })
+}
+
+//4.-------定时发布修改接口-----
+const updatePrePub = () => {
+  releaseRequest
+    .post('/IotPageEditCrtl/setPublishTime', {
+      roomID: roomId.value,
+      meetID: meetingOptionvalue.value,
+      startTime: form.value.startTime,
+      publishTimeNum: form.value.publishTimeNum
+    })
+    .then((res) => {
+      // debugger
+      if (res.data.repCode == 200) {
+        console.log('定时发布成功:', res.data.result)
+        // 成功则展示发布成功弹框
+        pubSuccessVisible.value = true
+
+        //调用刷新列表接口
+        getMeetingList()
+      }
+    })
+    .catch((error) => {
+      // debugger
+      console.log('定时发布修改失败:', error)
+      ElMessage.error('定时发布失败！')
+    })
+}
+
+// 5.上传图片/视频接口
+const uploadReleaseMedia = (rawFile) => {
+  //数据流
+  const formData = new FormData()
+  const data = {
+    roomID: roomId.value,
+    meetID: meetingOptionvalue.value
+  }
+  formData.append('data', JSON.stringify(data))
+  // 二进制文件上传
+  formData.append('file', rawFile.raw)
+  // debugger
+  releaseRequest
+    .post('/IotPageEditCrtl/uploadReleaseMedia', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then((res) => {
+      console.log('上传图片/视频成功:', res.data)
+      //结束loading加载图 
+      // setTimeout(function(){
+        loading.value=false
+      // },2500)
+      
+        // debugger
+        // if(res.data.result.obsFileType=='1'){
+        //     imageList.value[imageList.value.length-1].base64='data:image/jpg;base64,' + res.data.result.base64
+          
+        //   }
+        // debugger
+        // form.value.mediaAreaList=imageList.value
+        form.value.mediaAreaList.push(res.data.result)
+        downloadReleaseMedia(form.value.mediaAreaList)
+        
+      })
+
+    .catch((error) => {
+      // console.log('上传图片/视频失败:', error)
+    })
+}
+// 7.删除上传的图片接口
+const delUploadReleaseMedia = (uploadFile) => {
+  releaseRequest
+    .post('/IotPageEditCrtl/deleteReleaseMedia', { 
+      "roomID": uploadFile.roomID,
+      "meetID": uploadFile.meetID,
+      "obsFileID": uploadFile.obsFileID,
+      "obsFileType": uploadFile.obsFileType
+    })
+    .then((res) => {
+      console.log('删除上传的图片成功', res.data)
+      
+    })
+    .catch((error) => {
+      // debugger
+      console.log('删除上传的图片失败:', error)
     })
 }
 
 // 1.选择会议
-const meetingList = ref([])
+const meetingList = ref([
+  // {
+  //   publishTime: '10:00~23:00',
+  //   publishStatus: '1',
+  //   roomID: '8186847552438272',
+  //   roomName: 'A2-228',
+  //   meetID: '670413063993503744',
+  //   meetName: '11.13日测试会议',
+  //   roomTemp: null,
+  //   roomHum: null,
+  //   meetStatus: '1',
+  //   showStartTime: '2023-11-13T02:00:00.000+0000',
+  //   showEndTime: '2023-11-13T14:00:00.000+0000',
+  //   startTime: '2023-11-13 10:00:00',
+  //   endTime: '2023-11-13 22:00:00',
+  //   imgShow: '1',
+  //   brightNess: 0,
+  //   playGap: 5000,
+  //   mtAreaList: [
+  //     {
+  //       roomID: '8186847552438272',
+  //       meetID: '670413063993503744',
+  //       textLocat: '标题',
+  //       textConent: '11.13日测试会议',
+  //       fontSize: 48,
+  //       textColor: 'rgba(208, 178, 178, 0.8)',
+  //       textVgt: '100%',
+  //       showLocat: 'center',
+  //       showOrder: 1,
+  //       syncStatus: 1,
+  //       isShow: '1',
+  //       startTime: null,
+  //       endTime: null
+  //     },
+  //     {
+  //       roomID: '8186847552438272',
+  //       meetID: '670413063993503744',
+  //       textLocat: '时间',
+  //       textConent: '10:00~23:00',
+  //       fontSize: 34,
+  //       textColor: 'rgba(219, 79, 79, 0.8)',
+  //       textVgt: '100%',
+  //       showLocat: 'right',
+  //       showOrder: 2,
+  //       syncStatus: 1,
+  //       isShow: '1',
+  //       startTime: null,
+  //       endTime: null
+  //     },
+  //     {
+  //       roomID: '8186847552438272',
+  //       meetID: '670413063993503744',
+  //       textLocat: '主办方',
+  //       textConent: '信息系统信息通讯分公司',
+  //       fontSize: 34,
+  //       textColor: 'rgba(255, 255, 255, 0.8)',
+  //       textVgt: '100%',
+  //       showLocat: 'center',
+  //       showOrder: 3,
+  //       syncStatus: 1,
+  //       isShow: '1',
+  //       startTime: null,
+  //       endTime: null
+  //     }
+  //   ],
+  //   mediaAreaList: [
+  //     {
+  //       name: 'food.jpeg',
+  //       url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+  //       obsFileType: '1'
+  //     },
+  //     {
+  //       name: 'cat.mp4',
+  //       // url: '@/assets/xxfb/cat.mp4',
+  //       // url: 'http://39.105.179.38:9797/noderad/cat.mp4',
+  //       url:'file:///C:/Users/55462/Downloads/cat%20(7).mp4',
+  //       obsFileType: '2',
+  //       domId:"xy"
+  //     }
+  //   ]
+  // }
+])
 const meetingOptionvalue = ref('')
-//
-const onChange = (v) => {
-  // debugger
-  console.log(meetingOptionvalue.value)
-  for (var i = 0; i < meetingList.value.length; i++) {
-    if (meetingList.value[i].meetID == v) {
-      form.value = meetingList.value[i]
+
+const form = ref({ roomName: '' })
+// 监听选择会议的变化
+watch(
+  () => meetingOptionvalue.value,
+  () => {
+    loading.value=true
+    //结束loading加载图
+        setTimeout(function(){
+          loading.value=false
+        },3000)
+    var res = { roomName: '' }
+    for (var i = 0; i < meetingList.value.length; i++) {
+      if (meetingList.value[i].meetID == meetingOptionvalue.value) {
+        res = meetingList.value[i]
+      }
+    }
+    
+    form.value = res
+    
+    preNum.value = form.value.publishTimeNum
+
+    imageList.value=form.value.mediaAreaList
+    // debugger
+    if(imageList.value.length>0){
+      // 重新调用下载图片/视频接口
+      downloadReleaseMedia(form.value.mediaAreaList)
+      
     }
   }
-}
+)
 
 // 2.2.1会议信息区域
-const form = ref({})
+// const form = ref({})
 // debugger
-// 第一行标题是否同步 1同步 0不同步----------
-const issyncLine1 = (v) => {
+// 是否同步 1同步 0不同步----------
+const issyncLine = (v, item) => {
   // debugger
-  console.log('第一行标题是否同步', v)
-  // form.value.mtAreaList[0].syncStatus = v
-  // if(form.value.mtAreaList[0].syncStatus==1){
-  //   form.value.mtAreaList[0].textConent=title
-  // }else{
-
-  // }
+  if (item.syncStatus == 1) {
+    getSyncInfo(item)
+  }
 }
-const isshowlineValue = ref({
-  isshowline1Value: true,
-  isshowline2Value: true,
-  isshowline3Value: true
-})
 
-const isshowline1 = () => {
+const isshowline1 = (item, show) => {
   // debugger
-  isshowlineValue.value.isshowline1Value = !isshowlineValue.value.isshowline1Value
+  item.isShow = show
 }
 // 第一行字体大小
-const line1FontSizeonChange = (v) => {
-  // debugger
-  form.value.mtAreaList[0].fontSize = v
-}
+
 // 第一行颜色
-const line1TextColorChange = (v) => {
-  // debugger
-  // if(v==null){
-  //   .value.mtAreaList[0].textColor="#13CE66"
-  // }else{
-  //   .value.mtAreaList[0].textColor=v
-  // }
-}
+
 // 第一行居中方式
-const line1textAlign = (e) => {
-  form.value.mtAreaList[0].showLocat = e.target.dataset.textalign
-}
-
-// 第二行标题是否同步--------
-const issyncLine2 = (v) => {
-  //  debugger
-  console.log('第二行标题是否同步', v)
-  form.value.mtAreaList[1].syncStatus = v
-  if (form.value.mtAreaList[1].syncStatus == 1) {
-    form.value.mtAreaList[1].textConent = time
-  } else {
-  }
-}
-const isshowline2 = () => {
-  isshowlineValue.value.isshowline2Value = !isshowlineValue.value.isshowline2Value
-}
-// 第二行字体大小
-const line2FontSizeonChange = (v) => {
-  // debugger
-  form.value.mtAreaList[1].fontSize = v
-}
-// 第二行颜色
-// 第二行居中方式
-const line2textAlign = (e) => {
-  form.value.mtAreaList[1].showLocat = e.target.dataset.textalign
-}
-
-// 第三行标题是否同步--------
-const issyncLine3 = (v) => {
-  //  debugger
-  console.log('第三行标题是否同步', v)
-  form.value.mtAreaList[2].syncStatus = v
-  if (form.value.mtAreaList[2].syncStatus == 1) {
-    form.value.mtAreaList[2].textConent = title
-  } else {
-  }
-}
-const isshowline3 = () => {
-  isshowlineValue.value.isshowline3Value = !isshowlineValue.value.isshowline3Value
-}
-// 第一行字体大小
-const line3FontSizeonChange = (v) => {
-  // debugger
-  form.value.mtAreaList[2].fontSize = v
-}
-// 第三行颜色
-// 第三行居中方式
-const line3textAlign = (e) => {
-  form.value.mtAreaList[2].showLocat = e.target.dataset.textalign
+const line1textAlign = (item, v) => {
+  item.showLocat = v
 }
 
 // 是否开启轮播图
 const issyncSwiperChange = () => {}
 // 轮播间隔时间
+const playGapValue = ref(5000)
 const onTimeChange = (v) => {
-  form.value.playGap = v
+  // debugger
+  if (typeof v == 'number') {
+    form.value.playGap = v
+  } else {
+    // 没有检索到返回-1
+    if (v.indexOf('ms') == -1) {
+      form.value.playGap = Number(v)
+    } else {
+      form.value.playGap = Number(v.replace('ms', ''))
+    }
+  }
 }
 
 // 1.保存
@@ -664,72 +709,65 @@ const onSave = () => {
   // debugger
   console.log(form.value)
   // 调用保存接口
-  // saveRequest()
+  updateEditList()
 }
 // 2.发布弹框
 const pubFormVisible = ref(false)
 const onPub = () => {
   pubFormVisible.value = true
-  // debugger
-  form.value.prePubTime = '1'
-  num.value = '0'
 }
 
 // 提前发布时间选择
-// const prePubTime=ref(1)
+const preNum = ref(-1)
+// debugger
 // num 为自定义时间
-const num = ref('')
+const num = ref(0)
+if (preNum.value != -1 || preNum.value != -1.5 || preNum.value != -2 || preNum.value != -0.5) {
+  preNum.value = num.value
+}
 const handleNumChange = (v) => {
   //  debugger
-  num.value = v
+  preNum.value = v
+  form.value.publishTimeNum = v
 }
 const radioOptionChange = (v) => {
   // debugger
-  // if(v!='3'&&v!=""){
-  //   form.value.prePubTime=v
-  // }else{
-  //   form.value.prePubTime=num.value
-  // }
+
+  form.value.publishTimeNum = v
+
+  preNum.value = v
 }
 // 弹框中取消按钮
 const cancelPub = () => {
   pubFormVisible.value = false
-  form.value.prePubTime = '1'
-  num.value = '0'
+  // form.value.publishTimeNum = -1
+  // preNum.value
+  // num.value = '0'
 }
 //弹框中确认按钮
 const confirmPub = () => {
   pubFormVisible.value = false
-  // 调用发布接口
+  // 调用定时发布修改接口
+  updatePrePub()
 
-  pubSuccessVisible.value = true
+  pubSuccessVisible.value = false
 }
 
 // 发布成功提示
 const pubSuccessVisible = ref(false)
 
 // 2.2图片/视频上传
-const fileList = ref([
-  {
-    name: 'food.jpeg',
-    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-    type: 'img'
-  },
-  {
-    name: 'cat.mp4',
-    // url: '@/assets/xxfb/cat.mp4',
-    url: 'http://39.105.179.38:9797/noderad/cat.mp4',
-    type: 'video'
-  }
-])
-
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
-
+// 删除图片
 const handleRemove = (uploadFile, uploadFiles) => {
   console.log(uploadFile, uploadFiles)
+  // debugger
+  // 7.调用删除上传的图片接口
+  delUploadReleaseMedia(uploadFile)
+  
 }
-
+// 预览图片
 const handlePictureCardPreview = (uploadFile) => {
   dialogImageUrl.value = uploadFile.url
   dialogVisible.value = true
@@ -749,19 +787,19 @@ const beforeAvatarUpload = (rawFile) => {
     return false
   }
 
-  for (var i = 0; i < fileList.value.length; i++) {
-    if (rawFile.name == fileList.value[i].name) {
-      ElMessage.error('上传文件名重复！')
-      return
-    }
-  }
-  fileList.value.push(rawFile)
-
+  // for (var i = 0; i < form.value.mediaAreaList.length; i++) {
+  //   if (rawFile.name == form.value.mediaAreaList[i].name) {
+  //     ElMessage.error('上传文件名重复！')
+  //     return
+  //   }
+  // }
+  loading.value=true
+  uploadReleaseMedia(rawFile)
+  // debugger
   return true
 }
 
-// 视频/图片下载
-// 仅支持视频下载和图片下载
+// 2.3视频/图片下载到本底  仅支持视频下载和图片下载
 const downLoad = (item) => {
   // debugger
   let url = item.url
@@ -785,18 +823,26 @@ const downLoad = (item) => {
       a.style.display = 'none'
       document.body.appendChild(a)
       a.click()
+
+      // 在浏览器端，通过使用XMLHttpRequest对象和Blob对象，可以实现下载文件并获取文件的绝对路径：
+      // window.URL.revokeObjectURL(url);
+
+      // resolve(a.href); // 返回文件路径
+      // window.URL.revokeObjectURL(downLoadUrl) // 释放url
       a.remove()
+      // debugger
     }
   }
+  // debugger
   xhr.send()
 }
+
 onMounted(() => {
   // 1.调用根据会议名称 获取会议场次接口
   getMeetingList()
-  for (var i = 0; i < fileList.value.length; i++) {
-    //  downLoad(fileList.value[i])
-  }
 })
+
+// console.log("C:/Users/win10/Downloads/cat(3).mp4")
 </script>
 
 <style lang="less" scoped>
@@ -913,7 +959,6 @@ onMounted(() => {
       .preInfo {
         width: 375px;
         height: 675px;
-        border: 1px solid blue;
       }
     }
 
@@ -1009,7 +1054,7 @@ onMounted(() => {
               }
               .demonColor {
                 // min-width: 91px;
-                width: 150px;
+                width: 162px;
                 padding-left: 4px;
                 padding-right: 4px;
                 height: 32px;
@@ -1066,6 +1111,11 @@ onMounted(() => {
             .el-input__wrapper {
               box-shadow: none;
             }
+          }
+        }
+        :deep(.el-dialog){
+          img{
+            width: 100%;
           }
         }
       }
@@ -1152,4 +1202,4 @@ onMounted(() => {
   }
 }
 </style>
-=
+

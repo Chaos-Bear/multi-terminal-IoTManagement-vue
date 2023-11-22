@@ -12,7 +12,7 @@
           </el-header>
           <el-container>
             <!-- 1. 侧边栏 -->
-            <el-aside style="width: 19.167vw; height: 83.33vh; margin-left: 1.1212vw">
+            <el-aside style="width: 19.167vw; height: 83.33vh; margin-left: 1.1212vw;flex-grow:0">
               <!-- 1.1 搜索框 -->
               <el-scrollbar always height="83.33vh" view-class="call_service_scrollbar">
                 <div class="search">
@@ -232,9 +232,9 @@
                 </div>
               </div>
             </el-main>
-            <!-- 3.右侧 楼层展示 -->
+            <!-- 3.右侧 楼层展示 23.5vw;-->
             <el-aside
-              style="width: 23.5vw; height: 83.33vh; background-color: #022659; flex-grow: 0"
+              style="width: 26.4vw; height: 83.33vh; background-color: #022659; flex-grow: 0"
             >
               <el-scrollbar
                 style="background-color: #022151"
@@ -267,8 +267,8 @@
                       >
                       <!-- <span class="call_service_floor_span">灯光:{{item1.roomLhtStat?"已开启":"已关闭"}}</span> -->
                       <span class="call_service_floor_span"
-                        >灯光:{{ item1.roomLhtStat == 'ON' ? '已开启' : '已关闭' }}
-                        <el-switch
+                        >灯光:{{ item1.roomDoLkStat >=100  ? '已开启' : '已关闭' }}
+                        <!-- <el-switch
                           class="ml-2"
                           size="small"
                           v-model="item1.roomLhtStat"
@@ -282,18 +282,27 @@
                               isOpen(v, item1)
                             }
                           "
-                        />
+                        /> -->
                       </span>
-                      <!-- <span class="call_service_floor_span"
-                            >门锁:&nbsp;
+                      <!-- 系统 使用的灯光字段  roomDoLkStat主题 -->
+                      <span class="call_service_floor_span"
+                            >系统:
                             <el-switch
                               class="ml-2"
                               size="small"
-                              v-model='item1.roomDoLkStat'
+                              v-model="item1.roomLhtStat"
                               style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
-                              :@change="isOpen()"
+                              active-text=""
+                              inactive-text=""
+                              active-value="ON"
+                              inactive-value="OFF"
+                              @change="
+                                (v) => {
+                                  isOpen(v, item1)
+                                }
+                              "
                             />
-                          </span> -->
+                      </span>
                     </div>
                   </el-collapse-item>
                 </el-collapse>
@@ -754,7 +763,8 @@ const isOpen = (v, item1) => {
   // A2-228/228-power  A2-107
   var topic
   if (item1.roomName != '') {
-    topic = item1.roomName + '/' + item1.roomName.split('-')[1] + '-power'
+    // topic = item1.roomName + '/' + item1.roomName.split('-')[1] + '-power'
+    topic = item1.roomName + '/' + item1.roomName.split('-')[1] + '-chazuodown'
   }
   // debugger
   if (item1.topic != '') {
@@ -768,6 +778,7 @@ const isOpen = (v, item1) => {
       })
       .then((res) => {
         // console.log('控制设备发送成功', res)
+        console.log("主题打印",topic)
       })
       .catch((error) => {
         console.log('控制设备发送失败', error)
@@ -783,7 +794,7 @@ const isOpen = (v, item1) => {
 }
 .call_service {
   :deep(.el-container) {
-    margin-top: (10/1080) * 100vh;
+    // margin-top: (10/1080) * 100vh;
     // 1.左侧侧边栏
     // .el-side:nth-child(1){
     // 1.1搜索框
@@ -964,8 +975,10 @@ const isOpen = (v, item1) => {
     .el-main {
       height: (900/1080) * 100vh;
       background-color: #02285f;
-      width: (1000/1920) * 100vw;
-      flex-basis: (1000/1920) * 100vw;
+      // width: (1000/1920) * 100vw;
+      // flex-basis: (1000/1920) * 100vw;
+      width: (940/1920) * 100vw;
+      flex-basis: (940/1920) * 100vw;
       flex-grow: 0;
       margin: 0 (10/1920) * 100vw;
       padding: 0;
@@ -1208,7 +1221,8 @@ const isOpen = (v, item1) => {
       }
     }
     // 3.右侧边栏
-    // .el-side:nth-child(3){
+    .el-aside:nth-child(3){
+      // width: (12/1920) * 100vw;
     .sensingInfo {
       display: flex;
       justify-content: flex-start;
@@ -1238,7 +1252,7 @@ const isOpen = (v, item1) => {
         zoom: 0.8;
       }
     }
-    // }
+    }
   }
 }
 .call_service_scrollbar {
@@ -1246,26 +1260,29 @@ const isOpen = (v, item1) => {
   color: #ffffff;
 }
 
+.call_service_style {
+    width: 100vw;
+    height: 100vh;
+    padding: 1.40625vw 1.14583333vw 1.35416667vw 1.14583333vw;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-image: url(/src/assets/tablet_borrowed/1.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    
+}
 .call_service {
-  background: #01163d url('@/assets/img/call_bg.png') no-repeat;
-  background-size: 100% 100%;
-  width: 100vw;
-  height: 100vh;
+    width: 100%;
+    height: 100%;
+    background-image: url(/src/assets/tablet_borrowed/2.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    position: relative;
 }
 
-.call_service_style {
-  /*opacity: 0.1;*/
-  background: #000428; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #004e92, #000428); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to top,
-    #004e92,
-    #000428
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
 
 .content {
-  padding: 0px (22/1920) * 100vw (26/1080) * 100vh (22/1920) * 100vw;
+  // padding: 0px (22/1920) * 100vw (26/1080) * 100vh (22/1920) * 100vw;
 }
 
 .call_service_title {

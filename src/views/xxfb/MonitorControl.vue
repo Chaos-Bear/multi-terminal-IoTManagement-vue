@@ -113,19 +113,39 @@
 
 <script setup>
 import PreEdit from '@/components/xxfb/PreEdit.vue'
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
-import { request, releaseRequest } from '@/utils/server.js'
+import { request, releaseRequest ,pubRequest} from '@/utils/server.js'
 const roomName = route.query.roomName
 const roomId = route.query.roomID
 
+const ipValue=ref("")
+// 1. 根据会议室名称 查询会议室绑定的设备ip接口----------------
+const getIp = (item) => {
+  pubRequest
+    .post('/PublishFlowCtrl/queryIotDeviceByName', {
+      roomName: roomName
+    })
+    .then((res) => {
+      console.log('获取会议室绑定设备ip成功:', res.data.result.deviceIP)
+      if (res.data.repCode == 200) {
+        ipValue.value = res.data.result.deviceIP
+      }
+
+      // 调用截屏接口
+      terminalControlRequest('screenshot')
+    })
+    .catch((error) => {
+      // debugger
+      console.log('获取会议室绑定设备ip失败:', error)
+    })
+}
 // -------1.发布屏设备控制接口-------
 const imgSrc = ref('')
-
 const terminalControlRequest = (operateType) => {
   releaseRequest
     .post('/TerminalCtrl/opert', {
@@ -133,7 +153,7 @@ const terminalControlRequest = (operateType) => {
       operate: operateType,
       // "openTopic": "A2-206/206-RFID-UP",
       openTopic: 'screen/test',
-      "ip": "10.31.0.241"
+      ip: ipValue.value,
       // ip: '192.168.42.154'
     })
     .then((response) => {
@@ -153,14 +173,13 @@ const terminalControlRequest = (operateType) => {
       if (operateType == 'screenshot') {
         ElMessage.error('截图失败！')
 
-        
-          isrefreshValue.value = true
-        
+        isrefreshValue.value = true
       }
     })
 }
 onMounted(() => {
-  terminalControlRequest('screenshot')
+  getIp()
+
 })
 
 // 关机弹出框

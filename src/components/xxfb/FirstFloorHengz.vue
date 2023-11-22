@@ -13,18 +13,12 @@
         <div>
           <div id="" data-roomname=""></div>
           <!-- 单扇门 左 -->
-          <img
-            class="door"
-            src="@/assets/xxfb/path/2.png"
-          />
+          <img class="door" src="@/assets/xxfb/path/2.png" />
         </div>
         <div>
           <div id="A2-103" data-roomname="A2103">A2-103</div>
           <!-- 竖 双排门 -->
-          <img
-            class="doubledoor"
-            src="@/assets/xxfb/path/7.png"
-          />
+          <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
         </div>
       </div>
       <div class="div2-2">
@@ -35,28 +29,19 @@
               <div>
                 <div id="A2118" data-roomname="A2118">A2-118</div>
                 <!-- 竖 双排门 -->
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/7.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
               <div>
                 <div>
                   <div>
                     <div id="A2114" data-roomname="A2114">A2-114</div>
                     <!-- 单扇门 横 -->
-                    <img
-                      class="hdoor"
-                      src="@/assets/xxfb/path/3.png "
-                    />
+                    <img class="hdoor" src="@/assets/xxfb/path/3.png " />
                   </div>
                   <div>
                     <div id="A2115" data-roomname="A2115">A2-115</div>
                     <!-- 单扇门 横 -->
-                    <img
-                      class="hdoor"
-                      src="@/assets/xxfb/path/3.png "
-                    />
+                    <img class="hdoor" src="@/assets/xxfb/path/3.png " />
                   </div>
                   <div>
                     <div></div>
@@ -70,14 +55,8 @@
               <div>
                 <div id="A2113" class="active-start">A2-113</div>
                 <!-- 横 双排门 -->
-                <img
-                  class="hdoubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
-                <img
-                  class="hdoubledoor"
-                  src="@/assets/xxfb/path/6.png"
-                />
+                <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
+                <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
                 <div></div>
@@ -86,14 +65,8 @@
               </div>
               <div>
                 <!-- 竖 双排门 -->
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/7.png"
-                />
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/7.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 <div class="guodao">
                   过&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道
                 </div>
@@ -109,41 +82,26 @@
                 <div>
                   <div id="A2117" data-roomname="A2117">A2-117</div>
                   <!-- 竖 双排门 -->
-                  <img
-                    class="doubledoor"
-                    src="@/assets/xxfb/path/7.png"
-                  />
-                  <img
-                    class="doubledoor"
-                    src="@/assets/xxfb/path/7.png"
-                  />
+                  <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                  <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
                 <div>
                   <div>
                     <div id="A2109" data-roomname="A2109">A2-109</div>
                     <!-- 单扇门 横 -->
-                    <img
-                      class="hdoor"
-                      src="@/assets/xxfb/path/3.png "
-                    />
+                    <img class="hdoor" src="@/assets/xxfb/path/3.png " />
                   </div>
                   <div>
                     <div id="A2107" data-roomname="A2107">A2-107</div>
                     <!-- 单扇门 横 -->
-                    <img
-                      class="hdoor"
-                      src="@/assets/xxfb/path/3.png "
-                    />
+                    <img class="hdoor" src="@/assets/xxfb/path/3.png " />
                   </div>
                 </div>
               </div>
               <div>
                 <div id="A2104" data-roomname="A2104">A2-104</div>
                 <!-- 竖 双排门 -->
-                <img
-                  class="doubledoor"
-                  src="@/assets/xxfb/path/7.png"
-                />
+                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
             <!-- 2 -->
@@ -171,26 +129,17 @@
                 <div>
                   <div id="A2110" data-roomname="A2110">A2-110</div>
                   <!-- 单扇门 横 -->
-                  <img
-                    class="hdoor"
-                    src="@/assets/xxfb/path/4.png"
-                  />
+                  <img class="hdoor" src="@/assets/xxfb/path/4.png" />
                 </div>
                 <div>
                   <div id="A2108" data-roomname="A2108">A2-108</div>
                   <!-- 单扇门 横 -->
-                  <img
-                    class="hdoor"
-                    src="@/assets/xxfb/path/4.png"
-                  />
+                  <img class="hdoor" src="@/assets/xxfb/path/4.png" />
                 </div>
                 <div>
                   <div id="A2105" data-roomname="A2105">A2-105</div>
                   <!-- 竖 双排门 -->
-                  <img
-                    class="doubledoor"
-                    src="@/assets/xxfb/path/7.png"
-                  />
+                  <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
               </div>
               <!-- 2 -->
@@ -202,15 +151,9 @@
                                       "
                   />
                   <!-- 竖 双排门 -->
-                  <img
-                    class="doubledoor"
-                    src="@/assets/xxfb/path/7.png"
-                  />
+                  <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                   <!-- 竖 双排门 -->
-                  <img
-                    class="doubledoor"
-                    src="@/assets/xxfb/path/7.png"
-                  />
+                  <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
               </div>
             </div>
@@ -221,10 +164,7 @@
             </div>
             <div>过<br />道</div>
             <!-- 横 双排门 -->
-            <img
-              class="hdoubledoor"
-              src="@/assets/xxfb/path/6.png"
-            />
+            <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
           </div>
         </div>
         <div class="middle">
@@ -258,10 +198,7 @@
             </div>
             <div>过<br />道</div>
             <!-- 横 双排门 -->
-            <img
-              class="hdoubledoor"
-              src="@/assets/xxfb/path/6.png"
-            />
+            <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
           </div>
           <!-- 会议室3区 -->
           <div class="right2">
@@ -272,17 +209,11 @@
                 <div class="right2-1">
                   <div>
                     <!-- 竖 双排门 -->
-                    <img
-                      class="doubledoor"
-                      src="@/assets/xxfb/path/7.png"
-                    />
+                    <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                     <!--排风扇  -->
                     <img src="@/assets/xxfb/path/9.png" />
                     <!-- 竖 双排门 -->
-                    <img
-                      class="doubledoor"
-                      src="@/assets/xxfb/path/7.png"
-                    />
+                    <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                   </div>
                 </div>
                 <div class="right2-2">
@@ -295,30 +226,18 @@
                 <div class="right2-3">
                   <div>
                     <!-- 竖 双排门 -->
-                    <img
-                      class="doubledoor"
-                      src="@/assets/xxfb/path/7.png"
-                    />
+                    <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                     <!--排风扇  -->
                     <img src="@/assets/xxfb/path/9.png" />
                     <!-- 竖 双排门 -->
-                    <img
-                      class="doubledoor"
-                      src="@/assets/xxfb/path/7.png"
-                    />
+                    <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                   </div>
                 </div>
               </div>
             </div>
             <!-- 竖 双排门 -->
-            <img
-              class="doubledoor"
-              src="@/assets/xxfb/path/7.png"
-            />
-            <img
-              class="doubledoor"
-              src="@/assets/xxfb/path/7.png"
-            />
+            <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+            <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
           </div>
         </div>
       </div>
@@ -331,9 +250,7 @@
         <li><img src="@/assets/xxfb/path/huoti.png" /><span>货梯</span></li>
         <li><img src="@/assets/xxfb/path/wc.png" /><span>卫生间</span></li>
         <li><img src="@/assets/xxfb/path/peidianjian.png" /><span>配电间</span></li>
-        <li>
-          <img src="@/assets/xxfb/path/dangqian.png" /><span>当前所在位置</span>
-        </li>
+        <li><img src="@/assets/xxfb/path/dangqian.png" /><span>当前所在位置</span></li>
       </ul>
     </div>
   </div>
@@ -715,6 +632,10 @@ onMounted(() => {
     }
   })
 })
+// 定义子组件并使用 defineExpose 将自身的属性或方法暴露
+// defineExpose({
+//  start_end
+// })
 </script>
 
 <style lang="less" scoped>
@@ -725,6 +646,7 @@ onMounted(() => {
   /* border: 1px solid red; */
   zoom: 0.345545454;
   // display:none;
+  margin-left: -10px;
 }
 
 .div1 {
