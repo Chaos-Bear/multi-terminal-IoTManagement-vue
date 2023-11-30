@@ -119,14 +119,14 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
-import { request, releaseRequest ,pubRequest} from '@/utils/server.js'
+import { request, releaseRequest } from '@/utils/server.js'
 const roomName = route.query.roomName
 const roomId = route.query.roomID
 
-const ipValue=ref("")
+const ipValue = ref('')
 // 1. 根据会议室名称 查询会议室绑定的设备ip接口----------------
 const getIp = (item) => {
-  pubRequest
+  releaseRequest
     .post('/PublishFlowCtrl/queryIotDeviceByName', {
       roomName: roomName
     })
@@ -153,7 +153,7 @@ const terminalControlRequest = (operateType) => {
       operate: operateType,
       // "openTopic": "A2-206/206-RFID-UP",
       openTopic: 'screen/test',
-      ip: ipValue.value,
+      ip: ipValue.value
       // ip: '192.168.42.154'
     })
     .then((response) => {
@@ -179,7 +179,6 @@ const terminalControlRequest = (operateType) => {
 }
 onMounted(() => {
   getIp()
-
 })
 
 // 关机弹出框

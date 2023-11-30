@@ -15,21 +15,21 @@
         <div>设备管理</div>
       </div>
       <div class="item">
-        <!-- <a href="/iot-client/#/callService" target="__blank">
-          <img src="@/assets/home/3.png" />
-        </a> -->
-        <a href="/#/callService" target="__blank">
+        <a href="/iot-client/#/callService" target="__blank">
           <img src="@/assets/home/3.png" />
         </a>
+        <!-- <a href="/#/callService" target="__blank">
+          <img src="@/assets/home/3.png" />
+        </a> -->
         <div>呼叫服务</div>
       </div>
       <div class="item">
-        <!-- <a href="/iot-client/#/tablet" target="_blank">
-          <img src="@/assets/home/2.png" />
-        </a> -->
-        <a href="/#/tablet" target="_blank">
+        <a href="/iot-client/#/tablet" target="_blank">
           <img src="@/assets/home/2.png" />
         </a>
+        <!-- <a href="/#/tablet" target="_blank">
+          <img src="@/assets/home/2.png" />
+        </a> -->
         <div>平板借还</div>
       </div>
       <!-- <div class="item">
@@ -67,11 +67,11 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="会议室名称" prop="name">
-                <el-input style="width: 80%" v-model="searchform.name" />
+                <el-input style="width: 80%" v-model="searchform.name" placeholder="请输入会议室名称"/>
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="楼层" prop="floor">
+              <el-form-item label="楼层" prop="floor" required>
                 <el-select v-model="searchform.floor" style="width: 80%" placeholder="选择楼层">
                   <el-option
                     v-for="item in floorOptions"
@@ -84,7 +84,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="地点" prop="address">
+              <el-form-item label="地点" prop="address" required>
                 <el-select v-model="searchform.address" style="width: 80%" placeholder="选择地点">
                   <!-- <el-option label="全部" value="全部" />
                   <el-option label="会议中心" value="会议中心" /> -->
@@ -152,7 +152,7 @@
       <el-pagination
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
-        :page-sizes="[5, 10, 20, 30, 50]"
+        :page-sizes="[24, 48, 96]"
         layout=" prev, pager, next, sizes,jumper"
         :total="total"
         @size-change="handleSizeChange"
@@ -163,7 +163,7 @@
     </div>
     <!-- ----------新增/修改会议室弹框 -->
     <el-dialog
-      :title="createForm.roomID ? '修改会议室' : '新增会议室'"
+      :title="createForm.roomID ? '编辑会议室' : '新增会议室'"
       v-model="meetingVisual"
       style="width: 450px"
     >
@@ -175,18 +175,7 @@
         label-position="left"
       >
         <el-form-item label="会议室名称" prop="name">
-          <el-input v-model="createForm.name" placeholder="请输入会议室名称例如:A2-110" />
-        </el-form-item>
-        <el-form-item label="楼层" prop="floor">
-          <el-select v-model="createForm.floor" style="width: 100%" placeholder="选择楼层">
-            <el-option
-              v-for="item in floorOptions"
-              :key="item.order"
-              :label="item.floor"
-              :value="item.floor"
-              :disabled="item.disabled"
-            />
-          </el-select>
+          <el-input v-model="createForm.name" placeholder="请输入会议室名称例如:A2-110" :disabled="createForm.roomID ? true : false"/>
         </el-form-item>
         <el-form-item label="地点" prop="address">
           <el-select v-model="createForm.address" style="width: 100%" placeholder="选择地点">
@@ -199,19 +188,31 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="会议室图片" prop="imageUrl" class="is-required">
+        <el-form-item label="楼层" prop="floor">
+          <el-select v-model="createForm.floor" style="width: 100%" placeholder="选择楼层">
+            <el-option
+              v-for="item in floorOptions"
+              :key="item.order"
+              :label="item.floor"
+              :value="item.floor"
+              :disabled="item.disabled"
+            />
+          </el-select>
+        </el-form-item>
+        <!--*号 class="is-required"  prop="imageUrl"-->
+        <el-form-item label="会议室图片"  prop="imageUrl" class="is-required">
           <!-- action:要上传的地址   :show-file-list是否展示上传列表 :on-change上传文件列表改变时 :auto-upload 是否自动上传 false为手动上传  -->
           <div style="display: flex; align-items: center">
             <div v-if="imageUrl" style="position: relative" class="uploadImgCont">
               <img :src="imageUrl" class="avatar" />
               <div class="uploadImg">
-                <el-icon @click="del"><Delete /></el-icon>
+                <el-icon @click="del"><Delete/></el-icon>
               </div>
             </div>
             <el-upload
               class="avatar-uploader"
-              auto-upload="false"
-              limit="1"
+              :auto-upload="false"
+              :limit="1"
               :show-file-list="false"
               :before-upload="beforeAvatarUpload"
               :http-request="uploadFlie"
@@ -239,14 +240,12 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { reactive, ref, onMounted } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useApiAddressStore } from '@/pinia_stores/api_address_store.js'
 import { ElMessage, valueEquals, ElMessageBox, ElConfigProvider } from 'element-plus'
 import { Plus, Delete } from '@element-plus/icons-vue'
 const router = useRouter()
 // import axios from 'axios'
 
-import { request, noderedrequest } from '@/utils/server.js'
+import { request} from '@/utils/server.js'
 
 // 会议室配置信息
 var floorOptions = ref([])
@@ -364,8 +363,8 @@ const queryFormRef = ref()
 // 查询form表单
 const searchform = reactive({
   name: '',
-  floor: '全部',
-  address: '全部'
+  floor: '2F',
+  address: '会议大厅'
 })
 // 查询按钮
 const searchInfo = () => {
@@ -376,8 +375,8 @@ const searchInfo = () => {
 // 重置
 const resetQuery = () => {
   searchform.name = ''
-  searchform.floor = ''
-  searchform.address = ''
+  searchform.floor = '2F'
+  searchform.address = '会议大厅'
   // 发get请求，重新渲染会议列表
   getList()
 }
@@ -402,7 +401,11 @@ const addMeetingItem = () => {
 
   imageUrl.value = ''
   meetingVisual.value = true
-  createFormRef.value.clearValidate()
+  // debugger
+  if(createFormRef.value){
+    createFormRef.value.clearValidate()
+  }
+  
 }
 // 新增-----图片上传
 const imageUrl = ref('')
@@ -590,13 +593,13 @@ const saveMeetingModify = () => {
           }
         })
         .then((res) => {
-          console.log('会议室修改成功:', res.data)
+          console.log('会议室编辑成功:', res.data)
           meetingVisual.value = false
           //debugger
           getList()
         })
         .catch((error) => {
-          // console.log('会议室修改失败:', error)
+          // console.log('会议室编辑失败:', error)
         })
     } else {
       console.log('校验错误')
@@ -633,7 +636,7 @@ const deleteMeeting = (v) => {
 
 // 4.分页
 const currentPage = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(24)
 const total = ref(0)
 const handleSizeChange = (val) => {
   console.log(`${val} items per page`)
@@ -650,6 +653,7 @@ const refresh = () => {
   //重新发请求，渲染设备列表
   getList()
 }
+
 </script>
 <style lang="less" scoped>
 .home {
@@ -751,17 +755,17 @@ const refresh = () => {
       flex-wrap: wrap;
       // border: 1px solid red;
       .meetingroom {
-        width: 214px;
-        height: 247px;
-        margin-right: 24px;
-        margin-bottom: 24px;
-        border-radius: 8px;
+        width: 220px;
+        height: 213px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px 8px 0px 0px;
         background-color: rgba(255, 255, 255, 1);
         text-align: center;
         border: 1px solid rgba(233, 233, 233, 1);
         img {
           width: 100%;
-          height: 157px;
+          height: 123px;
         }
         & > div {
           height: 90px;
@@ -833,10 +837,25 @@ const refresh = () => {
   // 4.分页
   .pagination-block {
     height: 52px;
-    // border: 1px solid red;
     display: flex;
     justify-content: flex-end;
     flex: none;
+    //上一页
+    :deep(.el-pagination){
+      .btn-prev,.btn-next{
+        border: 1px solid rgba(220, 220, 220, 1);
+      }
+      .el-pager li{
+        width: 32px;
+        height: 32px;
+        margin-left: 8px;
+        margin-right: 8px;
+        border-radius: 3px;
+        background-color: rgba(79, 168, 249, 1)!important;
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+    
     .el-button {
       width: 48px;
       height: 32px;

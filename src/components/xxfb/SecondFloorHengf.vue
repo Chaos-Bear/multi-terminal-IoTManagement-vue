@@ -1,6 +1,6 @@
 <template>
   <!--这里编写网页代码 -->
-    <!-- <div style="position: absolute; left: 50%; top: 0">
+  <!-- <div style="position: absolute; left: 50%; top: 0">
       <button class="btn1" @click="init()" style="background-color: transparent;border: none;">初始化链接</button>
       <span
         id="test"
@@ -14,7 +14,6 @@
       ></span>
     </div> -->
   <div class="div" id="path">
-   
     <div class="div2" id="div2">
       <div class="div2-1">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道
@@ -354,7 +353,7 @@
 
 <script setup>
 // 二楼横反：A2-211   A2-228    A2-229 A2-212
-import { ref, reactive, watch, computed, onMounted, nextTick, defineExpose } from 'vue'
+import { ref, reactive, watch, computed, onMounted, nextTick } from 'vue'
 import $ from 'jquery'
 const props = defineProps({
   roomName: {
@@ -1369,115 +1368,115 @@ function drawLine(start, end) {
 }
 
 // 以下为串口语音处理 方法
-var obj = new FOFWebSerialPort()
-function getresInfo() {
-  //获取串口返回的信息
-  obj.GetSerialPortStrData(5000, function (val) {
-    console.log(val)
-    // debugger
-    document.getElementById('test').innerHTML = val
-    // 数字转为字符串
-    var yuyin = val + ''
+// var obj = new FOFWebSerialPort()
+// function getresInfo() {
+//   //获取串口返回的信息
+//   obj.GetSerialPortStrData(5000, function (val) {
+//     console.log(val)
+//     // debugger
+//     document.getElementById('test').innerHTML = val
+//     // 数字转为字符串
+//     var yuyin = val + ''
 
-    var reg = /\d{3}/g
-    //字符串使用match匹配一个或多个正则值，返回一个数组
-    var res = yuyin.match(reg)
-    console.log(val)
-    // debugger
-    // start_end('A2225_' + end, end)  A2208_A2227
-    var meetingList = [
-      '225',
-      '226',
-      '227',
-      '223',
-      '222',
-      '228',
-      '219',
-      '220',
-      '221',
-      '216',
-      '215',
-      '229',
-      '201',
-      '202',
-      '204',
-      '205',
-      '212',
-      '206',
-      '207',
-      '208',
-      '211',
-      '101',
-      '103',
-      '104',
-      '105',
-      '107',
-      '108',
-      '109',
-      '110',
-      '117',
-      '113',
-      '114',
-      '115',
-      '118'
-    ]
+//     var reg = /\d{3}/g
+//     //字符串使用match匹配一个或多个正则值，返回一个数组
+//     var res = yuyin.match(reg)
+//     console.log(val)
+//     // debugger
+//     // start_end('A2225_' + end, end)  A2208_A2227
+//     var meetingList = [
+//       '225',
+//       '226',
+//       '227',
+//       '223',
+//       '222',
+//       '228',
+//       '219',
+//       '220',
+//       '221',
+//       '216',
+//       '215',
+//       '229',
+//       '201',
+//       '202',
+//       '204',
+//       '205',
+//       '212',
+//       '206',
+//       '207',
+//       '208',
+//       '211',
+//       '101',
+//       '103',
+//       '104',
+//       '105',
+//       '107',
+//       '108',
+//       '109',
+//       '110',
+//       '117',
+//       '113',
+//       '114',
+//       '115',
+//       '118'
+//     ]
 
-    if (Array.isArray(res) && res.length > 0 && meetingList.indexOf(res[0]) > -1) {
-      start_end(props.roomName.replace('-', '') + '_A2' + res, res)
-    }
-  })
-}
-// /*注解：在下方的代码中，我们创建了一个异步函数，在这个函数中进行串口设备的选择并打开选择的串口，其中选择串口设备命令的最后一个参数传递的是一个数组[{ usbVendorId: 0x1a86, usbProductId:0x7523  }]，这个数组中的成员对象usbVendorId代表串口的产品ID，usbProductId代表串口的厂商ID。在设备管理器-匹配设备Id下查看*/
-function ChoiceSerialPort(success, connect, disconnect, filters) {
-  obj.ChoiceSerialPort(
-    function (ev) {
-      console.log(ev)
-      console.log(1111)
-      // getresInfo()
-      typeof success == 'function' && success()
-    },
-    (ev) => {
-      console.log('连接成功')
-      console.log(2222)
+//     if (Array.isArray(res) && res.length > 0 && meetingList.indexOf(res[0]) > -1) {
+//       start_end(props.roomName.replace('-', '') + '_A2' + res, res)
+//     }
+//   })
+// }
+// // /*注解：在下方的代码中，我们创建了一个异步函数，在这个函数中进行串口设备的选择并打开选择的串口，其中选择串口设备命令的最后一个参数传递的是一个数组[{ usbVendorId: 0x1a86, usbProductId:0x7523  }]，这个数组中的成员对象usbVendorId代表串口的产品ID，usbProductId代表串口的厂商ID。在设备管理器-匹配设备Id下查看*/
+// function ChoiceSerialPort(success, connect, disconnect, filters) {
+//   obj.ChoiceSerialPort(
+//     function (ev) {
+//       console.log(ev)
+//       console.log(1111)
+//       // getresInfo()
+//       typeof success == 'function' && success()
+//     },
+//     (ev) => {
+//       console.log('连接成功')
+//       console.log(2222)
 
-      typeof connect == 'function' && connect()
-    },
-    function (ev) {
-      console.log('连接失败')
-      typeof disconnect == 'function' && disconnect()
+//       typeof connect == 'function' && connect()
+//     },
+//     function (ev) {
+//       console.log('连接失败')
+//       typeof disconnect == 'function' && disconnect()
 
-      // },[{ usbVendorId: 0x1a86, usbProductId:0x7523  }])
-    },
-    filters
-  )
-}
-function recu(filters) {
-  ChoiceSerialPort(
-    function () {
-      obj.OpenSerialPort(9600, 8, 1, 'none', 'none').then(function () {
-        getresInfo()
-      })
-    },
-    function () {
-      //   debugger
-      obj.OpenSerialPort(9600, 8, 1, 'none', 'none').then(function () {
-        getresInfo()
-      })
-    },
-    function () {
-      // debugger
-      // setTimeout(function(){
-      //     recu(filters)
-      // },5000)
-    },
-    filters
-  )
-}
-function init() {
-  // debugger
-  var filters = [{ usbVendorId: 0x1a86, usbProductId: 0x7523 }]
-  recu(filters)
-}
+//       // },[{ usbVendorId: 0x1a86, usbProductId:0x7523  }])
+//     },
+//     filters
+//   )
+// }
+// function recu(filters) {
+//   ChoiceSerialPort(
+//     function () {
+//       obj.OpenSerialPort(9600, 8, 1, 'none', 'none').then(function () {
+//         getresInfo()
+//       })
+//     },
+//     function () {
+//       //   debugger
+//       obj.OpenSerialPort(9600, 8, 1, 'none', 'none').then(function () {
+//         getresInfo()
+//       })
+//     },
+//     function () {
+//       // debugger
+//       // setTimeout(function(){
+//       //     recu(filters)
+//       // },5000)
+//     },
+//     filters
+//   )
+// }
+// function init() {
+//   // debugger
+//   var filters = [{ usbVendorId: 0x1a86, usbProductId: 0x7523 }]
+//   recu(filters)
+// }
 // init()
 
 const dataRoomClick = (end) => {
@@ -1504,9 +1503,9 @@ li {
   /* border: 1px solid red; */
   /*zoom: 0.345545454;*/
   display: block;
-  zoom: 0.364054;
+  zoom: 0.362054;
   position: relative;
-  margin-left: -10px;
+  // margin-left: -10px;
 }
 
 .div1 {

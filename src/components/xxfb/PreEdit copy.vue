@@ -21,11 +21,11 @@
       <div class="first2">
         <div class="first2-1">
           <div>
-            <div id="temp">{{ props.form.roomTemp ? props.form.roomTemp : '21°C' }}</div>
+            <div id="temp">{{ props.form.roomTemp ? props.form.roomTemp : '-°C' }}</div>
             <span>温度</span>
           </div>
           <div>
-            <div id="shidu">{{ props.form.roomHum ? props.form.roomHum : '30%' }}</div>
+            <div id="shidu">{{ props.form.roomHum ? props.form.roomHum : '-%RH' }}</div>
             <span>湿度</span>
           </div>
         </div>
@@ -51,7 +51,7 @@
               'font-size': props.form.mtAreaList[0].fontSize + 'px',
               color: props.form.mtAreaList[0].textColor,
               'text-align': props.form.mtAreaList[0].showLocat,
-              display: props.form.mtAreaList[0].isShow == '1' ? 'block' : 'none'
+              visibility: props.form.mtAreaList[0].isShow == '1' ? 'visible' : 'hidden'
             }"
           >
             {{ props.form.mtAreaList[0].textConent }}
@@ -62,7 +62,7 @@
             v-if="props.form.mtAreaList[0].syncStatus == 0"
             class="main_title_of_meeting"
             :style="{
-              display: props.form.mtAreaList[0].isShow == '1' ? 'block' : 'none'
+              visibility: props.form.mtAreaList[0].isShow == '1' ? 'visible' : 'hidden'
             }"
           >
             <div
@@ -79,7 +79,7 @@
             </div>
           </div>
         </div>
-        <!-- 第二行同步与否 会议开始时间，结束时间  visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'-->
+        <!-- 第二行同步与否 会议开始时间，结束时间  -->
         <div>
           <div
             v-if="props.form && props.form.mtAreaList && props.form.mtAreaList[1].syncStatus == 1"
@@ -89,7 +89,7 @@
               'font-size': props.form.mtAreaList[1].fontSize + 'px',
               color: props.form.mtAreaList[1].textColor,
               'text-align': props.form.mtAreaList[1].showLocat,
-              display: props.form.mtAreaList[1].isShow == '1' ? 'block' : 'none'
+              visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'
             }"
           >
             {{
@@ -106,7 +106,7 @@
               'font-size': props.form.mtAreaList[1].fontSize + 'px',
               color: props.form.mtAreaList[1].textColor,
               'text-align': props.form.mtAreaList[1].showLocat,
-              display: props.form.mtAreaList[1].isShow == '1' ? 'block' : 'none'
+              visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'
             }"
           >
             {{ props.form.mtAreaList[1].textConent }}
@@ -121,7 +121,7 @@
               'font-size': props.form.mtAreaList[2].fontSize + 'px',
               color: props.form.mtAreaList[2].textColor,
               'text-align': props.form.mtAreaList[2].showLocat,
-              display: props.form.mtAreaList[2].isShow == '1' ? 'block' : 'none'
+              visibility: props.form.mtAreaList[2].isShow == '1' ? 'visible' : 'hidden'
             }"
           >
             {{
@@ -137,7 +137,7 @@
               'font-size': props.form.mtAreaList[2].fontSize + 'px',
               color: props.form.mtAreaList[2].textColor,
               'text-align': props.form.mtAreaList[2].showLocat,
-              display: props.form.mtAreaList[2].isShow == '1' ? 'block' : 'none'
+              visibility: props.form.mtAreaList[2].isShow == '1' ? 'visible' : 'hidden'
             }"
           >
             {{ props.form.mtAreaList[2].textConent }}
@@ -145,23 +145,11 @@
         </div>
       </div>
       <!-- 2.暂无会议 -->
-      <div
-        v-if="
-          props.form.mtAreaList &&
-          props.form.mtAreaList.length > 0 &&
-          props.form.mtAreaList[0].textConent == '' &&
-          props.form.mtAreaList.length > 1 &&
-          !props.form.mtAreaList[1].textConent &&
-          props.form.mtAreaList.length > 2 &&
-          props.form.mtAreaList[2].textConent == ''
-        "
-        class="noMeeting"
-      >
-        当前暂无<br />会议信息
-      </div>
+      <div v-else>当前暂无<br />会议信息</div>
     </div>
     <!-- 三层 -->
     <div class="third">
+      {{ props.form.imgShow }}
       <!-- 导览图 *****************-->
       <div v-if="props.form.imgShow == '1'">
         <!-- 二楼  -->
@@ -249,7 +237,6 @@ const props = defineProps({
     }
   }
 })
-
 // debugger
 // 二楼竖正：A2-206、207、208、201、202、221、220、219、227、226、225    A2-206/202未写，其余ok
 // 二楼竖反：204、205、215、216、222、223     全部待修改布局
@@ -558,11 +545,6 @@ section {
   overflow-y: hidden;
   border: 1px solid transparent;
   background-color: rgba(255, 255, 255, 0.08);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .roomInfo .second .main_title_of_meeting {
@@ -574,13 +556,11 @@ section {
   text-align: center;
   font-family: SourceHanSansSC-black;
   margin: 0 auto;
-  // margin-top: 60px;
+  margin-top: 60px;
   /*margin-bottom: 30px;*/
-  word-wrap: break-word;
 }
 .zdy {
   font-weight: 800;
-  word-wrap: break-word;
 }
 
 .roomInfo .second .startTime_endTime {
@@ -589,7 +569,6 @@ section {
   font-size: 34px;
   text-align: center;
   font-family: SourceHanSansSC-regular;
-  word-wrap: break-word;
 }
 
 .roomInfo .second .hostUnit {
@@ -597,13 +576,12 @@ section {
   font-size: 34px;
   text-align: center;
   font-family: SourceHanSansSC-regular;
-  word-wrap: break-word;
 }
 
 .roomInfo .second .noMeeting {
   width: 636px;
   line-height: 100px;
-  // margin-top: 80px;
+  margin-top: 80px;
   /*color: rgba(255, 255, 255, 0.1)!important;*/
   color: rgba(255, 255, 255, 0.1);
   font-size: 68px;
@@ -614,12 +592,10 @@ section {
 .roomInfo .third {
   width: 688px;
   height: 385px;
-  overflow: hidden;
-  position: relative;
   // margin: 0px 10px 10px 10px;
   // margin: 0px 10px 10px 0px;
-  // display: flex;
-  // align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 ul,
@@ -634,19 +610,15 @@ li {
   width: 688px;
   height: 385px;
   // border: 1px solid red;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+
   :deep(.el-carousel) {
-    height: 385px;
+    height: 395px;
     .el-carousel__container {
       height: 100%;
       img {
         width: 688px;
         height: 100%;
         margin: 0 !important;
-        vertical-align: top;
       }
     }
   }

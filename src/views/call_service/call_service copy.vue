@@ -319,7 +319,7 @@ import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { createWebSocket } from '@/utils/websocket.js'
 
-import { request, noderedrequest } from '@/utils/server.js'
+import { request} from '@/utils/server.js'
 // 中间聊天区域wsbaseURL11
 var wsbaseURL11 = import.meta.env.VITE_BASE_URL11
 // 右侧楼层区域wsbaseURL12

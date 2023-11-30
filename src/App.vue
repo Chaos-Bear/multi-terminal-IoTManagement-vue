@@ -9,7 +9,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 const locale = zhCn
 zhCn.el.pagination = {
   goto: '跳转至',
-  pageClassifier: '',
+  pageClassifier: '页',
   pagesize: '条/每页'
   // total: "共 {total} 条",
 }

@@ -111,8 +111,6 @@ const router = createRouter({
     //   component: () => import('../views/xxfb/video.vue')
     // },
 
-
-
     // hash设置默认路由
     {
       path: '/:pathMatch(.*)',

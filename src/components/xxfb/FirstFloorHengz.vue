@@ -632,10 +632,6 @@ onMounted(() => {
     }
   })
 })
-// 定义子组件并使用 defineExpose 将自身的属性或方法暴露
-// defineExpose({
-//  start_end
-// })
 </script>
 
 <style lang="less" scoped>

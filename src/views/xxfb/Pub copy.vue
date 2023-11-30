@@ -13,7 +13,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
-import { pubRequest,releaseRequest } from '@/utils/server.js'
+import { pubRequest, releaseRequest } from '@/utils/server.js'
 import { createWebSocket } from '@/utils/websocket.js'
 var wsbaseURL13 = import.meta.env.VITE_BASE_URL13
 
@@ -23,7 +23,7 @@ const roomId = route.query.roomID
 const prePubRef = ref('')
 const data = ref('')
 // 1.----获取本机ip接口------
-const ipValue = localStorage.getItem("xxfbIp")
+const ipValue = localStorage.getItem('xxfbIp')
 
 // const ipValue=ref("")
 var websocket
@@ -50,15 +50,15 @@ var websocket
 const updateMedia = (releaseCache) => {
   releaseRequest
     .post('/PublishFlowCtrl/updateReleaseMediaInfo', {
-      playGap:releaseCache.playGap,
-      brightNess:releaseCache.brightNess,
-      meetStatus:releaseCache.meetStatus,
-      roomHum:releaseCache.roomHum,
-      roomTemp:releaseCache.roomTemp,
-      roomName:releaseCache.roomName,
+      playGap: releaseCache.playGap,
+      brightNess: releaseCache.brightNess,
+      meetStatus: releaseCache.meetStatus,
+      roomHum: releaseCache.roomHum,
+      roomTemp: releaseCache.roomTemp,
+      roomName: releaseCache.roomName,
       meetID: releaseCache.meetID,
       imgShow: releaseCache.imgShow,
-      dataSource:releaseCache.dataSource,
+      dataSource: releaseCache.dataSource,
       playGap: releaseCache.playGap,
       mtAreaList: releaseCache.mtAreaList,
       mediaAreaList: releaseCache.mediaAreaList
@@ -67,10 +67,10 @@ const updateMedia = (releaseCache) => {
       if (res.data.repCode == 200) {
         console.log('下载图片/视频成功:')
 
-           form.value = res.data.result;
-            
-           //刷新缓存
-           releaseInfoCache.value = res.data.result;
+        form.value = res.data.result
+
+        //刷新缓存
+        releaseInfoCache.value = res.data.result
       }
     })
     .catch((error) => {
@@ -165,90 +165,87 @@ const form = ref()
 
 onMounted(() => {
   // getIp()
-
 })
 
 // 缓存 记录初始图片数组
-const releaseInfoCache=ref()
+const releaseInfoCache = ref()
 
 // watch(
 //   () => ipValue.value,
 //   () => {
-    //--------创建websocket对象
-    // websocket = createWebSocket(wsbaseURL13 + '/websocket/' + ipValue.value, {
-       websocket = createWebSocket(wsbaseURL13 + '/websocket/' + ipValue, {
-      onopen(e) {
-        console.log('建立了websocket连接')
-        console.log(e)
-      },
-      onmessage(e) {
-        // debugger
-        // console.log('接收服务器消息：', e.data)
-        // 如果e.data是所有消息，则判断是否是当前会议室消息
-        // debugger
-        if (e.data == 'HeartBeat') {
-          console.log('接收服务器消息：', e.data)
+//--------创建websocket对象
+// websocket = createWebSocket(wsbaseURL13 + '/websocket/' + ipValue.value, {
+websocket = createWebSocket(wsbaseURL13 + '/websocket/' + ipValue, {
+  onopen(e) {
+    console.log('建立了websocket连接')
+    console.log(e)
+  },
+  onmessage(e) {
+    // debugger
+    // console.log('接收服务器消息：', e.data)
+    // 如果e.data是所有消息，则判断是否是当前会议室消息
+    // debugger
+    if (e.data == 'HeartBeat') {
+      console.log('接收服务器消息：', e.data)
+      return
+    } else {
+      var data = JSON.parse(e.data)
+      if (data.repCode == 200) {
+        if (releaseInfoCache.value == undefined) {
+          // 缓存为空，直接赋值
+          releaseInfoCache.value = data.result
+          updateMedia(releaseInfoCache.value)
           return
         } else {
-
-          var data = JSON.parse(e.data)
-          if (data.repCode == 200) {
-            
-            if(releaseInfoCache.value == undefined){
-              // 缓存为空，直接赋值  
-              releaseInfoCache.value = data.result;
-              updateMedia(releaseInfoCache.value);
-              return;
-            }else{
-              var dataRelease  = data.result;
-              var dataMediaList = dataRelease.mediaAreaList;
-              var releaseInfo = releaseInfoCache.value;
-              var mediaCahceList = releaseInfo.mediaAreaList;
-              var cacheLength = mediaCahceList.length;
-              var cacheObsFileList = [];
-              for(var i=0;i<mediaCahceList.length;i++){
-                    var cahceMedia = mediaCahceList[i];
-                    cacheObsFileList.push(cahceMedia.obsFileID);
-              }
-              var dataObsFileList = [];
-              for(var j=0;j<dataMediaList.length;j++){
-                       var dataMedia = dataMediaList[j];
-                       dataObsFileList.push(dataMedia.obsFileID);
-               }
-               //
-              let set2 = new Set(dataObsFileList);  
-                
-              let intersection = Array.from(new Set(cacheObsFileList)).filter(x => set2.has(x));  
-              
-              let setLength = intersection.length;
-             
-              if(cacheLength != setLength){
-                    updateMedia(dataRelease);
-                    console.log(intersection); // 输出: [3, 4, 5]  
-                    return;
-              }
-              //刷新 form.value
-              form.value.playGap=dataRelease.playGap;
-              form.value.brightNess=dataRelease.brightNess;
-              form.value.meetStatus=dataRelease.meetStatus;
-              form.value.roomHum=dataRelease.roomHum;
-              form.value.roomTemp=dataRelease.roomTemp;
-              form.value.roomName=dataRelease.roomName;
-              form.value.meetID= dataRelease.meetID;
-              form.value.imgShow= dataRelease.imgShow;
-              form.value.dataSource=dataRelease.dataSource;
-              form.value.playGap= dataRelease.playGap;             
-            }
+          var dataRelease = data.result
+          var dataMediaList = dataRelease.mediaAreaList
+          var releaseInfo = releaseInfoCache.value
+          var mediaCahceList = releaseInfo.mediaAreaList
+          var cacheLength = mediaCahceList.length
+          var cacheObsFileList = []
+          for (var i = 0; i < mediaCahceList.length; i++) {
+            var cahceMedia = mediaCahceList[i]
+            cacheObsFileList.push(cahceMedia.obsFileID)
           }
+          var dataObsFileList = []
+          for (var j = 0; j < dataMediaList.length; j++) {
+            var dataMedia = dataMediaList[j]
+            dataObsFileList.push(dataMedia.obsFileID)
+          }
+          //
+          let set2 = new Set(dataObsFileList)
+
+          let intersection = Array.from(new Set(cacheObsFileList)).filter((x) => set2.has(x))
+
+          let setLength = intersection.length
+
+          if (cacheLength != setLength) {
+            updateMedia(dataRelease)
+            console.log(intersection) // 输出: [3, 4, 5]
+            return
+          }
+          //刷新 form.value
+          form.value.playGap = dataRelease.playGap
+          form.value.brightNess = dataRelease.brightNess
+          form.value.meetStatus = dataRelease.meetStatus
+          form.value.roomHum = dataRelease.roomHum
+          form.value.roomTemp = dataRelease.roomTemp
+          form.value.roomName = dataRelease.roomName
+          form.value.meetID = dataRelease.meetID
+          form.value.imgShow = dataRelease.imgShow
+          form.value.dataSource = dataRelease.dataSource
+          form.value.playGap = dataRelease.playGap
         }
-      },
-      onerror() {},
-      onclose() {},
-      onbeforeunload() {},
-      onreconnect(ws) {
-        websocket = ws
       }
-    })
+    }
+  },
+  onerror() {},
+  onclose() {},
+  onbeforeunload() {},
+  onreconnect(ws) {
+    websocket = ws
+  }
+})
 //   }
 // )
 </script>

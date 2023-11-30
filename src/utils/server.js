@@ -11,10 +11,6 @@ const tabletRequest = http({
   baseURL: import.meta.env.VITE_BASE_URL3
 })
 
-const noderedrequest = http({
-  baseURL: import.meta.env.VITE_BASE_URL1
-})
-
 // 3.设备管理
 const deviceRequest = http({
   baseURL: import.meta.env.VITE_BASE_URL5
@@ -28,4 +24,4 @@ const pubRequest = http({
   baseURL: import.meta.env.VITE_BASE_URL7
 })
 
-export { request, tabletRequest, noderedrequest, deviceRequest, releaseRequest, pubRequest }
+export { request, tabletRequest, deviceRequest, releaseRequest, pubRequest }

@@ -1,6 +1,6 @@
 <template>
   <!--这里编写网页代码 -->
-    <!-- <div style="position: absolute; left: 50%; top: 0">
+  <!-- <div style="position: absolute; left: 50%; top: 0">
       <button class="btn1" @click="init()" style="background-color: transparent;border: none;">初始化链接</button>
       <span
         id="test"
@@ -14,7 +14,6 @@
       ></span>
     </div> -->
   <div class="div" id="path">
-    
     <div class="div3">
       <img src="@/assets/xxfb/path/202.png" />
       <!-- 提示语 -->
@@ -38,7 +37,14 @@
             <div class="left2">
               <div class="left2-1">
                 <div>
-                  <div id="A2211" data-roomName="A2211" class="roomName"  @click="dataRoomClick('A2211')">A2-211</div>
+                  <div
+                    id="A2211"
+                    data-roomName="A2211"
+                    class="roomName"
+                    @click="dataRoomClick('A2211')"
+                  >
+                    A2-211
+                  </div>
                   <!-- 竖双门 -->
                   <img class="hdoubledoor" src="@/assets/xxfb/path/7.png" />
                   <!-- 竖双门 -->
@@ -73,7 +79,9 @@
                     >
                       A2-207
                     </div>
-                    <div id="A2207" v-else data-roomName="A2207" @click="dataRoomClick('A2207')">A2-207</div>
+                    <div id="A2207" v-else data-roomName="A2207" @click="dataRoomClick('A2207')">
+                      A2-207
+                    </div>
                     <!-- 单扇门 右  左 -->
                     <img class="door" src="@/assets/xxfb/path/4.png" />
                     <img class="door" src="@/assets/xxfb/path/3.png " />
@@ -86,7 +94,9 @@
                     >
                       A2-208
                     </div>
-                    <div id="A2208" v-else data-roomName="A2208" @click="dataRoomClick('A2208')">A2-208</div>
+                    <div id="A2208" v-else data-roomName="A2208" @click="dataRoomClick('A2208')">
+                      A2-208
+                    </div>
                     <!-- 单扇门 下  上 -->
                     <!-- 单扇门 右  左 -->
                     <img class="door" src="@/assets/xxfb/path/4.png" />
@@ -130,7 +140,9 @@
                   >
                     A2-201
                   </div>
-                  <div id="A2201" v-else data-roomName="A2201" @click="dataRoomClick('A2201')">A2-201</div>
+                  <div id="A2201" v-else data-roomName="A2201" @click="dataRoomClick('A2201')">
+                    A2-201
+                  </div>
                   <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                   <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                 </div>
@@ -231,7 +243,9 @@
                   >
                     A2-221
                   </div>
-                  <div id="A2221" v-else data-roomName="A2221" @click="dataRoomClick('A2221')">A2-221</div>
+                  <div id="A2221" v-else data-roomName="A2221" @click="dataRoomClick('A2221')">
+                    A2-221
+                  </div>
                   <!-- 横 双门 -->
                   <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                 </div>
@@ -251,14 +265,18 @@
                   >
                     A2-220
                   </div>
-                  <div id="A2220" v-else data-roomName="A2220" @click="dataRoomClick('A2220')">A2-220</div>
+                  <div id="A2220" v-else data-roomName="A2220" @click="dataRoomClick('A2220')">
+                    A2-220
+                  </div>
                   <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                   <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                 </div>
               </div>
               <div class="right2-3">
                 <div>
-                  <div id="A2216" data-roomName="A2216" @click="dataRoomClick('A2216')"><br />A2-216<br />工作室</div>
+                  <div id="A2216" data-roomName="A2216" @click="dataRoomClick('A2216')">
+                    <br />A2-216<br />工作室
+                  </div>
                   <!-- 单扇门 右  左 -->
                   <img class="door" src="@/assets/xxfb/path/4.png" />
                   <img class="door" src="@/assets/xxfb/path/3.png " />
@@ -271,7 +289,9 @@
                   >
                     A2-219
                   </div>
-                  <div id="A2219" v-else data-roomName="A2219" @click="dataRoomClick('A2219')">A2-219</div>
+                  <div id="A2219" v-else data-roomName="A2219" @click="dataRoomClick('A2219')">
+                    A2-219
+                  </div>
                   <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                 </div>
               </div>
@@ -300,19 +320,25 @@
               <div class="right4-2">
                 <div>
                   <div>
-                    <div id="A2222" data-roomName="A2222" @click="dataRoomClick('A2222')">A2-222</div>
+                    <div id="A2222" data-roomName="A2222" @click="dataRoomClick('A2222')">
+                      A2-222
+                    </div>
                     <!-- 横 双排门 -->
                     <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                   </div>
                   <div>
-                    <div id="A2223" data-roomName="A2223" @click="dataRoomClick('A2223')">A2-223</div>
+                    <div id="A2223" data-roomName="A2223" @click="dataRoomClick('A2223')">
+                      A2-223
+                    </div>
                     <!-- 横 双排门 -->
                     <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                   </div>
                 </div>
                 <div>
                   <div>
-                    <div id="A2227" data-roomName="A2227" @click="dataRoomClick('A2227')">A2-227</div>
+                    <div id="A2227" data-roomName="A2227" @click="dataRoomClick('A2227')">
+                      A2-227
+                    </div>
                     <!-- 横 双排门 -->
                     <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                   </div>
@@ -324,7 +350,9 @@
                     >
                       A2-226
                     </div>
-                    <div id="A2226" v-else data-roomName="A2226" @click="dataRoomClick('A2226')">A2-226</div>
+                    <div id="A2226" v-else data-roomName="A2226" @click="dataRoomClick('A2226')">
+                      A2-226
+                    </div>
                     <!-- 横 双排门 -->
                     <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                   </div>
@@ -336,7 +364,9 @@
                     >
                       A2-225
                     </div>
-                    <div id="A2225" v-else data-roomName="A2225" @click="dataRoomClick('A2225')">A2-225</div>
+                    <div id="A2225" v-else data-roomName="A2225" @click="dataRoomClick('A2225')">
+                      A2-225
+                    </div>
                     <!-- 横 双排门 -->
                     <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
                   </div>
@@ -2158,7 +2188,7 @@ function start_end(xy, end) {
 
   // 清除放大缩小滚动条定时器
   clearInterval(scrolltimer)
- 
+
   // 当有点击时清除body中 路径展示定时器 标识属性
   // clearTimeout($("body").attr("timeout-scale"));
 
@@ -2509,122 +2539,121 @@ function drawLine(start, end) {
 }
 
 // 1.以下为串口语音处理 方法
-var obj = new FOFWebSerialPort()
-function getresInfo() {
-  //获取串口返回的信息
-  obj.GetSerialPortStrData(5000, function (val) {
-    console.log(val)
-    // debugger
-    document.getElementById('test').innerHTML = val
-    // 数字转为字符串
-    var yuyin = val + ''
+// var obj = new FOFWebSerialPort()
+// function getresInfo() {
+//   //获取串口返回的信息
+//   obj.GetSerialPortStrData(5000, function (val) {
+//     console.log(val)
+//     // debugger
+//     document.getElementById('test').innerHTML = val
+//     // 数字转为字符串
+//     var yuyin = val + ''
 
-    var reg = /\d{3}/g
-    //字符串使用match匹配一个或多个正则值，返回一个数组
-    var res = yuyin.match(reg)
-    console.log(val)
-    // debugger
-    // start_end('A2225_' + end, end)  A2208_A2227
-    var meetingList = [
-      '225',
-      '226',
-      '227',
-      '223',
-      '222',
-      '228',
-      '219',
-      '220',
-      '221',
-      '216',
-      '215',
-      '229',
-      '201',
-      '202',
-      '204',
-      '205',
-      '212',
-      '206',
-      '207',
-      '208',
-      '211',
-      '101',
-      '103',
-      '104',
-      '105',
-      '107',
-      '108',
-      '109',
-      '110',
-      '117',
-      '113',
-      '114',
-      '115',
-      '118'
-    ]
+//     var reg = /\d{3}/g
+//     //字符串使用match匹配一个或多个正则值，返回一个数组
+//     var res = yuyin.match(reg)
+//     console.log(val)
+//     // debugger
+//     // start_end('A2225_' + end, end)  A2208_A2227
+//     var meetingList = [
+//       '225',
+//       '226',
+//       '227',
+//       '223',
+//       '222',
+//       '228',
+//       '219',
+//       '220',
+//       '221',
+//       '216',
+//       '215',
+//       '229',
+//       '201',
+//       '202',
+//       '204',
+//       '205',
+//       '212',
+//       '206',
+//       '207',
+//       '208',
+//       '211',
+//       '101',
+//       '103',
+//       '104',
+//       '105',
+//       '107',
+//       '108',
+//       '109',
+//       '110',
+//       '117',
+//       '113',
+//       '114',
+//       '115',
+//       '118'
+//     ]
 
-    if (Array.isArray(res) && res.length > 0 && meetingList.indexOf(res[0]) > -1) {
-      start_end(props.roomName.replace('-', '') + '_A2' + res, res)
-    }
-  })
-}
-// /*注解：在下方的代码中，我们创建了一个异步函数，在这个函数中进行串口设备的选择并打开选择的串口，其中选择串口设备命令的最后一个参数传递的是一个数组[{ usbVendorId: 0x1a86, usbProductId:0x7523  }]，这个数组中的成员对象usbVendorId代表串口的产品ID，usbProductId代表串口的厂商ID。在设备管理器-匹配设备Id下查看*/
-function ChoiceSerialPort(success, connect, disconnect, filters) {
-  obj.ChoiceSerialPort(
-    function (ev) {
-      console.log(ev)
-      console.log(1111)
-      // getresInfo()
-      typeof success == 'function' && success()
-    },
-    (ev) => {
-      console.log('连接成功')
-      console.log(2222)
+//     if (Array.isArray(res) && res.length > 0 && meetingList.indexOf(res[0]) > -1) {
+//       start_end(props.roomName.replace('-', '') + '_A2' + res, res)
+//     }
+//   })
+// }
+// // /*注解：在下方的代码中，我们创建了一个异步函数，在这个函数中进行串口设备的选择并打开选择的串口，其中选择串口设备命令的最后一个参数传递的是一个数组[{ usbVendorId: 0x1a86, usbProductId:0x7523  }]，这个数组中的成员对象usbVendorId代表串口的产品ID，usbProductId代表串口的厂商ID。在设备管理器-匹配设备Id下查看*/
+// function ChoiceSerialPort(success, connect, disconnect, filters) {
+//   obj.ChoiceSerialPort(
+//     function (ev) {
+//       console.log(ev)
+//       console.log(1111)
+//       // getresInfo()
+//       typeof success == 'function' && success()
+//     },
+//     (ev) => {
+//       console.log('连接成功')
+//       console.log(2222)
 
-      typeof connect == 'function' && connect()
-    },
-    function (ev) {
-      console.log('连接失败')
-      typeof disconnect == 'function' && disconnect()
+//       typeof connect == 'function' && connect()
+//     },
+//     function (ev) {
+//       console.log('连接失败')
+//       typeof disconnect == 'function' && disconnect()
 
-      // },[{ usbVendorId: 0x1a86, usbProductId:0x7523  }])
-    },
-    filters
-  )
-}
-function recu(filters) {
-  ChoiceSerialPort(
-    function () {
-      obj.OpenSerialPort(9600, 8, 1, 'none', 'none').then(function () {
-        getresInfo()
-      })
-    },
-    function () {
-      //   debugger
-      obj.OpenSerialPort(9600, 8, 1, 'none', 'none').then(function () {
-        getresInfo()
-      })
-    },
-    function () {
-      // debugger
-      // setTimeout(function(){
-      //     recu(filters)
-      // },5000)
-    },
-    filters
-  )
-}
-function init() {
-  // debugger
-  var filters = [{ usbVendorId: 0x1a86, usbProductId: 0x7523 }]
-  recu(filters)
-}
+//       // },[{ usbVendorId: 0x1a86, usbProductId:0x7523  }])
+//     },
+//     filters
+//   )
+// }
+// function recu(filters) {
+//   ChoiceSerialPort(
+//     function () {
+//       obj.OpenSerialPort(9600, 8, 1, 'none', 'none').then(function () {
+//         getresInfo()
+//       })
+//     },
+//     function () {
+//       //   debugger
+//       obj.OpenSerialPort(9600, 8, 1, 'none', 'none').then(function () {
+//         getresInfo()
+//       })
+//     },
+//     function () {
+//       // debugger
+//       // setTimeout(function(){
+//       //     recu(filters)
+//       // },5000)
+//     },
+//     filters
+//   )
+// }
+// function init() {
+//   // debugger
+//   var filters = [{ usbVendorId: 0x1a86, usbProductId: 0x7523 }]
+//   recu(filters)
+// }
 // init()
 
 // 2.手动点击
 const dataRoomClick = (end) => {
   console.log(end)
   start_end(props.roomName.replace('-', '') + '_' + end, end)
- 
 }
 let ele
 onMounted(() => {
@@ -2634,8 +2663,6 @@ onMounted(() => {
     scrollSwiper(ele)
   })
 })
-
-
 </script>
 
 <style lang="less" scoped>

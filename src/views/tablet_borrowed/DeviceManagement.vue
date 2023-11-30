@@ -224,7 +224,7 @@ import { reactive, ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
-import { request, noderedrequest, tabletRequest } from '@/utils/server.js'
+import { request, tabletRequest } from '@/utils/server.js'
 
 const table = ref(null)
 // 1.平板管理列表查询接口
@@ -421,7 +421,6 @@ const deleteitem = (row) => {
         message: '删除成功'
       })
       //单个删除请求（成功后发查询请求）
-      // noderedrequest.delete("/device/delete?id="+id).then(response=>{
       tabletRequest
         .post('/IotBabletEditCrtl/deleteIotIablet', {
           tabletID: tabletID

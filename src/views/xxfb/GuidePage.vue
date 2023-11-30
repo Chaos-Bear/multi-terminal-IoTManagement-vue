@@ -25,25 +25,22 @@ const getPubPath = (ip) => {
       roomName.value = res.data.result.roomName
       pubPath.value = res.data.result.pubPath
       // debugger
-      
-        // localStorage.setItem("xxfbIp",ip)
-        localStorage.setItem(roomName.value,ip)
 
-        window.location.href = pubPath.value
+      // localStorage.setItem("xxfbIp",ip)
+      localStorage.setItem(roomName.value, ip)
 
-        localStorage.setItem("roomName",res.data.result.roomName)
+      window.location.href = pubPath.value
 
-
+      localStorage.setItem('roomName', res.data.result.roomName)
     })
     .catch((error) => {
       // debugger
       console.log('根据ip获取发布页路径失败:', error)
       ElMessage({
         message: '根据ip获取发布页路径失败',
-        type: 'warning',
+        type: 'warning'
       })
       // router.push('/pub?roomName=' + roomName.value)
-      
     })
 }
 

@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <el-upload
@@ -12,35 +11,18 @@
     >
       <i slot="default" class="el-icon-plus"></i>
       <div slot="file" slot-scope="{ file }">
-        <img
-          v-if="file.type == 1"
-          class="el-upload-list__item-thumbnail"
-          :src="file.url"
-          alt=""
-        />
+        <img v-if="file.type == 1" class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         <video v-if="file.type == 2" :src="file.url" style="width: 100%">
           您的浏览器不支持 video 标签。
         </video>
-        <audio
-          controls
-          v-if="file.type == 3"
-          :src="file.url"
-          style="width: 100%"
-        >
+        <audio controls v-if="file.type == 3" :src="file.url" style="width: 100%">
           您的浏览器不支持该音频格式。
         </audio>
         <span class="el-upload-list__item-actions">
-          <span
-            class="el-upload-list__item-preview"
-            @click="handlePictureCardPreview(file)"
-          >
+          <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
             <i class="el-icon-zoom-in"></i>
           </span>
-          <span
-            v-if="!disabled"
-            class="el-upload-list__item-delete"
-            @click="handleImgRemove(file)"
-          >
+          <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleImgRemove(file)">
             <i class="el-icon-delete"></i>
           </span>
         </span>
@@ -54,13 +36,7 @@
         :src="dialogImageUrl"
         alt=""
       />
-      <video
-        v-if="dialogType == 2"
-        style="width: 100%"
-        :src="dialogImageUrl"
-        controls
-        autoplay
-      >
+      <video v-if="dialogType == 2" style="width: 100%" :src="dialogImageUrl" controls autoplay>
         您的浏览器不支持 video 标签。
       </video>
       <audio controls v-if="dialogType == 3">
@@ -75,11 +51,11 @@
 import {ref} from "vue"
  const limit=ref(3)    //限制上传数量
  const uploadImgUrl=process.env.VUE_APP_WEB_URL + ""      // 上传的图片服务器地址
- const  dialogImageUrl=ref(null) 
+ const  dialogImageUrl=ref(null)
  const  dialogVisible= ref(false)
- const  UrlList=ref([]) 
+ const  UrlList=ref([])
  const  disabled=ref(false)
- const dialogType=ref(null) 
+ const dialogType=ref(null)
 //上传
     handlePictureCardPreview(file) {
      dialogImageUrl.value = file.url;
@@ -87,16 +63,16 @@ import {ref} from "vue"
       dialogVisible.value = true;
     }
     // 图片改变
-    handleImgChange(file, fileList) { 
+    handleImgChange(file, fileList) {
         bus.$emit("changeFileAfterList", fileList);
-        UrlList.value = fileList; 
+        UrlList.value = fileList;
     }
     // 图片移除
     handleImgRemove(file, fileList) {
-      fileList = UrlList.value; 
+      fileList = UrlList.value;
         let index = fileList.indexOf(file);
         fileList.splice(index, 1);
-        bus.$emit("changeFileAfterList", fileList); 
+        bus.$emit("changeFileAfterList", fileList);
     }
     //图片上传成功
     handleUploadSuccess(response, file, fileList) {
@@ -109,7 +85,7 @@ import {ref} from "vue"
         } 个文件`
       );
     }
- 
+
     // 根据文件名后缀区分 文件类型
     /*
      * @param: fileName - 文件名称
@@ -167,7 +143,7 @@ import {ref} from "vue"
       result = "other";
       return result;
     }
-  
+
 
 
 
@@ -179,18 +155,18 @@ import {ref} from "vue"
 // function readVideo(file) {
 //     if (file) {
 //         const reader = new FileReader();
-     
+
 //         reader.onload = function(e) {
 //           // debugger
 //           // localStorage.setItem("path",e.target.result)
 //           // 通过 localForage 完成同样功能
-//           var imageList=[{url:""},{url:""}] 
+//           var imageList=[{url:""},{url:""}]
 //           imageList.forEach((item)=>{
 //             localforage.setItem(item.url, e.target.result).then(()=>{
 //             console.log("存储成功")
-//            })  
+//            })
 //           });
-          
+
 //             // const blob = new Blob([e.target.result], { type: file.type });
 //             // const url = URL.createObjectURL(blob);    //字符串
 //             // const videoPlayer = document.getElementById('videoPlayer');
@@ -210,7 +186,7 @@ import {ref} from "vue"
 //     // 当离线仓库中的值被载入时，此处代码运行
 //     console.log(value);
 //     const blob = new Blob([value], {type:  'video/mp4'});
-     
+
 //     const url = URL.createObjectURL(blob);    //字符串
 
 //     const videoPlayer = document.getElementById('videoPlayer');
@@ -245,6 +221,4 @@ import {ref} from "vue"
 // })
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

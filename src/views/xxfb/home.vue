@@ -92,14 +92,12 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { reactive, ref, onMounted } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useApiAddressStore } from '@/pinia_stores/api_address_store.js'
 import { ElMessage, valueEquals, ElMessageBox, ElConfigProvider } from 'element-plus'
 import { Plus, Delete } from '@element-plus/icons-vue'
 const router = useRouter()
 // import axios from 'axios'
 
-import { request, noderedrequest } from '@/utils/server.js'
+import { request } from '@/utils/server.js'
 
 // 会议室配置信息
 var floorOptions = ref([])

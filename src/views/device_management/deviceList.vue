@@ -231,7 +231,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
 
-import { request, noderedrequest, deviceRequest } from '@/utils/server.js'
+import { request, deviceRequest } from '@/utils/server.js'
 
 const table = ref(null)
 
@@ -846,6 +846,21 @@ const refresh = () => {
     display: flex;
     justify-content: flex-end;
     flex: none;
+    //上一页
+    :deep(.el-pagination){
+      .btn-prev,.btn-next{
+        border: 1px solid rgba(220, 220, 220, 1);
+      }
+      .el-pager li{
+        width: 32px;
+        height: 32px;
+        margin-left: 8px;
+        margin-right: 8px;
+        border-radius: 3px;
+        background-color: rgba(79, 168, 249, 1)!important;
+        color: rgba(255, 255, 255, 1);
+      }
+    }
     .el-button {
       width: 48px;
       height: 32px;

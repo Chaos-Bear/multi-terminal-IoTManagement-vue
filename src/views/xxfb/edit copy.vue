@@ -56,9 +56,9 @@
                   <img
                     v-if="item.isShow == '1'"
                     src="@/assets/xxfb/5.png"
-                    @click="isshowline1(item, '0')"
+                    @click="isshowline(item, '0')"
                   />
-                  <img v-else src="@/assets/xxfb/10.png" @click="isshowline1(item, '1')" />
+                  <img v-else src="@/assets/xxfb/10.png" @click="isshowline(item, '1')" />
                   <span>{{ item.textLocat }}</span>
                   <el-switch
                     class="ml-2"
@@ -97,7 +97,7 @@
                         placeholder="请选择字号"
                         style="width: auto"
                       >
-                        <el-option v-for="item in 70" :key="item" :label="item" :value="item" />
+                        <el-option v-for="item in 100" :key="item" :label="item" :value="item" />
                       </el-select>
                     </el-form-item>
                     <!-- show-alpha -->
@@ -200,9 +200,45 @@
                   :on-preview="handlePictureCardPreview"
                   :on-remove="handleRemove"
                   :on-change="beforeAvatarUpload"
-                  accept=".jpg,.jpeg,.png,.gif,webp"
+                  accept=".jpg,.jpeg,.png,.gif,webp,.mp4"
+                  :disabled="form.meetStatus == 1"
                 >
                   <el-icon><Plus /></el-icon>
+                  <template #file="{ file }">
+                    <div>
+                      <!-- 图片 -->
+                      <img
+                        v-if="file.obsFileType == '1'"
+                        class="el-upload-list__item-thumbnail"
+                        :src="file.url"
+                        alt=""
+                      />
+                      <!-- 视频 -->
+                      <!-- <video v-else  width="100px" height="100px" src="http://39.105.179.38:9797/noderad/cat.mp4" controls></video> -->
+                      <span class="el-upload-list__item-actions">
+                        <span
+                          class="el-upload-list__item-preview"
+                          @click="handlePictureCardPreview(file)"
+                        >
+                          <el-icon><zoom-in /></el-icon>
+                        </span>
+                        <span
+                          v-if="!disabled"
+                          class="el-upload-list__item-delete"
+                          @click="handleDownload(file)"
+                        >
+                          <el-icon><Download /></el-icon>
+                        </span>
+                        <span
+                          v-if="!disabled"
+                          class="el-upload-list__item-delete"
+                          @click="handleRemove(file)"
+                        >
+                          <el-icon><Delete /></el-icon>
+                        </span>
+                      </span>
+                    </div>
+                  </template>
                 </el-upload>
                 <el-dialog v-model="dialogVisible">
                   <img w-full :src="dialogImageUrl" alt="Preview Image" />
@@ -213,29 +249,91 @@
         </div>
       </el-scrollbar>
     </div>
+    <!-- <video id="videoPlayer" width="684" height="385" controls></video> -->
     <!-- <div v-else class="noMeeting">暂无会议</div> -->
-    <!--1.发布弹框  -->
+    <!--1.有会议发布弹框  -->
     <div class="pubFormDialog">
       <el-dialog v-model="pubFormVisible" title="发布确认">
-        <div>发布时间：</div>
-        <!-- {{ form.publishTimeNum }} -->
-        <el-radio-group v-model="form.publishTimeNum" class="ml-4" @change="radioOptionChange">
-          <el-radio :label="-0.5" size="large">会前0.5小时</el-radio>
-          <el-radio :label="-1" size="large">会前1小时</el-radio>
-          <el-radio :label="-1.5" size="large">会前1.5小时</el-radio>
-          <el-radio :label="-2" size="large">会前2小时</el-radio>
-          <el-radio :label="num" size="large">
-            <template #default>
-              <!-- :max="12" -->
-              <span>自定义时间：</span>
-              <el-input-number v-model="num" :max="0" :step="0.5" @change="handleNumChange" />
-            </template>
-          </el-radio>
-        </el-radio-group>
+        <!-- 有会议发布弹框 -->
+        <div>
+          <div class="startTime">
+            <span>发布时间：</span>
+            <el-date-picker
+              v-model="form.startTime"
+              type="datetime"
+              placeholder="选择发布时间"
+              :default-time="defaultTime"
+              :disabled="form.publishTimeNum != -3"
+              :disabled-date="disabledDate"
+              value-format="YYYY-MM-DD HH:mm:ss"
+            />
+          </div>
+          <div class="pubStartTime">
+            <span>会前：</span>
+            <el-radio-group v-model="form.publishTimeNum" class="ml-4" @change="radioOptionChange">
+              <el-radio :label="-0.5" size="large">0.5h</el-radio>
+              <el-radio :label="-1" size="large">1h</el-radio>
+              <el-radio :label="-1.5" size="large">1.5h</el-radio>
+              <el-radio :label="-2" size="large">2h</el-radio>
+              <el-radio :label="-3" size="large">自定义</el-radio>
+            </el-radio-group>
+          </div>
+          <div class="pubendTime">
+            <span>结束时间：</span>
+            <el-date-picker
+              v-model="form.endTime"
+              type="datetime"
+              placeholder="选择发布时间"
+              :default-time="defaultTime"
+              :disabled="form.publishTimeNum != -3"
+              :disabled-date="disabledDate"
+              value-format="YYYY-MM-DD HH:mm:ss"
+            />
+          </div>
+        </div>
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="cancelPub()">取消</el-button>
             <el-button type="primary" @click="confirmPub()">确认</el-button>
+          </span>
+        </template>
+      </el-dialog>
+    </div>
+    <!--2.无会议发布弹框  -->
+    <div class="pubFormDialog">
+      <el-dialog v-model="nomeetingPubFormVisible" title="发布确认">
+        <!-- 无会议发布弹框 -->
+        <!-- :disabled-date="disabledDate"  时间选择禁用 :default-value="new Date(2010, 9, 1)"-->
+        <div>
+          <div class="startTime">
+            <span>发布时间：</span>
+            <el-date-picker
+              v-model="noMeetingTime.startTime"
+              type="datetime"
+              placeholder="选择发布时间"
+              :default-time="defaultTime"
+              :disabled-date="disabledDate"
+              value-format="YYYY-MM-DD HH:mm:ss"
+            />
+          </div>
+          <div class="pubendTime">
+            <span>结束时间：</span>
+            <el-date-picker
+              v-model="noMeetingTime.endTime"
+              type="datetime"
+              placeholder="选择发布时间"
+              :default-time="defaultTime"
+              :disabled-date="disabledDate"
+              value-format="YYYY-MM-DD HH:mm:ss"
+            />
+          </div>
+        </div>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="nomeetingCancelPub()">取消</el-button>
+            <el-button type="primary" @click="noMeetingConfirmPub()" :disabled="isDisabled"
+              >确认</el-button
+            >
           </span>
         </template>
       </el-dialog>
@@ -272,12 +370,18 @@ import { Plus } from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
 import { releaseRequest } from '@/utils/server.js'
+// import localforage from "localForage"
+// import { keys } from 'localforage'
 
 const roomName = route.query.roomName
+// 路由返回上一页时需要roomIdzdy---后端说物联网首页会议id是自己生成的
 const roomIdzdy = route.query.roomID
+// roomId会议预约返回的id
 const roomId = ref('')
 
+// loading加载图
 const loading = ref(true)
+// 是否展示图片列表
 const isshowimg = ref(false)
 
 // debugger
@@ -310,7 +414,6 @@ const getMeetingList = () => {
           // debugger
           form.value = res.data.result[0]
 
-          preNum.value = form.value.publishTimeNum
           console.log(form.value, form.value.mtAreaList[0].syncStatus)
           if (form.value.mediaAreaList.length > 0) {
             downloadReleaseMedia(form.value.mediaAreaList)
@@ -374,7 +477,7 @@ const downloadReleaseMedia = (mediaAreaList) => {
       console.log('下载图片/视频失败:', error)
     })
 }
-
+// 通过getImage实现图片加载完毕展示
 const getImage = () => {
   return new Promise((resolve, reject) => {
     var image = new Image()
@@ -410,16 +513,19 @@ const updateEditList = () => {
     .post('/IotPageEditCrtl/editReleasePageInfo', {
       roomID: roomId.value,
       meetID: meetingOptionvalue.value,
+      roomName: roomName,
       imgShow: form.value.imgShow,
       dataSource: form.value.dataSource,
       playGap: form.value.playGap ? form.value.playGap : 5000,
       mtAreaList: form.value.mtAreaList,
-      mediaAreaList: updatamediaAreaList //此处后端要求传空数组
+      mediaAreaList: updatamediaAreaList,
+      publishStatus: form.value.publishStatus
     })
     .then((res) => {
       // debugger
       if (res.data.repCode == 200) {
         console.log('修改发布页信息成功:', res.data.result)
+        form.value.meetID = res.data.result.meetID
         // 调用列表接口
         // getMeetingList()
         ElMessage.success('保存成功！')
@@ -437,7 +543,7 @@ const updateEditList = () => {
 const getSyncInfo = (item) => {
   releaseRequest
     .post('/IotPageEditCrtl/queryReleasePageInfoByMeet', {
-      startTime: form.value.startTime,
+      startTime: form.value.startTime ? form.value.startTime : '',
       roomID: roomId.value,
       meetID: meetingOptionvalue.value,
       textLocat: item.textLocat
@@ -504,9 +610,7 @@ const uploadReleaseMedia = (rawFile) => {
     .then((res) => {
       console.log('上传图片/视频成功:', res.data)
       //结束loading加载图
-      // setTimeout(function(){
       loading.value = false
-      // },2500)
 
       // debugger
       // if(res.data.result.obsFileType=='1'){
@@ -533,11 +637,13 @@ const delUploadReleaseMedia = (uploadFile) => {
       obsFileType: uploadFile.obsFileType
     })
     .then((res) => {
-      console.log('删除上传的图片成功', res.data)
+      console.log('删除图片成功', res.data)
+      // getMeetingList()
+      // imageList.value=form.value.mediaAreaList
     })
     .catch((error) => {
       // debugger
-      console.log('删除上传的图片失败:', error)
+      console.log('删除图片失败:', error)
     })
 }
 
@@ -633,9 +739,9 @@ watch(
   () => {
     loading.value = true
     //结束loading加载图
-    setTimeout(function () {
-      loading.value = false
-    }, 3000)
+    // setTimeout(function(){
+    loading.value = false
+    // },3000)
     var res = { roomName: '' }
     for (var i = 0; i < meetingList.value.length; i++) {
       if (meetingList.value[i].meetID == meetingOptionvalue.value) {
@@ -644,8 +750,6 @@ watch(
     }
 
     form.value = res
-
-    preNum.value = form.value.publishTimeNum
 
     imageList.value = form.value.mediaAreaList
     // debugger
@@ -666,16 +770,12 @@ const issyncLine = (v, item) => {
     getSyncInfo(item)
   }
 }
-
-const isshowline1 = (item, show) => {
+// 是否展示行
+const isshowline = (item, show) => {
   // debugger
   item.isShow = show
 }
-// 第一行字体大小
-
-// 第一行颜色
-
-// 第一行居中方式
+// 文本居中方式
 const line1textAlign = (item, v) => {
   item.showLocat = v
 }
@@ -698,75 +798,37 @@ const onTimeChange = (v) => {
   }
 }
 
-// 1.保存
-const onSave = () => {
-  // debugger
-  console.log(form.value)
-  // 调用保存接口
-  updateEditList()
-}
-// 2.发布弹框
-const pubFormVisible = ref(false)
-const onPub = () => {
-  pubFormVisible.value = true
-}
-
-// 提前发布时间选择
-const preNum = ref(-1)
-// debugger
-// num 为自定义时间
-const num = ref(0)
-if (preNum.value != -1 || preNum.value != -1.5 || preNum.value != -2 || preNum.value != -0.5) {
-  preNum.value = num.value
-}
-const handleNumChange = (v) => {
-  //  debugger
-  preNum.value = v
-  form.value.publishTimeNum = v
-}
-const radioOptionChange = (v) => {
-  // debugger
-
-  form.value.publishTimeNum = v
-
-  preNum.value = v
-}
-// 弹框中取消按钮
-const cancelPub = () => {
-  pubFormVisible.value = false
-  // form.value.publishTimeNum = -1
-  // preNum.value
-  // num.value = '0'
-}
-//弹框中确认按钮
-const confirmPub = () => {
-  pubFormVisible.value = false
-  // 调用定时发布修改接口
-  updatePrePub()
-
-  pubSuccessVisible.value = false
-}
-
-// 发布成功提示
-const pubSuccessVisible = ref(false)
+watch(
+  () => imageList.value,
+  () => {
+    debugger
+  }
+)
 
 // 2.2图片/视频上传
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
-// 删除图片
+const disabled = ref(false)
+// 2.2.1删除图片
 const handleRemove = (uploadFile, uploadFiles) => {
   console.log(uploadFile, uploadFiles)
   // debugger
-  // 7.调用删除上传的图片接口
+  //   uploadFiles.forEach((item)=>{
+  //     item
+  //     uploadFile
+
+  //   })
+  // debugger
+  // 7.调用删除图片接口
   delUploadReleaseMedia(uploadFile)
 }
-// 预览图片
+// 2.2.2预览图片
 const handlePictureCardPreview = (uploadFile) => {
   dialogImageUrl.value = uploadFile.url
   dialogVisible.value = true
 }
 
-// const fileList = ref([])
+// 2.2.3图片上传
 const beforeAvatarUpload = (rawFile) => {
   console.log('0000000', rawFile)
 
@@ -775,8 +837,8 @@ const beforeAvatarUpload = (rawFile) => {
   //   ElMessage.error('Avatar picture must be JPG format!')
   //   return false
   // } else
-  if (rawFile.size / 1024 / 1024 > 20) {
-    ElMessage.error('上传文件不能超过 20MB!')
+  if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('上传文件不能超过 2MB!')
     return false
   }
 
@@ -786,10 +848,19 @@ const beforeAvatarUpload = (rawFile) => {
   //     return
   //   }
   // }
+  // 开启loading加载图
   loading.value = true
+  // debugger
+  // 判断上传的类型
+  // 如是图片：调用上传图片接口
   uploadReleaseMedia(rawFile)
+
   // debugger
   return true
+}
+const handleDownload = (file) => {
+  console.log(file)
+  downLoad(file)
 }
 
 // 2.3视频/图片下载到本底  仅支持视频下载和图片下载
@@ -830,14 +901,155 @@ const downLoad = (item) => {
   xhr.send()
 }
 
+// 3.保存----------------
+const onSave = () => {
+  // debugger
+  console.log(form.value)
+  if (form.value.meetStatus == 1) {
+    ElMessage({
+      message: '使用中的会议禁止修改！',
+      type: 'warning'
+    })
+  } else {
+    // 调用保存接口
+    updateEditList()
+  }
+}
+// 4.有会议发布弹框------------
+const pubFormVisible = ref(false)
+const onPub = () => {
+  // debugger
+  // 判断如是使用中的会议，禁止发布
+  if (form.value.meetStatus == 1) {
+    ElMessage({
+      message: '使用中的会议禁止发布！',
+      type: 'warning'
+    })
+  } else {
+    // 判断有无会议，确定弹出有会议弹框 或 无会议弹框???？待修改
+    if (form.value.dataSource != 'CUS') {
+      pubFormVisible.value = true
+    } else {
+      noMeetingTime.value.startTime = form.value.startTime ? form.value.startTime : ''
+      noMeetingTime.value.endTime = form.value.endTime ? form.value.endTime : ''
+      nomeetingPubFormVisible.value = true
+    }
+  }
+}
+
+// -------4.1以下为有会议
+//发布开始时间 及 结束时间记录
+const startAndEndTime = ref({
+  startTime: '',
+  endTime: ''
+})
+const defaultTime = new Date(2000, 1, 1, 8, 0)
+
+// 会前----提前发布时间选择
+const radioOptionChange = (v) => {
+  // debugger
+  form.value.publishTimeNum = v
+
+  if (v != 3) {
+    form.value.startTime
+  }
+}
+
+// 弹框中取消按钮
+const cancelPub = () => {
+  pubFormVisible.value = false
+  // form.value.publishTimeNum = -1
+}
+//弹框中确认按钮
+const confirmPub = () => {
+  pubFormVisible.value = false
+  // 调用定时发布修改接口
+  updatePrePub()
+
+  pubSuccessVisible.value = false
+}
+// 发布成功提示
+const pubSuccessVisible = ref(false)
+
+// 5.无会议发布弹框------------
+const nomeetingPubFormVisible = ref(false)
+
+// 5.1以下为无会议---------
+const noMeetingTime = ref({
+  startTime: '',
+  endTime: ''
+})
+
+// 弹框中取消按钮
+const nomeetingCancelPub = () => {
+  nomeetingPubFormVisible.value = false
+  //清空开始/结束时间
+  noMeetingTime.value.startTime = ''
+  noMeetingTime.value.endTime = ''
+}
+//弹框中确认按钮
+const isDisabled = ref(false)
+const noMeetingConfirmPub = () => {
+  if (noMeetingTime.value.startTime == '' || noMeetingTime.value.endTime == '') {
+    ElMessage.error('开始时间和结束时间不能为空！')
+    isDisabled.value = false
+  } else if (
+    noMeetingTime.value.startTime != '' &&
+    noMeetingTime.value.endTime != '' &&
+    new Date(noMeetingTime.value.startTime).getTime() >=
+      new Date(noMeetingTime.value.endTime).getTime()
+  ) {
+    ElMessage.error('结束时间需大于开始时间！')
+    isDisabled.value = false
+  } else {
+    nomeetingPubFormVisible.value = false
+    // 调用定时发布修改接口？？？？待修改
+    // updatePrePub()
+    releaseRequest
+      .post('/IotPageEditCrtl/setPublishTime', {
+        roomID: roomId.value,
+        meetID: meetingOptionvalue.value,
+        startTime: noMeetingTime.value.startTime,
+        endTime: noMeetingTime.value.endTime,
+        publishTimeNum: 0,
+        dataSource: 'CUS'
+      })
+      .then((res) => {
+        // debugger
+        if (res.data.repCode == 200) {
+          console.log('自定义定时发布成功:', res.data.result)
+          // 成功则展示发布成功弹框
+          pubSuccessVisible.value = true
+
+          //调用刷新列表接口
+          getMeetingList()
+        }
+      })
+      .catch((error) => {
+        // debugger
+        console.log('自定义定时发布失败:', error)
+        ElMessage.error('自定义定时发布失败！')
+      })
+    pubSuccessVisible.value = false
+  }
+}
+// 今天及今天之后的日期禁用
+const disabledDate = (time) => {
+  // debugger
+  // 今天之前日期禁用
+  // time.getTime() < Date.now() - 8.64e7;
+  // 今日之后的日期禁用（今天可选）
+  // console.log(time.getTime() > Date.now());
+  return time.getTime() > Date.now() || time.getTime() < Date.now() - 8.64e7
+}
+
 onMounted(() => {
   // 1.调用根据会议名称 获取会议场次接口
   getMeetingList()
+
+  // readVideo1()
 })
-
-// console.log("C:/Users/win10/Downloads/cat(3).mp4")
 </script>
-
 <style lang="less" scoped>
 .edit {
   width: 100%;
@@ -1124,14 +1336,71 @@ onMounted(() => {
   }
   // 3.发布弹出框
   :deep(.pubFormDialog .el-dialog) {
-    --el-dialog-width: 40%;
-    min-width: 368px;
+    // --el-dialog-width: 40%;
+    // min-width: 368px;
+    width: 376px;
     .el-dialog__header {
     }
     .el-dialog__body {
       border-top: 1px solid rgba(239, 239, 239, 1);
       padding: 24px;
+      // 发布时间
+      .startTime {
+        margin-bottom: 8px;
+        & > span {
+          width: 80px;
+          height: 24px;
+          display: inline-block;
+          color: rgba(51, 51, 51, 1);
+          font-size: 16px;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
+        }
+        .el-input {
+          width: 248px !important;
+        }
+      }
+      // 会前几小时发布选择
+      .pubStartTime {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 24px;
+
+        & > span {
+          width: 42px;
+          height: 20px;
+          margin-right: 8px;
+          display: inline-block;
+          color: rgba(90, 90, 90, 1);
+          font-size: 14px;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
+        }
+        .el-input-number {
+          width: 108px;
+        }
+      }
+      // 结束时间
+      .pubendTime {
+        & > span {
+          width: 80px;
+          height: 24px;
+          color: rgba(51, 51, 51, 1);
+          font-size: 16px;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
+        }
+        .el-input {
+          width: 248px !important;
+        }
+      }
+
       .el-radio-group {
+        flex-wrap: nowrap;
+        .el-radio {
+          margin-right: 8px;
+        }
         .el-radio.el-radio--large {
           width: 37%;
           .el-input-number__decrease,
@@ -1143,12 +1412,6 @@ onMounted(() => {
             box-shadow: none;
           }
         }
-      }
-      & > div:nth-child(1) {
-        margin-bottom: 8px;
-      }
-      .el-input-number {
-        width: 108px;
       }
     }
     .el-dialog__footer {

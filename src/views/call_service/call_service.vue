@@ -12,7 +12,7 @@
           </el-header>
           <el-container>
             <!-- 1. 侧边栏 -->
-            <el-aside style="width: 19.167vw; height: 83.33vh; margin-left: 1.1212vw;flex-grow:0">
+            <el-aside style="width: 19.167vw; height: 83.33vh; margin-left: 1.1212vw; flex-grow: 0">
               <!-- 1.1 搜索框 -->
               <el-scrollbar always height="83.33vh" view-class="call_service_scrollbar">
                 <div class="search">
@@ -267,7 +267,7 @@
                       >
                       <!-- <span class="call_service_floor_span">灯光:{{item1.roomLhtStat?"已开启":"已关闭"}}</span> -->
                       <span class="call_service_floor_span"
-                        >灯光:{{ item1.roomDoLkStat >=100  ? '已开启' : '已关闭' }}
+                        >灯光:{{ item1.roomDoLkStat >= 100 ? '已开启' : '已关闭' }}
                         <!-- <el-switch
                           class="ml-2"
                           size="small"
@@ -286,22 +286,22 @@
                       </span>
                       <!-- 系统 使用的灯光字段  roomDoLkStat主题 -->
                       <span class="call_service_floor_span"
-                            >系统:
-                            <el-switch
-                              class="ml-2"
-                              size="small"
-                              v-model="item1.roomLhtStat"
-                              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
-                              active-text=""
-                              inactive-text=""
-                              active-value="ON"
-                              inactive-value="OFF"
-                              @change="
-                                (v) => {
-                                  isOpen(v, item1)
-                                }
-                              "
-                            />
+                        >系统:
+                        <el-switch
+                          class="ml-2"
+                          size="small"
+                          v-model="item1.roomLhtStat"
+                          style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ddddde"
+                          active-text=""
+                          inactive-text=""
+                          active-value="ON"
+                          inactive-value="OFF"
+                          @change="
+                            (v) => {
+                              isOpen(v, item1)
+                            }
+                          "
+                        />
                       </span>
                     </div>
                   </el-collapse-item>
@@ -323,7 +323,7 @@ import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { createWebSocket } from '@/utils/websocket.js'
 
-import { request, noderedrequest } from '@/utils/server.js'
+import { request} from '@/utils/server.js'
 // 中间聊天区域wsbaseURL11
 var wsbaseURL11 = import.meta.env.VITE_BASE_URL11
 // 右侧楼层区域wsbaseURL12
@@ -778,7 +778,7 @@ const isOpen = (v, item1) => {
       })
       .then((res) => {
         // console.log('控制设备发送成功', res)
-        console.log("主题打印",topic)
+        console.log('主题打印', topic)
       })
       .catch((error) => {
         console.log('控制设备发送失败', error)
@@ -1221,37 +1221,37 @@ const isOpen = (v, item1) => {
       }
     }
     // 3.右侧边栏
-    .el-aside:nth-child(3){
+    .el-aside:nth-child(3) {
       // width: (12/1920) * 100vw;
-    .sensingInfo {
-      display: flex;
-      justify-content: flex-start;
-      height: (36/1080) * 100vh;
-      line-height: (36/1080) * 100vh;
-      margin-bottom: (6/1080) * 100vh;
-      background-color: rgba(24, 144, 255, 0.06);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      & > span {
-        display: inline-block;
-        color: rgba(255, 255, 255, 1);
-        font-size: (12/1920) * 100vw;
-        text-align: left;
-        font-family: Roboto;
-        margin-right: (0/1920) * 100vw;
-        overflow: hidden;
-        white-space: nowrap;
-        // text-overflow: ellipsis;
+      .sensingInfo {
+        display: flex;
+        justify-content: flex-start;
+        height: (36/1080) * 100vh;
+        line-height: (36/1080) * 100vh;
+        margin-bottom: (6/1080) * 100vh;
+        background-color: rgba(24, 144, 255, 0.06);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        & > span {
+          display: inline-block;
+          color: rgba(255, 255, 255, 1);
+          font-size: (12/1920) * 100vw;
+          text-align: left;
+          font-family: Roboto;
+          margin-right: (0/1920) * 100vw;
+          overflow: hidden;
+          white-space: nowrap;
+          // text-overflow: ellipsis;
+        }
+        .el-switch--small {
+          // width: (27/1920)*100vw;
+          font-size: (12/1920) * 100vw;
+          line-height: (16/1080) * 100vh;
+          height: (16/1080) * 100vh;
+          zoom: 0.8;
+        }
       }
-      .el-switch--small {
-        // width: (27/1920)*100vw;
-        font-size: (12/1920) * 100vw;
-        line-height: (16/1080) * 100vh;
-        height: (16/1080) * 100vh;
-        zoom: 0.8;
-      }
-    }
     }
   }
 }
@@ -1261,25 +1261,23 @@ const isOpen = (v, item1) => {
 }
 
 .call_service_style {
-    width: 100vw;
-    height: 100vh;
-    padding: 1.40625vw 1.14583333vw 1.35416667vw 1.14583333vw;
-    overflow: hidden;
-    box-sizing: border-box;
-    background-image: url(/src/assets/tablet_borrowed/1.png);
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    
+  width: 100vw;
+  height: 100vh;
+  padding: 1.40625vw 1.14583333vw 1.35416667vw 1.14583333vw;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-image: url(/src/assets/tablet_borrowed/1.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 .call_service {
-    width: 100%;
-    height: 100%;
-    background-image: url(/src/assets/tablet_borrowed/2.png);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    position: relative;
+  width: 100%;
+  height: 100%;
+  background-image: url(/src/assets/tablet_borrowed/2.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: relative;
 }
-
 
 .content {
   // padding: 0px (22/1920) * 100vw (26/1080) * 100vh (22/1920) * 100vw;

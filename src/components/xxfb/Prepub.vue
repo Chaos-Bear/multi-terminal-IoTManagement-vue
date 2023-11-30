@@ -21,11 +21,11 @@
       <div class="first2">
         <div class="first2-1">
           <div>
-            <div id="temp">{{ props.form.roomTemp ? props.form.roomTemp : '-°C' }}</div>
+            <div id="temp">{{ props.form.roomTemp ? props.form.roomTemp : '21°C' }}</div>
             <span>温度</span>
           </div>
           <div>
-            <div id="shidu">{{ props.form.roomHum ? props.form.roomHum : '-%RH' }}</div>
+            <div id="shidu">{{ props.form.roomHum ? props.form.roomHum : '30%' }}</div>
             <span>湿度</span>
           </div>
         </div>
@@ -91,7 +91,11 @@
               visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'
             }"
           >
-            {{ '会议时间：' + props.form.mtAreaList[1].textConent }}
+            {{
+              props.form.mtAreaList[1].textConent
+                ? '会议时间：' + props.form.mtAreaList[1].textConent
+                : ''
+            }}
           </div>
           <div
             v-if="props.form && props.form.mtAreaList && props.form.mtAreaList[1].syncStatus == 0"
@@ -119,7 +123,11 @@
               visibility: props.form.mtAreaList[2].isShow == '1' ? 'visible' : 'hidden'
             }"
           >
-            主办方：{{ props.form.mtAreaList[2].textConent }}
+            {{
+              props.form.mtAreaList[2].textConent
+                ? '主办方：' + props.form.mtAreaList[2].textConent
+                : ''
+            }}
           </div>
           <div
             v-if="props.form && props.form.mtAreaList && props.form.mtAreaList[2].syncStatus == 0"
@@ -136,7 +144,16 @@
         </div>
       </div>
       <!-- 2.暂无会议 -->
-      <div v-else class="noMeeting">当前暂无<br />会议信息</div>
+      <div v-if="
+          props.form.mtAreaList &&
+          props.form.mtAreaList.length > 0 &&
+          props.form.mtAreaList[0].textConent == '' &&
+          props.form.mtAreaList.length > 1 &&
+          !props.form.mtAreaList[1].textConent &&
+          props.form.mtAreaList.length > 2 &&
+          props.form.mtAreaList[2].textConent == ''
+        " 
+        class="noMeeting">当前暂无<br />会议信息</div>
     </div>
     <!-- 三层 -->
     <div class="third">
@@ -179,7 +196,7 @@
         ></FirstFloorShuz>
       </div>
       <!-- 轮播图 -->
-     
+
       <div class="swiper-container" id="swiper" v-else>
         <el-carousel
           indicator-position="none"
@@ -188,11 +205,11 @@
           :autoplay="autoplay"
           ref="carouselRef"
         >
-        <!-- v-if="item.obsFileType == '1'" -->
-           
+          <!-- v-if="item.obsFileType == '1'" -->
+
           <el-carousel-item v-for="(item, i) in props.form.mediaAreaList" :key="i">
             <!-- {{props.form.mediaAreaList[0].base64}} -->
-            <img  :src="'data:image/png;base64,' + item.base64"/>
+            <img :src="'data:image/png;base64,' + item.base64" />
             <!-- <video
               v-else
               :src="item.url"
@@ -202,7 +219,6 @@
               preload="metadata"
               :id="item.domId"
             ></video> -->
-            
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -260,26 +276,35 @@ const isSecondFloorShuz = computed(() => {
     'A2-226',
     'A2-225'
   ]
-
-  return roomList.indexOf(props.form.roomName.trim()) > -1
+  if (props.form && props.form.roomName) {
+    return roomList.indexOf(props.form.roomName.trim()) > -1
+  }
 })
 const isSecondFloorShuf = computed(() => {
   const roomList = ['A2-204', 'A2-205', 'A2-215', 'A2-216', 'A2-222', 'A2-223']
-  return roomList.indexOf(props.form.roomName.trim()) > -1
+
+  if (props.form && props.form.roomName) {
+    return roomList.indexOf(props.form.roomName.trim()) > -1
+  }
 })
 const isSecondFloorHengf = computed(() => {
-  
   const roomList = ['A2-211', 'A2-228', 'A2-229', 'A2-212']
-  return roomList.indexOf(props.form.roomName.trim()) > -1
+  if (props.form && props.form.roomName) {
+    return roomList.indexOf(props.form.roomName.trim()) > -1
+  }
 })
 const isFirstFloorHengf = computed(() => {
   const roomList = ['A2-113']
-  return roomList.indexOf(props.form.roomName.trim()) > -1
+  if (props.form && props.form.roomName) {
+    return roomList.indexOf(props.form.roomName.trim()) > -1
+  }
 })
 
 const isFirstFloorShuz = computed(() => {
   const roomList = ['A2-117']
-  return roomList.indexOf(props.form.roomName.trim()) > -1
+  if (props.form && props.form.roomName) {
+    return roomList.indexOf(props.form.roomName.trim()) > -1
+  }
 })
 
 const getMeetingList = () => {
@@ -394,7 +419,6 @@ const getLine1FontSize = computed(() => {
 
 const autoplay = ref(true)
 
-
 const carouselRef = ref(null)
 const isVideo = (v) => {
   if (props.form.mediaAreaList[v].obsFileType == '2') {
@@ -424,15 +448,10 @@ const isVideo = (v) => {
 //   return URL.createObjectURL(url)
 // }
 // console.log(props.form.mediaAreaList)
-onMounted(()=>{
+onMounted(() => {
   // debugger
   // console.log(props.form.mediaAreaList)
 })
-
-
-
-
-
 </script>
 
 <style lang="less" scoped>
@@ -468,7 +487,7 @@ section {
 .roomInfo .A2_top {
   height: 40px;
   line-height: 49px;
-  margin-left: 10px;
+  // margin-left: 10px;
   /* padding-top: 4px;*/
   color: rgba(255, 255, 255, 0.6);
   font-size: 20px;
@@ -480,12 +499,12 @@ section {
 .roomInfo .A2_top div {
   width: 704px;
   height: 20px;
-  margin-left: -10px;
+  // margin-left: -10px;
   background-color: rgba(255, 255, 255, 0.1);
 }
 
 .roomInfo .first {
-  width: 684px;
+  width: 688px;
   height: 425px;
   margin: 0px 10px 10px 10px;
   background-size: 100% 100%;
@@ -597,7 +616,7 @@ section {
 }
 
 .roomInfo .second {
-  width: 682px;
+  width: 688px;
   height: 392px;
   margin: 0px 10px 10px 10px;
   overflow-y: hidden;
@@ -648,12 +667,14 @@ section {
 }
 
 .roomInfo .third {
-  width: 684px;
+  width: 688px;
   height: 385px;
+  overflow: hidden;
+  position: relative;
   // margin: 0px 10px 10px 10px;
   // margin: 0px 10px 10px 0px;
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
 }
 
 ul,
@@ -665,18 +686,21 @@ li {
 
 /*轮播图*/
 .swiper-container {
-  width: 684px;
+  width: 688px;
   height: 385px;
-  // border: 1px solid red;
-
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
   :deep(.el-carousel) {
-    height: 395px;
+    height: 385px;
     .el-carousel__container {
       height: 100%;
       img {
-        width: 684px;
+        width: 688px;
         height: 100%;
         margin: 0 !important;
+        vertical-align: top;
       }
     }
   }
