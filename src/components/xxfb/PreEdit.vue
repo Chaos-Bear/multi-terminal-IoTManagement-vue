@@ -147,13 +147,14 @@
       <!-- 2.暂无会议 -->
       <div
         v-if="
-          props.form.mtAreaList &&
-          props.form.mtAreaList.length > 0 &&
-          props.form.mtAreaList[0].textConent == '' &&
-          props.form.mtAreaList.length > 1 &&
-          !props.form.mtAreaList[1].textConent &&
-          props.form.mtAreaList.length > 2 &&
-          props.form.mtAreaList[2].textConent == ''
+          (props.form.mtAreaList && props.form.mtAreaList.length == 0) ||
+          (props.form.mtAreaList &&
+            props.form.mtAreaList.length > 0 &&
+            props.form.mtAreaList[0].textConent == '' &&
+            props.form.mtAreaList.length > 1 &&
+            !props.form.mtAreaList[1].textConent &&
+            props.form.mtAreaList.length > 2 &&
+            props.form.mtAreaList[2].textConent == '')
         "
         class="noMeeting"
       >
@@ -163,7 +164,7 @@
     <!-- 三层 -->
     <div class="third">
       <!-- 导览图 *****************-->
-      <div v-if="props.form.imgShow == '1'">
+      <div v-if="props.form && props.form.imgShow && props.form.imgShow == '1'">
         <!-- 二楼  -->
         <SecondFloorShuz
           v-if="isSecondFloorShuz"
@@ -224,7 +225,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed } from 'vue'
+import { ref, reactive, watch, computed, onBeforeUnmount } from 'vue'
 // import {} from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
@@ -311,7 +312,7 @@ const isFirstFloorShuz = computed(() => {
 // //    props.form.line1Text
 // })
 //1.获取最新时间，右上角展示
-var time = ref('')
+const time = ref('')
 //console.log(nd)
 var timer = window.setInterval(function () {
   var mynewdate = new Date()
@@ -388,6 +389,10 @@ const isVideo = (v) => {
 //   return URL.createObjectURL(url)
 
 // }
+
+onBeforeUnmount(() => {
+  clearInterval(timer)
+})
 </script>
 
 <style lang="less" scoped>
@@ -637,7 +642,7 @@ li {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   :deep(.el-carousel) {
     height: 385px;
     .el-carousel__container {

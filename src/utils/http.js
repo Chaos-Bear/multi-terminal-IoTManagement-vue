@@ -1,38 +1,50 @@
 import axios from 'axios'
+import { ElLoading } from 'element-plus'
 
 function request(config) {
   const instance = axios.create({
     baseURL: config.baseURL,
-    timeout: 60000,
+    timeout: 30000,
     headers: config.headers,
     ...config
   })
 
+  var loadingInstance
   //请求拦截器
-  // instance.interceptors.request.use(
-  //   function (config) {
-  //     // Do something before request is sent
-  //     return config
-  //   },
-  //   function (error) {
-  //     // Do something with request error
-  //     return Promise.reject(error)
-  //   }
-  // )
+  instance.interceptors.request.use(
+    function (config) {
+      // 请求成功前添加loading加载图
+      loadingInstance = ElLoading.service('加载中')
+
+      // const token=localStorage.getItem('token')
+      // if(token){
+      //    config.headers.Authorization=`Bearer ${token}`
+      // }
+
+      return config
+    },
+    function (error) {
+      // Do something with request error
+      return Promise.reject(error)
+    }
+  )
 
   // 响应拦截器
-  // instance.interceptors.response.use(
-  //   function (response) {
-  //     // Any status code that lie within the range of 2xx cause this function to trigger
-  //     // Do something with response data
-  //     return response
-  //   },
-  //   function (error) {
-  //     // Any status codes that falls outside the range of 2xx cause this function to trigger
-  //     // Do something with response error
-  //     return Promise.reject(error)
-  //   }
-  // )
+  instance.interceptors.response.use(
+    function (response) {
+      // Any status code that lie within the range of 2xx cause this function to trigger
+
+      loadingInstance.close()
+
+      return response
+    },
+    function (error) {
+      // Do something with response error
+
+      loadingInstance.close()
+      return Promise.reject(error)
+    }
+  )
 
   return instance
 }

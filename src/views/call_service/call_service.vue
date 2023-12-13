@@ -323,7 +323,7 @@ import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { createWebSocket } from '@/utils/websocket.js'
 
-import { request} from '@/utils/server.js'
+import { request } from '@/utils/server.js'
 // 中间聊天区域wsbaseURL11
 var wsbaseURL11 = import.meta.env.VITE_BASE_URL11
 // 右侧楼层区域wsbaseURL12
@@ -556,8 +556,10 @@ const clickRoomName = (item) => {
     state: 1,
     type: 'init'
   }
-
-  websocket.send(JSON.stringify(initmsg))
+  // debugger
+  if (websocket.readyState == 1) {
+    websocket.send(JSON.stringify(initmsg))
+  }
 
   // 会议室状态接口
   getMeetingInfo()
@@ -594,7 +596,7 @@ const onScroll = (top) => {
 }
 
 // 2.2 websocket连接
-//--------创建中间聊天区域websocket对象
+//--------创建中间聊天区域websocket对象--/wsmq
 var websocket = createWebSocket(wsbaseURL11, {
   onopen(e) {
     console.log('建立了websocket连接')
@@ -643,14 +645,15 @@ var websocket = createWebSocket(wsbaseURL11, {
 
 // 监听输入框消息变化
 const onChangeMsgInfo = (e) => {
-  if (!inputMsg.value && e.target.innerHTML == '发送') {
-    ElMessage({
-      type: 'warning',
-      message: '请输入消息',
-      offset: 16
-    })
-    return
-  }
+  // if (inputMsg.value=='' && e.target.innerHTML == '发送') {
+  // if (inputMsg.value=='') {
+  //   ElMessage({
+  //     type: 'warning',
+  //     message: '请输入消息',
+  //     offset: 16
+  //   })
+  //   return
+  // }
   var sendmsg = {
     callUser: {
       userID: userId.value,
@@ -669,11 +672,14 @@ const onChangeMsgInfo = (e) => {
   //点击按钮发送数据给服务器
   // debugger
   console.log('用户输入消息：', inputMsg.value)
-  console.log('常用于选择', e.target.innerHTML)
+  console.log('常用语选择', e.target.innerHTML)
   console.log('发送消息：', sendmsg)
   //数据是字符串、ArrayBuffer或Blob中的一种4
 
-  websocket.send(JSON.stringify(sendmsg))
+  if (websocket.readyState == 1) {
+    websocket.send(JSON.stringify(sendmsg))
+  }
+
   inputMsg.value = ''
 }
 

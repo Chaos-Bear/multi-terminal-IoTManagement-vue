@@ -6,8 +6,9 @@
         <img src="@/assets/xxfb/1.png" />
         <span>定时发布 ：{{ form.publishTime ? form.publishTime.split('~')[0] : '' }}</span>
       </div>
+      <!-- $data[testCondition ? 'name' : 'place'] -->
       <div class="selectInfo">
-        <el-select v-model="meetingOptionvalue" placeholder="请选择会议" style="width: auto">
+        <el-select v-model="form.meetID" placeholder="请选择会议" style="width: auto">
           <el-option
             v-for="item in meetingList"
             :key="item.meetID"
@@ -102,7 +103,7 @@
                     </el-form-item>
                     <!-- show-alpha -->
                     <el-form-item label="">
-                      <span class="demonColor">{{ form.mtAreaList[0].textColor }}</span>
+                      <span class="demonColor">{{ item.textColor }}</span>
                       <el-color-picker v-model="item.textColor" show-alpha />
                     </el-form-item>
                     <el-form-item label="" prop="" class="textAlign">
@@ -188,58 +189,44 @@
                 </el-select>
               </div>
               <div class="mediaInfo2">
-                <!-- list-type：'text' | 'picture' | 'picture-card' 文件列表的类型
-                    on-preview：点击文件列表中已上传的文件时的钩子
-                    on-remove：移除
-                  form.mediaAreaList   accept="image/png"-->
-                <el-upload
-                  v-model:file-list="imageList"
-                  list-type="picture-card"
-                  :http-request="() => {}"
-                  :auto-upload="false"
-                  :on-preview="handlePictureCardPreview"
-                  :on-remove="handleRemove"
-                  :on-change="beforeAvatarUpload"
-                  accept=".jpg,.jpeg,.png,.gif,webp,.mp4"
-                  :disabled="form.meetStatus == 1"
-                >
-                  <el-icon><Plus /></el-icon>
-                  <template #file="{ file }">
-                    <div>
-                      <!-- 图片 -->
-                      <img
-                        v-if="file.obsFileType == '1'"
-                        class="el-upload-list__item-thumbnail"
-                        :src="file.url"
-                        alt=""
-                      />
-                      <!-- 视频 -->
-                      <!-- <video v-else  width="100px" height="100px" src="http://39.105.179.38:9797/noderad/cat.mp4" controls></video> -->
-                      <span class="el-upload-list__item-actions">
-                        <span
+                <ul>
+                  <li v-for="(item, i) in form.mediaAreaList" :key="i">
+                    <!-- 图片 -->
+                    <el-image v-if="item.obsFileType == '1'" :src="item.url" lazy />
+                    <div class="btn">
+                      <!-- <span
                           class="el-upload-list__item-preview"
                           @click="handlePictureCardPreview(file)"
                         >
                           <el-icon><zoom-in /></el-icon>
-                        </span>
-                        <span
-                          v-if="!disabled"
-                          class="el-upload-list__item-delete"
-                          @click="handleDownload(file)"
-                        >
+                        </span> -->
+                      <!-- <span
+                            v-if="!disabled"
+                            class="el-upload-list__item-delete"
+                            @click="handleDownload(file)"
+                          >
                           <el-icon><Download /></el-icon>
-                        </span>
-                        <span
-                          v-if="!disabled"
-                          class="el-upload-list__item-delete"
-                          @click="handleRemove(file)"
-                        >
-                          <el-icon><Delete /></el-icon>
-                        </span>
+                      </span> -->
+                      <span
+                        v-if="!disabled"
+                        class="el-upload-list__item-delete"
+                        @click="handleRemove(item, i)"
+                      >
+                        <el-icon><Delete /></el-icon>
                       </span>
                     </div>
-                  </template>
-                </el-upload>
+                  </li>
+                  <el-upload
+                    class="avatar-uploader"
+                    :http-request="() => {}"
+                    :show-file-list="false"
+                    :auto-upload="false"
+                    :on-change="beforeAvatarUpload"
+                    accept=".jpg,.jpeg,.png,.gif,webp,.mp4"
+                  >
+                    <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
+                  </el-upload>
+                </ul>
                 <el-dialog v-model="dialogVisible">
                   <img w-full :src="dialogImageUrl" alt="Preview Image" />
                 </el-dialog>
@@ -263,7 +250,7 @@
               type="datetime"
               placeholder="选择发布时间"
               :default-time="defaultTime"
-              :disabled="form.publishTimeNum != -3"
+              :disabled="form.publishTimeNum != 0"
               :disabled-date="disabledDate"
               value-format="YYYY-MM-DD HH:mm:ss"
             />
@@ -275,7 +262,7 @@
               <el-radio :label="-1" size="large">1h</el-radio>
               <el-radio :label="-1.5" size="large">1.5h</el-radio>
               <el-radio :label="-2" size="large">2h</el-radio>
-              <el-radio :label="-3" size="large">自定义</el-radio>
+              <el-radio :label="0" size="large">自定义</el-radio>
             </el-radio-group>
           </div>
           <div class="pubendTime">
@@ -285,7 +272,7 @@
               type="datetime"
               placeholder="选择发布时间"
               :default-time="defaultTime"
-              :disabled="form.publishTimeNum != -3"
+              :disabled="form.publishTimeNum != 0"
               :disabled-date="disabledDate"
               value-format="YYYY-MM-DD HH:mm:ss"
             />
@@ -366,7 +353,7 @@ import PreEdit from '@/components/xxfb/PreEdit.vue'
 import { ref, reactive, onMounted, computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
+import { Plus, Download } from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
 import { releaseRequest } from '@/utils/server.js'
@@ -406,13 +393,14 @@ const getMeetingList = () => {
         meetingList.value = res.data.result || []
         //默认选中最近的一场会议
         if (meetingList.value.length > 0) {
-          meetingOptionvalue.value = res.data.result[0].meetID
+          form.value.meetID = res.data.result[0].meetID
 
           roomId.value = res.data.result[0].roomID
 
           // 2.会议信息区域,默认为最近的一场
           // debugger
-          form.value = res.data.result[0]
+          // form.value = res.data.result[0]
+          form.value = Object.assign({}, form.value, res.data.result[0])
 
           console.log(form.value, form.value.mtAreaList[0].syncStatus)
           if (form.value.mediaAreaList.length > 0) {
@@ -431,8 +419,6 @@ const getMeetingList = () => {
     })
 }
 // ---6.下载图片/视频接口-------
-// imageList为上传组件需要的图片列表字段
-const imageList = ref([])
 const downloadReleaseMedia = (mediaAreaList) => {
   releaseRequest
     .post('/IotPageEditCrtl/download', {
@@ -449,17 +435,13 @@ const downloadReleaseMedia = (mediaAreaList) => {
             res.data.result[i].name = res.data.result[i].obsFileName
             res.data.result[i].url = 'data:image/jpg;base64,' + res.data.result[i].base64
           }
-          // debugger
-          imageList.value = res.data.result
-          // 注意：form.value.mediaAreaList需要重新赋值，把name和url字段 及base64 传给子组件
-          form.value.mediaAreaList = imageList.value
         }
-
-        if (imageList.value.length == 0) {
+        form.value.mediaAreaList = res.data.result
+        if (form.value.mediaAreaList.length == 0) {
           isshowimg.value = true
         } else {
           const promiseArr = []
-          imageList.value.forEach((item) => {
+          form.value.mediaAreaList.forEach((item) => {
             promiseArr.push(getImage(item.url))
           })
           Promise.all(promiseArr)
@@ -512,7 +494,7 @@ const updateEditList = () => {
   releaseRequest
     .post('/IotPageEditCrtl/editReleasePageInfo', {
       roomID: roomId.value,
-      meetID: meetingOptionvalue.value,
+      meetID: form.value.meetID,
       roomName: roomName,
       imgShow: form.value.imgShow,
       dataSource: form.value.dataSource,
@@ -522,15 +504,14 @@ const updateEditList = () => {
       publishStatus: form.value.publishStatus
     })
     .then((res) => {
-      // debugger
       if (res.data.repCode == 200) {
         console.log('修改发布页信息成功:', res.data.result)
-        form.value.meetID = res.data.result.meetID
-        // 调用列表接口
-        // getMeetingList()
-        ElMessage.success('保存成功！')
 
-        // meetingOptionvalue.value=
+        form.value.meetID = res.data.result.meetID
+
+        form.value.meetName = res.data.result.meetName
+
+        ElMessage.success('保存成功！')
       }
     })
     .catch((error) => {
@@ -545,7 +526,7 @@ const getSyncInfo = (item) => {
     .post('/IotPageEditCrtl/queryReleasePageInfoByMeet', {
       startTime: form.value.startTime ? form.value.startTime : '',
       roomID: roomId.value,
-      meetID: meetingOptionvalue.value,
+      meetID: form.value.meetID,
       textLocat: item.textLocat
     })
     .then((res) => {
@@ -564,12 +545,14 @@ const getSyncInfo = (item) => {
 
 //4.-------定时发布修改接口-----
 const updatePrePub = () => {
+  // debugger
   releaseRequest
     .post('/IotPageEditCrtl/setPublishTime', {
       roomID: roomId.value,
-      meetID: meetingOptionvalue.value,
+      meetID: form.value.meetID,
       startTime: form.value.startTime,
-      publishTimeNum: form.value.publishTimeNum
+      publishTimeNum: form.value.publishTimeNum,
+      dataSource: form.value.dataSource
     })
     .then((res) => {
       // debugger
@@ -595,7 +578,7 @@ const uploadReleaseMedia = (rawFile) => {
   const formData = new FormData()
   const data = {
     roomID: roomId.value,
-    meetID: meetingOptionvalue.value
+    meetID: form.value.meetID
   }
   formData.append('data', JSON.stringify(data))
   // 二进制文件上传
@@ -611,14 +594,6 @@ const uploadReleaseMedia = (rawFile) => {
       console.log('上传图片/视频成功:', res.data)
       //结束loading加载图
       loading.value = false
-
-      // debugger
-      // if(res.data.result.obsFileType=='1'){
-      //     imageList.value[imageList.value.length-1].base64='data:image/jpg;base64,' + res.data.result.base64
-
-      //   }
-      // debugger
-      // form.value.mediaAreaList=imageList.value
       form.value.mediaAreaList.push(res.data.result)
       downloadReleaseMedia(form.value.mediaAreaList)
     })
@@ -628,7 +603,7 @@ const uploadReleaseMedia = (rawFile) => {
     })
 }
 // 7.删除上传的图片接口
-const delUploadReleaseMedia = (uploadFile) => {
+const delUploadReleaseMedia = (uploadFile, i) => {
   releaseRequest
     .post('/IotPageEditCrtl/deleteReleaseMedia', {
       roomID: uploadFile.roomID,
@@ -638,8 +613,8 @@ const delUploadReleaseMedia = (uploadFile) => {
     })
     .then((res) => {
       console.log('删除图片成功', res.data)
-      // getMeetingList()
-      // imageList.value=form.value.mediaAreaList
+
+      form.value.mediaAreaList.splice(i, 1)
     })
     .catch((error) => {
       // debugger
@@ -730,30 +705,27 @@ const meetingList = ref([
   //   ]
   // }
 ])
-const meetingOptionvalue = ref('')
 
-const form = ref({ roomName: '' })
+const form = ref({ roomName: '', meetID: '' })
 // 监听选择会议的变化
 watch(
-  () => meetingOptionvalue.value,
+  () => form.value.meetID,
   () => {
     loading.value = true
     //结束loading加载图
-    // setTimeout(function(){
+
     loading.value = false
-    // },3000)
+
     var res = { roomName: '' }
     for (var i = 0; i < meetingList.value.length; i++) {
-      if (meetingList.value[i].meetID == meetingOptionvalue.value) {
+      if (meetingList.value[i].meetID == form.value.meetID) {
         res = meetingList.value[i]
       }
     }
 
-    form.value = res
+    form.value = Object.assign({}, form.value, res)
 
-    imageList.value = form.value.mediaAreaList
-    // debugger
-    if (imageList.value.length > 0) {
+    if (form.value.mediaAreaList.length > 0) {
       // 重新调用下载图片/视频接口
       downloadReleaseMedia(form.value.mediaAreaList)
     }
@@ -798,29 +770,15 @@ const onTimeChange = (v) => {
   }
 }
 
-watch(
-  () => imageList.value,
-  () => {
-    debugger
-  }
-)
-
 // 2.2图片/视频上传
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 const disabled = ref(false)
 // 2.2.1删除图片
-const handleRemove = (uploadFile, uploadFiles) => {
-  console.log(uploadFile, uploadFiles)
-  // debugger
-  //   uploadFiles.forEach((item)=>{
-  //     item
-  //     uploadFile
-
-  //   })
+const handleRemove = (item, i) => {
   // debugger
   // 7.调用删除图片接口
-  delUploadReleaseMedia(uploadFile)
+  delUploadReleaseMedia(item, i)
 }
 // 2.2.2预览图片
 const handlePictureCardPreview = (uploadFile) => {
@@ -832,13 +790,12 @@ const handlePictureCardPreview = (uploadFile) => {
 const beforeAvatarUpload = (rawFile) => {
   console.log('0000000', rawFile)
 
-  // debugger
   // if (rawFile.type !== 'image/jpeg') {
   //   ElMessage.error('Avatar picture must be JPG format!')
   //   return false
   // } else
-  if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error('上传文件不能超过 2MB!')
+  if (rawFile.size / 1024 / 1024 > 20) {
+    ElMessage.error('上传文件不能超过 20MB!')
     return false
   }
 
@@ -855,7 +812,6 @@ const beforeAvatarUpload = (rawFile) => {
   // 如是图片：调用上传图片接口
   uploadReleaseMedia(rawFile)
 
-  // debugger
   return true
 }
 const handleDownload = (file) => {
@@ -905,36 +861,36 @@ const downLoad = (item) => {
 const onSave = () => {
   // debugger
   console.log(form.value)
-  if (form.value.meetStatus == 1) {
-    ElMessage({
-      message: '使用中的会议禁止修改！',
-      type: 'warning'
-    })
-  } else {
-    // 调用保存接口
-    updateEditList()
-  }
+  // if (form.value.meetStatus == 1) {
+  //   ElMessage({
+  //     message: '使用中的会议禁止修改！',
+  //     type: 'warning'
+  //   })
+  // } else {
+  // 调用保存接口
+  updateEditList()
+  // }
 }
 // 4.有会议发布弹框------------
 const pubFormVisible = ref(false)
 const onPub = () => {
   // debugger
   // 判断如是使用中的会议，禁止发布
-  if (form.value.meetStatus == 1) {
-    ElMessage({
-      message: '使用中的会议禁止发布！',
-      type: 'warning'
-    })
+  // if (form.value.meetStatus == 1) {
+  //   ElMessage({
+  //     message: '使用中的会议禁止发布！',
+  //     type: 'warning'
+  //   })
+  // } else {
+  // 判断有无会议，确定弹出有会议弹框 或 无会议弹框???？待修改
+  if (form.value.dataSource != 'CUS') {
+    pubFormVisible.value = true
   } else {
-    // 判断有无会议，确定弹出有会议弹框 或 无会议弹框???？待修改
-    if (form.value.dataSource != 'CUS') {
-      pubFormVisible.value = true
-    } else {
-      noMeetingTime.value.startTime = form.value.startTime ? form.value.startTime : ''
-      noMeetingTime.value.endTime = form.value.endTime ? form.value.endTime : ''
-      nomeetingPubFormVisible.value = true
-    }
+    noMeetingTime.value.startTime = form.value.startTime ? form.value.startTime : ''
+    noMeetingTime.value.endTime = form.value.endTime ? form.value.endTime : ''
+    nomeetingPubFormVisible.value = true
   }
+  // }
 }
 
 // -------4.1以下为有会议
@@ -962,9 +918,27 @@ const cancelPub = () => {
 }
 //弹框中确认按钮
 const confirmPub = () => {
+  // 如果 发布弹框中 未选自定义
+  if (form.value.publishTimeNum != 0) {
+    // 调用定时发布修改接口
+    updatePrePub()
+  } else {
+    // 如果 发布弹框中 选的是自定义
+    if (form.value.startTime == '' || form.value.endTime == '') {
+      ElMessage.error('开始时间和结束时间不能为空！')
+    } else if (
+      form.value.startTime != '' &&
+      form.value.endTime != '' &&
+      new Date(form.value.startTime).getTime() >= new Date(form.value.endTime).getTime()
+    ) {
+      ElMessage.error('结束时间需大于开始时间！')
+    } else {
+      // 调用定时发布修改接口
+      updatePrePub()
+    }
+  }
+
   pubFormVisible.value = false
-  // 调用定时发布修改接口
-  updatePrePub()
 
   pubSuccessVisible.value = false
 }
@@ -1008,11 +982,12 @@ const noMeetingConfirmPub = () => {
     releaseRequest
       .post('/IotPageEditCrtl/setPublishTime', {
         roomID: roomId.value,
-        meetID: meetingOptionvalue.value,
+        meetID: form.value.meetID,
         startTime: noMeetingTime.value.startTime,
         endTime: noMeetingTime.value.endTime,
         publishTimeNum: 0,
-        dataSource: 'CUS'
+        // dataSource: 'CUS'
+        dataSource: form.value.dataSource
       })
       .then((res) => {
         // debugger
@@ -1040,7 +1015,7 @@ const disabledDate = (time) => {
   // time.getTime() < Date.now() - 8.64e7;
   // 今日之后的日期禁用（今天可选）
   // console.log(time.getTime() > Date.now());
-  return time.getTime() > Date.now() || time.getTime() < Date.now() - 8.64e7
+  return time.getTime() < Date.now() - 8.64e7
 }
 
 onMounted(() => {
@@ -1259,14 +1234,14 @@ onMounted(() => {
               }
               .demonColor {
                 // min-width: 91px;
-                width: 162px;
+                width: 172px;
                 padding-left: 4px;
                 padding-right: 4px;
                 height: 32px;
                 background-color: rgba(255, 255, 255, 1);
                 color: rgba(64, 64, 64, 1);
                 font-size: 14px;
-                text-align: center;
+                text-align: left;
                 white-space: nowrap;
                 font-family: Roboto;
                 border: 1px solid rgba(232, 232, 232, 1);
@@ -1316,6 +1291,71 @@ onMounted(() => {
             .el-input__wrapper {
               box-shadow: none;
             }
+          }
+        }
+        .mediaInfo2 {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          // 图片列表
+          ul {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: 10px;
+            padding: 0;
+            li {
+              width: 167px;
+              height: 110px;
+              list-style: none;
+              position: relative;
+              margin-right: 10px;
+              display: flex;
+              align-items: center;
+              border: 1px solid rgba(217, 217, 217, 1);
+              :deep(.el-image) {
+                img {
+                  width: 167px;
+                  height: 110px;
+                  object-fit: contain;
+                }
+              }
+              &:hover {
+                .el-upload-list__item-delete {
+                  display: block;
+                  position: absolute;
+                  left: 50%;
+                  top: 50%;
+                  transform: translate(-9%, -32%);
+                  .el-icon {
+                    font-size: 20px;
+                  }
+                }
+              }
+            }
+          }
+          // 上传图标
+          :deep(.avatar-uploader) {
+            .el-upload {
+              width: 167px;
+              height: 110px;
+              cursor: pointer;
+              position: relative;
+
+              background-color: rgba(247, 247, 247, 1);
+              border: 1px solid rgba(217, 217, 217, 1);
+
+              &:hover {
+                border-color: var(--el-color-primary);
+              }
+            }
+          }
+
+          .el-icon.avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 167px;
+            height: 110px;
+            text-align: center;
           }
         }
         :deep(.el-dialog) {

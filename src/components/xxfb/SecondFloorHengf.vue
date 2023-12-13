@@ -343,8 +343,8 @@
     </div>
     <div class="div1">
       <div>
-        <img src="@/assets/xxfb/path/200.png" />
-        <span>温馨提示：请说导航到xxx会议室或说xxx会议室怎么走。</span>
+        <!-- <img src="@/assets/xxfb/path/200.png" />
+        <span>温馨提示：请说导航到xxx会议室或说xxx会议室怎么走。</span> -->
       </div>
       <img src="@/assets/xxfb/path/1.png" />
     </div>
@@ -353,8 +353,12 @@
 
 <script setup>
 // 二楼横反：A2-211   A2-228    A2-229 A2-212
-import { ref, reactive, watch, computed, onMounted, nextTick } from 'vue'
+import { ref, reactive, watch, computed, onMounted, nextTick, onBeforeUnmount } from 'vue'
 import $ from 'jquery'
+
+import startImg from '@/assets/xxfb/path/start.png'
+import endImg from '@/assets/xxfb/path/end.png'
+
 const props = defineProps({
   roomName: {
     type: String,
@@ -1033,8 +1037,9 @@ function start_end(xy, end) {
   $('.line').remove()
   $('.endimg').remove()
   $('.startimg').remove()
-  document.getElementById('zuobiaodian').style.opacity = '1'
 
+  var zuobiaodian = document.getElementById('zuobiaodian')
+  zuobiaodian && (zuobiaodian.style.opacity = '1')
   clearTimeout($('body').attr('timeout'))
   for (var i = 0; i < CoordPoint[xy].length; i = i + 2) {
     // console.log(CoordPoint[xy][i]);
@@ -1048,9 +1053,12 @@ function start_end(xy, end) {
 
   // var length = $(".line").length;
   if ($('.line').length == 1) {
-    document.getElementById('zuobiaodian').style.opacity = '0'
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
-      "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
         (CoordPoint[xy][0][0] - 15) +
         'px;top:' +
         (CoordPoint[xy][0][1] - 15) +
@@ -1059,7 +1067,9 @@ function start_end(xy, end) {
     // 如果是1条线
     re($('.line').eq(0), function () {
       $('#div2').append(
-        "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+        "<img class='endimg' src='" +
+          endImg +
+          "' style='position:absolute;width:38px;height:38px;left:" +
           (CoordPoint[xy][i - 1][0] - 15) +
           'px;top:' +
           (CoordPoint[xy][i - 1][1] - 15) +
@@ -1073,8 +1083,9 @@ function start_end(xy, end) {
         $('.line').remove()
         $('.endimg').remove()
         $('.startimg').remove()
-        document.getElementById('zuobiaodian').style.opacity = '1'
 
+        var zuobiaodian = document.getElementById('zuobiaodian')
+        zuobiaodian && (zuobiaodian.style.opacity = '1')
         //动态路径展示完毕，调用放大缩小全屏展示函数
         // scrollSwiper()
       }, 15000)
@@ -1089,9 +1100,12 @@ function start_end(xy, end) {
       // $("body").attr("timeout-scale", scaletimeout);
     })
   } else if ($('.line').length == 2) {
-    document.getElementById('zuobiaodian').style.opacity = '0'
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
-      "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
         (CoordPoint[xy][0][0] - 15) +
         'px;top:' +
         (CoordPoint[xy][0][1] - 15) +
@@ -1101,7 +1115,9 @@ function start_end(xy, end) {
     re($('.line').eq(0), function () {
       re($('.line').eq(1), function () {
         $('#div2').append(
-          "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='endimg' src='" +
+            endImg +
+            "' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][i - 1][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][i - 1][1] - 15) +
@@ -1115,8 +1131,9 @@ function start_end(xy, end) {
           $('.line').remove()
           $('.endimg').remove()
           $('.startimg').remove()
-          document.getElementById('zuobiaodian').style.opacity = '1'
 
+          var zuobiaodian = document.getElementById('zuobiaodian')
+          zuobiaodian && (zuobiaodian.style.opacity = '1')
           //动态路径展示完毕，调用放大缩小全屏展示函数
           // scrollSwiper()
         }, 15000)
@@ -1132,9 +1149,12 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 3) {
-    document.getElementById('zuobiaodian').style.opacity = '0'
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
-      "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
         (CoordPoint[xy][0][0] - 15) +
         'px;top:' +
         (CoordPoint[xy][0][1] - 15) +
@@ -1145,7 +1165,9 @@ function start_end(xy, end) {
       re($('.line').eq(1), function () {
         re($('.line').eq(2), function () {
           $('#div2').append(
-            "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+            "<img class='endimg' src='" +
+              endImg +
+              "' style='position:absolute;width:38px;height:38px;left:" +
               (CoordPoint[xy][i - 1][0] - 18) +
               'px;top:' +
               (CoordPoint[xy][i - 1][1] - 15) +
@@ -1159,8 +1181,9 @@ function start_end(xy, end) {
             $('.line').remove()
             $('.endimg').remove()
             $('.startimg').remove()
-            document.getElementById('zuobiaodian').style.opacity = '1'
 
+            var zuobiaodian = document.getElementById('zuobiaodian')
+            zuobiaodian && (zuobiaodian.style.opacity = '1')
             //动态路径展示完毕，调用放大缩小全屏展示函数
             // scrollSwiper()
           }, 15000)
@@ -1177,9 +1200,12 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 4) {
-    document.getElementById('zuobiaodian').style.opacity = '0'
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
-      "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
         (CoordPoint[xy][0][0] - 15) +
         'px;top:' +
         (CoordPoint[xy][0][1] - 15) +
@@ -1192,7 +1218,9 @@ function start_end(xy, end) {
           re($('.line').eq(3), function () {
             //  debugger
             $('#div2').append(
-              "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+              "<img class='endimg' src='" +
+                endImg +
+                "' style='position:absolute;width:38px;height:38px;left:" +
                 (CoordPoint[xy][i - 1][0] - 15) +
                 'px;top:' +
                 (CoordPoint[xy][i - 1][1] - 15) +
@@ -1206,8 +1234,9 @@ function start_end(xy, end) {
               $('.line').remove()
               $('.endimg').remove()
               $('.startimg').remove()
-              document.getElementById('zuobiaodian').style.opacity = '1'
 
+              var zuobiaodian = document.getElementById('zuobiaodian')
+              zuobiaodian && (zuobiaodian.style.opacity = '1')
               //动态路径展示完毕，调用放大缩小全屏展示函数
               // scrollSwiper()
             }, 15000)
@@ -1225,9 +1254,12 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 5) {
-    document.getElementById('zuobiaodian').style.opacity = '0'
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
-      "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
         (CoordPoint[xy][0][0] - 15) +
         'px;top:' +
         (CoordPoint[xy][0][1] - 15) +
@@ -1240,7 +1272,9 @@ function start_end(xy, end) {
           re($('.line').eq(3), function () {
             re($('.line').eq(4), function () {
               $('#div2').append(
-                "<img class'endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+                "<img class='endimg' src='" +
+                  endImg +
+                  "' style='position:absolute;width:38px;height:38px;left:" +
                   (CoordPoint[xy][i - 1][0] - 15) +
                   'px;top:' +
                   (CoordPoint[xy][i - 1][1] - 15) +
@@ -1254,8 +1288,9 @@ function start_end(xy, end) {
                 $('.line').remove()
                 $('.endimg').remove()
                 $('.startimg').remove()
-                document.getElementById('zuobiaodian').style.opacity = '1'
 
+                var zuobiaodian = document.getElementById('zuobiaodian')
+                zuobiaodian && (zuobiaodian.style.opacity = '1')
                 //动态路径展示完毕，调用放大缩小全屏展示函数
                 // scrollSwiper()
               }, 15000)
@@ -1487,6 +1522,9 @@ const dataRoomClick = (end) => {
 onMounted(() => {
   nextTick(() => {})
 })
+onBeforeUnmount(() => {
+  clearTimeout($('body').attr('timeout'))
+})
 </script>
 
 <style lang="less" scoped>
@@ -1495,6 +1533,9 @@ li {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+div {
+  user-select: none;
 }
 .div {
   width: 1920px;

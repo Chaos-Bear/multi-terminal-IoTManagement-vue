@@ -29,15 +29,13 @@
       </el-form>
 
       <div class="searchbtn">
-        <el-button @click="resetbtn()">重置</el-button>
         <el-button type="primary" @click="searchbtn()">查询</el-button>
+        <el-button @click="resetbtn()">重置</el-button>
         <el-button type="primary" @click="createbtn()">新增</el-button>
       </div>
     </div>
     <!-- 3.设备列表 -->
     <div class="deviceList">
-      <!-- 此处设置了滚动条组件 -->
-      <!-- <el-scrollbar style="width: 100%"> -->
       <!-- 3.2 设备列表-->
       <el-table
         :data="tableData"
@@ -118,7 +116,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- </el-scrollbar> -->
     </div>
     <!--新增弹框表单  -->
     <div class="tankuang">
@@ -461,7 +458,7 @@ const tableData = ref([
 //----启用 禁用
 const isDisabled = ref(true)
 
-//编辑按钮
+//3.3 编辑按钮
 const formLabelWidth = '30%'
 var editId
 const editdialogFormVisible = ref(false)
@@ -645,7 +642,7 @@ const cancelItemEdit = () => {
         border: 1px solid rgba(15, 204, 249, 1);
         font-family: Roboto;
       }
-      .el-button:nth-child(2),
+      .el-button:nth-child(1),
       .el-button:nth-child(3) {
         border-radius: 2px;
         background-color: rgba(15, 204, 249, 0.3);

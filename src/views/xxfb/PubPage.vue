@@ -5,29 +5,27 @@
 </template>
 
 <script setup>
-import PreEdit from '@/components/xxfb/PreEdit.vue'
+
 import Prepub from '@/components/xxfb/Prepub.vue'
-import { ref, reactive, onMounted, computed, nextTick, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
-const router = useRouter()
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+
 const route = useRoute()
-import { pubRequest} from '@/utils/server.js'
+import { pubRequest } from '@/utils/server.js'
 import { createWebSocket } from '@/utils/websocket.js'
 var wsbaseURL13 = import.meta.env.VITE_BASE_URL13
 
 const roomName = route.query.roomName
-const roomId = route.query.roomID
+// const roomId = route.query.roomID
 
 const prePubRef = ref('')
-const data = ref('')
-// 1.----获取本机ip接口------
+// const data = ref('')
+// 1.----获取本机ip接口  注意：是在引导页进行的本地存储------
 // const ipValue = localStorage.getItem("xxfbIp")
 const ipValue = localStorage.getItem(roomName)
-const roomNameLocal = localStorage.getItem('roomName')
+// const roomNameLocal = localStorage.getItem('roomName')
 
-var websocket
+
 // const getIp = (item) => {
 //   pubRequest
 //     .post('/PublishFlowCtrl/queryIotDeviceByName', {
@@ -61,7 +59,6 @@ const updateMedia = (releaseCache) => {
       meetID: releaseCache.meetID,
       imgShow: releaseCache.imgShow,
       dataSource: releaseCache.dataSource,
-      playGap: releaseCache.playGap,
       mtAreaList: releaseCache.mtAreaList,
       mediaAreaList: releaseCache.mediaAreaList
     })
@@ -173,18 +170,21 @@ onMounted(() => {
 const releaseInfoCache = ref()
 
 console.log(ipValue)
+
 // debugger
 if (ipValue == null) {
   //  return
 } else {
-  websocket = createWebSocket(wsbaseURL13 + '/websocket/' + ipValue, {
+  // let websocket= createWebSocket(wsbaseURL13 + '/websocket/' + ipValue, {
+  createWebSocket(wsbaseURL13 + '/websocket/' + ipValue, {
     onopen(e) {
       console.log('建立了websocket连接')
       console.log(e)
     },
     onmessage(e) {
       if (e.data == 'HeartBeat') {
-        console.log('接收服务器消息：', e.data)
+        // console.log('接收服务器消息：', e.data)
+        console.log(e.data)
         return
       } else {
         var data = JSON.parse(e.data)
@@ -249,8 +249,8 @@ if (ipValue == null) {
     onerror() {},
     onclose() {},
     onbeforeunload() {},
-    onreconnect(ws) {
-      websocket = ws
+    onreconnect() {
+      // websocket = ws
     }
   })
 }

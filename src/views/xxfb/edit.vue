@@ -4,8 +4,35 @@
     <div class="top">
       <div class="pubTime">
         <img src="@/assets/xxfb/1.png" />
-        <span>定时发布 ：{{ form.publishTime ? form.publishTime.split('~')[0] : '' }}</span>
+        <!-- <span>定时发布 ：{{ form.publishTime ? form.publishTime.split('~')[0] : '' }}</span> -->
+        <!-- 禁用时间 picker-options -->
+        <span
+          >定时发布 ：
+          <el-date-picker
+            v-model="form.editePublishTime"
+            type="datetime"
+            placeholder="发布时间"
+            :default-time="defaultTime"
+            format="YYYY/MM/DD HH:mm"
+            :disabled-date="disabledDate"
+            :picker-options="pickerOptions"
+            value-format="YYYY-MM-DD HH:mm:ss"
+          />
+          ~
+          <el-date-picker
+            v-model="form.endTime"
+            type="datetime"
+            placeholder="结束时间"
+            :default-time="defaultTime"
+            format="YYYY/MM/DD HH:mm"
+            :disabled-date="disabledDate"
+            :picker-options="pickerOptions"
+            value-format="YYYY-MM-DD HH:mm:ss"
+          />
+        </span>
       </div>
+      <!-- $data[testCondition ? 'name' : 'place'] -->
+      <!--发布状态 publishStatus  待发布1 3 4    已发布 2  撤销 5-->
       <div class="selectInfo">
         <el-select v-model="form.meetID" placeholder="请选择会议" style="width: auto">
           <el-option
@@ -13,13 +40,42 @@
             :key="item.meetID"
             :label="item.meetName"
             :value="item.meetID"
-          />
+          >
+            <template v-if="item.meetID">
+              <template v-if="item.publishStatus == '2'">
+                <span style="float: left; margin-right: 10px">已发布</span>
+              </template>
+              <template v-if="item.publishStatus == '5'">
+                <span style="float: left; margin-right: 10px">已撤销</span>
+              </template>
+              <template
+                v-if="
+                  item.publishStatus == '1' ||
+                  item.publishStatus == '3' ||
+                  item.publishStatus == '4'
+                "
+              >
+                <span style="float: left; margin-right: 10px">待发布</span>
+              </template>
+            </template>
+            <template v-else>
+              <span style="float: left"></span>
+            </template>
+            <!-- <span style="float: left;margin-right:10px;">
+              <template v-for="item1 in statusList" :key="item1.status">
+                <template v-if="item1.status==item.publishStatus">
+                  {{item.meetID==""? '':item1.title }}
+                </template>
+              </template>
+            </span> -->
+            <span style="float: left">{{ item.meetName }}</span>
+          </el-option>
         </el-select>
       </div>
       <div class="btn">
-        <div @click="onSave()">
+        <div @click="onReset()">
           <img src="@/assets/xxfb/2.png" />
-          <div>保存</div>
+          <div>撤销</div>
         </div>
         <div @click="onPub()">
           <img src="@/assets/xxfb/3.png" />
@@ -74,7 +130,7 @@
                         issyncLine(v, item)
                       }
                     "
-                    :disabled="item.isShow == '0'"
+                    :disabled="item.isShow == '0' || form.dataSource == 'CUS'"
                   />
                   <span>同步会议{{ item.textLocat }}</span>
                 </div>
@@ -83,12 +139,11 @@
                   <el-form>
                     <el-form-item label="" prop="">
                       <el-input
-                        v-if="form.mtAreaList.length >= 1"
-                        style="width: 340px"
+                        style="width: 460px"
                         v-model="item.textConent"
                         :disabled="item.syncStatus == 1"
+                        maxlength="128"
                       />
-                      <el-input v-else style="width: 340px" :disabled="true" />
                     </el-form-item>
 
                     <el-form-item label="">
@@ -132,7 +187,7 @@
                           item.showLocat == 'right' ? 'background-color: rgba(3, 154, 252, 1);' : ''
                         "
                       />
-                      <img
+                      <!-- <img
                         src="@/assets/xxfb/6.png"
                         data-textAlign="justify"
                         @click="line1textAlign(item, 'justify')"
@@ -141,7 +196,7 @@
                             ? 'background-color: rgba(3, 154, 252, 1);'
                             : ''
                         "
-                      />
+                      /> -->
                     </el-form-item>
                   </el-form>
                 </div>
@@ -168,6 +223,7 @@
                       issyncSwiperChange(v, item1)
                     }
                   "
+                  :disabled="form.meetID && form.meetID == ''"
                 />
                 <span>轮播间隔</span>
                 <el-select
@@ -191,13 +247,9 @@
                 <ul>
                   <li v-for="(item, i) in form.mediaAreaList" :key="i">
                     <!-- 图片 -->
-                    <el-image
-                      v-if="item.obsFileType == '1'"
-                      :src="item.url"
-                      lazy
-                    />
-                    <div class="btn">       
-                         <!-- <span
+                    <el-image v-if="item.obsFileType == '1'" :src="item.url" lazy />
+                    <div class="btn">
+                      <!-- <span
                           class="el-upload-list__item-preview"
                           @click="handlePictureCardPreview(file)"
                         >
@@ -216,7 +268,7 @@
                         @click="handleRemove(item, i)"
                       >
                         <el-icon><Delete /></el-icon>
-                      </span> 
+                      </span>
                     </div>
                   </li>
                   <el-upload
@@ -226,6 +278,7 @@
                     :auto-upload="false"
                     :on-change="beforeAvatarUpload"
                     accept=".jpg,.jpeg,.png,.gif,webp,.mp4"
+                    :disabled="form.meetID && form.meetID == ''"
                   >
                     <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
                   </el-upload>
@@ -241,44 +294,19 @@
     </div>
     <!-- <video id="videoPlayer" width="684" height="385" controls></video> -->
     <!-- <div v-else class="noMeeting">暂无会议</div> -->
-    <!--1.有会议发布弹框  -->
+    <!--1.发布弹框  -->
     <div class="pubFormDialog">
       <el-dialog v-model="pubFormVisible" title="发布确认">
-        <!-- 有会议发布弹框 -->
         <div>
           <div class="startTime">
             <span>发布时间：</span>
-            <el-date-picker
-              v-model="form.startTime"
-              type="datetime"
-              placeholder="选择发布时间"
-              :default-time="defaultTime"
-              :disabled="form.publishTimeNum != 0"
-              :disabled-date="disabledDate"
-              value-format="YYYY-MM-DD HH:mm:ss"
-            />
-          </div>
-          <div class="pubStartTime">
-            <span>会前：</span>
-            <el-radio-group v-model="form.publishTimeNum" class="ml-4" @change="radioOptionChange">
-              <el-radio :label="-0.5" size="large">0.5h</el-radio>
-              <el-radio :label="-1" size="large">1h</el-radio>
-              <el-radio :label="-1.5" size="large">1.5h</el-radio>
-              <el-radio :label="-2" size="large">2h</el-radio>
-              <el-radio :label="0" size="large">自定义</el-radio>
-            </el-radio-group>
+            <span class="time">{{
+              form.editePublishTime ? form.editePublishTime.slice(0, -3) : ''
+            }}</span>
           </div>
           <div class="pubendTime">
             <span>结束时间：</span>
-            <el-date-picker
-              v-model="form.endTime"
-              type="datetime"
-              placeholder="选择发布时间"
-              :default-time="defaultTime"
-              :disabled="form.publishTimeNum != 0"
-              :disabled-date="disabledDate"
-              value-format="YYYY-MM-DD HH:mm:ss"
-            />
+            <span class="time">{{ form.endTime ? form.endTime.slice(0, -3) : '' }}</span>
           </div>
         </div>
         <template #footer>
@@ -289,41 +317,53 @@
         </template>
       </el-dialog>
     </div>
-    <!--2.无会议发布弹框  -->
+    <!--2.有冲突发布弹框  -->
     <div class="pubFormDialog">
-      <el-dialog v-model="nomeetingPubFormVisible" title="发布确认">
-        <!-- 无会议发布弹框 -->
-        <!-- :disabled-date="disabledDate"  时间选择禁用 :default-value="new Date(2010, 9, 1)"-->
-        <div>
-          <div class="startTime">
-            <span>发布时间：</span>
-            <el-date-picker
-              v-model="noMeetingTime.startTime"
-              type="datetime"
-              placeholder="选择发布时间"
-              :default-time="defaultTime"
-              :disabled-date="disabledDate"
-              value-format="YYYY-MM-DD HH:mm:ss"
-            />
+      <el-dialog v-model="pubConflictVisible" title="冲突提示">
+        <template #header>
+          <div class="conflitTips1">
+            <span>冲突提示</span>
+            <img src="@/assets/xxfb/edit/conflict.png" />
           </div>
-          <div class="pubendTime">
-            <span>结束时间：</span>
-            <el-date-picker
-              v-model="noMeetingTime.endTime"
-              type="datetime"
-              placeholder="选择发布时间"
-              :default-time="defaultTime"
-              :disabled-date="disabledDate"
-              value-format="YYYY-MM-DD HH:mm:ss"
-            />
+        </template>
+        <div class="conflict">
+          <div>
+            <div>当前发布任务与下列已存在的发布任务冲突：</div>
           </div>
+          <el-scrollbar max-height="209px">
+            <span>待处理冲突 {{ needChangeList.length }}个：</span>
+            <ul>
+              <li v-for="(item, i) in needChangeList" :key="i">
+                <div>{{ i + 1 + '. ' }}{{ item.meetName ? item.meetName : '无标题' }}</div>
+                <!-- <div>发布时间：2023年12月7日 9:00 ~ 12:00</div> -->
+                <div>
+                  发布时间：{{
+                    item.startTime.slice(0, -3) + '~' + item.endTime.split(' ')[1].slice(0, -3)
+                  }}
+                </div>
+              </li>
+            </ul>
+            <br />
+            <span>无需处理冲突 {{ noChangeList.length }}个：</span>
+            <ul>
+              <li v-for="(item, i) in noChangeList" :key="i">
+                <div>{{ i + 1 + '. ' }}{{ item.meetName ? item.meetName : '无标题' }}}</div>
+                <!-- <div>发布时间：2023年12月7日 9:00 ~ 12:00</div> -->
+                <div>
+                  发布时间：{{
+                    item.startTime.slice(0, -3) + '~' + item.endTime.split(' ')[1].slice(0, -3)
+                  }}
+                </div>
+              </li>
+            </ul>
+          </el-scrollbar>
+          <!-- <div class="conflictTips2">注：确认后与当前发布任务冲突的所有发布任务将取消发布。</div> -->
+          <div class="conflictTips2">注：请修改发布时间,无冲突后,再次发布！</div>
         </div>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="nomeetingCancelPub()">取消</el-button>
-            <el-button type="primary" @click="noMeetingConfirmPub()" :disabled="isDisabled"
-              >确认</el-button
-            >
+            <el-button @click="cancelConflictPub()">取消</el-button>
+            <el-button type="primary" @click="confirmConflictPub()">确认</el-button>
           </span>
         </template>
       </el-dialog>
@@ -348,15 +388,30 @@
         </template>
       </el-dialog>
     </div>
+    <!--2.发布失败弹框  -->
+    <div class="pubSuccessDialog">
+      <el-dialog v-model="pubErrorVisible" title="">
+        <div class="pubSuccessTips">
+          <img src="@/assets/xxfb/9.png" />
+          <div>发布失败</div>
+          <span>{{ roomName }}门口信息发布屏配置发布失败！请重新尝试！</span>
+        </div>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button type="primary" @click="pubErrorVisible = false">确认</el-button>
+          </span>
+        </template>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
 <script setup>
 import PreEdit from '@/components/xxfb/PreEdit.vue'
-import { ref, reactive, onMounted, computed, watch } from 'vue'
+import { ref, reactive, onMounted, computed, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus,Download } from '@element-plus/icons-vue'
+import { Plus, Download } from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
 import { releaseRequest } from '@/utils/server.js'
@@ -374,7 +429,6 @@ const loading = ref(true)
 // 是否展示图片列表
 const isshowimg = ref(false)
 
-// debugger
 // 1.----根据会议名称 获取会议场次接口------
 const getMeetingList = () => {
   releaseRequest
@@ -388,32 +442,39 @@ const getMeetingList = () => {
       // console.log('按会议场次查询成功:', res.data.result)
       if (res.data.repCode == 200) {
         //结束loading加载图
-        // setTimeout(function(){
+
         loading.value = false
-        // },3000)
 
         // 1.选择会议列表 res.data.result为所有会议
         meetingList.value = res.data.result || []
         //默认选中最近的一场会议
         if (meetingList.value.length > 0) {
-          form.value.meetID = res.data.result[0].meetID
+          if (form.value.meetID) {
+            for (var i = 0; i < res.data.result.length; i++) {
+              if (form.value.meetID == res.data.result[i].meetID) {
+                form.value = Object.assign({}, form.value, res.data.result[i])
+                break
+              }
+            }
+          } else {
+            form.value.meetID = res.data.result[0].meetID
 
-          roomId.value = res.data.result[0].roomID
-
-          // 2.会议信息区域,默认为最近的一场
-          // debugger
-          // form.value = res.data.result[0]
-          form.value = Object.assign({},form.value,res.data.result[0]) 
-
-          console.log(form.value, form.value.mtAreaList[0].syncStatus)
+            roomId.value = res.data.result[0].roomID
+            // 2.会议信息区域,默认为最近的一场
+            form.value = Object.assign({}, form.value, res.data.result[0])
+            // for (var i = 0; i < form.value.mediaAreaList.length; i++) {
+            //   downLoad(form.value.mediaAreaList[i])
+            // }
+          }
           if (form.value.mediaAreaList.length > 0) {
             downloadReleaseMedia(form.value.mediaAreaList)
           }
-
-          // for (var i = 0; i < form.value.mediaAreaList.length; i++) {
-          //   downLoad(form.value.mediaAreaList[i])
-          // }
         }
+      } else {
+        ElMessage({
+          message: res.data.repMsg,
+          type: 'error'
+        })
       }
     })
     .catch((error) => {
@@ -421,7 +482,7 @@ const getMeetingList = () => {
       console.log('按会议场次查询失败:', error)
     })
 }
-// ---6.下载图片/视频接口-------
+// ---5.下载图片/视频接口-------
 const downloadReleaseMedia = (mediaAreaList) => {
   releaseRequest
     .post('/IotPageEditCrtl/download', {
@@ -480,53 +541,7 @@ const getImage = () => {
   })
 }
 
-// 2.----修改编辑页信息接口------
-const updateEditList = () => {
-  var updatamediaAreaList = []
-
-  for (var i = 0; i < form.value.mediaAreaList.length; i++) {
-    var item = {}
-    item.roomID = form.value.mediaAreaList[i].roomID
-    item.meetID = form.value.mediaAreaList[i].meetID
-    item.obsFileID = form.value.mediaAreaList[i].obsFileID
-    item.obsFileName = form.value.mediaAreaList[i].obsFileName
-    item.obsFileType = form.value.mediaAreaList[i].obsFileType
-    updatamediaAreaList.push(item)
-  }
-
-  releaseRequest
-    .post('/IotPageEditCrtl/editReleasePageInfo', {
-      roomID: roomId.value,
-      meetID: form.value.meetID,
-      roomName: roomName,
-      imgShow: form.value.imgShow,
-      dataSource: form.value.dataSource,
-      playGap: form.value.playGap ? form.value.playGap : 5000,
-      mtAreaList: form.value.mtAreaList,
-      mediaAreaList: updatamediaAreaList,
-      publishStatus: form.value.publishStatus
-    })
-    .then((res) => {
-      
-      if (res.data.repCode == 200) {
-        console.log('修改发布页信息成功:', res.data.result)
-       
-        form.value.meetID = res.data.result.meetID
-        
-        form.value.meetName=res.data.result.meetName
-        
-        ElMessage.success('保存成功！')
-        
-    
-      }
-    })
-    .catch((error) => {
-      // debugger
-      console.log('修改发布页信息失败:', error)
-      ElMessage.error('保存失败！')
-    })
-}
-// 3.----查询会议预约接口获取同步信息------
+// 2.----查询会议预约接口获取同步信息------
 const getSyncInfo = (item) => {
   releaseRequest
     .post('/IotPageEditCrtl/queryReleasePageInfoByMeet', {
@@ -549,26 +564,51 @@ const getSyncInfo = (item) => {
     })
 }
 
-//4.-------定时发布修改接口-----
+//3.-------定时发布修改接口-----
 const updatePrePub = () => {
-  // debugger
+  var updatamediaAreaList = []
+
+  for (var i = 0; i < form.value.mediaAreaList.length; i++) {
+    var item = {}
+    item.roomID = form.value.mediaAreaList[i].roomID
+    item.meetID = form.value.mediaAreaList[i].meetID
+    item.obsFileID = form.value.mediaAreaList[i].obsFileID
+    item.obsFileName = form.value.mediaAreaList[i].obsFileName
+    item.obsFileType = form.value.mediaAreaList[i].obsFileType
+    updatamediaAreaList.push(item)
+  }
+
   releaseRequest
-    .post('/IotPageEditCrtl/setPublishTime', {
+    .post('/IotPageEditCrtl/editPublishReleasePageInfo', {
       roomID: roomId.value,
       meetID: form.value.meetID,
+      roomName: roomName,
+      imgShow: form.value.imgShow,
+      dataSource: form.value.dataSource,
+      playGap: form.value.playGap ? form.value.playGap : 5000,
+      mtAreaList: form.value.mtAreaList,
+      mediaAreaList: updatamediaAreaList,
+      publishStatus: form.value.publishStatus,
       startTime: form.value.startTime,
-      publishTimeNum: form.value.publishTimeNum,
-      dataSource:form.value.dataSource
+      endTime: form.value.endTime,
+      editePublishTime: form.value.editePublishTime
     })
     .then((res) => {
       // debugger
       if (res.data.repCode == 200) {
         console.log('定时发布成功:', res.data.result)
+        form.value.meetID = res.data.result.meetID
+
+        form.value.meetName = res.data.result.meetName
+
+        // meetingList.value.unshift(res.data.result)
         // 成功则展示发布成功弹框
         pubSuccessVisible.value = true
-        
+        //  debugger
         //调用刷新列表接口
         getMeetingList()
+      } else {
+        ElMessage.error(res.data.repMsg)
       }
     })
     .catch((error) => {
@@ -578,7 +618,7 @@ const updatePrePub = () => {
     })
 }
 
-// 5.上传图片/视频接口
+// 4.上传图片/视频接口
 const uploadReleaseMedia = (rawFile) => {
   //数据流
   const formData = new FormData()
@@ -608,7 +648,7 @@ const uploadReleaseMedia = (rawFile) => {
       // console.log('上传图片/视频失败:', error)
     })
 }
-// 7.删除上传的图片接口
+// 6.删除上传的图片接口
 const delUploadReleaseMedia = (uploadFile, i) => {
   releaseRequest
     .post('/IotPageEditCrtl/deleteReleaseMedia', {
@@ -628,7 +668,144 @@ const delUploadReleaseMedia = (uploadFile, i) => {
     })
 }
 
-// 1.选择会议
+// 7.----查询会议冲突------
+// 需要修改的冲突列表
+const needChangeList = ref([])
+// 无需修改的冲突列表
+const noChangeList = ref([])
+const pubConflictVisible = ref(false)
+const getConflictInfo = () => {
+  // debugger
+  releaseRequest
+    .post('/IotPageEditCrtl/checkReleasePageTime', {
+      startTime: form.value.editePublishTime,
+      endTime: form.value.endTime,
+      roomID: roomId.value,
+      meetID: form.value.meetID,
+      dataSource: form.value.dataSource
+    })
+    .then((res) => {
+      // debugger
+      if (res.data.repCode == 200) {
+        console.log('查询会议冲突成功:', res.data.result)
+        // debugger
+        needChangeList.value = res.data.result.needChangeList
+        noChangeList.value = res.data.result.noChangeList
+
+        if (needChangeList.value.length <= 0 && noChangeList.value.length <= 0) {
+          // 调用定时发布修改接口
+          updatePrePub()
+        } else {
+          // 展示冲突弹框
+          pubConflictVisible.value = true
+        }
+      } else {
+        ElMessage({
+          message: res.data.repMsg,
+          type: 'error'
+        })
+      }
+    })
+    .catch((error) => {
+      // debugger
+      console.log('查询会议冲突失败:', error)
+      // ElMessage({
+      //     message: error,
+      //     type: 'error'
+      // })
+    })
+}
+
+//8.-----撤销接口-----
+const resetPubInfo = () => {
+  // debugger
+  releaseRequest
+    .post('/IotPageEditCrtl/revokePublishRelease', {
+      startTime: form.value.editePublishTime,
+      endTime: form.value.endTime,
+      roomID: roomId.value,
+      meetID: form.value.meetID,
+      dataSource: form.value.dataSource
+    })
+    .then((res) => {
+      // debugger
+      if (res.data.repCode == 200) {
+        console.log('撤销成功:', res.data.repMsg)
+        ElMessage({
+          message: '撤销成功',
+          type: 'success'
+        })
+        for (var i = 0; i <= meetingList.value.length; i++) {
+          // debugger
+          if (meetingList.value[i].meetID == form.value.meetID) {
+            // 撤销后，将该会议发布状态更新为已撤销'5'
+            meetingList.value[i].publishStatus = '5'
+          }
+        }
+      } else {
+        ElMessage({
+          message: res.data.repMsg,
+          type: 'error'
+        })
+      }
+    })
+    .catch((error) => {
+      // debugger
+      // console.log('撤销失败:', error)
+      // ElMessage({
+      //     message: error,
+      //     type: 'error'
+      // })
+    })
+}
+// 撤销按钮
+const onReset = () => {
+  ElMessageBox.confirm('确定撤销该场次会议吗？', '撤销', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      //调用撤销接口
+      resetPubInfo()
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '撤销取消'
+      })
+    })
+}
+
+// 日期禁用
+const defaultTime = new Date()
+// 日期禁用
+const disabledDate = (time) => {
+  // debugger
+  // 今天之前日期禁用
+  // time.getTime() < Date.now() - 8.64e7;
+  // 今日之后的日期禁用（今天可选）
+  // console.log(time.getTime() > Date.now());
+  return time.getTime() < Date.now() - 8.64e7
+}
+// 时间禁用
+const pickerOptions = ref({
+  disabledHours: () => {
+    // 在这里编写禁用小时的逻辑
+    // 返回一个数组，包含要禁用的小时
+    // 例如，禁用 0 到 8 点的时间：
+    debugger
+    return Array.from({ length: 16 }, (_, index) => index)
+  },
+  disabledMinutes: () => {
+    // 在这里编写禁用分钟的逻辑
+    // 返回一个数组，包含要禁用的分钟
+    // 例如，禁用 0 到 30 分钟的时间：
+    return Array.from({ length: 31 }, (_, index) => index)
+  }
+})
+
+// 1.选择会议 会议状态：meetStatus 1使用中  2空闲中;  imgShow 1导览图  2轮播图
 const meetingList = ref([
   // {
   //   publishTime: '10:00~23:00',
@@ -711,17 +888,25 @@ const meetingList = ref([
   //   ]
   // }
 ])
+// 发布状态: publishStatus  待发布1 3 4    已发布 2  撤销 5
+const statusList = ref([
+  { status: 2, title: '已发布' },
+  { status: 5, title: '已撤销' },
+  { status: 1, title: '待发布' },
+  { status: 3, title: '待发布' },
+  { status: 4, title: '待发布' }
+])
 
-const form = ref({ roomName: '',meetID:'' })
+const form = ref({ roomName: '', meetID: '' })
 // 监听选择会议的变化
 watch(
   () => form.value.meetID,
   () => {
     loading.value = true
     //结束loading加载图
-   
+
     loading.value = false
-    
+
     var res = { roomName: '' }
     for (var i = 0; i < meetingList.value.length; i++) {
       if (meetingList.value[i].meetID == form.value.meetID) {
@@ -729,8 +914,8 @@ watch(
       }
     }
 
-    form.value = Object.assign({},form.value,res)
-    
+    form.value = Object.assign({}, form.value, res)
+
     if (form.value.mediaAreaList.length > 0) {
       // 重新调用下载图片/视频接口
       downloadReleaseMedia(form.value.mediaAreaList)
@@ -743,7 +928,7 @@ watch(
 // debugger
 // 是否同步 1同步 0不同步----------
 const issyncLine = (v, item) => {
-  // debugger
+  //debugger
   if (item.syncStatus == 1) {
     getSyncInfo(item)
   }
@@ -795,7 +980,7 @@ const handlePictureCardPreview = (uploadFile) => {
 // 2.2.3图片上传
 const beforeAvatarUpload = (rawFile) => {
   console.log('0000000', rawFile)
-  
+
   // if (rawFile.type !== 'image/jpeg') {
   //   ElMessage.error('Avatar picture must be JPG format!')
   //   return false
@@ -863,168 +1048,62 @@ const downLoad = (item) => {
   xhr.send()
 }
 
-// 3.保存----------------
-const onSave = () => {
-  // debugger
-  console.log(form.value)
-  // if (form.value.meetStatus == 1) {
-  //   ElMessage({
-  //     message: '使用中的会议禁止修改！',
-  //     type: 'warning'
-  //   })
-  // } else {
-    // 调用保存接口
-    updateEditList()
-  // }
-}
-// 4.有会议发布弹框------------
+// 4.发布弹框------------
 const pubFormVisible = ref(false)
 const onPub = () => {
-  // debugger
-  // 判断如是使用中的会议，禁止发布
-  // if (form.value.meetStatus == 1) {
-  //   ElMessage({
-  //     message: '使用中的会议禁止发布！',
-  //     type: 'warning'
-  //   })
-  // } else {
-    // 判断有无会议，确定弹出有会议弹框 或 无会议弹框???？待修改
-    if (form.value.dataSource != 'CUS') {
-      pubFormVisible.value = true
-    } else {
-      noMeetingTime.value.startTime = form.value.startTime ? form.value.startTime : ''
-      noMeetingTime.value.endTime = form.value.endTime ? form.value.endTime : ''
-      nomeetingPubFormVisible.value = true
-    }
-  // }
+  pubFormVisible.value = true
 }
 
-// -------4.1以下为有会议
-//发布开始时间 及 结束时间记录
-const startAndEndTime = ref({
-  startTime: '',
-  endTime: ''
-})
-const defaultTime = new Date(2000, 1, 1, 8, 0)
-
-// 会前----提前发布时间选择
-const radioOptionChange = (v) => {
-  // debugger
-  form.value.publishTimeNum = v
-
-  if (v != 3) {
-    form.value.startTime
-  }
-}
-
-// 弹框中取消按钮
+// 发布弹框中取消按钮
 const cancelPub = () => {
   pubFormVisible.value = false
-  // form.value.publishTimeNum = -1
 }
-//弹框中确认按钮
+//发布弹框中确认按钮
 const confirmPub = () => {
-  // 如果 发布弹框中 未选自定义
-  if(form.publishTimeNum!=0){
-    // 调用定时发布修改接口
-    updatePrePub()
-  }else{
-    // 如果 发布弹框中 选的是自定义
-    if (form.value.startTime == '' || form.value.endTime == '') {
-      ElMessage.error('开始时间和结束时间不能为空！')
-      
-    } else if (
-      form.value.startTime != '' &&
-      form.value.endTime != '' &&
-      new Date(form.value.startTime).getTime() >=
-        new Date(form.value.endTime).getTime()
-    ) {
-      ElMessage.error('结束时间需大于开始时间！')
-      
-    } else {
-      // 调用定时发布修改接口
-      updatePrePub()
-    }
+  // debugger
+  // 如果 发布弹框中 选的是自定义
+  if (
+    form.value.editePublishTime === null ||
+    form.value.editePublishTime == '' ||
+    form.value.endTime === null ||
+    form.value.endTime == ''
+  ) {
+    ElMessage.error('开始时间和结束时间不能为空！')
+  } else if (
+    form.value.editePublishTime != '' &&
+    form.value.endTime != '' &&
+    new Date(form.value.editePublishTime).getTime() >= new Date(form.value.endTime).getTime()
+  ) {
+    ElMessage.error('结束时间需大于开始时间！')
+  } else {
+    // 调用冲突接口
+    getConflictInfo()
   }
-  
+
   pubFormVisible.value = false
-  
+
   pubSuccessVisible.value = false
 }
 // 发布成功提示
 const pubSuccessVisible = ref(false)
-
-// 5.无会议发布弹框------------
-const nomeetingPubFormVisible = ref(false)
-
-// 5.1以下为无会议---------
-const noMeetingTime = ref({
-  startTime: '',
-  endTime: ''
-})
-
-// 弹框中取消按钮
-const nomeetingCancelPub = () => {
-  nomeetingPubFormVisible.value = false
-  //清空开始/结束时间
-  noMeetingTime.value.startTime = ''
-  noMeetingTime.value.endTime = ''
-}
-//弹框中确认按钮
-const isDisabled = ref(false)
-const noMeetingConfirmPub = () => {
-  if (noMeetingTime.value.startTime == '' || noMeetingTime.value.endTime == '') {
-    ElMessage.error('开始时间和结束时间不能为空！')
-    isDisabled.value = false
-  } else if (
-    noMeetingTime.value.startTime != '' &&
-    noMeetingTime.value.endTime != '' &&
-    new Date(noMeetingTime.value.startTime).getTime() >=
-      new Date(noMeetingTime.value.endTime).getTime()
-  ) {
-    ElMessage.error('结束时间需大于开始时间！')
-    isDisabled.value = false
+// 发布失败提示
+const pubErrorVisible = ref(false)
+// 5.冲突弹框
+// 冲突弹框中的确认按钮
+const confirmConflictPub = () => {
+  // debugger
+  if (needChangeList.value.length <= 0) {
+    // 隐藏冲突弹框
+    pubConflictVisible.value = false
+    // 调用定时发布修改接口
+    updatePrePub()
   } else {
-    nomeetingPubFormVisible.value = false
-    // 调用定时发布修改接口？？？？待修改
-    // updatePrePub()
-    releaseRequest
-      .post('/IotPageEditCrtl/setPublishTime', {
-        roomID: roomId.value,
-        meetID: form.value.meetID,
-        startTime: noMeetingTime.value.startTime,
-        endTime: noMeetingTime.value.endTime,
-        publishTimeNum: 0,
-        // dataSource: 'CUS'
-        dataSource:form.value.dataSource
-      })
-      .then((res) => {
-        // debugger
-        if (res.data.repCode == 200) {
-          console.log('自定义定时发布成功:', res.data.result)
-          // 成功则展示发布成功弹框
-          pubSuccessVisible.value = true
-
-          //调用刷新列表接口
-          getMeetingList()
-        }
-      })
-      .catch((error) => {
-        // debugger
-        console.log('自定义定时发布失败:', error)
-        ElMessage.error('自定义定时发布失败！')
-      })
-    pubSuccessVisible.value = false
+    pubErrorVisible.value = true
   }
 }
-// 今天及今天之后的日期禁用
-const disabledDate = (time) => {
-  // debugger
-  // 今天之前日期禁用
-  // time.getTime() < Date.now() - 8.64e7;
-  // 今日之后的日期禁用（今天可选）
-  // console.log(time.getTime() > Date.now());
-  return  time.getTime() < Date.now() - 8.64e7
+// 冲突弹框中的取消按钮
+const cancelConflictPub = () => {
+  pubConflictVisible.value = false
 }
 
 onMounted(() => {
@@ -1036,8 +1115,8 @@ onMounted(() => {
 </script>
 <style lang="less" scoped>
 .edit {
-  width: 100%;
-  height: 100vh;
+  margin-left: 24px;
+  margin-right: 24px;
   // 1.顶部
   .top {
     height: 60px;
@@ -1061,6 +1140,9 @@ onMounted(() => {
         font-size: 14px;
         text-align: left;
         font-family: SourceHanSansSC-regular;
+      }
+      :deep(.el-date-editor.el-input) {
+        width: 196px;
       }
     }
     .selectInfo {
@@ -1090,7 +1172,8 @@ onMounted(() => {
       }
     }
     .btn {
-      width: 176px;
+      // width: 176px;
+      width: 134px;
       height: 60px;
       display: flex;
       justify-content: space-between;
@@ -1120,7 +1203,7 @@ onMounted(() => {
 
   //2. 预览及编辑区
   .content {
-    height: calc(100vh - 60px);
+    height: calc(100% - 60px);
     display: flex;
     justify-content: flex-start;
 
@@ -1153,7 +1236,7 @@ onMounted(() => {
 
     //2.右侧编辑
     .editScrollBar {
-      width: calc(100vw - 443px);
+      width: calc(100% - 443px);
       flex: none;
     }
     .editInfo {
@@ -1269,108 +1352,117 @@ onMounted(() => {
         }
       }
       // 2.2.2媒体信息
-      .mediaInfo {
-        .mediaInfo1 {
-          margin-top: 14px;
-          margin-bottom: 14px;
-          & > span:nth-child(1) {
-            height: 24px;
-            color: rgba(64, 64, 64, 1);
-            font-size: 16px;
-            font-weight: 600;
-            text-align: left;
-            font-family: PingFangSC-regular;
-          }
-          .el-switch {
-            margin-left: 8px;
-            margin-right: 10px;
-          }
-          & > span:nth-child(3) {
-            color: rgba(51, 51, 51, 1);
-            font-size: 14px;
-            text-align: left;
-            margin-right: 10px;
-            font-family: PingFangSC-regular;
-          }
-          :deep(.el-select) {
-            width: 98px !important;
-            // max-width: 198px!important;
-            height: 24px !important;
-            margin-top: -10px;
-            .el-input__wrapper {
-              box-shadow: none;
+      .mediaArea {
+        padding-bottom: 30px;
+
+        .mediaInfo {
+          .mediaInfo1 {
+            margin-top: 14px;
+            margin-bottom: 14px;
+            & > span:nth-child(1) {
+              height: 24px;
+              color: rgba(64, 64, 64, 1);
+              font-size: 16px;
+              font-weight: 600;
+              text-align: left;
+              font-family: PingFangSC-regular;
+            }
+            .el-switch {
+              margin-left: 8px;
+              margin-right: 10px;
+            }
+            & > span:nth-child(3) {
+              color: rgba(51, 51, 51, 1);
+              font-size: 14px;
+              text-align: left;
+              margin-right: 10px;
+              font-family: PingFangSC-regular;
+            }
+            :deep(.el-select) {
+              width: 98px !important;
+              // max-width: 198px!important;
+              height: 24px !important;
+              margin-top: -10px;
+              .el-input__wrapper {
+                box-shadow: none;
+              }
             }
           }
-        }
-        .mediaInfo2{
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          // 图片列表
-          ul {
+          .mediaInfo2 {
             display: flex;
-            flex-wrap: wrap;
-            margin-right: 10px;
-            padding: 0;
-            li {
-              width: 167px;
-              height: 110px;
-              list-style: none;
-              position: relative;
-              margin-right: 10px;
+            justify-content: flex-start;
+            align-items: center;
+            // 图片列表
+            ul {
               display: flex;
-              align-items: center;
-              border: 1px solid rgba(217, 217, 217, 1);
-              :deep(.el-image){
-                img {
-                  width: 167px;
-                  height: 110px;
-                  object-fit: contain;
+              flex-wrap: wrap;
+              margin-right: 10px;
+              padding: 0;
+              li {
+                width: 167px;
+                height: 110px;
+                list-style: none;
+                position: relative;
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+                border: 1px solid rgba(217, 217, 217, 1);
+                :deep(.el-image) {
+                  img {
+                    width: 167px;
+                    height: 110px;
+                    object-fit: contain;
+                  }
+                  .el-image__inner.is-loading {
+                    opacity: 1;
+                  }
+                  .el-image__placeholder {
+                    background-color: transparent;
+                  }
                 }
-              }
-              &:hover{
-                .el-upload-list__item-delete {
-                  display: block;
-                  position: absolute;
-                  left: 50%;
-                  top: 50%;
-                  transform: translate(-9%, -32%);
-                  .el-icon{
-                    font-size: 20px;
+                &:hover {
+                  .el-upload-list__item-delete {
+                    display: block;
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-9%, -32%);
+                    .el-icon {
+                      font-size: 20px;
+                    }
                   }
                 }
               }
-
             }
-          }
-          // 上传图标
-          :deep(.avatar-uploader){
-            .el-upload{
-              width: 167px;
-              height: 110px;
-              cursor: pointer;
-              position: relative;
-           
-              background-color: rgba(247, 247, 247, 1);
-              border: 1px solid rgba(217, 217, 217, 1);
+            // 上传图标
+            :deep(.avatar-uploader) {
+              .el-upload {
+                width: 167px;
+                height: 110px;
+                cursor: pointer;
+                position: relative;
 
-              &:hover {
-                border-color: var(--el-color-primary);
+                background-color: rgba(247, 247, 247, 1);
+                border: 1px solid rgba(217, 217, 217, 1);
+
+                &:hover {
+                  border-color: var(--el-color-primary);
+                }
               }
             }
-          } 
 
-          .el-icon.avatar-uploader-icon {
-            font-size: 28px;
-            color: #8c939d;
-            width: 167px;
-            height: 110px;
-            text-align: center;
+            .el-icon.avatar-uploader-icon {
+              font-size: 28px;
+              color: #8c939d;
+              width: 167px;
+              height: 110px;
+              text-align: center;
+            }
           }
-        }
-        :deep(.el-dialog) {
-          img {
-            width: 100%;
+          :deep(.el-dialog) {
+            img {
+              width: 100%;
+            }
           }
         }
       }
@@ -1390,14 +1482,33 @@ onMounted(() => {
     // min-width: 368px;
     width: 376px;
     .el-dialog__header {
+      .conflitTips1 {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        span {
+          height: 26px;
+          color: rgba(0, 0, 0, 1);
+          font-size: 18px;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
+        }
+        img {
+          width: 18px;
+          height: 18px;
+        }
+      }
     }
     .el-dialog__body {
       border-top: 1px solid rgba(239, 239, 239, 1);
       padding: 24px;
+      padding-bottom: 20px;
+      // 1.无冲突
       // 发布时间
-      .startTime {
+      .startTime,
+      .pubendTime {
         margin-bottom: 8px;
-        & > span {
+        & > span:nth-child(1) {
           width: 80px;
           height: 24px;
           display: inline-block;
@@ -1406,61 +1517,49 @@ onMounted(() => {
           text-align: left;
           font-family: SourceHanSansSC-regular;
         }
-        .el-input {
-          width: 248px !important;
+        & > span:nth-child(2) {
+          width: 115px;
+          height: 16px;
+          color: rgba(0, 0, 0, 0.65);
+          font-size: 14px;
+          text-align: left;
+          font-family: Helvetica-regular;
         }
       }
-      // 会前几小时发布选择
-      .pubStartTime {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin-bottom: 24px;
 
-        & > span {
-          width: 42px;
-          height: 20px;
-          margin-right: 8px;
-          display: inline-block;
-          color: rgba(90, 90, 90, 1);
+      // 冲突提示
+      .conflict {
+        & > div:nth-child(1) {
+          margin-bottom: 14px;
+          color: rgba(51, 51, 51, 1);
+          font-size: 16px;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
+        }
+        ul {
+          padding: 0;
+          // height: 89px;
+          li {
+            list-style: none;
+            div {
+              color: rgba(90, 90, 90, 1);
+              font-size: 14px;
+              text-align: left;
+              font-family: SourceHanSansSC-regular;
+            }
+            div:nth-child(2) {
+              margin-top: 4px;
+              margin-bottom: 4px;
+            }
+          }
+        }
+        .conflictTips2 {
+          margin-top: 10px;
+          color: rgba(245, 34, 45, 1);
+          // font-size: 12px;
           font-size: 14px;
           text-align: left;
           font-family: SourceHanSansSC-regular;
-        }
-        .el-input-number {
-          width: 108px;
-        }
-      }
-      // 结束时间
-      .pubendTime {
-        & > span {
-          width: 80px;
-          height: 24px;
-          color: rgba(51, 51, 51, 1);
-          font-size: 16px;
-          text-align: left;
-          font-family: SourceHanSansSC-regular;
-        }
-        .el-input {
-          width: 248px !important;
-        }
-      }
-
-      .el-radio-group {
-        flex-wrap: nowrap;
-        .el-radio {
-          margin-right: 8px;
-        }
-        .el-radio.el-radio--large {
-          width: 37%;
-          .el-input-number__decrease,
-          .el-input-number__increase {
-            background-color: transparent;
-            border: 1px solid rgba(239, 239, 239, 1);
-          }
-          .el-input__wrapper {
-            box-shadow: none;
-          }
         }
       }
     }

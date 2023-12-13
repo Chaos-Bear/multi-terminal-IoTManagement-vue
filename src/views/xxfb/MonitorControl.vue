@@ -30,16 +30,21 @@
       <!-- 2.2 发布屏控制 -->
       <el-scrollbar height="100%" width="100%" class="editScrollBar">
         <div class="editInfo">
-          <!-- 2.2.1会议信息 -->
+          <!-- 2.2.1手动控制 -->
           <div class="controlArea">
-            <div class="top1">发布屏控制</div>
+            <div class="top1">手动控制</div>
             <div class="controlInfo">
               <div class="controlItem" @click="isOpenOrClose">
-                <img v-if="isOpenOrCloseValue" src="@/assets/xxfb/screenshots/1.png" />
-                <img v-else src="@/assets/xxfb/screenshots/5.png" />
-                <div v-if="isOpenOrCloseValue">开机</div>
-                <div v-else>关机</div>
+                <template v-if="isOpenOrCloseValue">
+                  <img src="@/assets/xxfb/screenshots/1.png" />
+                  <div>开机</div>
+                </template>
+                <template v-else>
+                  <img src="@/assets/xxfb/screenshots/5.png" />
+                  <div>关机</div>
+                </template>
               </div>
+              <!--规则： 如果时关机状态，那么息屏/亮屏/ 截图 功能点击无效 -->
               <div
                 class="controlItem"
                 @click="isrestart"
@@ -53,10 +58,14 @@
                 @click="isbrightScreen"
                 :style="!isOpenOrCloseValue ? 'pointer-events: none;' : ''"
               >
-                <img v-if="isbrightScreenValue" src="@/assets/xxfb/screenshots/3.png" />
-                <img v-else src="@/assets/xxfb/screenshots/6.png" />
-                <div v-if="isbrightScreenValue">亮屏</div>
-                <div v-else>熄屏</div>
+                <template v-if="isbrightScreenValue">
+                  <img src="@/assets/xxfb/screenshots/3.png" />
+                  <div>亮屏</div>
+                </template>
+                <template v-else>
+                  <img src="@/assets/xxfb/screenshots/6.png" />
+                  <div>熄屏</div>
+                </template>
               </div>
               <div
                 class="controlItem"
@@ -65,12 +74,21 @@
                   !isOpenOrCloseValue || isrefreshValue == false ? 'pointer-events: none;' : ''
                 "
               >
-                <img v-if="isrefreshValue" src="@/assets/xxfb/screenshots/4.png" />
-                <img v-else src="@/assets/xxfb/screenshots/7.png" />
-                <div v-if="isrefreshValue">截图</div>
-                <div v-else>截图中...</div>
+                <template v-if="isrefreshValue">
+                  <img src="@/assets/xxfb/screenshots/4.png" />
+                  <div>截图</div>
+                </template>
+                <template v-else>
+                  <img src="@/assets/xxfb/screenshots/7.png" />
+                  <div>截图中...</div>
+                </template>
               </div>
             </div>
+          </div>
+          <!-- 2.2.1定时开、关机 -->
+          <div class="timingSwitch">
+            <div class="top1">定时开、关机</div>
+            <div class="controlInfo"></div>
           </div>
         </div>
       </el-scrollbar>
@@ -149,7 +167,6 @@ const imgSrc = ref('')
 const terminalControlRequest = (operateType) => {
   releaseRequest
     .post('/TerminalCtrl/opert', {
-      // .post('', {
       operate: operateType,
       // "openTopic": "A2-206/206-RFID-UP",
       openTopic: 'screen/test',
@@ -179,6 +196,13 @@ const terminalControlRequest = (operateType) => {
 }
 onMounted(() => {
   getIp()
+})
+
+const controlForm = ref({
+  isOpenOrCloseValue: '',
+  restartDialogVisible: '',
+  isbrightScreenValue: '',
+  isrefreshValue: ''
 })
 
 // 关机弹出框
@@ -239,19 +263,20 @@ const isbrightScreenValue = ref(true)
 const isbrightScreen = () => {
   //调用发布屏设备控制接口
   if (isbrightScreenValue.value == true) {
-    // 息屏
-    terminalControlRequest('bright_screen.bat')
-  } else {
     // 亮屏
     terminalControlRequest('wake_screen.bat')
+  } else {
+    // 息屏
+    terminalControlRequest('bright_screen.bat')
   }
   isbrightScreenValue.value = !isbrightScreenValue.value
 }
-// 4.截图
+// 4.截图----默认显示截图
 const isrefreshValue = ref(true)
 const isrefresh = () => {
-  terminalControlRequest('screenshot')
+  // 点击截图按钮，变为截图中...
   isrefreshValue.value = false
+  terminalControlRequest('screenshot')
 }
 </script>
 
@@ -368,6 +393,9 @@ const isrefresh = () => {
         text-align: left;
         font-family: PingFangSC-regular;
       }
+      // 2.1 手动控制
+      .controlArea {
+      }
       // 2.2.1会议信息
       .controlInfo {
         display: flex;
@@ -401,6 +429,9 @@ const isrefresh = () => {
             border: 1px solid rgba(24, 144, 255, 0.5);
           }
         }
+      }
+      // 2.2 定时开关机
+      .timingSwitch {
       }
     }
   }

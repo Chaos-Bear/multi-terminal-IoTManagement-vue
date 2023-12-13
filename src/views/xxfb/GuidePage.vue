@@ -3,7 +3,16 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed, nextTick, watch, onUnmounted } from 'vue'
+import {
+  ref,
+  reactive,
+  onMounted,
+  computed,
+  nextTick,
+  watch,
+  onUnmounted,
+  onBeforeUnmount
+} from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
@@ -43,7 +52,7 @@ const getPubPath = (ip) => {
       // router.push('/pub?roomName=' + roomName.value)
     })
 }
-
+// let timeout
 const getIP = (callback) => {
   let recode = {}
   let RTCPeerConnection =
@@ -105,6 +114,10 @@ onMounted(() => {
 
     getPubPath(ip)
   })
+})
+
+onBeforeUnmount(() => {
+  // clearTimeout(timeout)
 })
 </script>
 

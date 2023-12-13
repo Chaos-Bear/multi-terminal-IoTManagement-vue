@@ -67,7 +67,12 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="会议室名称" prop="name">
-                <el-input style="width: 80%" v-model="searchform.name" placeholder="请输入会议室名称"/>
+                <el-input
+                  style="width: 80%"
+                  v-model="searchform.name"
+                  placeholder="请输入会议室名称"
+                  maxlength="50"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -162,101 +167,118 @@
       <img src="@/assets/index/deviceList/refresh.png" @click="refresh()" />
     </div>
     <!-- ----------新增/修改会议室弹框 -->
-    <el-dialog
-      :title="createForm.roomID ? '编辑会议室' : '新增会议室'"
-      v-model="meetingVisual"
-      style="width: 450px"
-    >
-      <el-form
-        :model="createForm"
-        label-width="100px"
-        ref="createFormRef"
-        :rules="createFormRules"
-        label-position="left"
+    <div v-if="meetingVisual">
+      <el-dialog
+        :title="createForm.roomID ? '编辑会议室' : '新增会议室'"
+        v-model="meetingVisual"
+        style="width: 450px"
+        :before-close="createFormClose"
       >
-        <el-form-item label="会议室名称" prop="name">
-          <el-input v-model="createForm.name" placeholder="请输入会议室名称例如:A2-110" :disabled="createForm.roomID ? true : false"/>
-        </el-form-item>
-        <el-form-item label="地点" prop="address">
-          <el-select v-model="createForm.address" style="width: 100%" placeholder="选择地点">
-            <el-option
-              v-for="item in addressOptions"
-              :key="item.order"
-              :label="item.address"
-              :value="item.address"
-              :disabled="item.disabled"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="楼层" prop="floor">
-          <el-select v-model="createForm.floor" style="width: 100%" placeholder="选择楼层">
-            <el-option
-              v-for="item in floorOptions"
-              :key="item.order"
-              :label="item.floor"
-              :value="item.floor"
-              :disabled="item.disabled"
-            />
-          </el-select>
-        </el-form-item>
-        <!--*号 class="is-required"  prop="imageUrl"-->
-        <el-form-item label="会议室图片"  prop="imageUrl" class="is-required">
-          <!-- action:要上传的地址   :show-file-list是否展示上传列表 :on-change上传文件列表改变时 :auto-upload 是否自动上传 false为手动上传  -->
-          <div style="display: flex; align-items: center">
-            <div v-if="imageUrl" style="position: relative" class="uploadImgCont">
-              <img :src="imageUrl" class="avatar" />
-              <div class="uploadImg">
-                <el-icon @click="del"><Delete/></el-icon>
-              </div>
-            </div>
-            <el-upload
-              class="avatar-uploader"
-              :auto-upload="false"
-              :limit="1"
-              :show-file-list="false"
-              :before-upload="beforeAvatarUpload"
-              :http-request="uploadFlie"
-              accept=".jpeg,.jpg,.png,.gif"
-              v-else
-            >
-              <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
-            </el-upload>
-            <div class="uploadTip" v-if="!imageUrl">仅支持jpeg/jpg/png/gif格式上传!</div>
-          </div>
-        </el-form-item>
-        <el-form-item>
-          <!-- 修改弹窗 -->
-          <el-button v-if="createForm.roomID" type="primary" @click="saveMeetingModify"
-            >确 定</el-button
+        <el-form
+          :model="createForm"
+          label-width="100px"
+          ref="createFormRef"
+          :rules="createFormRules"
+          label-position="left"
+        >
+          <el-form-item
+            label="会议室名称"
+            prop="name"
+            :class="[createForm.roomID ? '' : 'is-required']"
           >
-          <!-- 新增弹窗 -->
-          <el-button v-else type="primary" @click="addMeeting">确 定</el-button>
-          <el-button @click="meetingVisual = false">取 消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+            <el-input
+              v-model="createForm.name"
+              placeholder="请输入会议室名称例如:A2-110"
+              :disabled="createForm.roomID ? true : false"
+            />
+          </el-form-item>
+          <el-form-item label="地点" prop="address">
+            <el-select v-model="createForm.address" style="width: 100%" placeholder="选择地点">
+              <el-option
+                v-for="item in addressOptions.slice(1)"
+                :key="item.order"
+                :label="item.address"
+                :value="item.address"
+                :disabled="item.disabled"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="楼层" prop="floor">
+            <el-select v-model="createForm.floor" style="width: 100%" placeholder="选择楼层">
+              <el-option
+                v-for="item in floorOptions.slice(1)"
+                :key="item.order"
+                :label="item.floor"
+                :value="item.floor"
+                :disabled="item.disabled"
+              />
+            </el-select>
+          </el-form-item>
+          <!--*号 class="is-required"  prop="imageUrl"-->
+          <el-form-item label="会议室图片" prop="imageUrl" class="is-required">
+            <!-- action:要上传的地址   :show-file-list是否展示上传列表 :on-change上传文件列表改变时 :auto-upload 是否自动上传 false为手动上传  -->
+            <div style="display: flex; align-items: center">
+              <div v-if="imageUrl" style="position: relative" class="uploadImgCont">
+                <img :src="imageUrl" class="avatar" />
+                <div class="uploadImg">
+                  <el-icon @click="del"><Delete /></el-icon>
+                </div>
+              </div>
+              <el-upload
+                class="avatar-uploader"
+                :auto-upload="false"
+                :limit="1"
+                :show-file-list="false"
+                :on-change="beforeAvatarUpload"
+                :http-request="() => {}"
+                accept=".jpeg,.jpg,.png,.gif"
+                v-else
+              >
+                <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
+              </el-upload>
+              <div class="uploadTip" v-if="!imageUrl">仅支持jpeg/jpg/png/gif格式上传!</div>
+            </div>
+          </el-form-item>
+          <el-form-item>
+            <!-- 修改弹窗 -->
+            <el-button v-if="createForm.roomID" type="primary" @click="saveMeetingModify"
+              >确 定</el-button
+            >
+            <!-- 新增弹窗 -->
+            <el-button v-else type="primary" @click="addMeeting">确 定</el-button>
+            <el-button @click="createFormClose">取 消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, nextTick } from 'vue'
 import { ElMessage, valueEquals, ElMessageBox, ElConfigProvider } from 'element-plus'
 import { Plus, Delete } from '@element-plus/icons-vue'
 const router = useRouter()
 // import axios from 'axios'
 
-import { request} from '@/utils/server.js'
+import { releaseRequest } from '@/utils/server.js'
 
 // 会议室配置信息
 var floorOptions = ref([])
 var addressOptions = ref([])
 
 const getFloorandAddList = () => {
-  request
+  releaseRequest
     .post('/IOTRoomCrtl/queryIotFloorAddr')
     .then((res) => {
       // console.log("楼层及地点列表获取成功",res.data);
+      // debugger
+      // 楼层中添加全部
+      res.data.iotFloorList.unshift({ floor: '全部', order: 0 })
       floorOptions.value = res.data.iotFloorList
+
+      // 地点中添加全部
+      res.data.iotAddresseList.unshift({ address: '全部', order: 0 })
       addressOptions.value = res.data.iotAddresseList
     })
     .catch((error) => {
@@ -265,7 +287,7 @@ const getFloorandAddList = () => {
 }
 // 会议室列表接口
 const getList = () => {
-  request
+  releaseRequest
     .post('/IOTRoomCrtl/queryIotRoomList', {
       floor: searchform.floor,
       roomAddr: searchform.address,
@@ -305,7 +327,7 @@ const postList = () => {
   // 二进制文件上传
   formData.append('file', createForm.img)
   // debugger
-  request
+  releaseRequest
     .post('/IOTRoomCrtl/saveIOTRoomInfo', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -313,18 +335,21 @@ const postList = () => {
     })
     .then((res) => {
       console.log('会议室新增列表成功:', res.data)
-      meetingVisual.value = false
+
+      createFormClose()
+      isLocked.value = false
       //debugger
       getList()
     })
     .catch((error) => {
       // console.log('会议室新增列表失败:', error)
+      isLocked.value = false
     })
 }
 // 会议室列表删除接口
 const roomID = ref('')
 const deleteList = () => {
-  request
+  releaseRequest
     .post('/IOTRoomCrtl/deleteIOTMTInfo', {
       roomID: roomID.value
     })
@@ -364,7 +389,7 @@ const queryFormRef = ref()
 const searchform = reactive({
   name: '',
   floor: '2F',
-  address: '会议大厅'
+  address: '会议中心'
 })
 // 查询按钮
 const searchInfo = () => {
@@ -376,7 +401,7 @@ const searchInfo = () => {
 const resetQuery = () => {
   searchform.name = ''
   searchform.floor = '2F'
-  searchform.address = '会议大厅'
+  searchform.address = '会议中心'
   // 发get请求，重新渲染会议列表
   getList()
 }
@@ -392,36 +417,41 @@ const createForm = reactive({
   img: '',
   roomID: ''
 })
-
+// 新增按钮
 const addMeetingItem = () => {
-  createForm.name = ''
-  createForm.address = ''
-  createForm.floor = ''
-  createForm.roomID = ''
-
-  imageUrl.value = ''
-  meetingVisual.value = true
-  // debugger
-  if(createFormRef.value){
-    createFormRef.value.clearValidate()
+  createFormRules.value = {
+    name: [{ validator: validateName, trigger: 'blur' }],
+    address: [{ required: true, message: '请选择地点', trigger: 'blur' }],
+    floor: [{ required: true, message: '请选择楼层', trigger: 'blur' }],
+    imageUrl: [{ validator: checkImg, trigger: 'blur' }]
   }
-  
+
+  meetingVisual.value = true
+  nextTick(() => {
+    createForm.name = ''
+    createForm.address = '会议中心'
+    createForm.floor = '2F'
+    createForm.roomID = ''
+
+    imageUrl.value = ''
+  })
 }
 // 新增-----图片上传
 const imageUrl = ref('')
 
 const beforeAvatarUpload = (rawFile) => {
+  // debugger
   // if (rawFile.type !== 'image/jpeg') {
   //   ElMessage.error('Avatar picture must be JPG format!')
   //   return false
   // } else
-  if (rawFile.size / 1024 / 1024 > 1) {
-    ElMessage.error('上传图片尺寸不能超过 1MB!')
+  if (rawFile.size / 1024 / 1024 > 10) {
+    ElMessage.error('上传图片尺寸不能超过 10MB!')
     return false
   }
 
-  imageUrl.value = URL.createObjectURL(rawFile)
-  createForm.img = rawFile
+  imageUrl.value = URL.createObjectURL(rawFile.raw)
+  createForm.img = rawFile.raw
   return true
 }
 
@@ -444,36 +474,75 @@ const checkImg = (rule, value, callback) => {
 }
 // 组件实例 及校验
 const createFormRef = ref(null)
-// ,max:10 ,min:4
+
+// 会议名称校验
 const validateName = (rule, value, callback) => {
-  // debugger
-  const reg = /[a-zA-Z0-9\-]{1}/g
-  if (!reg.test(value)) {
-    return callback(new Error('请输入正确的格式:例如A2-110'))
-  } else {
-    callback()
+  // 新增会议室名称校验
+  if (value === '') {
+    return callback(new Error('请输入会议室名称'))
+  }
+  const reg = /[^\w-]/g
+
+  if (reg.test(value)) {
+    return callback(new Error('只允许输入字母，数字，-'))
+  }
+  if (value.length > 50) {
+    return callback(new Error('长度不能超过50个字符'))
+  }
+
+  var meetingNameList = []
+  meetingList.forEach((item) => {
+    meetingNameList.push(item.roomName)
+  })
+  if (meetingNameList.indexOf(value) > -1) {
+    return callback(new Error('该会议室已存在，请重新输入'))
+  }
+  return callback()
+}
+//校验规则
+const createFormRules = ref({})
+
+//  新增会议信息 弹框中 的确定按钮
+function debounce(func, wait, immediate) {
+  let timeout
+  return function () {
+    let context = this
+    let args = arguments
+    if (timeout) {
+      clearTimeout(timeout)
+    }
+    if (immediate) {
+      let callNow = !timeout
+      timeout = setTimeout(() => {
+        timeout = null
+      }, wait)
+      if (callNow) {
+        typeof func === 'function' && func.apply(context, args)
+      }
+    } else {
+      timeout = setTimeout(() => {
+        typeof func === 'function' && func.apply(context, args)
+      }, wait)
+    }
   }
 }
-const createFormRules = reactive({
-  name: [
-    { required: true, message: '请输入会议室名称', trigger: 'blur' },
-    { validator: validateName, trigger: 'blur' }
-  ],
-  address: [{ required: true, message: '请选择地点', trigger: 'blur' }],
-  floor: [{ required: true, message: '请选择楼层', trigger: 'blur' }],
-  imageUrl: [{ validator: checkImg, trigger: 'blur' }]
-})
-//  新增会议信息 弹框中 的确定按钮
-const addMeeting = () => {
+const isLocked = ref(false)
+const addMeetingFn = () => {
+  if (isLocked.value) {
+    return
+  }
+  isLocked.value = true
   //校验
   createFormRef.value.validate((valid) => {
     if (valid) {
       postList()
     } else {
       console.log('校验错误')
+      isLocked.value = false
     }
   })
 }
+const addMeeting = debounce(addMeetingFn, 300, false)
 
 // 3.会议信息
 const meetingList = reactive([
@@ -490,47 +559,25 @@ const gotoMeetingUserList = (item) => {
 
 // ----------------修改会议信息弹框
 const meetingVisual = ref(false)
-// 修改会议信息涉及的字段
-
+// 列表中的编辑按钮
 const meetingModify = (obj) => {
   // debugger
   // console.log("333333333333333333333",createFormRef.value)
-
-  if (createFormRef.value != null) {
-    createFormRef.value.clearValidate()
+  createFormRules.value = {
+    address: [{ required: true, message: '请选择地点', trigger: 'blur' }],
+    floor: [{ required: true, message: '请选择楼层', trigger: 'blur' }],
+    imageUrl: [{ validator: checkImg, trigger: 'blur' }]
   }
 
-  // debugger
-  createForm.roomID = obj.roomID
-  createForm.name = obj.roomName
-  createForm.address = obj.roomAddr
-  createForm.floor = obj.floor
-  // createForm.img='data:image/jpg;base64,'+obj.roomImg ;
-  imageUrl.value = 'data:image/jpg;base64,' + obj.roomImg
-  // Object.assign(formModify, obj)
-
   meetingVisual.value = true
-}
-// file 转换为 base64
-
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    // 创建一个新的 FileReader 对象
-    const reader = new FileReader()
-    // 读取 File 对象
-    reader.readAsDataURL(file)
-    // 加载完成后
-    reader.onload = function () {
-      // 将读取的数据转换为 base64 编码的字符串
-      const base64String = reader.result.split(',')[1]
-      // 解析为 Promise 对象，并返回 base64 编码的字符串
-      resolve(base64String)
-    }
-
-    // 加载失败时
-    reader.onerror = function () {
-      reject(new Error('Failed to load file'))
-    }
+  nextTick(() => {
+    createForm.roomID = obj.roomID
+    createForm.name = obj.roomName
+    createForm.address = obj.roomAddr
+    createForm.floor = obj.floor
+    // createForm.img='data:image/jpg;base64,'+obj.roomImg ;
+    imageUrl.value = 'data:image/jpg;base64,' + obj.roomImg
+    // Object.assign(formModify, obj)
   })
 }
 
@@ -555,17 +602,15 @@ const base64ToFile = (base64) => {
   })
 }
 
-// handleSuccess(sign) {
-//      // sign是base64文件
-//       const file = this.base64ToFile(sign);
-//       if (!file.url) {
-//         file.url = URL.createObjectURL(file);
-//       }
-//     },
+// 该方法用于清除新增和编辑弹框中的校验
+const createFormClose = () => {
+  if (createFormRef.value) {
+    createFormRef.value.resetFields()
+  }
+  meetingVisual.value = false
+}
 
-// 修改会议信息弹框双向数据绑定
-const meetingModifyVisual = ref(false)
-// 保存修改
+// 编辑弹框中的保存按钮
 const saveMeetingModify = () => {
   //校验
   createFormRef.value.validate((valid) => {
@@ -594,7 +639,7 @@ const saveMeetingModify = () => {
         })
         .then((res) => {
           console.log('会议室编辑成功:', res.data)
-          meetingVisual.value = false
+          createFormClose()
           //debugger
           getList()
         })
@@ -653,7 +698,6 @@ const refresh = () => {
   //重新发请求，渲染设备列表
   getList()
 }
-
 </script>
 <style lang="less" scoped>
 .home {
@@ -772,16 +816,22 @@ const refresh = () => {
           display: flex;
           flex-direction: column;
           & > div {
-            line-height: 38px;
+            line-height: 24px;
+            margin-top: 14px;
             padding-left: 24px;
             padding-right: 24px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             .roomName {
+              width: 105px;
               height: 24px;
               font-size: 16px;
               text-align: left;
               font-family: SourceHanSansSC-regular;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
             & > div:nth-child(2) {
               width: 28px;
@@ -795,7 +845,7 @@ const refresh = () => {
           }
           .detailInfo {
             // height: 20px;
-            margin-top: 12px;
+            margin-top: 8px;
             color: rgba(154, 154, 154, 1);
             font-size: 14px;
             text-align: left;
@@ -807,7 +857,7 @@ const refresh = () => {
         .custom_option_img2 {
           width: 16px;
           height: 16px;
-          margin: 10px 2px 0 2px;
+          margin: 0px 2px 0 2px;
           cursor: pointer;
           display: none;
         }
@@ -841,21 +891,24 @@ const refresh = () => {
     justify-content: flex-end;
     flex: none;
     //上一页
-    :deep(.el-pagination){
-      .btn-prev,.btn-next{
+    :deep(.el-pagination) {
+      .btn-prev,
+      .btn-next {
         border: 1px solid rgba(220, 220, 220, 1);
       }
-      .el-pager li{
+      .el-pager li {
         width: 32px;
         height: 32px;
         margin-left: 8px;
         margin-right: 8px;
         border-radius: 3px;
-        background-color: rgba(79, 168, 249, 1)!important;
+      }
+      .el-pager li.is-active {
         color: rgba(255, 255, 255, 1);
+        background-color: rgba(79, 168, 249, 1) !important;
       }
     }
-    
+
     .el-button {
       width: 48px;
       height: 32px;

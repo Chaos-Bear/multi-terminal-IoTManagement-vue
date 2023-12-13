@@ -253,8 +253,8 @@
     </div>
     <div class="div1">
       <div>
-        <img src="@/assets/xxfb/path/200.png" />
-        <span>温馨提示：请说导航到xxx会议室或说xxx会议室怎么走。</span>
+        <!-- <img src="@/assets/xxfb/path/200.png" />
+        <span>温馨提示：请说导航到xxx会议室或说xxx会议室怎么走。</span> -->
       </div>
       <img src="@/assets/xxfb/path/1.png" />
     </div>
@@ -441,7 +441,9 @@ onMounted(() => {
       if ($('.line').length == 1) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='startimg' src='" +
+            startImg +
+            "' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][0][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][0][1] - 15) +
@@ -450,7 +452,9 @@ onMounted(() => {
         // 如果是1条线
         re($('.line').eq(0), function () {
           $('#div2').append(
-            "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+            "<img class='endimg' src='" +
+              endImg +
+              "' style='position:absolute;width:38px;height:38px;left:" +
               (CoordPoint[xy][i - 1][0] - 15) +
               'px;top:' +
               (CoordPoint[xy][i - 1][1] - 15) +
@@ -482,7 +486,9 @@ onMounted(() => {
       } else if ($('.line').length == 2) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='startimg' src='" +
+            startImg +
+            "' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][0][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][0][1] - 15) +
@@ -492,7 +498,9 @@ onMounted(() => {
         re($('.line').eq(0), function () {
           re($('.line').eq(1), function () {
             $('#div2').append(
-              "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+              "<img class='endimg' src='" +
+                endImg +
+                "' style='position:absolute;width:38px;height:38px;left:" +
                 (CoordPoint[xy][i - 1][0] - 15) +
                 'px;top:' +
                 (CoordPoint[xy][i - 1][1] - 15) +
@@ -525,7 +533,9 @@ onMounted(() => {
       } else if ($('.line').length == 3) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='startimg' src='" +
+            startImg +
+            "' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][0][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][0][1] - 15) +
@@ -536,7 +546,9 @@ onMounted(() => {
           re($('.line').eq(1), function () {
             re($('.line').eq(2), function () {
               $('#div2').append(
-                "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+                "<img class='endimg' src='" +
+                  endImg +
+                  "' style='position:absolute;width:38px;height:38px;left:" +
                   (CoordPoint[xy][i - 1][0] - 18) +
                   'px;top:' +
                   (CoordPoint[xy][i - 1][1] - 15) +
@@ -570,7 +582,9 @@ onMounted(() => {
       } else if ($('.line').length == 4) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='startimg' src='" +
+            startImg +
+            "' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][0][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][0][1] - 15) +
@@ -583,7 +597,9 @@ onMounted(() => {
               re($('.line').eq(3), function () {
                 //  debugger
                 $('#div2').append(
-                  "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+                  "<img class='endimg' src='" +
+                    endImg +
+                    "' style='position:absolute;width:38px;height:38px;left:" +
                     (CoordPoint[xy][i - 1][0] - 15) +
                     'px;top:' +
                     (CoordPoint[xy][i - 1][1] - 15) +
@@ -618,7 +634,9 @@ onMounted(() => {
       } else if ($('.line').length == 5) {
         document.getElementById('zuobiaodian').style.opacity = '0'
         $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='startimg' src='" +
+            startImg +
+            "' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][0][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][0][1] - 15) +
@@ -631,7 +649,9 @@ onMounted(() => {
               re($('.line').eq(3), function () {
                 re($('.line').eq(4), function () {
                   $('#div2').append(
-                    "<img class'endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+                    "<img class'endimg' src='" +
+                      endImg +
+                      "' style='position:absolute;width:38px;height:38px;left:" +
                       (CoordPoint[xy][i - 1][0] - 15) +
                       'px;top:' +
                       (CoordPoint[xy][i - 1][1] - 15) +

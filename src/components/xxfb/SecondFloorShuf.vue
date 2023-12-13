@@ -66,20 +66,6 @@
                 <div>
                   <div>
                     <div
-                      id="A2222"
-                      v-if="props.roomName == 'A2-222'"
-                      :class="[props.roomName == 'A2-222' ? 'active-startA2222' : '']"
-                    >
-                      A2-222
-                    </div>
-                    <div id="A2222" v-else data-roomName="A2222" @click="dataRoomClick('A2222')">
-                      A2-222
-                    </div>
-                    <!-- 横 双排门 -->
-                    <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
-                  </div>
-                  <div>
-                    <div
                       id="A2223"
                       v-if="props.roomName == 'A2-223'"
                       :class="[props.roomName == 'A2-223' ? 'active-startA2223' : '']"
@@ -88,6 +74,20 @@
                     </div>
                     <div id="A2223" v-else data-roomName="A2223" @click="dataRoomClick('A2223')">
                       A2-223
+                    </div>
+                    <!-- 横 双排门 -->
+                    <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
+                  </div>
+                  <div>
+                    <div
+                      id="A2222"
+                      v-if="props.roomName == 'A2-222'"
+                      :class="[props.roomName == 'A2-222' ? 'active-startA2222' : '']"
+                    >
+                      A2-222
+                    </div>
+                    <div id="A2222" v-else data-roomName="A2222" @click="dataRoomClick('A2222')">
+                      A2-222
                     </div>
                     <!-- 横 双排门 -->
                     <img class="doubledoor" src="@/assets/xxfb/path/6.png" />
@@ -216,11 +216,11 @@
                 <div>
                   <div>
                     <!-- 需改图片 -->
-                    <img src="@/assets/xxfb/path/iconPark-girl.png" />
+                    <img src="@/assets/xxfb/path/iconPark-boy.png" />
                   </div>
                   <div>
                     <!-- 需改图片 -->
-                    <img src="@/assets/xxfb/path/iconPark-boy.png" />
+                    <img src="@/assets/xxfb/path/iconPark-girl.png" />
                   </div>
                 </div>
               </div>
@@ -300,16 +300,16 @@
               <div class="right4-2">
                 <div>
                   <div>
-                    <div id="A2207" data-roomName="A2207" @click="dataRoomClick('A2207')">
-                      A2-207
+                    <div id="A2208" data-roomName="A2208" @click="dataRoomClick('A2208')">
+                      A2-208
                     </div>
                     <!-- 单扇门 下  上 -->
                     <img class="door" src="@/assets/xxfb/path/4.png" />
                     <img class="door" src="@/assets/xxfb/path/3.png " />
                   </div>
                   <div>
-                    <div id="A2208" data-roomName="A2208" @click="dataRoomClick('A2208')">
-                      A2-208
+                    <div id="A2207" data-roomName="A2207" @click="dataRoomClick('A2207')">
+                      A2-207
                     </div>
                     <!-- 单扇门 下  上 -->
                     <img class="door" src="@/assets/xxfb/path/2.png" />
@@ -373,8 +373,12 @@
 
 <script setup>
 // 二楼竖反：204、205、215、216、222、223   //待修改
-import { ref, reactive, watch, computed, onMounted, nextTick } from 'vue'
+import { ref, reactive, watch, computed, onMounted, nextTick, onBeforeUnmount } from 'vue'
 import $ from 'jquery'
+
+import startImg from '@/assets/xxfb/path/start.png'
+import endImg from '@/assets/xxfb/path/end.png'
+
 const props = defineProps({
   roomName: {
     type: String,
@@ -415,13 +419,13 @@ const getzbdStyle = computed(() => {
       top: '448px'
     }
   }
-  if (props.roomName == 'A2-222') {
+  if (props.roomName == 'A2-223') {
     return {
       left: '94px',
       top: '225px'
     }
   }
-  if (props.roomName == 'A2-223') {
+  if (props.roomName == 'A2-222') {
     return {
       left: '198px',
       top: '225px'
@@ -432,11 +436,11 @@ const getzbdStyle = computed(() => {
 var CoordPoint = {
   // A2-205会议室
   // 一区
-  A2205_A2208: [
+  A2205_A2207: [
     [282, 802],
     [238, 802]
   ],
-  A2205_A2207: [
+  A2205_A2208: [
     [282, 802],
     [184, 802]
   ],
@@ -527,7 +531,7 @@ var CoordPoint = {
   ],
 
   //4区
-  A2205_A2223: [
+  A2205_A2222: [
     [282, 802],
     [40, 802],
     [40, 802],
@@ -535,7 +539,7 @@ var CoordPoint = {
     [40, 235],
     [257, 235]
   ],
-  A2205_A2222: [
+  A2205_A2223: [
     [282, 802],
     [40, 802],
     [40, 802],
@@ -576,11 +580,11 @@ var CoordPoint = {
 
   // A2-204---------------
   // 一区
-  A2204_A2208: [
+  A2204_A2207: [
     [150, 802],
     [238, 802]
   ],
-  A2204_A2207: [
+  A2204_A2208: [
     [150, 802],
     [184, 802]
   ],
@@ -671,7 +675,7 @@ var CoordPoint = {
   ],
 
   //4区
-  A2204_A2223: [
+  A2204_A2222: [
     [150, 802],
     [40, 802],
     [40, 802],
@@ -679,7 +683,7 @@ var CoordPoint = {
     [40, 235],
     [257, 235]
   ],
-  A2204_A2222: [
+  A2204_A2223: [
     [150, 802],
     [40, 802],
     [40, 802],
@@ -720,7 +724,7 @@ var CoordPoint = {
 
   // A2-215-----
   // 一区
-  A2215_A2208: [
+  A2215_A2207: [
     [225, 458],
     [40, 458],
     [40, 458],
@@ -728,7 +732,7 @@ var CoordPoint = {
     [40, 802],
     [242, 802]
   ],
-  A2215_A2207: [
+  A2215_A2208: [
     [225, 458],
     [40, 458],
     [40, 458],
@@ -837,7 +841,7 @@ var CoordPoint = {
   ],
 
   //4区
-  A2215_A2223: [
+  A2215_A2222: [
     [225, 458],
     [40, 458],
     [40, 458],
@@ -845,7 +849,7 @@ var CoordPoint = {
     [40, 235],
     [257, 235]
   ],
-  A2215_A2222: [
+  A2215_A2223: [
     [225, 458],
     [40, 458],
     [40, 458],
@@ -888,7 +892,7 @@ var CoordPoint = {
 
   // A2-216---------------
   // 一区
-  A2216_A2208: [
+  A2216_A2207: [
     [148, 458],
     [40, 458],
     [40, 458],
@@ -896,7 +900,7 @@ var CoordPoint = {
     [40, 802],
     [242, 802]
   ],
-  A2216_A2207: [
+  A2216_A2208: [
     [148, 458],
     [40, 458],
     [40, 458],
@@ -1001,7 +1005,7 @@ var CoordPoint = {
   ],
 
   //4区
-  A2216_A2223: [
+  A2216_A2222: [
     [148, 458],
     [40, 458],
     [40, 458],
@@ -1009,7 +1013,7 @@ var CoordPoint = {
     [40, 235],
     [257, 235]
   ],
-  A2216_A2222: [
+  A2216_A2223: [
     [148, 458],
     [40, 458],
     [40, 458],
@@ -1052,7 +1056,7 @@ var CoordPoint = {
 
   // A2-222
   // 一区
-  A2222_A2208: [
+  A2223_A2207: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1060,7 +1064,7 @@ var CoordPoint = {
     [34, 800],
     [242, 800]
   ],
-  A2222_A2207: [
+  A2223_A2208: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1068,13 +1072,13 @@ var CoordPoint = {
     [34, 800],
     [140, 800]
   ],
-  A2222_A2211: [
+  A2223_A2211: [
     [150, 234],
     [455, 234],
     [450, 234],
     [450, 913]
   ],
-  A2222_A2206: [
+  A2223_A2206: [
     [150, 234],
     [455, 234],
     [450, 234],
@@ -1083,7 +1087,7 @@ var CoordPoint = {
     [350, 800]
   ],
   //二区
-  A2222_A2204: [
+  A2223_A2204: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1091,7 +1095,7 @@ var CoordPoint = {
     [34, 800],
     [152, 800]
   ],
-  A2222_A2205: [
+  A2223_A2205: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1099,7 +1103,7 @@ var CoordPoint = {
     [34, 800],
     [230, 800]
   ],
-  A2222_A2202: [
+  A2223_A2202: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1107,7 +1111,7 @@ var CoordPoint = {
     [34, 576],
     [154, 576]
   ],
-  A2222_A2201: [
+  A2223_A2201: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1115,14 +1119,14 @@ var CoordPoint = {
     [34, 576],
     [226, 576]
   ],
-  A2222_A2212: [
+  A2223_A2212: [
     [150, 234],
     [455, 234],
     [450, 234],
     [450, 684]
   ],
   // //3区
-  A2222_A2216: [
+  A2223_A2216: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1130,7 +1134,7 @@ var CoordPoint = {
     [34, 464],
     [154, 464]
   ],
-  A2222_A2215: [
+  A2223_A2215: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1138,38 +1142,41 @@ var CoordPoint = {
     [34, 464],
     [230, 464]
   ],
-  A2222_A2229: [
+  A2223_A2229: [
     [150, 234],
     [455, 234],
     [450, 234],
     [450, 356]
   ],
-  A2222_A2219: [
+  A2223_A2219: [
     [150, 234],
     [152, 234]
   ],
-  A2222_A2220: [
+  A2223_A2220: [
     [150, 234],
     [232, 234]
   ],
-  A2222_A2221: [
+  A2223_A2221: [
     [150, 234],
     [378, 234]
   ],
 
   //4区
-  A2222_A2223: [
+  A2223_A2223: [
     [150, 234],
     [252, 234]
   ],
-  A2222_A2222: [],
-  A2222_A2228: [
+  A2223_A2222: [
+    [150, 234],
+    [252, 234]
+  ],
+  A2223_A2228: [
     [150, 234],
     [455, 234],
     [450, 234],
     [450, 176]
   ],
-  A2222_A2225: [
+  A2223_A2225: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1177,7 +1184,7 @@ var CoordPoint = {
     [34, 16],
     [146, 16]
   ],
-  A2222_A2226: [
+  A2223_A2226: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1185,7 +1192,7 @@ var CoordPoint = {
     [34, 16],
     [210, 16]
   ],
-  A2222_A2227: [
+  A2223_A2227: [
     [150, 234],
     [34, 234],
     [34, 234],
@@ -1196,7 +1203,7 @@ var CoordPoint = {
 
   // A2-223
   // 一区
-  A2223_A2208: [
+  A2222_A2207: [
     [252, 234],
     [34, 234],
     [34, 234],
@@ -1204,7 +1211,7 @@ var CoordPoint = {
     [34, 800],
     [240, 800]
   ],
-  A2223_A2207: [
+  A2222_A2208: [
     [252, 234],
     [34, 234],
     [34, 234],
@@ -1212,13 +1219,13 @@ var CoordPoint = {
     [34, 800],
     [140, 800]
   ],
-  A2223_A2211: [
+  A2222_A2211: [
     [252, 234],
     [455, 234],
     [450, 234],
     [450, 913]
   ],
-  A2223_A2206: [
+  A2222_A2206: [
     [252, 234],
     [455, 234],
     [450, 234],
@@ -1227,7 +1234,7 @@ var CoordPoint = {
     [350, 800]
   ],
   //二区
-  A2223_A2204: [
+  A2222_A2204: [
     [252, 234],
     [34, 234],
     [34, 234],
@@ -1235,7 +1242,7 @@ var CoordPoint = {
     [34, 800],
     [150, 800]
   ],
-  A2223_A2205: [
+  A2222_A2205: [
     [252, 234],
     [34, 234],
     [34, 234],
@@ -1243,7 +1250,7 @@ var CoordPoint = {
     [34, 800],
     [230, 800]
   ],
-  A2223_A2202: [
+  A2222_A2202: [
     [252, 234],
     [34, 234],
     [34, 234],
@@ -1251,7 +1258,7 @@ var CoordPoint = {
     [34, 576],
     [154, 576]
   ],
-  A2223_A2201: [
+  A2222_A2201: [
     [252, 234],
     [34, 234],
     [34, 234],
@@ -1259,14 +1266,14 @@ var CoordPoint = {
     [34, 576],
     [226, 576]
   ],
-  A2223_A2212: [
+  A2222_A2212: [
     [252, 234],
     [455, 234],
     [450, 234],
     [450, 684]
   ],
   // //3区
-  A2223_A2216: [
+  A2222_A2216: [
     [252, 234],
     [34, 234],
     [34, 234],
@@ -1274,7 +1281,7 @@ var CoordPoint = {
     [34, 464],
     [154, 464]
   ],
-  A2223_A2215: [
+  A2222_A2215: [
     [252, 234],
     [34, 234],
     [34, 234],
@@ -1282,45 +1289,38 @@ var CoordPoint = {
     [34, 464],
     [226, 464]
   ],
-  A2223_A2229: [
+  A2222_A2229: [
     [252, 234],
     [455, 234],
     [450, 234],
     [450, 356]
   ],
-  A2223_A2219: [
+  A2222_A2219: [
     [252, 234],
     [152, 234]
   ],
-  A2223_A2220: [
+  A2222_A2220: [
     [252, 234],
     [232, 234]
   ],
-  A2223_A2221: [
+  A2222_A2221: [
     [252, 234],
     [378, 234]
   ],
 
   //4区
-  A2223_A2223: [
-    [252, 234],
-    [34, 458],
-    [34, 458],
-    [34, 234],
-    [34, 234],
-    [252, 234]
-  ],
-  A2223_A2222: [
+  A2222_A2223: [
     [252, 234],
     [150, 234]
   ],
-  A2223_A2228: [
+  A2222_A2222: [],
+  A2222_A2228: [
     [252, 234],
     [455, 234],
     [450, 234],
     [450, 176]
   ],
-  A2223_A2225: [
+  A2222_A2225: [
     [252, 234],
     [34, 234],
     [34, 234],
@@ -1328,7 +1328,7 @@ var CoordPoint = {
     [34, 16],
     [146, 16]
   ],
-  A2223_A2226: [
+  A2222_A2226: [
     [252, 234],
     [34, 234],
     [34, 234],
@@ -1336,7 +1336,7 @@ var CoordPoint = {
     [34, 16],
     [210, 16]
   ],
-  A2223_A2227: [
+  A2222_A2227: [
     [252, 234],
     [455, 234],
     [450, 234],
@@ -1370,10 +1370,12 @@ function scrollSwiper(ele) {
 }
 
 function start_end(xy, end) {
-  if (props.form.imgShow == 2) {
-    return
-  }
+  // debugger
+  // if (props.form.imgShow == 2) {
+  //   return
+  // }
   $('#div2').css('zoom', 1)
+  type = 3
 
   // 清除放大缩小滚动条定时器
   clearInterval(scrolltimer)
@@ -1392,7 +1394,8 @@ function start_end(xy, end) {
   $('.line').remove()
   $('.endimg').remove()
   $('.startimg').remove()
-  document.getElementById('zuobiaodian').style.opacity = '1'
+  var zuobiaodian = document.getElementById('zuobiaodian')
+  zuobiaodian && (zuobiaodian.style.opacity = '1')
 
   clearTimeout($('body').attr('timeout'))
   for (var i = 0; i < CoordPoint[xy].length; i = i + 2) {
@@ -1407,9 +1410,12 @@ function start_end(xy, end) {
 
   // var length = $(".line").length;
   if ($('.line').length == 1) {
-    document.getElementById('zuobiaodian').style.opacity = '0'
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
-      "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
         (CoordPoint[xy][0][0] - 15) +
         'px;top:' +
         (CoordPoint[xy][0][1] - 15) +
@@ -1418,7 +1424,9 @@ function start_end(xy, end) {
     // 如果是1条线
     re($('.line').eq(0), function () {
       $('#div2').append(
-        "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+        "<img class='endimg' src='" +
+          endImg +
+          "' style='position:absolute;width:38px;height:38px;left:" +
           (CoordPoint[xy][i - 1][0] - 15) +
           'px;top:' +
           (CoordPoint[xy][i - 1][1] - 15) +
@@ -1432,8 +1440,9 @@ function start_end(xy, end) {
         $('.line').remove()
         $('.endimg').remove()
         $('.startimg').remove()
-        document.getElementById('zuobiaodian').style.opacity = '1'
 
+        var zuobiaodian = document.getElementById('zuobiaodian')
+        zuobiaodian && (zuobiaodian.style.opacity = '1')
         //动态路径展示完毕，调用放大缩小全屏展示函数
         scrollSwiper(ele)
       }, 15000)
@@ -1448,9 +1457,12 @@ function start_end(xy, end) {
       // $("body").attr("timeout-scale", scaletimeout);
     })
   } else if ($('.line').length == 2) {
-    document.getElementById('zuobiaodian').style.opacity = '0'
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
-      "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
         (CoordPoint[xy][0][0] - 15) +
         'px;top:' +
         (CoordPoint[xy][0][1] - 15) +
@@ -1460,7 +1472,9 @@ function start_end(xy, end) {
     re($('.line').eq(0), function () {
       re($('.line').eq(1), function () {
         $('#div2').append(
-          "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+          "<img class='endimg' src='" +
+            endImg +
+            "' style='position:absolute;width:38px;height:38px;left:" +
             (CoordPoint[xy][i - 1][0] - 15) +
             'px;top:' +
             (CoordPoint[xy][i - 1][1] - 15) +
@@ -1474,8 +1488,9 @@ function start_end(xy, end) {
           $('.line').remove()
           $('.endimg').remove()
           $('.startimg').remove()
-          document.getElementById('zuobiaodian').style.opacity = '1'
 
+          var zuobiaodian = document.getElementById('zuobiaodian')
+          zuobiaodian && (zuobiaodian.style.opacity = '1')
           //动态路径展示完毕，调用放大缩小全屏展示函数
           scrollSwiper(ele)
         }, 15000)
@@ -1491,9 +1506,12 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 3) {
-    document.getElementById('zuobiaodian').style.opacity = '0'
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
-      "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
         (CoordPoint[xy][0][0] - 15) +
         'px;top:' +
         (CoordPoint[xy][0][1] - 15) +
@@ -1504,7 +1522,9 @@ function start_end(xy, end) {
       re($('.line').eq(1), function () {
         re($('.line').eq(2), function () {
           $('#div2').append(
-            "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+            "<img class='endimg' src='" +
+              endImg +
+              "' style='position:absolute;width:38px;height:38px;left:" +
               (CoordPoint[xy][i - 1][0] - 18) +
               'px;top:' +
               (CoordPoint[xy][i - 1][1] - 15) +
@@ -1518,8 +1538,9 @@ function start_end(xy, end) {
             $('.line').remove()
             $('.endimg').remove()
             $('.startimg').remove()
-            document.getElementById('zuobiaodian').style.opacity = '1'
 
+            var zuobiaodian = document.getElementById('zuobiaodian')
+            zuobiaodian && (zuobiaodian.style.opacity = '1')
             //动态路径展示完毕，调用放大缩小全屏展示函数
             scrollSwiper(ele)
           }, 15000)
@@ -1536,9 +1557,12 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 4) {
-    document.getElementById('zuobiaodian').style.opacity = '0'
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
-      "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
         (CoordPoint[xy][0][0] - 15) +
         'px;top:' +
         (CoordPoint[xy][0][1] - 15) +
@@ -1551,7 +1575,9 @@ function start_end(xy, end) {
           re($('.line').eq(3), function () {
             //  debugger
             $('#div2').append(
-              "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+              "<img class='endimg' src='" +
+                endImg +
+                "' style='position:absolute;width:38px;height:38px;left:" +
                 (CoordPoint[xy][i - 1][0] - 15) +
                 'px;top:' +
                 (CoordPoint[xy][i - 1][1] - 15) +
@@ -1565,8 +1591,9 @@ function start_end(xy, end) {
               $('.line').remove()
               $('.endimg').remove()
               $('.startimg').remove()
-              document.getElementById('zuobiaodian').style.opacity = '1'
 
+              var zuobiaodian = document.getElementById('zuobiaodian')
+              zuobiaodian && (zuobiaodian.style.opacity = '1')
               //动态路径展示完毕，调用放大缩小全屏展示函数
               scrollSwiper(ele)
             }, 15000)
@@ -1584,9 +1611,12 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 5) {
-    document.getElementById('zuobiaodian').style.opacity = '0'
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
-      "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
         (CoordPoint[xy][0][0] - 15) +
         'px;top:' +
         (CoordPoint[xy][0][1] - 15) +
@@ -1599,7 +1629,9 @@ function start_end(xy, end) {
           re($('.line').eq(3), function () {
             re($('.line').eq(4), function () {
               $('#div2').append(
-                "<img class'endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+                "<img class='endimg' src='" +
+                  endImg +
+                  "' style='position:absolute;width:38px;height:38px;left:" +
                   (CoordPoint[xy][i - 1][0] - 15) +
                   'px;top:' +
                   (CoordPoint[xy][i - 1][1] - 15) +
@@ -1613,8 +1645,9 @@ function start_end(xy, end) {
                 $('.line').remove()
                 $('.endimg').remove()
                 $('.startimg').remove()
-                document.getElementById('zuobiaodian').style.opacity = '1'
 
+                var zuobiaodian = document.getElementById('zuobiaodian')
+                zuobiaodian && (zuobiaodian.style.opacity = '1')
                 //动态路径展示完毕，调用放大缩小全屏展示函数
                 scrollSwiper(ele)
               }, 15000)
@@ -1852,6 +1885,11 @@ onMounted(() => {
     scrollSwiper(ele)
   })
 })
+onBeforeUnmount(() => {
+  clearInterval(scrolltimer)
+
+  clearTimeout($('body').attr('timeout'))
+})
 </script>
 
 <style lang="less" scoped>
@@ -1860,6 +1898,9 @@ li {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+div {
+  user-select: none;
 }
 .div {
   width: 1920px;
@@ -2281,7 +2322,7 @@ li {
 .div2 .div2-2 .right2-2 > div > div {
   width: 120px;
   height: 86px;
-  // margin-bottom: 4px;
+  margin-bottom: 4px;
   line-height: 86px;
   border-radius: 4px;
   background-color: rgba(52, 127, 122, 1);

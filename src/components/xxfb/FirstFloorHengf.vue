@@ -5,7 +5,7 @@
         <div class="right">
           <!-- 会议室3区 -->
           <div class="right2">
-            <div id="A2101" data-roomname="A2101">
+            <div id="A2101" data-roomname="A2101" @click="dataRoomClick('A2101')">
               A2-101
               <div></div>
               <div>
@@ -22,7 +22,7 @@
                 <div class="right2-2">
                   <div>
                     <div>
-                      <img src="	@/assets/xxfb/path/huoti.png" />
+                      <img src="@/assets/xxfb/path/huoti.png" />
                     </div>
                   </div>
                 </div>
@@ -73,7 +73,7 @@
               <img src="@/assets/xxfb/path/dianti.png" />
               <img src="@/assets/xxfb/path/huoti.png" />
             </div>
-            <img src="http://39.105.179.38:9797/noderad/%E7%BE%A4%E7%BB%84%2013@2x1.png" />
+            <img src="/src/assets/xxfb/path/dblouti.png" />
           </div>
         </div>
         <div class="left">
@@ -106,17 +106,17 @@
               <!-- 1 -->
               <div>
                 <div>
-                  <div id="A2105" data-roomname="A2105">A2-105</div>
+                  <div id="A2105" data-roomname="A2105" @click="dataRoomClick('A2105')">A2-105</div>
                   <!-- 竖 双排门 -->
                   <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
                 <div>
-                  <div id="A2108" data-roomname="A2108">A2-108</div>
+                  <div id="A2108" data-roomname="A2108" @click="dataRoomClick('A2108')">A2-108</div>
                   <!-- 单扇门 横 -->
                   <img class="hdoor" src="@/assets/xxfb/path/4.png" />
                 </div>
                 <div>
-                  <div id="A2110" data-roomname="A2110">A2-110</div>
+                  <div id="A2110" data-roomname="A2110" @click="dataRoomClick('A2110')">A2-110</div>
                   <!-- 单扇门 横 -->
                   <img class="hdoor" src="@/assets/xxfb/path/4.png" />
                 </div>
@@ -127,25 +127,29 @@
             <!-- 1 -->
             <div>
               <div>
-                <div id="A2104" data-roomname="A2104">A2-104</div>
+                <div id="A2104" data-roomname="A2104" @click="dataRoomClick('A2104')">A2-104</div>
                 <!-- 竖 双排门 -->
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
               <div>
                 <div>
                   <div>
-                    <div id="A2109" data-roomname="A2109">A2-109</div>
+                    <div id="A2109" data-roomname="A2109" @click="dataRoomClick('A2109')">
+                      A2-109
+                    </div>
                     <!-- 单扇门 横 -->
                     <img class="hdoor" src="@/assets/xxfb/path/3.png " />
                   </div>
                   <div>
-                    <div id="A2107" data-roomname="A2107">A2-107</div>
+                    <div id="A2107" data-roomname="A2107" @click="dataRoomClick('A2107')">
+                      A2-107
+                    </div>
                     <!-- 单扇门 横 -->
                     <img class="hdoor" src="@/assets/xxfb/path/3.png " />
                   </div>
                 </div>
                 <div>
-                  <div id="A2117" data-roomname="A2117">A2-117</div>
+                  <div id="A2117" data-roomname="A2117" @click="dataRoomClick('A2117')">A2-117</div>
                   <!-- 竖 双排门 -->
                   <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                   <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
@@ -181,7 +185,9 @@
                 >
                   A2-113
                 </div>
-                <div id="A2113" v-else data-roomName="A2117">A2-113</div>
+                <div id="A2113" v-else data-roomName="A2113" @click="dataRoomClick('A2113')">
+                  A2-113
+                </div>
                 <!-- 横 双排门 -->
                 <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
                 <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
@@ -198,19 +204,23 @@
                     <div></div>
                   </div>
                   <div>
-                    <div id="A2115" data-roomname="A2115">A2-115</div>
+                    <div id="A2115" data-roomname="A2115" @click="dataRoomClick('A2115')">
+                      A2-115
+                    </div>
                     <!-- 单扇门 横 -->
                     <img class="hdoor" src="@/assets/xxfb/path/3.png " />
                   </div>
                   <div>
-                    <div id="A2114" data-roomname="A2114">A2-114</div>
+                    <div id="A2114" data-roomname="A2114" @click="dataRoomClick('A2114')">
+                      A2-114
+                    </div>
                     <!-- 单扇门 横 -->
                     <img class="hdoor" src="@/assets/xxfb/path/3.png " />
                   </div>
                 </div>
               </div>
               <div>
-                <div id="A2118" data-roomname="A2118">A2-118</div>
+                <div id="A2118" data-roomname="A2118" @click="dataRoomClick('A2118')">A2-118</div>
                 <!-- 竖 双排门 -->
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
@@ -228,7 +238,7 @@
       </div>
       <div class="div2-1">
         <div>
-          <div id="A2-103" data-roomname="A2103">A2-103</div>
+          <div id="A2-103" data-roomname="A2103" @click="dataRoomClick('A2103')">A2-103</div>
           <!-- 竖 双排门 -->
           <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
         </div>
@@ -258,8 +268,8 @@
     </div>
     <div class="div1">
       <div>
-        <img src="@/assets/xxfb/path/200.png" />
-        <span>温馨提示：请说导航到xxx会议室或说xxx会议室怎么走。</span>
+        <!-- <img src="@/assets/xxfb/path/200.png" />
+        <span>温馨提示：请说导航到xxx会议室或说xxx会议室怎么走。</span> -->
       </div>
       <img src="@/assets/xxfb/path/1.png" />
     </div>
@@ -268,8 +278,12 @@
 
 <script setup>
 // 一楼横反：A2-113
-import { ref, reactive, watch, computed, onMounted, nextTick } from 'vue'
+import { ref, reactive, watch, computed, onMounted, nextTick, onBeforeUnmount } from 'vue'
 import $ from 'jquery'
+
+import startImg from '@/assets/xxfb/path/start.png'
+import endImg from '@/assets/xxfb/path/end.png'
+
 const props = defineProps({
   roomName: {
     type: String,
@@ -292,173 +306,269 @@ const getzbdStyle = computed(() => {
     }
   }
 })
+// 声明会议室坐标点
+var CoordPoint = {
+  // A2-113会议室
+  // 一区
+  A2113_A2118: [
+    [1639, 364],
+    [1536, 364],
+    [1536, 364],
+    [1536, 574],
+    [1536, 574],
+    [1566, 574]
+  ],
+  A2113_A2114: [
+    [1639, 364],
+    [1830, 364]
+  ],
+  A2113_A2115: [
+    [1639, 364],
+    [1735, 364]
+  ],
+  A2113_A2113: [],
+  //二区
+  A2113_A2117: [
+    [1639, 364],
+    [1536, 364],
+    [1536, 364],
+    [1536, 480],
+    [1541, 480],
+    [1506, 480]
+  ],
+  A2113_A2109: [
+    [1639, 364],
+    [1536, 364],
+    [1536, 364],
+    [1536, 310],
+    [1536, 310],
+    [1328, 310],
+    [1328, 310],
+    [1328, 324]
+  ],
+  A2113_A2107: [
+    [1639, 364],
+    [1536, 364],
+    [1536, 364],
+    [1536, 310],
+    [1536, 310],
+    [1422, 310],
+    [1422, 310],
+    [1422, 324]
+  ],
+  A2113_A2104: [
+    [1639, 364],
+    [1536, 364],
+    [1536, 364],
+    [1536, 310],
+    [1536, 310],
+    [1078, 310],
+    [1078, 310],
+    [1078, 390]
+  ],
+  A2113_A2110: [
+    [1639, 364],
+    [1536, 364],
+    [1536, 364],
+    [1536, 310],
+    [1536, 310],
+    [1422, 310],
+    [1422, 310],
+    [1422, 290]
+  ],
+  A2113_A2108: [
+    [1639, 364],
+    [1536, 364],
+    [1536, 364],
+    [1536, 310],
+    [1536, 310],
+    [1328, 310],
+    [1328, 310],
+    [1328, 290]
+  ],
+  A2113_A2105: [
+    [1639, 364],
+    [1536, 364],
+    [1536, 364],
+    [1536, 310],
+    [1536, 310],
+    [1078, 310],
+    [1078, 310],
+    [1078, 226]
+  ],
+  //3区
+  A2113_A2103: [
+    [1639, 364],
+    [1536, 364],
+    [1536, 364],
+    [1536, 310],
+    [1536, 310],
+    [1044, 310],
+    [1044, 310],
+    [1044, 430],
+    [1049, 430],
+    [824, 430],
+    [824, 430],
+    [824, 704]
+  ],
+  A2113_A2101: [
+    [1639, 364],
+    [1536, 364],
+    [1536, 364],
+    [1536, 310],
+    [1536, 310],
+    [1044, 310],
+    [1044, 310],
+    [1044, 420],
+    [1049, 420],
+    [744, 420]
+  ]
+}
 
-onMounted(() => {
-  nextTick(() => {
-    // 声明会议室坐标点
-    var CoordPoint = {
-      // A2-113会议室
-      // 一区
-      A2113_A2118: [
-        [1639, 364],
-        [1536, 364],
-        [1536, 364],
-        [1536, 574],
-        [1536, 574],
-        [1566, 574]
-      ],
-      A2113_A2114: [
-        [1639, 364],
-        [1830, 364]
-      ],
-      A2113_A2115: [
-        [1639, 364],
-        [1735, 364]
-      ],
-      A2113_A2113: [],
-      //二区
-      A2113_A2117: [
-        [1639, 364],
-        [1536, 364],
-        [1536, 364],
-        [1536, 480],
-        [1541, 480],
-        [1506, 480]
-      ],
-      A2113_A2109: [
-        [1639, 364],
-        [1536, 364],
-        [1536, 364],
-        [1536, 310],
-        [1536, 310],
-        [1328, 310],
-        [1328, 310],
-        [1328, 324]
-      ],
-      A2113_A2107: [
-        [1639, 364],
-        [1536, 364],
-        [1536, 364],
-        [1536, 310],
-        [1536, 310],
-        [1422, 310],
-        [1422, 310],
-        [1422, 324]
-      ],
-      A2113_A2104: [
-        [1639, 364],
-        [1536, 364],
-        [1536, 364],
-        [1536, 310],
-        [1536, 310],
-        [1078, 310],
-        [1078, 310],
-        [1078, 390]
-      ],
-      A2113_A2110: [
-        [1639, 364],
-        [1536, 364],
-        [1536, 364],
-        [1536, 310],
-        [1536, 310],
-        [1422, 310],
-        [1422, 310],
-        [1422, 290]
-      ],
-      A2113_A2108: [
-        [1639, 364],
-        [1536, 364],
-        [1536, 364],
-        [1536, 310],
-        [1536, 310],
-        [1328, 310],
-        [1328, 310],
-        [1328, 290]
-      ],
-      A2113_A2105: [
-        [1639, 364],
-        [1536, 364],
-        [1536, 364],
-        [1536, 310],
-        [1536, 310],
-        [1078, 310],
-        [1078, 310],
-        [1078, 226]
-      ],
-      //3区
-      A2113_A2103: [
-        [1639, 364],
-        [1536, 364],
-        [1536, 364],
-        [1536, 310],
-        [1536, 310],
-        [1044, 310],
-        [1044, 310],
-        [1044, 430],
-        [1049, 430],
-        [824, 430],
-        [824, 430],
-        [824, 704]
-      ],
-      A2113_A2101: [
-        [1639, 364],
-        [1536, 364],
-        [1536, 364],
-        [1536, 310],
-        [1536, 310],
-        [1044, 310],
-        [1044, 310],
-        [1044, 420],
-        [1049, 420],
-        [744, 420]
-      ]
+function start_end(xy, end) {
+  if ($('body').attr('locked') == 1) {
+    return
+  }
+
+  $('body').attr('locked', 1)
+
+  $('[data-roomname]').css('background-color', 'rgba(52, 127, 122, 1)')
+
+  $('.line').remove()
+  $('.endimg').remove()
+  $('.startimg').remove()
+
+  var zuobiaodian = document.getElementById('zuobiaodian')
+  zuobiaodian && (zuobiaodian.style.opacity = '1')
+  clearTimeout($('body').attr('timeout'))
+  for (var i = 0; i < CoordPoint[xy].length; i = i + 2) {
+    // console.log(CoordPoint[xy][i]);
+
+    if (i + 2 <= CoordPoint[xy].length) {
+      drawLine(CoordPoint[xy][i], CoordPoint[xy][i + 1], i)
+    } else {
+      //   end(CoordPoint[xy][i][0], CoordPoint[xy][i][1]);
     }
-    $('[data-roomname]').on('click', function (e) {
-      if ($('body').attr('locked') == 1) {
-        return
-      }
+  }
 
-      $('body').attr('locked', 1)
+  // var length = $(".line").length;
+  if ($('.line').length == 1) {
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
+    $('#div2').append(
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
+        (CoordPoint[xy][0][0] - 15) +
+        'px;top:' +
+        (CoordPoint[xy][0][1] - 15) +
+        "px';>"
+    )
+    // 如果是1条线
+    re($('.line').eq(0), function () {
+      $('#div2').append(
+        "<img class='endimg' src='" +
+          endImg +
+          "' style='position:absolute;width:38px;height:38px;left:" +
+          (CoordPoint[xy][i - 1][0] - 15) +
+          'px;top:' +
+          (CoordPoint[xy][i - 1][1] - 15) +
+          "px';>"
+      )
+      $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
 
-      $('[data-roomname]').css('background-color', 'rgba(52, 127, 122, 1)')
+      $('body').removeAttr('locked')
+      var timeout = setTimeout(function () {
+        $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
+        $('.line').remove()
+        $('.endimg').remove()
+        $('.startimg').remove()
 
-      $('.line').remove()
-      $('.endimg').remove()
-      $('.startimg').remove()
-      document.getElementById('zuobiaodian').style.opacity = '1'
+        var zuobiaodian = document.getElementById('zuobiaodian')
+        zuobiaodian && (zuobiaodian.style.opacity = '1')
+        //动态路径展示完毕，调用放大缩小全屏展示函数
+        // scrollSwiper()
+      }, 15000)
+      // 给body添加路径展示定时器 标识
+      $('body').attr('timeout', timeout)
 
-      clearTimeout($('body').attr('timeout'))
-
-      var end = $(this).attr('data-roomname')
-      console.log(end)
-      start_end(props.roomName.replace('-', '') + '_' + end, end)
+      // var scaletimeout = setTimeout(function () {
+      //     $("#div2").css("zoom", 1.972);
+      //     let ele = document.getElementById('div2cont');
+      //     ele.scrollTop = 1080;
+      // }, 10000);
+      // $("body").attr("timeout-scale", scaletimeout);
     })
-    function start_end(xy, end) {
-      for (var i = 0; i < CoordPoint[xy].length; i = i + 2) {
-        // console.log(CoordPoint[xy][i]);
-
-        if (i + 2 <= CoordPoint[xy].length) {
-          drawLine(CoordPoint[xy][i], CoordPoint[xy][i + 1], i)
-        } else {
-          //   end(CoordPoint[xy][i][0], CoordPoint[xy][i][1]);
-        }
-      }
-
-      // var length = $(".line").length;
-      if ($('.line').length == 1) {
-        document.getElementById('zuobiaodian').style.opacity = '0'
+  } else if ($('.line').length == 2) {
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
+    $('#div2').append(
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
+        (CoordPoint[xy][0][0] - 15) +
+        'px;top:' +
+        (CoordPoint[xy][0][1] - 15) +
+        "px';>"
+    )
+    // 如果是2条线
+    re($('.line').eq(0), function () {
+      re($('.line').eq(1), function () {
         $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
-            (CoordPoint[xy][0][0] - 15) +
+          "<img class='endimg' src='" +
+            endImg +
+            "' style='position:absolute;width:38px;height:38px;left:" +
+            (CoordPoint[xy][i - 1][0] - 15) +
             'px;top:' +
-            (CoordPoint[xy][0][1] - 15) +
+            (CoordPoint[xy][i - 1][1] - 15) +
             "px';>"
         )
-        // 如果是1条线
-        re($('.line').eq(0), function () {
+        $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
+
+        $('body').removeAttr('locked')
+        var timeout = setTimeout(function () {
+          $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
+          $('.line').remove()
+          $('.endimg').remove()
+          $('.startimg').remove()
+
+          var zuobiaodian = document.getElementById('zuobiaodian')
+          zuobiaodian && (zuobiaodian.style.opacity = '1')
+          //动态路径展示完毕，调用放大缩小全屏展示函数
+          // scrollSwiper()
+        }, 15000)
+        // 给body添加路径展示定时器 标识
+        $('body').attr('timeout', timeout)
+
+        // var scaletimeout = setTimeout(function () {
+        //     $("#div2").css("zoom", 1.972);
+        //     let ele = document.getElementById('div2cont');
+        //     ele.scrollTop = 1080;
+        // }, 10000);
+        // $("body").attr("timeout-scale", scaletimeout);
+      })
+    })
+  } else if ($('.line').length == 3) {
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
+    $('#div2').append(
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
+        (CoordPoint[xy][0][0] - 15) +
+        'px;top:' +
+        (CoordPoint[xy][0][1] - 15) +
+        "px';>"
+    )
+    // 如果是3条线
+    re($('.line').eq(0), function () {
+      re($('.line').eq(1), function () {
+        re($('.line').eq(2), function () {
           $('#div2').append(
-            "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
-              (CoordPoint[xy][i - 1][0] - 15) +
+            "<img class='endimg' src='" +
+              endImg +
+              "' style='position:absolute;width:38px;height:38px;left:" +
+              (CoordPoint[xy][i - 1][0] - 18) +
               'px;top:' +
               (CoordPoint[xy][i - 1][1] - 15) +
               "px';>"
@@ -471,10 +581,11 @@ onMounted(() => {
             $('.line').remove()
             $('.endimg').remove()
             $('.startimg').remove()
-            document.getElementById('zuobiaodian').style.opacity = '1'
 
+            var zuobiaodian = document.getElementById('zuobiaodian')
+            zuobiaodian && (zuobiaodian.style.opacity = '1')
             //动态路径展示完毕，调用放大缩小全屏展示函数
-            scrollSwiper()
+            // scrollSwiper()
           }, 15000)
           // 给body添加路径展示定时器 标识
           $('body').attr('timeout', timeout)
@@ -486,20 +597,30 @@ onMounted(() => {
           // }, 10000);
           // $("body").attr("timeout-scale", scaletimeout);
         })
-      } else if ($('.line').length == 2) {
-        document.getElementById('zuobiaodian').style.opacity = '0'
-        $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
-            (CoordPoint[xy][0][0] - 15) +
-            'px;top:' +
-            (CoordPoint[xy][0][1] - 15) +
-            "px';>"
-        )
-        // 如果是2条线
-        re($('.line').eq(0), function () {
-          re($('.line').eq(1), function () {
+      })
+    })
+  } else if ($('.line').length == 4) {
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
+    $('#div2').append(
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
+        (CoordPoint[xy][0][0] - 15) +
+        'px;top:' +
+        (CoordPoint[xy][0][1] - 15) +
+        "px';>"
+    )
+    // 如果是4条线
+    re($('.line').eq(0), function () {
+      re($('.line').eq(1), function () {
+        re($('.line').eq(2), function () {
+          re($('.line').eq(3), function () {
+            //  debugger
             $('#div2').append(
-              "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+              "<img class='endimg' src='" +
+                endImg +
+                "' style='position:absolute;width:38px;height:38px;left:" +
                 (CoordPoint[xy][i - 1][0] - 15) +
                 'px;top:' +
                 (CoordPoint[xy][i - 1][1] - 15) +
@@ -513,10 +634,11 @@ onMounted(() => {
               $('.line').remove()
               $('.endimg').remove()
               $('.startimg').remove()
-              document.getElementById('zuobiaodian').style.opacity = '1'
 
+              var zuobiaodian = document.getElementById('zuobiaodian')
+              zuobiaodian && (zuobiaodian.style.opacity = '1')
               //动态路径展示完毕，调用放大缩小全屏展示函数
-              scrollSwiper()
+              // scrollSwiper()
             }, 15000)
             // 给body添加路径展示定时器 标识
             $('body').attr('timeout', timeout)
@@ -529,22 +651,31 @@ onMounted(() => {
             // $("body").attr("timeout-scale", scaletimeout);
           })
         })
-      } else if ($('.line').length == 3) {
-        document.getElementById('zuobiaodian').style.opacity = '0'
-        $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
-            (CoordPoint[xy][0][0] - 15) +
-            'px;top:' +
-            (CoordPoint[xy][0][1] - 15) +
-            "px';>"
-        )
-        // 如果是3条线
-        re($('.line').eq(0), function () {
-          re($('.line').eq(1), function () {
-            re($('.line').eq(2), function () {
+      })
+    })
+  } else if ($('.line').length == 5) {
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
+    $('#div2').append(
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
+        (CoordPoint[xy][0][0] - 15) +
+        'px;top:' +
+        (CoordPoint[xy][0][1] - 15) +
+        "px';>"
+    )
+    // 如果是5条线
+    re($('.line').eq(0), function () {
+      re($('.line').eq(1), function () {
+        re($('.line').eq(2), function () {
+          re($('.line').eq(3), function () {
+            re($('.line').eq(4), function () {
               $('#div2').append(
-                "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
-                  (CoordPoint[xy][i - 1][0] - 18) +
+                "<img class='endimg' src='" +
+                  endImg +
+                  "' style='position:absolute;width:38px;height:38px;left:" +
+                  (CoordPoint[xy][i - 1][0] - 15) +
                   'px;top:' +
                   (CoordPoint[xy][i - 1][1] - 15) +
                   "px';>"
@@ -557,10 +688,11 @@ onMounted(() => {
                 $('.line').remove()
                 $('.endimg').remove()
                 $('.startimg').remove()
-                document.getElementById('zuobiaodian').style.opacity = '1'
 
+                var zuobiaodian = document.getElementById('zuobiaodian')
+                zuobiaodian && (zuobiaodian.style.opacity = '1')
                 //动态路径展示完毕，调用放大缩小全屏展示函数
-                scrollSwiper()
+                // scrollSwiper()
               }, 15000)
               // 给body添加路径展示定时器 标识
               $('body').attr('timeout', timeout)
@@ -574,23 +706,31 @@ onMounted(() => {
             })
           })
         })
-      } else if ($('.line').length == 4) {
-        document.getElementById('zuobiaodian').style.opacity = '0'
-        $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
-            (CoordPoint[xy][0][0] - 15) +
-            'px;top:' +
-            (CoordPoint[xy][0][1] - 15) +
-            "px';>"
-        )
-        // 如果是4条线
-        re($('.line').eq(0), function () {
-          re($('.line').eq(1), function () {
-            re($('.line').eq(2), function () {
-              re($('.line').eq(3), function () {
-                //  debugger
+      })
+    })
+  } else if ($('.line').length == 6) {
+    var zuobiaodian = document.getElementById('zuobiaodian')
+    zuobiaodian && (zuobiaodian.style.opacity = '0')
+    $('#div2').append(
+      "<img class='startimg' src='" +
+        startImg +
+        "' style='position:absolute;width:38px;height:38px;left:" +
+        (CoordPoint[xy][0][0] - 15) +
+        'px;top:' +
+        (CoordPoint[xy][0][1] - 15) +
+        "px';>"
+    )
+    // 如果是6条线
+    re($('.line').eq(0), function () {
+      re($('.line').eq(1), function () {
+        re($('.line').eq(2), function () {
+          re($('.line').eq(3), function () {
+            re($('.line').eq(4), function () {
+              re($('.line').eq(5), function () {
                 $('#div2').append(
-                  "<img class='endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
+                  "<img class='endimg' src='" +
+                    endImg +
+                    "' style='position:absolute;width:38px;height:38px;left:" +
                     (CoordPoint[xy][i - 1][0] - 15) +
                     'px;top:' +
                     (CoordPoint[xy][i - 1][1] - 15) +
@@ -602,12 +742,14 @@ onMounted(() => {
                 var timeout = setTimeout(function () {
                   $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
                   $('.line').remove()
+
                   $('.endimg').remove()
                   $('.startimg').remove()
-                  document.getElementById('zuobiaodian').style.opacity = '1'
 
+                  var zuobiaodian = document.getElementById('zuobiaodian')
+                  zuobiaodian && (zuobiaodian.style.opacity = '1')
                   //动态路径展示完毕，调用放大缩小全屏展示函数
-                  scrollSwiper()
+                  // scrollSwiper()
                 }, 15000)
                 // 给body添加路径展示定时器 标识
                 $('body').attr('timeout', timeout)
@@ -622,200 +764,112 @@ onMounted(() => {
             })
           })
         })
-      } else if ($('.line').length == 5) {
-        document.getElementById('zuobiaodian').style.opacity = '0'
-        $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
-            (CoordPoint[xy][0][0] - 15) +
-            'px;top:' +
-            (CoordPoint[xy][0][1] - 15) +
-            "px';>"
-        )
-        // 如果是5条线
-        re($('.line').eq(0), function () {
-          re($('.line').eq(1), function () {
-            re($('.line').eq(2), function () {
-              re($('.line').eq(3), function () {
-                re($('.line').eq(4), function () {
-                  $('#div2').append(
-                    "<img class'endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
-                      (CoordPoint[xy][i - 1][0] - 15) +
-                      'px;top:' +
-                      (CoordPoint[xy][i - 1][1] - 15) +
-                      "px';>"
-                  )
-                  $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
+      })
+    })
+  }
 
-                  $('body').removeAttr('locked')
-                  var timeout = setTimeout(function () {
-                    $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
-                    $('.line').remove()
-                    $('.endimg').remove()
-                    $('.startimg').remove()
-                    document.getElementById('zuobiaodian').style.opacity = '1'
-
-                    //动态路径展示完毕，调用放大缩小全屏展示函数
-                    scrollSwiper()
-                  }, 15000)
-                  // 给body添加路径展示定时器 标识
-                  $('body').attr('timeout', timeout)
-
-                  // var scaletimeout = setTimeout(function () {
-                  //     $("#div2").css("zoom", 1.972);
-                  //     let ele = document.getElementById('div2cont');
-                  //     ele.scrollTop = 1080;
-                  // }, 10000);
-                  // $("body").attr("timeout-scale", scaletimeout);
-                })
-              })
-            })
-          })
+  function re($line, callback) {
+    if ($line.attr('data-type') == 'x') {
+      $line
+        .find('div')
+        .stop()
+        .animate({ width: $line.width() }, 'fast', 'linear', function () {
+          callback()
         })
-      } else if ($('.line').length == 6) {
-        document.getElementById('zuobiaodian').style.opacity = '0'
-        $('#div2').append(
-          "<img class='startimg' src='src/assets/xxfb/path/start.png' style='position:absolute;width:38px;height:38px;left:" +
-            (CoordPoint[xy][0][0] - 15) +
-            'px;top:' +
-            (CoordPoint[xy][0][1] - 15) +
-            "px';>"
-        )
-        // 如果是5条线
-        re($('.line').eq(0), function () {
-          re($('.line').eq(1), function () {
-            re($('.line').eq(2), function () {
-              re($('.line').eq(3), function () {
-                re($('.line').eq(4), function () {
-                  re($('.line').eq(5), function () {
-                    $('#div2').append(
-                      "<img class'endimg' src='src/assets/xxfb/path/end.png' style='position:absolute;width:38px;height:38px;left:" +
-                        (CoordPoint[xy][i - 1][0] - 15) +
-                        'px;top:' +
-                        (CoordPoint[xy][i - 1][1] - 15) +
-                        "px';>"
-                    )
-                    $('#' + end).css('background-color', 'rgba(255, 145, 0, 1)')
-
-                    $('body').removeAttr('locked')
-                    var timeout = setTimeout(function () {
-                      $('#' + end).css('background-color', 'rgba(52, 127, 122, 1)')
-                      $('.line').remove()
-                      $('.endimg').remove()
-                      $('.startimg').remove()
-                      document.getElementById('zuobiaodian').style.opacity = '1'
-
-                      //动态路径展示完毕，调用放大缩小全屏展示函数
-                      scrollSwiper()
-                    }, 15000)
-                    // 给body添加路径展示定时器 标识
-                    $('body').attr('timeout', timeout)
-
-                    // var scaletimeout = setTimeout(function () {
-                    //     $("#div2").css("zoom", 1.972);
-                    //     let ele = document.getElementById('div2cont');
-                    //     ele.scrollTop = 1080;
-                    // }, 10000);
-                    // $("body").attr("timeout-scale", scaletimeout);
-                  })
-                })
-              })
-            })
-          })
+    } else if ($line.attr('data-type') == 'y') {
+      $line
+        .find('div')
+        .stop()
+        .animate({ height: $line.height() }, 'fast', 'linear', function () {
+          callback()
         })
-      }
-
-      function re($line, callback) {
-        if ($line.attr('data-type') == 'x') {
-          $line
-            .find('div')
-            .stop()
-            .animate({ width: $line.width() }, 'fast', 'linear', function () {
-              callback()
-            })
-        } else if ($line.attr('data-type') == 'y') {
-          $line
-            .find('div')
-            .stop()
-            .animate({ height: $line.height() }, 'fast', 'linear', function () {
-              callback()
-            })
-        } else {
-        }
-      }
+    } else {
     }
-    function drawLine(start, end) {
-      var div = document.createElement('div')
-      div.style.position = 'absolute'
-      div.className = 'line'
+  }
+}
+function drawLine(start, end) {
+  var div = document.createElement('div')
+  div.style.position = 'absolute'
+  div.className = 'line'
 
-      // div.style.backgroundColor = "red";
-      //添加子div
-      var children = document.createElement('div')
-      children.style.backgroundColor = 'orange'
+  // div.style.backgroundColor = "red";
+  //添加子div
+  var children = document.createElement('div')
+  children.style.backgroundColor = 'orange'
 
-      div.appendChild(children)
+  div.appendChild(children)
 
-      var div2 = document.getElementById('div2')
-      div2.appendChild(div)
+  var div2 = document.getElementById('div2')
+  div2.appendChild(div)
 
-      // 如果线与Y轴平行
-      if (start[0] == end[0]) {
-        div.setAttribute('data-type', 'y')
-        if (start[1] > end[1]) {
-          // 反方向
-          div.setAttribute('data-forword', 'minus')
-          div.style.transform = 'rotate(180deg)'
-        } else {
-          // 同方向
-          div.setAttribute('data-forword', 'add')
-        }
-
-        div.style.width = 5 + 'px'
-        div.style.height = Math.abs(start[1] - end[1]) + 'px'
-        children.style.height = 0
-        children.style.width = 5 + 'px'
-
-        // 判断起点 终点距离 分别与原点比较
-        var abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
-        var abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
-        if (abs1 > abs2) {
-          // debugger
-          div.style.top = end[1] + 'px'
-          div.style.left = end[0] + 'px'
-        } else {
-          div.style.top = start[1] + 'px'
-          div.style.left = start[0] + 'px'
-        }
-      } else if (start[1] == end[1]) {
-        div.setAttribute('data-type', 'x')
-        if (start[0] > end[0]) {
-          // 反方向
-          div.setAttribute('data-forword', 'minus')
-          div.style.transform = 'rotate(180deg)'
-        } else {
-          // 同方向
-          div.setAttribute('data-forword', 'add')
-        }
-        //如果与 x轴平行
-        div.style.width = Math.abs(start[0] - end[0]) + 'px'
-        div.style.height = 5 + 'px'
-
-        children.style.height = 5 + 'px'
-        children.style.width = 0
-        // 判断起点 终点距离 分别与原点比较
-        var abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
-        var abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
-        if (abs1 > abs2) {
-          div.style.top = end[1] + 'px'
-          div.style.left = end[0] + 'px'
-        } else {
-          div.style.top = start[1] + 'px'
-          div.style.left = start[0] + 'px'
-        }
-      } else {
-      }
+  // 如果线与Y轴平行
+  if (start[0] == end[0]) {
+    div.setAttribute('data-type', 'y')
+    if (start[1] > end[1]) {
+      // 反方向
+      div.setAttribute('data-forword', 'minus')
+      div.style.transform = 'rotate(180deg)'
+    } else {
+      // 同方向
+      div.setAttribute('data-forword', 'add')
     }
-  })
+
+    div.style.width = 5 + 'px'
+    div.style.height = Math.abs(start[1] - end[1]) + 'px'
+    children.style.height = 0
+    children.style.width = 5 + 'px'
+
+    // 判断起点 终点距离 分别与原点比较
+    var abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
+    var abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
+    if (abs1 > abs2) {
+      // debugger
+      div.style.top = end[1] + 'px'
+      div.style.left = end[0] + 'px'
+    } else {
+      div.style.top = start[1] + 'px'
+      div.style.left = start[0] + 'px'
+    }
+  } else if (start[1] == end[1]) {
+    div.setAttribute('data-type', 'x')
+    if (start[0] > end[0]) {
+      // 反方向
+      div.setAttribute('data-forword', 'minus')
+      div.style.transform = 'rotate(180deg)'
+    } else {
+      // 同方向
+      div.setAttribute('data-forword', 'add')
+    }
+    //如果与 x轴平行
+    div.style.width = Math.abs(start[0] - end[0]) + 'px'
+    div.style.height = 5 + 'px'
+
+    children.style.height = 5 + 'px'
+    children.style.width = 0
+    // 判断起点 终点距离 分别与原点比较
+    var abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
+    var abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
+    if (abs1 > abs2) {
+      div.style.top = end[1] + 'px'
+      div.style.left = end[0] + 'px'
+    } else {
+      div.style.top = start[1] + 'px'
+      div.style.left = start[0] + 'px'
+    }
+  } else {
+  }
+}
+
+const dataRoomClick = (end) => {
+  // console.log(end)
+  start_end(props.roomName.replace('-', '') + '_' + end, end)
+}
+
+onMounted(() => {
+  nextTick(() => {})
+})
+onBeforeUnmount(() => {
+  clearTimeout($('body').attr('timeout'))
 })
 </script>
 
@@ -1827,7 +1881,9 @@ li {
   height: 44px;
   vertical-align: middle;
 }
-
+.div2 .arrowPoint > img:nth-child(3) {
+  height: 60px;
+}
 .div2 .arrowPoint > div img {
   width: 33px;
   height: 80px;

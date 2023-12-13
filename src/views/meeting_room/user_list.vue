@@ -218,7 +218,7 @@ import { ElMessage, valueEquals, ElMessageBox } from 'element-plus'
 const router = useRouter()
 const route = useRoute()
 
-import { request, releaseRequest } from '@/utils/server.js'
+import { releaseRequest } from '@/utils/server.js'
 // 1.顶部会议室名称/会议室id展示
 // debugger
 // const titleName = localStorage.getItem('name')
@@ -230,7 +230,7 @@ const roomId = route.query.roomID
 const getList = () => {
   // 请求用户界面列表
   // debugger
-  request
+  releaseRequest
     .post('/IOTRoomCrtl/queryIotRoomClassList', {
       roomID: roomId
     })
@@ -254,7 +254,7 @@ const getList = () => {
 // 删除一级分类
 const delClass = (params) => {
   // 删除用户界面分类
-  return request.post('/IOTRoomCrtl/deleteIotRmClass', {
+  return releaseRequest.post('/IOTRoomCrtl/deleteIotRmClass', {
     roomID: roomId,
     classIDList: params
   })
@@ -262,7 +262,7 @@ const delClass = (params) => {
 // 删除页面
 const delPage = (params) => {
   // 删除用户界面页面
-  return request.post('/IOTRoomCrtl/deleteIotRmCont', {
+  return releaseRequest.post('/IOTRoomCrtl/deleteIotRmCont', {
     // classID: '',
     contIDList: params
   })
@@ -287,7 +287,7 @@ const getDeviceList = () => {
 // 发布页新增绑定设备
 const createConnectDevice = () => {
   // 发布页新增绑定设备
-  request
+  releaseRequest
     .post('/IOTRoomCrtl/saveIotContDevice', {
       contID: 3000001504019772,
       deviceID: 3000001504019772,
@@ -350,7 +350,7 @@ const addMeetingCategory = () => {
   createFormRef.value.validate((valid) => {
     if (valid) {
       // 发送新增分类请求
-      request
+      releaseRequest
         .post('/IOTRoomCrtl/saveIOTClassInfo', {
           roomID: roomId,
           className: addForm.className
@@ -377,7 +377,7 @@ const updateMeetingCategory = () => {
   createFormRef.value.validate((valid) => {
     if (valid) {
       //   发修改分类请求
-      request
+      releaseRequest
         .post('/IOTRoomCrtl/modifyIOTRoomClass', {
           roomID: roomId,
           classID: addForm.classID,
@@ -486,7 +486,7 @@ const addMeetingPage = () => {
         }
       })
       //发送新增页面请求
-      request
+      releaseRequest
         .post('/IOTRoomCrtl/saveIOTConet', {
           classID: addPageForm.classID,
           contName: addPageForm.contName,
@@ -559,7 +559,7 @@ const updateMeetingPage = () => {
         }
       })
       // 发修改页面请求
-      request
+      releaseRequest
         .post('/IOTRoomCrtl/modifyIOTRMCont', {
           classID: addPageForm.classID,
           contID: addPageForm.contID,

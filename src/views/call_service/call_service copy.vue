@@ -319,7 +319,7 @@ import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { createWebSocket } from '@/utils/websocket.js'
 
-import { request} from '@/utils/server.js'
+import { request } from '@/utils/server.js'
 // 中间聊天区域wsbaseURL11
 var wsbaseURL11 = import.meta.env.VITE_BASE_URL11
 // 右侧楼层区域wsbaseURL12
@@ -720,7 +720,7 @@ var ws1 = createWebSocket('ws://172.28.5.134:8084/call-service/websocket/4600072
 
         // console.log("左侧会议室列表",roomInfo.value)
         roomInfo.value.forEach((element, i) => {
-          if (element.lastChat && historyMsgList.length <= 0) {
+          if (element.lastChat && historyMsgList.value.length <= 0) {
             element.hasMsg = true
             if (i == 0) {
               element.hasMsg = false

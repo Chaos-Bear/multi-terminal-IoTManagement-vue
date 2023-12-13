@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import home from '../views/home.vue'
 
-import callService from '../views/call_service/call_service.vue'
-
 import Tablet from '../views/tablet_borrowed/Tablet.vue'
 import TabletBorrowed from '../views/tablet_borrowed/TabletBorrowed.vue'
 import NotFound from '../views/NotFound.vue'
@@ -25,7 +23,8 @@ const router = createRouter({
     // 1. 呼叫服务模块
     {
       path: '/callService',
-      component: callService
+      name: 'CallService',
+      component: () => import('../views/call_service/call_service.vue')
     },
 
     // 3.平板借还模块
@@ -93,12 +92,12 @@ const router = createRouter({
     },
     {
       path: '/pub',
-      component: () => import('../views/xxfb/Pub.vue')
+      component: () => import('../views/xxfb/PubPage.vue')
     },
     {
       path: '/xxfb-monitorlist',
       name: 'XxfbMonitorlist',
-      component: () => import('../views/xxfb/home.vue')
+      component: () => import('../views/xxfb/Monitorlist.vue')
     },
     {
       path: '/guide-page',

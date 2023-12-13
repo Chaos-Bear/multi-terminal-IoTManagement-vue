@@ -51,17 +51,18 @@
               'font-size': props.form.mtAreaList[0].fontSize + 'px',
               color: props.form.mtAreaList[0].textColor,
               'text-align': props.form.mtAreaList[0].showLocat,
-              visibility: props.form.mtAreaList[0].isShow == '1' ? 'visible' : 'hidden'
+              display: props.form.mtAreaList[0].isShow == '1' ? 'block' : 'none'
             }"
           >
             {{ props.form.mtAreaList[0].textConent }}
           </div>
+
           <!-- 不同步0 -->
           <div
             v-if="props.form.mtAreaList[0].syncStatus == 0"
             class="main_title_of_meeting"
             :style="{
-              visibility: props.form.mtAreaList[0].isShow == '1' ? 'visible' : 'hidden'
+              display: props.form.mtAreaList[0].isShow == '1' ? 'block' : 'none'
             }"
           >
             <div
@@ -78,7 +79,7 @@
             </div>
           </div>
         </div>
-        <!-- 第二行同步与否 会议开始时间，结束时间  -->
+        <!-- 第二行同步与否 会议开始时间，结束时间  visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'-->
         <div>
           <div
             v-if="props.form && props.form.mtAreaList && props.form.mtAreaList[1].syncStatus == 1"
@@ -88,7 +89,7 @@
               'font-size': props.form.mtAreaList[1].fontSize + 'px',
               color: props.form.mtAreaList[1].textColor,
               'text-align': props.form.mtAreaList[1].showLocat,
-              visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'
+              display: props.form.mtAreaList[1].isShow == '1' ? 'block' : 'none'
             }"
           >
             {{
@@ -105,7 +106,7 @@
               'font-size': props.form.mtAreaList[1].fontSize + 'px',
               color: props.form.mtAreaList[1].textColor,
               'text-align': props.form.mtAreaList[1].showLocat,
-              visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'
+              display: props.form.mtAreaList[1].isShow == '1' ? 'block' : 'none'
             }"
           >
             {{ props.form.mtAreaList[1].textConent }}
@@ -120,7 +121,7 @@
               'font-size': props.form.mtAreaList[2].fontSize + 'px',
               color: props.form.mtAreaList[2].textColor,
               'text-align': props.form.mtAreaList[2].showLocat,
-              visibility: props.form.mtAreaList[2].isShow == '1' ? 'visible' : 'hidden'
+              display: props.form.mtAreaList[2].isShow == '1' ? 'block' : 'none'
             }"
           >
             {{
@@ -136,7 +137,7 @@
               'font-size': props.form.mtAreaList[2].fontSize + 'px',
               color: props.form.mtAreaList[2].textColor,
               'text-align': props.form.mtAreaList[2].showLocat,
-              visibility: props.form.mtAreaList[2].isShow == '1' ? 'visible' : 'hidden'
+              display: props.form.mtAreaList[2].isShow == '1' ? 'block' : 'none'
             }"
           >
             {{ props.form.mtAreaList[2].textConent }}
@@ -144,16 +145,21 @@
         </div>
       </div>
       <!-- 2.暂无会议 -->
-      <div v-if="
-          props.form.mtAreaList &&
-          props.form.mtAreaList.length > 0 &&
-          props.form.mtAreaList[0].textConent == '' &&
-          props.form.mtAreaList.length > 1 &&
-          !props.form.mtAreaList[1].textConent &&
-          props.form.mtAreaList.length > 2 &&
-          props.form.mtAreaList[2].textConent == ''
-        " 
-        class="noMeeting">当前暂无<br />会议信息</div>
+      <div
+        v-if="
+          (props.form.mtAreaList && props.form.mtAreaList.length == 0) ||
+          (props.form.mtAreaList &&
+            props.form.mtAreaList.length > 0 &&
+            props.form.mtAreaList[0].textConent == '' &&
+            props.form.mtAreaList.length > 1 &&
+            !props.form.mtAreaList[1].textConent &&
+            props.form.mtAreaList.length > 2 &&
+            props.form.mtAreaList[2].textConent == '')
+        "
+        class="noMeeting"
+      >
+        当前暂无<br />会议信息
+      </div>
     </div>
     <!-- 三层 -->
     <div class="third">
@@ -227,7 +233,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed, onMounted } from 'vue'
+import { ref, reactive, watch, computed, onMounted, onBeforeUnmount } from 'vue'
 // import {} from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
@@ -308,7 +314,7 @@ const isFirstFloorShuz = computed(() => {
 })
 
 const getMeetingList = () => {
-  if (isSecondFloorShuz) {
+  if (isSecondFloorShuz.value) {
     return [
       'A2-206',
       'A2-207',
@@ -323,16 +329,16 @@ const getMeetingList = () => {
       'A2-225'
     ]
   }
-  if (isSecondFloorShuf) {
+  if (isSecondFloorShuf.value) {
     return ['A2-204', 'A2-205', 'A2-215', 'A2-216', 'A2-222', 'A2-223']
   }
-  if (isSecondFloorHengf) {
+  if (isSecondFloorHengf.value) {
     return ['A2-211', 'A2-228', 'A2-229', 'A2-212']
   }
-  if (isFirstFloorHengf) {
+  if (isFirstFloorHengf.value) {
     return ['A2-113']
   }
-  if (isFirstFloorShuz) {
+  if (isFirstFloorShuz.value) {
     return ['A2-117']
   }
 }
@@ -344,19 +350,19 @@ const firstFloorHengfRef = ref('')
 const firstFloorShuzRef = ref('')
 
 const getstartendRef = () => {
-  if (isSecondFloorShuz) {
+  if (isSecondFloorShuz.value) {
     return secondFloorShuzRef.value.start_end
   }
-  if (isSecondFloorShuf) {
+  if (isSecondFloorShuf.value) {
     return secondFloorShufRef.value.start_end
   }
-  if (isSecondFloorHengf) {
+  if (isSecondFloorHengf.value) {
     return secondFloorHengfRef.value.start_end
   }
-  if (isFirstFloorHengf) {
+  if (isFirstFloorHengf.value) {
     return firstFloorHengfRef.value.start_end
   }
-  if (isFirstFloorShuz) {
+  if (isFirstFloorShuz.value) {
     return firstFloorShuzRef.value.start_end
   }
 }
@@ -365,7 +371,7 @@ const getstartendRef = () => {
 // //    props.form.line1Text
 // })
 //1.获取最新时间，右上角展示
-var time = ref('')
+const time = ref('')
 //console.log(nd)
 var timer = window.setInterval(function () {
   var mynewdate = new Date()
@@ -448,9 +454,9 @@ const isVideo = (v) => {
 //   return URL.createObjectURL(url)
 // }
 // console.log(props.form.mediaAreaList)
-onMounted(() => {
-  // debugger
-  // console.log(props.form.mediaAreaList)
+onMounted(() => {})
+onBeforeUnmount(() => {
+  clearInterval(timer)
 })
 </script>
 
@@ -622,6 +628,11 @@ section {
   overflow-y: hidden;
   border: 1px solid transparent;
   background-color: rgba(255, 255, 255, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .roomInfo .second .main_title_of_meeting {
@@ -633,11 +644,13 @@ section {
   text-align: center;
   font-family: SourceHanSansSC-black;
   margin: 0 auto;
-  margin-top: 60px;
+  // margin-top: 60px;
   /*margin-bottom: 30px;*/
+  word-wrap: break-word;
 }
 .zdy {
   font-weight: 800;
+  word-wrap: break-word;
 }
 
 .roomInfo .second .startTime_endTime {
@@ -646,6 +659,7 @@ section {
   font-size: 34px;
   text-align: center;
   font-family: SourceHanSansSC-regular;
+  word-wrap: break-word;
 }
 
 .roomInfo .second .hostUnit {
@@ -653,12 +667,13 @@ section {
   font-size: 34px;
   text-align: center;
   font-family: SourceHanSansSC-regular;
+  word-wrap: break-word;
 }
 
 .roomInfo .second .noMeeting {
   width: 636px;
   line-height: 100px;
-  margin-top: 80px;
+  // margin-top: 80px;
   /*color: rgba(255, 255, 255, 0.1)!important;*/
   color: rgba(255, 255, 255, 0.1);
   font-size: 68px;
@@ -691,7 +706,7 @@ li {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   :deep(.el-carousel) {
     height: 385px;
     .el-carousel__container {
