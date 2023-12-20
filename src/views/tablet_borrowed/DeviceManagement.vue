@@ -215,13 +215,11 @@
   </div>
 </template>
 <script setup>
-// import TheWelcome from '../components/TheWelcome.vue';
-import axios from 'axios'
-import { reactive, ref, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive, ref, onMounted} from 'vue'
+import {  } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-const router = useRouter()
-import { request, tabletRequest } from '@/utils/server.js'
+
+import {tabletRequest } from '@/utils/server.js'
 
 const table = ref(null)
 // 1.平板管理列表查询接口
@@ -430,7 +428,9 @@ const deleteitem = (row) => {
             getList()
           }
         })
-        .catch((error) => {})
+        .catch((error) => {
+          console.log(error)
+        })
     })
     .catch(() => {
       ElMessage({
@@ -456,11 +456,11 @@ const tableData = ref([
   //   },
 ])
 //----启用 禁用
-const isDisabled = ref(true)
+// const isDisabled = ref(true)
 
 //3.3 编辑按钮
 const formLabelWidth = '30%'
-var editId
+
 const editdialogFormVisible = ref(false)
 const editForm = reactive({
   tabletID: 'E280689400005020F5352D7F',

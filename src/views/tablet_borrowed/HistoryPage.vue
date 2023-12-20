@@ -6,6 +6,7 @@
         <el-form-item label="借用时间">
           <!--value-format设置成我们想要的时间格式就可以了，比如：value-format=“yyyy-MM-dd HH:mm:ss”； -->
           <!-- v-model中的值，对应两个值，一个开始时间，一个结束时间，以数组的形式存在 -->
+          <!-- :disabled-date="disabledDate"  时间选择禁用-->
           <el-date-picker
             v-model="value1"
             popper-class="dzy_datePickers"
@@ -13,22 +14,21 @@
             range-separator="～"
             start-placeholder="开始时间"
             end-placeholder="结束时间"
-            format="YYYY-MM-DD HH:mm:ss"
+            format="YYYY.MM.DD HH:mm"
             value-format="YYYY-MM-DD HH:mm:ss"
             prefix-icon="false"
             :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 2, 1, 23, 59, 59)]"
-            :disabled-date="disabledDate"
           />
         </el-form-item>
 
         <el-form-item label="借用人">
-          <el-input v-model="form.borrowedName" placeholder="请输入借用人" />
+          <el-input v-model="userNameValue" placeholder="请输入借用人" />
         </el-form-item>
 
         <el-form-item label="借用状态">
-          <el-select v-model="form.historyState" placeholder="全部" popper-class="zdy_select">
+          <el-select v-model="borrowedStatusValue" placeholder="全部" popper-class="zdy_select">
             <el-option
-              v-for="item in historyStateOptions"
+              v-for="item in borrowedStatusOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -39,226 +39,263 @@
       </el-form>
 
       <div class="searchbtn">
-        <el-button @click="resetbtn()">重置</el-button>
         <el-button type="primary" @click="searchbtn()">查询</el-button>
+        <el-button @click="resetbtn()">重置</el-button>
       </div>
     </div>
     <!-- 3.设备列表 -->
     <div class="deviceList">
       <!-- 此处设置了滚动条组件 -->
-      <el-scrollbar style="width: 100%">
-        <!-- 3.2 设备列表-->
-        <el-table
-          :data="tableData"
-          style="width: 100%"
-          :header-cell-style="{ background: '#F5F9FC' }"
-          ref="table"
-        >
-          <el-table-column fixed type="index" min-width="5%" label="序号" />
-          <el-table-column prop="mtName" label="会议名称" min-width="38%" />
-          <el-table-column prop="borrowedName" label="借用人" min-width="8%" />
-          <el-table-column prop="quantityBorrowed" label="借用数量" min-width="9%" />
-          <el-table-column prop="borrowStartTime" label="借用时间" min-width="12%">
-            <template #default="scope">
-              <!-- 显示年月日 2023-8-23 -->
-              {{ scope.row.borrowStartTime.split(' ')[0] }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="returnQuantity" label="归还数量" min-width="9%">
-            <template #default="scope">
-              <!-- 未归还时，归还数量默认为0-->
-              {{ scope.row.returnQuantity == null ? 0 : scope.row.returnQuantity }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="returnTime" label="归还时间" min-width="12%">
-            <template #default="scope">
-              <!-- 显示年月日 2023-8-23 -->
-              {{ scope.row.returnTime == null ? '- - -' : scope.row.returnTime.split(' ')[0] }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="borrowedState" label="状态" min-width="8%">
-            <!--此处声明了一个getDayStateStr()方法，将接口返回的状态号，映射成对应得状态文字  -->
-            <template #default="scope">
-              {{ getDayStateStr(scope.row.borrowedState) }}
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-scrollbar>
+      <!-- <el-scrollbar style="width: 100%" @scroll="handleScroll" ref="scrollBarRef"> -->
+      <!-- 3.2 设备列表-->
+      <!-- <div ref="tableRef"> -->
+      <el-table
+        :data="tableData"
+        style="width: 100%; height: 400px"
+        :header-cell-style="{ background: '#F5F9FC' }"
+        v-el-table-infinite-scroll="getList"
+        :infinite-scroll-disabled="disabled"
+      >
+        <el-table-column fixed type="index" min-width="5%" label="序号" />
+        <el-table-column prop="meetName" label="会议名称" min-width="38%">
+          <template #default="scope">
+            {{ scope.row.meetName ? scope.row.meetName : '无会议名称' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="userName" label="借用人" min-width="8%" />
+        <el-table-column prop="borrowNum" label="借用数量" min-width="9%">
+          <template #default="scope">
+            {{ scope.row.borrowNum }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="borrowTime" label="借用时间" min-width="12%">
+          <template #default="scope">
+            <!-- 显示年月日 2023-8-23 -->
+            {{ scope.row.borrowTime ? scope.row.borrowTime.split(' ')[0] : 0 }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="returnNum" label="归还数量" min-width="9%">
+          <template #default="scope">
+            <!-- 未归还时，归还数量默认为0-->
+            {{ scope.row.returnNum ? scope.row.returnNum : 0 }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="returnTime" label="归还时间" min-width="12%">
+          <template #default="scope">
+            <!-- 显示年月日 2023-8-23 -->
+            {{ scope.row.returnTime ? scope.row.returnTime.split(' ')[0] : '---' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="borrowedStatus" label="状态" min-width="8%">
+          <template #default="scope">
+            {{ scope.row.borrowedStatus }}
+          </template>
+          <!--此处声明了一个getDayStateStr()方法，将接口返回的状态号，映射成对应得状态文字  -->
+          <!-- <template #default="scope">
+                {{getDayStateStr(scope.row.borrowedStatus)}}
+              </template>  -->
+        </el-table-column>
+      </el-table>
+      <!-- </div> -->
+      <!-- </el-scrollbar> -->
     </div>
   </div>
 </template>
 <script setup>
-// import TheWelcome from '../components/TheWelcome.vue';
-import axios from 'axios'
-import { reactive, ref, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
-const router = useRouter()
-import { request, noderedrequest, tabletRequest } from '@/utils/server.js'
+import { reactive, ref, onMounted } from 'vue'
+import {  } from 'vue-router'
+import { } from 'element-plus'
 
-const table = ref(null)
+import {  tabletRequest } from '@/utils/server.js'
+
+// table列表下拉刷新
+import { default as vElTableInfiniteScroll } from 'el-table-infinite-scroll'
+
+// startTime及endTime 初始化默认值(每月1日-31日)
+var currentTime = new Date()
+var ty = currentTime.getFullYear()
+// var tm=currentTime.getMonth()+1
+var tm =
+  currentTime.getMonth() + 1 <= 9 ? '0' + (currentTime.getMonth() + 1) : currentTime.getMonth() + 1
+
+var startTime1 = ty + '-' + tm + '-01' + ' 00:00:00'
+var endTime1
+if (tm == 1 || tm ==3 || tm ==5 || tm ==7 || tm ==8 || tm ==10 || tm ==12) {
+  endTime1 = ty + '-' + tm + '-31' + ' 23:59:59'
+} else if (tm == 2) {
+  endTime1 = ty + '-' + tm + '-28' + ' 23:59:59'
+} else {
+  endTime1 = ty + '-' + tm + '-30' + ' 23:59:59'
+}
+
+const disabled = ref(false)
+const locked = ref(false)
+// ----获取初始化历史记录接口--------------表格滚动到底刷新刷新
 const getList = () => {
-  var borrowStartTime = value1.value[0] || ''
-  var borrowEndTime = value1.value[1] || ''
-
-  var json = {
-    borrowedName: {
-      _lk: form.borrowedName
-    },
-    borrowedState: form.historyState
+  if (locked.value) {
+    return
   }
-  if (value1.value > 0) {
-    // debugger
-    json.borrowStartTime = {
-      _gre: borrowStartTime,
-      _timestamp: true
-    }
-    json.borrowEndTime = {
-      _lee: borrowEndTime,
-      _timestamp: true
-    }
-    json.order = { sortFeild: 'borrowStartTime', sortType: 'ASC', _timestamp: true }
-  } else {
-    var d = new Date()
-    var Y = d.getFullYear()
-    var M = d.getMonth() + 1
-    if (M <= 9) {
-      M = '0' + M
-    }
-    var D = d.getDate()
-    if (D <= 9) {
-      D = '0' + D
-    }
-    var time = Y + '-' + M + '-' + D + ' ' + '00:00:00'
-    // debugger
-    json.borrowEndTime = {
-      _le: time,
-      _timestamp: true
-    }
-    json.order = { sortFeild: 'borrowStartTime', sortType: 'ASC', _timestamp: true }
+  locked.value = true
+  if (disabled.value) {
+    return
   }
-  noderedrequest
-    .post('/tablet_borrowed/list', json)
+  console.log('3333333333333333333333333333333', disabled.value)
+  form.pageNum++
 
+  tabletRequest
+    .post('/IotDeviHisCrtl/queryBorrowInfoPage', form)
     .then((response) => {
-      console.log('历史列表按条件查询成功:', response.data)
-
-      tableData.length = 0
-      //使用push方法:结构后再赋值
-      tableData.push(...response.data.data.items)
+      console.log('历史记录按条件查询成功:', response.data)
+      // debugger
+      form.totalPage = response.data.totalPage
+      form.totalRecord = response.data.totalRecord
+      // debugger
+      if (tableData.value.length <= form.totalRecord) {
+        tableData.value.push(...response.data.data)
+      }
+      // debugger
+      if (tableData.value.length == form.totalRecord) {
+        disabled.value = true
+      }
     })
     .catch((error) => {
-      console.log('按条件查询失败:', error)
+      console.log('历史记录按条件查询失败:', error)
+      if (form.pageNum <= 0) {
+        return
+      } else {
+        form.pageNum--
+      }
     })
+    .finally(() => {
+      locked.value = false
+    })
+}
+// --------查询/重置接口--------
+const getList1 = () => {
+  // debugger
+  form.pageNum = 0
+  tableData.value = []
+  disabled.value = false
+
+  getList()
 }
 //2.按要求查询
 //借用时间
-const value1 = ref([])
+const value1 = ref('')
+const userNameValue = ref('')
+const borrowedStatusValue = ref('')
+
 const form = reactive({
-  // borrowStartTime: '',
-  // borrowEndTime:'',
-  borrowedName: '',
-  historyState: ''
+  startTime: startTime1,
+  endTime: endTime1,
+  userName: '',
+  borrowedStatus: '',
+
+  pageNum: 0, //必填   第几页
+  pageSize: 30, //必填  /条每页
+
+  totalPage: 0, //必填 总页数
+  totalRecord: 0 //总条数
 })
+
 // 借用状态
-const historyStateOptions = [
+const borrowedStatusOptions = [
+  {
+    value: '',
+    label: '全部'
+  },
   {
     value: '1',
     label: '待借用'
   },
   {
-    value: '3',
+    value: '2',
     label: '借用中'
   },
   {
-    value: '4',
+    value: '3',
     label: '完结'
   },
   {
-    value: '5',
+    value: '4',
     label: '异常'
   },
   {
-    value: '6',
+    value: '5',
     label: '取消'
   }
 ]
-const getDayStateStr = (v) => {
-  let a
-  for (var i = 0; i < historyStateOptions.length; i++) {
-    if (v == historyStateOptions[i].value) {
-      a = historyStateOptions[i].label
-      break
-    }
-  }
-  return a
-}
-// 条件查询(设备名称、设备id地址、区域)
+// const getDayStateStr=(v)=>{
+//   let a
+//   for(var i=0;i<borrowedStatusOptions.length;i++){
+//      if(v==borrowedStatusOptions[i].value){
+//         a= borrowedStatusOptions[i].label;
+//         break
+//      }
+//   }
+//   return a
+// }
+// 查询按钮
 const searchbtn = () => {
-  console.log(value1.value[0], value1.value[1])
-  // form.borrowStartTime=value1.value[0];
-  // form.borrowEndTime=value1.value[1];
-  console.log(form.borrowedName, form.historyState)
-  getList()
+  // debugger
+  form.pageNum = 1
+  form.pageSize = 30
+  form.userName = userNameValue.value
+  form.borrowedStatus = borrowedStatusValue.value
+  if (value1.value == '') {
+    form.startTime = startTime1
+    form.endTime = endTime1
+  } else {
+    form.startTime = value1.value[0]
+    form.endTime = value1.value[1]
+  }
+  // debugger
+  // 调用查询/重置接口
+  getList1()
 }
-const disabledDate = (time) => {
-  return time.getTime() > Date.now() - 8.64e7
-}
-// 重置
+// 今天及今天之后的日期禁用
+// const disabledDate=(time)=> {
+//   return time.getTime() > Date.now()- 8.64e7;
+// }
+// 重置按钮
 const resetbtn = () => {
-  form.borrowStartTime = ''
-  form.borrowEndTime = ''
+  form.startTime = startTime1
+  form.endTime = endTime1
   // 重置 时分别清空输入框的 借用时间 借用人 借用状态,并重新调用历史列表
   value1.value = ''
-  form.borrowedName = ''
-  form.historyState = ''
+  userNameValue.value = ''
+  borrowedStatusValue.value = ''
+  form.userName = ''
+  form.borrowedStatus = ''
+  form.pageNum = 1
+  form.pageSize = 30
   // debugger
-  getList()
+  // 调用查询/重置接口
+  getList1()
 }
 
 //3 设备信息
 // 3.2设备列表
-const tableData = reactive([
-  {
-    id: 10,
-    personneId: 460002033,
-    borrowedName: '南宫一梦',
-    borrowedNamePhone: '15295765073',
-    quantityBorrowed: 5,
-    borrowStartTime: '2023-08-23 10:00:00',
-    borrowEndTime: '2023-08-23 12:00:00',
-    borrowedState: '2',
-    returnQuantity: null,
-    returnTime: null,
-    verificationCode: '4520',
-    mtName: '8.8日测试会议',
-    applyId: '340087888',
-    roomId: '35999887',
-    customTheme: null
-  }
+const tableData = ref([
+  // {borrowNum: 1,
+  // borrowTime: "2023-10-24 11:00:00",
+  // borrowedStatus: "待借用",
+  // endTime: null,
+  // meetID: null,
+  // meetName: "10.24-223-11:00-14:00第1次测试会议",
+  // returnNum: 0,
+  // returnTime: null,
+  // roomID: null,
+  // roomName: "A2-223",
+  // startTime: null,
+  // userName: "益伟康",
+  // verifyCode: "2960"
+  // }
 ])
-//----启用 禁用
-const isDisabled = ref(true)
 
 //初始化渲染
-onMounted(() => {
-  getList()
-})
+onMounted(() => {})
 
-// 4.分页
-const currentPage = ref(1)
-const pageSize = ref(10)
-const total = ref(0)
-const handleSizeChange = (val) => {
-  console.log(`${val} items per page`)
-  //重新发请求，渲染设备列表
-  getList()
-}
-const handleCurrentChange = (val) => {
-  console.log(`current page: ${val}`)
-  //重新发请求，渲染设备列表
-  getList()
-}
 </script>
 <style lang="less">
 .el-popper.dzy_datePickers {
@@ -310,6 +347,9 @@ const handleCurrentChange = (val) => {
   .el-picker-panel {
     color: #ffffff;
   }
+  .el-date-table td.in-range .el-date-table-cell {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
 }
 
 .el-popper.zdy_select {
@@ -336,6 +376,9 @@ const handleCurrentChange = (val) => {
   }
   .el-popper__arrow {
     display: none !important;
+  }
+  .el-input__inner {
+    color: #fff;
   }
 }
 </style>
@@ -379,10 +422,19 @@ const handleCurrentChange = (val) => {
         }
       }
       .el-form-item:nth-child(1) {
-        width: (414/1920) * 100vw;
+        //  width: (414/1920)*100vw;
+        width: (550/1920) * 100vw;
       }
     }
-
+    :deep(.el-date-editor) {
+      .el-range-input,
+      .el-range-separator {
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+    :deep(.el-input__inner) {
+      color: rgba(255, 255, 255, 1);
+    }
     .searchbtn {
       display: flex;
       justify-content: flex-end;
@@ -400,7 +452,7 @@ const handleCurrentChange = (val) => {
         border: 1px solid rgba(15, 204, 249, 1);
         font-family: Roboto;
       }
-      .el-button:nth-child(2) {
+      .el-button:nth-child(1) {
         border-radius: 2px;
         background-color: rgba(15, 204, 249, 0.3);
         color: rgba(255, 255, 255, 1);
@@ -413,7 +465,7 @@ const handleCurrentChange = (val) => {
     // padding-top: (16/1920)*100vw;
     display: flex;
     flex-wrap: wrap;
-    height: calc(100% - (8 / 1080) * 100vh);
+    height: calc(100vh - (300 / 1080) * 100vh);
 
     .scrollbar-flex-content {
       display: flex;
@@ -538,7 +590,7 @@ const handleCurrentChange = (val) => {
               background-color: rgba(24, 144, 255, 0.1);
               margin-right: (10/1920) * 100vw;
             }
-            .cell:has(.isReturned) {
+            .cell:has(.isRequset) {
               height: 1px;
               background-color: transparent;
             }

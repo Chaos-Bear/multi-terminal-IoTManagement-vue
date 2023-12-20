@@ -21,7 +21,7 @@
       <div class="first2">
         <div class="first2-1">
           <div>
-            <!-- °C -->
+            <!-- <div id="temp">{{ props.form.roomTemp ? props.form.roomTemp : '21°C' }}</div> -->
             <div id="temp">
               <span>{{ props.form.roomTemp ? props.form.roomTemp : '21.6' }}</span>
               <span style="font-size:30px"> °C </span>
@@ -29,6 +29,7 @@
             <span>温度</span>
           </div>
           <div>
+            <!-- <div id="shidu">{{ props.form.roomHum ? props.form.roomHum : '30%' }}</div> -->
             <div id="shidu">
               <span>{{ props.form.roomHum ? props.form.roomHum : '30.7' }}</span>
               <span style="font-size:20px"> %RH </span>
@@ -50,7 +51,7 @@
       <div v-if="props.form.mtAreaList && props.form.mtAreaList.length > 0">
         <!-- 第一行同步与否 1同步 0不同步 -->
         <div>
-          <!-- 同步1 getLine1FontSize 'font-size': props.form.mtAreaList[0].fontSize + 'px',-->
+          <!-- 同步1  'font-size': props.form.mtAreaList[0].fontSize + 'px',-->
           <div
             v-if="props.form.mtAreaList[0].syncStatus == 1"
             class="main_title_of_meeting"
@@ -79,81 +80,11 @@
               :style="{
                 'font-size': props.form.mtAreaList[0].fontSize + 'px',
                 color: props.form.mtAreaList[0].textColor,
-                'text-align': props.form.mtAreaList[0].showLocats
+                'text-align': props.form.mtAreaList[0].showLocat
               }"
             >
               {{ item }}
             </div>
-            <!-- <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>33 && props.form.mtAreaList[0].textConent.length<46">
-              <div
-                class="zdy"
-                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
-                :key="i"
-                :style="{
-                  'font-size': '46px',
-                  color: props.form.mtAreaList[0].textColor,
-                  'text-align': props.form.mtAreaList[0].showLocat   
-                }"
-              >
-                {{ item }}{{props.form.mtAreaList[0].textConent.length}}
-              </div>
-            </template>
-            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=46 && props.form.mtAreaList[0].textConent.length<=59">
-              <div
-                class="zdy"
-                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
-                :key="i"
-                :style="{
-                  'font-size': '38px',
-                  color: props.form.mtAreaList[0].textColor,
-                  'text-align': props.form.mtAreaList[0].showLocat
-                }"
-              >
-                {{ item }}{{props.form.mtAreaList[0].textConent.length}}
-              </div>
-            </template>
-            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=60" >
-              <div
-                class="zdy"
-                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
-                :key="i"
-                :style="{
-                  'font-size': '34px',
-                  color: props.form.mtAreaList[0].textColor,
-                  'text-align': props.form.mtAreaList[0].showLocat
-                }"
-              >
-                {{ item }}{{props.form.mtAreaList[0].textConent.length}}
-              </div>
-            </template>
-            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length<=33">
-              <div
-                class="zdy"
-                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
-                :key="i"
-                :style="{
-                  'font-size': props.form.mtAreaList[0].fontSize + 'px',
-                  color: props.form.mtAreaList[0].textColor,
-                  'text-align': props.form.mtAreaList[0].showLocat
-                }"
-              >
-                {{ item }}{{props.form.mtAreaList[0].textConent.length}}
-              </div>
-            </template>
-            <template v-if="props.form.mtAreaList[0].fontSize!=54 ">
-              <div
-                class="zdy"
-                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
-                :key="i"
-                :style="{
-                  'font-size': props.form.mtAreaList[0].fontSize + 'px',
-                  color: props.form.mtAreaList[0].textColor,
-                  'text-align': props.form.mtAreaList[0].showLocat
-                }"
-              >
-                {{ item }}
-              </div>
-            </template> -->
           </div>
         </div>
         <!-- 第二行同步与否 会议开始时间，结束时间  visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'-->
@@ -235,31 +166,33 @@
         "
         class="noMeeting"
       >
-        <!-- 当前暂无<br />会议信息 -->
-        当前暂无会议
+        当前暂无<br />会议信息
       </div>
     </div>
     <!-- 三层 -->
     <div class="third">
       <!-- 导览图 *****************-->
-      <div v-if="props.form && props.form.imgShow && props.form.imgShow == '1'">
+      <div v-if="props.form.imgShow == '1'">
         <!-- 二楼  -->
         <SecondFloorShuz
           v-if="isSecondFloorShuz"
           :roomName="props.form.roomName"
           :form="form"
+          ref="secondFloorShuzRef"
         ></SecondFloorShuz>
 
         <SecondFloorHengf
           v-if="isSecondFloorHengf"
           :roomName="props.form.roomName"
           :form="form"
+          ref="secondFloorHengfRef"
         ></SecondFloorHengf>
         <!-- 一楼 横反 -->
         <FirstFloorHengf
           v-if="isFirstFloorHengf"
           :roomName="props.form.roomName"
           :form="form"
+          ref="firstFloorHengfRef"
         ></FirstFloorHengf>
 
         <!-- 待修改布局 -->
@@ -267,14 +200,17 @@
           v-if="isSecondFloorShuf"
           :roomName="props.form.roomName"
           :form="form"
+          ref="secondFloorShufRef"
         ></SecondFloorShuf>
         <FirstFloorShuz
           v-if="isFirstFloorShuz"
           :roomName="props.form.roomName"
           :form="form"
+          ref="firstFloorShuzRef"
         ></FirstFloorShuz>
       </div>
       <!-- 轮播图 -->
+
       <div class="swiper-container" id="swiper" v-else>
         <el-carousel
           indicator-position="none"
@@ -283,10 +219,12 @@
           :autoplay="autoplay"
           ref="carouselRef"
         >
+          <!-- v-if="item.obsFileType == '1'" -->
+
           <el-carousel-item v-for="(item, i) in props.form.mediaAreaList" :key="i">
-            <img v-if="item.obsFileType == '1'" :src="item.url" />
-            <!-- :src="item.url" -->
-            <video
+            <!-- {{props.form.mediaAreaList[0].base64}} -->
+            <img :src="'data:image/png;base64,' + item.base64" />
+            <!-- <video
               v-else
               :src="item.url"
               width="684"
@@ -294,17 +232,16 @@
               controls
               preload="metadata"
               :id="item.domId"
-            ></video>
+            ></video> -->
           </el-carousel-item>
         </el-carousel>
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup>
-import { ref, computed, onBeforeUnmount } from 'vue'
+import { ref,  computed, onMounted, onBeforeUnmount } from 'vue'
 // import {} from 'element-plus'
 import { useRoute } from 'vue-router'
 const route = useRoute()
@@ -314,12 +251,10 @@ import SecondFloorHengf from '@/components/xxfb/SecondFloorHengf.vue'
 
 import FirstFloorHengf from '@/components/xxfb/FirstFloorHengf.vue'
 import FirstFloorShuz from '@/components/xxfb/FirstFloorShuz.vue' //待修改
-import {} from 'element-plus'
+
 
 const roomName = route.query.roomName
 // const roomIdzdy = route.query.roomID
-
-// var url= window.URL.createObjectURL('C:/Users/55462/Downloads/cat.mp4')
 
 const props = defineProps({
   form: {
@@ -386,13 +321,66 @@ const isFirstFloorShuz = computed(() => {
   }
 })
 
+// const getMeetingList = () => {
+//   if (isSecondFloorShuz.value) {
+//     return [
+//       'A2-206',
+//       'A2-207',
+//       'A2-208',
+//       'A2-201',
+//       'A2-202',
+//       'A2-221',
+//       'A2-220',
+//       'A2-219',
+//       'A2-227',
+//       'A2-226',
+//       'A2-225'
+//     ]
+//   }
+//   if (isSecondFloorShuf.value) {
+//     return ['A2-204', 'A2-205', 'A2-215', 'A2-216', 'A2-222', 'A2-223']
+//   }
+//   if (isSecondFloorHengf.value) {
+//     return ['A2-211', 'A2-228', 'A2-229', 'A2-212']
+//   }
+//   if (isFirstFloorHengf.value) {
+//     return ['A2-113']
+//   }
+//   if (isFirstFloorShuz.value) {
+//     return ['A2-117']
+//   }
+// }
+
+const secondFloorShuzRef = ref('')
+const secondFloorShufRef = ref('')
+const secondFloorHengfRef = ref('')
+const firstFloorHengfRef = ref('')
+const firstFloorShuzRef = ref('')
+
+// const getstartendRef = () => {
+//   if (isSecondFloorShuz.value) {
+//     return secondFloorShuzRef.value.start_end
+//   }
+//   if (isSecondFloorShuf.value) {
+//     return secondFloorShufRef.value.start_end
+//   }
+//   if (isSecondFloorHengf.value) {
+//     return secondFloorHengfRef.value.start_end
+//   }
+//   if (isFirstFloorHengf.value) {
+//     return firstFloorHengfRef.value.start_end
+//   }
+//   if (isFirstFloorShuz.value) {
+//     return firstFloorShuzRef.value.start_end
+//   }
+// }
 // debugger
 // watch(()=>{
 // //    props.form.line1Text
 // })
 //1.获取最新时间，右上角展示
 const time = ref('')
-//console.log(nd)
+
 var timer = window.setInterval(function () {
   var mynewdate = new Date()
   // console.log("mynewdate",mynewdate)
@@ -408,40 +396,12 @@ var timer = window.setInterval(function () {
   time.value = y + '年' + M + '月' + d + '日' + '  ' + '  ' + h + ':' + m + ':' + s
 }, 1000)
 
-//会议预约字符总长度：125    11个字/58px
-//当会议主题长度大于23时，字号修改为36px  17个字/36px
-// const getLine1FontSize = computed(() => {
-//   // debugger
-//   if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 23 && props.form.mtAreaList[0].textConent.length <= 52) {
-//     props.form.mtAreaList[0].fontSize = '36px'
-//   } else if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 53 && props.form.mtAreaList[0].textConent.length <= 84) {
-//     // 21个字/30px
-//     props.form.mtAreaList[0].fontSize = '30px'
-//   } else if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 85) {
-//     props.form.mtAreaList[0].fontSize= '24px'
-//   }else{
-
-//   }
-// })
-
-//19个字/34px ，当会议主题长度大于19时，字号修改为28px
-// const getLine3FontSize = computed(() => {
-//   if (props.form.mtAreaList[2].textConent && props.form.mtAreaList[2].textConent.length >= 19 && props.form.mtAreaList[2].textConent.length <= 40) {
-//     props.form.mtAreaList[2].fontSize = "28px";
-//   } else if (props.form.mtAreaList[2].textConent && props.form.mtAreaList[2].textConent.length >= 41) {
-//     props.form.mtAreaList[2].fontSize = "24px";
-//   }
-// })
 
 const autoplay = ref(true)
-// debugger
+
 const carouselRef = ref(null)
 const isVideo = (v) => {
-  if (
-    props.form &&
-    props.form.mediaAreaList > 0 &&
-    props.form.mediaAreaList[v].obsFileType == '2'
-  ) {
+  if (props.form.mediaAreaList[v].obsFileType == '2') {
     autoplay.value = false
     var domVideo1 = document.getElementById(props.form.mediaAreaList[v].domId)
     console.log(domVideo1, props.form.mediaAreaList[v].playVideoID)
@@ -466,9 +426,9 @@ const isVideo = (v) => {
 
 // const getUrl=(url)=>{
 //   return URL.createObjectURL(url)
-
 // }
-
+// console.log(props.form.mediaAreaList)
+onMounted(() => {})
 onBeforeUnmount(() => {
   clearInterval(timer)
 })
@@ -496,8 +456,8 @@ section {
   height: 1280px;
   margin: 0 auto;
   background-color: rgba(44, 105, 101, 1);
-  zoom: 0.53;
-  // zoom: 1;
+  // zoom: 0.53;
+  zoom: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -590,13 +550,13 @@ section {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-
 }
 
 .roomInfo .first .first2 > .first2-1 > div {
   text-align: center;
   width: 160px;
 }
+
 // .roomInfo .first .first2 > .first2-1 > div > div {
 //   line-height: 70px;
 //   margin-top: 34px;
@@ -696,16 +656,6 @@ section {
   word-wrap: break-word;
 }
 
-// .roomInfo .second .noMeeting {
-//   width: 636px;
-//   line-height: 100px;
-//   // margin-top: 80px;
-//   /*color: rgba(255, 255, 255, 0.1)!important;*/
-//   color: rgba(255, 255, 255, 0.1);
-//   font-size: 68px;
-//   text-align: center;
-//   font-family: SourceHanSansSC-black;
-// }
 .roomInfo .second .noMeeting {
   width: 636px;
   line-height: 100px;
@@ -739,7 +689,6 @@ li {
 .swiper-container {
   width: 688px;
   height: 385px;
-  // border: 1px solid red;
   position: absolute;
   top: 50%;
   left: 50%;

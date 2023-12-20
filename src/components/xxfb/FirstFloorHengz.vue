@@ -258,26 +258,26 @@
 
 <script setup>
 // 一楼横正：暂无会议室
-import { ref, reactive, watch, computed, onMounted, nextTick } from 'vue'
-import $ from 'jquery'
+// import { ref, reactive, watch, computed, onMounted, nextTick } from 'vue'
+// import $ from 'jquery'
 
-import startImg from '@/assets/xxfb/path/start.png'
-import endImg from '@/assets/xxfb/path/end.png'
+// import startImg from '@/assets/xxfb/path/start.png'
+// import endImg from '@/assets/xxfb/path/end.png'
 
-const props = defineProps({
-  roomName: {
-    type: String,
-    default() {
-      return ''
-    }
-  },
-  form: {
-    type: Object,
-    default() {
-      return ''
-    }
-  }
-})
+// const props = defineProps({
+//   roomName: {
+//     type: String,
+//     default() {
+//       return ''
+//     }
+//   },
+//   form: {
+//     type: Object,
+//     default() {
+//       return ''
+//     }
+//   }
+// })
 </script>
 
 <style lang="less" scoped>

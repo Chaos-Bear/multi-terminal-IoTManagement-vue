@@ -54,6 +54,7 @@
         :header-cell-style="{ background: '#F5F9FC' }"
         @selection-change="selectionChange"
         ref="tableRef"
+        v-loading="isLoading"
       >
         <el-table-column
           type="selection"
@@ -259,16 +260,14 @@
   </div>
 </template>
 <script setup>
-// import TheWelcome from '../components/TheWelcome.vue';
-import axios from 'axios'
 import { reactive, ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter()
 
-import { request, releaseRequest, deviceRequest } from '@/utils/server.js'
+import { releaseRequest, deviceRequest } from '@/utils/server.js'
 
-const table = ref(null)
+// const table = ref(null)
 
 // 设备管理页会议室列表维护
 const meetingRoomlist = ref(['全部'])
@@ -288,7 +287,9 @@ const getmeetingRoomList = () => {
     })
 }
 //获取设备列表
+const isLoading=ref(false)
 const getList = () => {
+  isLoading.value=true
   deviceRequest
     .post('/IotDeviceEditCtrl/queryIotDevicePageList', {
       deviceIP: form.deviceIP,
@@ -312,7 +313,11 @@ const getList = () => {
     .catch((error) => {
       console.log('设备管理列表按条件查询失败:', error)
     })
+    .finally(()=>{
+      isLoading.value=false
+    })
 }
+const tableRef = ref('')
 const deleteList = (v) => {
   //单个删除请求（成功后发查询请求）
   deviceRequest
@@ -329,7 +334,9 @@ const deleteList = (v) => {
         tableRef.value.clearSelection()
       }
     })
-    .catch((error) => {})
+    .catch((error) => {
+      console.log('设备列表删除失败',error)
+    })
 }
 //初始化渲染
 onMounted(() => {
@@ -442,7 +449,8 @@ const validateDeviceName = (rule, value, callback) => {
   // if (value === '') {
   //   return callback(new Error('请输入设备名称'))
   // }
-  const reg = /[^\a-\z\A-\Z0-9\u4E00-\u9FA5\——]/g
+  // const reg = /[^\a-\z\A-\Z0-9\u4E00-\u9FA5\——]/g
+  const reg = /[^a-zA-Z0-9\u4E00-\u9FA5——]/g
 
   if (reg.test(value)) {
     return callback(new Error('只允许输入字母，数字，汉字'))
@@ -584,7 +592,7 @@ const deleteitem = (row) => {
     })
 }
 // 3.2 编辑按钮
-var editId
+// var editId
 const editdialogFormVisible = ref(false)
 const editForm = reactive({
   deviceID: '',
@@ -636,7 +644,7 @@ const editFormRules = reactive({
 const edititem = (row) => {
   console.log(row)
 
-  editId = row.deviceID
+  // editId = row.deviceID
   editdialogFormVisible.value = true
 
   editForm.deviceID = row.deviceID
@@ -710,14 +718,14 @@ const tableData = ref([
   //     "increaseTime": "2023-10-18 19:16:08"
   // }
 ])
-const isindexof = (arr, item) => {
-  for (var j = 0; j < arr.length; j++) {
-    if (item.id == arr[j].id) {
-      return j
-    }
-  }
-  return -1
-}
+// const isindexof = (arr, item) => {
+//   for (var j = 0; j < arr.length; j++) {
+//     if (item.id == arr[j].id) {
+//       return j
+//     }
+//   }
+//   return -1
+// }
 
 // const isOpen = (v, item) => {
 //   // debugger

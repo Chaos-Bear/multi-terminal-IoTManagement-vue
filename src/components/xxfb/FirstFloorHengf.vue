@@ -278,7 +278,7 @@
 
 <script setup>
 // 一楼横反：A2-113
-import { ref, reactive, watch, computed, onMounted, nextTick, onBeforeUnmount } from 'vue'
+import { computed, onMounted, nextTick, onBeforeUnmount } from 'vue'
 import $ from 'jquery'
 
 import startImg from '@/assets/xxfb/path/start.png'
@@ -305,6 +305,11 @@ const getzbdStyle = computed(() => {
       top: '344px'
     }
   }
+  return {
+    left: '0px',
+    top: '0px'
+  }
+ 
 })
 // 声明会议室坐标点
 var CoordPoint = {
@@ -453,7 +458,7 @@ function start_end(xy, end) {
 
   // var length = $(".line").length;
   if ($('.line').length == 1) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -500,7 +505,7 @@ function start_end(xy, end) {
       // $("body").attr("timeout-scale", scaletimeout);
     })
   } else if ($('.line').length == 2) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -549,7 +554,7 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 3) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -600,7 +605,7 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 4) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -654,7 +659,7 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 5) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -709,7 +714,7 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 6) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -783,8 +788,7 @@ function start_end(xy, end) {
         .animate({ height: $line.height() }, 'fast', 'linear', function () {
           callback()
         })
-    } else {
-    }
+    } 
   }
 }
 function drawLine(start, end) {
@@ -801,7 +805,9 @@ function drawLine(start, end) {
 
   var div2 = document.getElementById('div2')
   div2.appendChild(div)
-
+  let abs1
+  let abs2
+  
   // 如果线与Y轴平行
   if (start[0] == end[0]) {
     div.setAttribute('data-type', 'y')
@@ -820,8 +826,8 @@ function drawLine(start, end) {
     children.style.width = 5 + 'px'
 
     // 判断起点 终点距离 分别与原点比较
-    var abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
-    var abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
+    abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
+    abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
     if (abs1 > abs2) {
       // debugger
       div.style.top = end[1] + 'px'
@@ -847,8 +853,8 @@ function drawLine(start, end) {
     children.style.height = 5 + 'px'
     children.style.width = 0
     // 判断起点 终点距离 分别与原点比较
-    var abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
-    var abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
+    abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
+    abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
     if (abs1 > abs2) {
       div.style.top = end[1] + 'px'
       div.style.left = end[0] + 'px'
@@ -856,8 +862,7 @@ function drawLine(start, end) {
       div.style.top = start[1] + 'px'
       div.style.left = start[0] + 'px'
     }
-  } else {
-  }
+  } 
 }
 
 const dataRoomClick = (end) => {

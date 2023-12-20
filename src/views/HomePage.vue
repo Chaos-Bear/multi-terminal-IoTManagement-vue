@@ -2,53 +2,59 @@
   <div class="home">
     <!-- 1.导航栏 -->
     <div class="navigationBar">
-      <!-- <div v-for="(item,i) in navigationBar" :key="i" class="item">
-            <div>
-                <img :src="item.src" @click="(item.url)">
-            </div>
-            <div>{{item.navigationCon}}</div>
+      <div>
+        <!-- <div v-for="(item,i) in navigationBar" :key="i" class="item">
+              <div>
+                  <img :src="item.src" @click="(item.url)">
+              </div>
+              <div>{{item.navigationCon}}</div>
+          </div> -->
+        <div class="item">
+          <div>
+            <img src="@/assets/home/1.png" @click="router.push('/deviceList')" />
+          </div>
+          <div>设备管理</div>
+        </div>
+        <div class="item">
+          <a href="/iot-client/#/callService" target="__blank">
+            <img src="@/assets/home/3.png" />
+          </a>
+          <!-- <a href="/#/callService" target="__blank">
+            <img src="@/assets/home/3.png" />
+          </a> -->
+          <div>呼叫服务</div>
+        </div>
+        <div class="item">
+          <a href="/iot-client/#/tablet" target="_blank">
+            <img src="@/assets/home/2.png" />
+          </a>
+          <!-- <a href="/#/tablet" target="_blank">
+            <img src="@/assets/home/2.png" />
+          </a> -->
+          <div>平板借还</div>
+        </div>
+        <!-- <div class="item">
+          <div>
+            <img src="@/assets/home/3.png" @click="router.push('/callService')" />
+          </div>
+          <div>呼叫服务</div>
+        </div>
+        <div class="item">
+          <div>
+            <img src="@/assets/home/2.png" @click="router.push('/tablet')" />
+          </div>
+          <div>平板借还</div>
         </div> -->
-      <div class="item">
-        <div>
-          <img src="@/assets/home/1.png" @click="router.push('/deviceList')" />
+        <div class="item">
+          <div>
+            <img src="@/assets/xxfb/screenshots/10.png" @click="router.push('/xxfb-monitorlist')" />
+          </div>
+          <div>发布屏监控</div>
         </div>
-        <div>设备管理</div>
       </div>
-      <div class="item">
-        <a href="/iot-client/#/callService" target="__blank">
-          <img src="@/assets/home/3.png" />
-        </a>
-        <!-- <a href="/#/callService" target="__blank">
-          <img src="@/assets/home/3.png" />
-        </a> -->
-        <div>呼叫服务</div>
-      </div>
-      <div class="item">
-        <a href="/iot-client/#/tablet" target="_blank">
-          <img src="@/assets/home/2.png" />
-        </a>
-        <!-- <a href="/#/tablet" target="_blank">
-          <img src="@/assets/home/2.png" />
-        </a> -->
-        <div>平板借还</div>
-      </div>
-      <!-- <div class="item">
-        <div>
-          <img src="@/assets/home/3.png" @click="router.push('/callService')" />
-        </div>
-        <div>呼叫服务</div>
-      </div>
-      <div class="item">
-        <div>
-          <img src="@/assets/home/2.png" @click="router.push('/tablet')" />
-        </div>
-        <div>平板借还</div>
-      </div> -->
-      <div class="item">
-        <div>
-          <img src="@/assets/xxfb/screenshots/10.png" @click="router.push('/xxfb-monitorlist')" />
-        </div>
-        <div>发布屏监控</div>
+      <div>
+         <el-button  style="float: right; margin-left: 10px" @click="returnHome">返回</el-button>
+        
       </div>
     </div>
     <!-- 2. 头部 -->
@@ -116,14 +122,12 @@
     </div>
     <!-- 3.会议室列表 -->
     <div class="tableBox">
-      <el-scrollbar height="100%">
-        <div class="meetingList" v-if="meetingList.length > 0">
+      <el-scrollbar height="100%" v-loading='isloading'>
+        <div class="meetingList" v-if="meetingList.length > 0" >
           <div v-for="(item, index) in meetingList" :key="index" class="meetingroom">
             <!-- <img src="@/assets/index/1.png" @click="router.push('/meetingUserList?id='+item.id+'&name='+item.name)"/> -->
-            <img
-              :src="'data:image/jpg;base64,' + item.roomImg"
-              @click="gotoMeetingUserList(item)"
-            />
+            <el-image :src="'data:image/jpg;base64,' + item.roomImg" :key="'data:image/jpg;base64,' + item.roomImg"
+              @click="gotoMeetingUserList(item)"  lazy />
             <div>
               <div>
                 <div class="roomName">{{ item.roomName }}会议室</div>
@@ -256,12 +260,12 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { reactive, ref, onMounted, nextTick } from 'vue'
-import { ElMessage, valueEquals, ElMessageBox, ElConfigProvider } from 'element-plus'
+import { ElMessage,ElMessageBox } from 'element-plus'
 import { Plus, Delete } from '@element-plus/icons-vue'
 const router = useRouter()
 // import axios from 'axios'
 
-import { releaseRequest } from '@/utils/server.js'
+import {releaseRequest } from '@/utils/server.js'
 
 // 会议室配置信息
 var floorOptions = ref([])
@@ -286,7 +290,9 @@ const getFloorandAddList = () => {
     })
 }
 // 会议室列表接口
+const isloading=ref(false)
 const getList = () => {
+  isloading.value=true
   releaseRequest
     .post('/IOTRoomCrtl/queryIotRoomList', {
       floor: searchform.floor,
@@ -298,6 +304,7 @@ const getList = () => {
     })
     .then((res) => {
       console.log('会议室列表查询成功:', res.data)
+
       // debugger
       // 总条数
       total.value = res.data.totalRecord
@@ -307,6 +314,9 @@ const getList = () => {
     })
     .catch((error) => {
       console.log('会议室列表查询失败:', error)
+    })
+    .finally(()=>{
+      isloading.value=false
     })
 }
 onMounted(() => {
@@ -342,7 +352,7 @@ const postList = () => {
       getList()
     })
     .catch((error) => {
-      // console.log('会议室新增列表失败:', error)
+      console.log('会议室新增列表失败:', error)
       isLocked.value = false
     })
 }
@@ -354,12 +364,16 @@ const deleteList = () => {
       roomID: roomID.value
     })
     .then((res) => {
-      // console.log('删除会议室列表成功:', res.data)
+      console.log('删除会议室列表成功:', res.data)
       console.log('删除id:', roomID.value)
+      ElMessage({
+        type: 'success',
+        message: '删除成功'
+      })
       getList()
     })
     .catch((error) => {
-      // console.log('删除会议室列表失败:', error)
+      console.log('删除会议室列表失败:', error)
     })
 }
 
@@ -406,8 +420,15 @@ const resetQuery = () => {
   getList()
 }
 //返回
+// const isshow=ref(true)
+// isshow.value=window.top?true:false
 const returnHome = () => {
-  history.go(-1)
+  if(window.top && window.top.document.getElementsByTagName('iframe').length>0){
+     window.top.document.getElementsByTagName('iframe')[0].src='/meeting-appoint-web/#/conference-room-manage'
+  }else{
+    return
+  }
+  
 }
 // 新增
 const createForm = reactive({
@@ -455,11 +476,7 @@ const beforeAvatarUpload = (rawFile) => {
   return true
 }
 
-const uploadFlie = (params) => {
-  // debugger
-  // console.log(params.file)
-  // createForm.img=params.file.name;
-}
+
 const del = () => {
   imageUrl.value = ''
 }
@@ -628,10 +645,9 @@ const saveMeetingModify = () => {
       }
       formData.append('data', JSON.stringify(data))
       // 二进制文件上传
-      //  debugger
       formData.append('file', createForm.img || base64ToFile(imageUrl.value))
       // debugger
-      request
+      releaseRequest
         .post('/IOTRoomCrtl/updateIOTRoom', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
@@ -644,7 +660,7 @@ const saveMeetingModify = () => {
           getList()
         })
         .catch((error) => {
-          // console.log('会议室编辑失败:', error)
+          console.log('会议室编辑失败:', error)
         })
     } else {
       console.log('校验错误')
@@ -655,9 +671,25 @@ const saveMeetingModify = () => {
 // 单条删除
 const deleteMeeting = (v) => {
   // debugger
+  // 删除时，需先删除当前会议室下的项目和页面
+  if(v.roomClassNum || v.roomContNum){
+    //  ElMessage.error('删除失败，请先删除当前会议室下的所有页面！')
+    ElMessageBox.confirm('删除失败，请先删除当前会议室下的所有页面！', '删除', {
+      cancelButtonClass:'ExitCancelBtn',
+      confirmButtonText: '确定',
+      type: 'error',
+    }).then(() => {
+     
+    })
+    .catch(() => {
+      
+    })
+    return
+  }
   roomID.value = v.roomID
   console.log('删除一条会议信息', v.roomName)
   ElMessageBox.confirm('确定删除当前选中会议室？', '删除', {
+    cancelButtonClass:'ExitCancelBtn',
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
@@ -665,11 +697,6 @@ const deleteMeeting = (v) => {
     .then(() => {
       // 发送删除接口 请求，删除此条会议室信息
       deleteList()
-
-      ElMessage({
-        type: 'success',
-        message: '删除成功'
-      })
     })
     .catch(() => {
       ElMessage({
@@ -700,6 +727,7 @@ const refresh = () => {
 }
 </script>
 <style lang="less" scoped>
+
 .home {
   margin: 0;
   height: 100%;
@@ -710,33 +738,41 @@ const refresh = () => {
     height: 111px;
     border-bottom: 1px solid rgba(239, 239, 239, 1);
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     flex: none;
-    .item {
-      margin-right: 40px;
+    &>div:nth-child(1){
       display: flex;
-      flex-direction: column;
+      justify-content: flex-start;
       align-items: center;
-      & > a,
-      & > div:nth-child(1) {
-        width: 45px;
-        height: 45px;
-        border-radius: 4px;
-        background-color: rgba(24, 144, 255, 1);
-        img {
-          width: 25px;
-          height: 25px;
-          margin: 10px;
+      .item {
+        margin-right: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        & > a,
+        & > div:nth-child(1) {
+          width: 45px;
+          height: 45px;
+          border-radius: 4px;
+          background-color: rgba(24, 144, 255, 1);
+          img {
+            width: 25px;
+            height: 25px;
+            margin: 10px;
+          }
+        }
+
+        & > div {
+          height: 20px;
+          font-size: 14px;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
         }
       }
-
-      & > div {
-        height: 20px;
-        font-size: 14px;
-        text-align: left;
-        font-family: SourceHanSansSC-regular;
-      }
+    } 
+    &>div:nth-child(2){
+      margin-top: -20px;
     }
   }
   // 2. 头部
@@ -807,12 +843,9 @@ const refresh = () => {
         background-color: rgba(255, 255, 255, 1);
         text-align: center;
         border: 1px solid rgba(233, 233, 233, 1);
-        img {
-          width: 100%;
-          height: 123px;
-        }
+        
         & > div {
-          height: 90px;
+          height: 123px;
           display: flex;
           flex-direction: column;
           & > div {
@@ -823,16 +856,11 @@ const refresh = () => {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            .roomName {
-              width: 105px;
-              height: 24px;
-              font-size: 16px;
-              text-align: left;
-              font-family: SourceHanSansSC-regular;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-            }
+              img {
+                width: 100%;
+                height: 123px;
+              }
+
             & > div:nth-child(2) {
               width: 28px;
               height: 20px;
@@ -842,6 +870,20 @@ const refresh = () => {
               font-family: SourceHanSansSC-regular;
               display: none;
             }
+          }
+        }
+        // 会议室及项目
+        & > div:nth-child(2){
+          height: 90px;
+          .roomName {
+            width: 130px;
+            height: 24px;
+            font-size: 16px;
+            text-align: left;
+            font-family: SourceHanSansSC-regular;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .detailInfo {
             // height: 20px;
@@ -995,4 +1037,31 @@ const refresh = () => {
   text-align: center;
   border: 1px solid rgba(192, 204, 218, 1);
 }
+
+//新增/编辑弹窗
+  :deep(.el-dialog) {
+    .el-dialog__body {
+      border-top: 1px solid rgba(239, 239, 239, 1);
+    }
+  }
+
+
+</style>
+
+<style lang='less'>
+/* 删除弹框确定与取消按钮居中 */
+.ExitCancelBtn{
+    margin-left: 10px!important;
+}
+
+.el-message-box {
+  .el-message-box__content{
+  border-top: 1px solid rgba(239, 239, 239, 1);
+  }
+  .el-message-box__btns{
+    /* flex-direction: row-reverse !important; */
+    justify-content: center !important;
+  }
+}
+
 </style>

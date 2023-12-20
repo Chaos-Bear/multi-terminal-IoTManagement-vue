@@ -24,11 +24,11 @@
 </template>
 <script setup>
 // import TheWelcome from '../components/TheWelcome.vue';
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
-import axios from 'axios'
+
 const index = ref(1)
 const options = [
   {

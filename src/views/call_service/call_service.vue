@@ -316,11 +316,11 @@
 </template>
 
 <script setup>
-import { nextTick, onDeactivated, onMounted, reactive, ref, computed } from 'vue'
+import { nextTick,  onMounted, ref } from 'vue'
 import { ChatDotRound, Search } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
-import axios from 'axios'
-import { useRoute } from 'vue-router'
+// import { ElMessage } from 'element-plus'
+
+// import { useRoute } from 'vue-router'
 import { createWebSocket } from '@/utils/websocket.js'
 
 import { request } from '@/utils/server.js'
@@ -329,8 +329,7 @@ var wsbaseURL11 = import.meta.env.VITE_BASE_URL11
 // 右侧楼层区域wsbaseURL12
 var wsbaseURL12 = import.meta.env.VITE_BASE_URL12
 
-// debugger
-const route = new useRoute()
+// const route = new useRoute()
 // 获取当前日期,如是当日日期，则不显示日期，只显示时间
 var d = new Date()
 var Y = d.getFullYear()
@@ -343,7 +342,7 @@ if (D <= 9) {
   D = '0' + D
 }
 var dayTime = Y + '-' + M + '-' + D
-var hisdateTime = ref('')
+
 // 获取组织信息，并传递给后端  **此处相关 部署时记得打开注释  待处理
 var showName = ref('')
 const userId = ref(sessionStorage.getItem('userId') || '4600072255')
@@ -362,7 +361,7 @@ const postUserInfo = () => {
       // erpbh: "4600072255" orgeh: "46004475" orgehName: null  xm: "益伟康"
     })
     .catch((error) => {
-      // console.log('用户信息查失败:', error)
+      console.log('用户信息查失败:', error)
     })
 }
 
@@ -705,7 +704,7 @@ var isLocked = true
 //--------创建右侧websocket对象------***
 var ws1 = createWebSocket(wsbaseURL12 + '/websocket/' + userId.value, {
   onopen(e) {
-    console.log('建立了ws1连接')
+    console.log('建立了ws1连接',ws1,e)
   },
   onmessage(e) {
     // console.log('接收ws1服务器消息:', e)
@@ -746,6 +745,7 @@ var ws1 = createWebSocket(wsbaseURL12 + '/websocket/' + userId.value, {
   onreconnect(ws) {
     ws1 = ws
   }
+  
 })
 
 // 3.右侧楼层
@@ -783,7 +783,7 @@ const isOpen = (v, item1) => {
         roomID: item1.roomID
       })
       .then((res) => {
-        // console.log('控制设备发送成功', res)
+        console.log('控制设备发送成功', res)
         console.log('主题打印', topic)
       })
       .catch((error) => {

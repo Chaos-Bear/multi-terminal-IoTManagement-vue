@@ -28,12 +28,11 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
-import axios from 'axios'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { useRouter, useRoute } from 'vue-router'
+import { ref,  watch } from 'vue'
+import { ElMessage } from 'element-plus'
+import { useRouter} from 'vue-router'
 const router = useRouter()
-import { request, tabletRequest } from '@/utils/server.js'
+import { tabletRequest } from '@/utils/server.js'
 
 // 取平板前通过借还验证码查询预约信息接口
 const getList = () => {
@@ -44,19 +43,19 @@ const getList = () => {
       verifyCode: verifyCode
     })
     .then((res) => {
-      var res = res.data
+      var res1 = res.data
       // 计算现在的时间 和 校验码对应的会议开始时间 是否在2H之内，否则不允许取平板
       var nowTime = new Date().getTime()
 
-      if (res.repCode == 200) {
-        console.log('校验码输入正确:', res)
+      if (res1.repCode == 200) {
+        console.log('校验码输入正确:', res1)
         // debugger
         // res.result.startTime为申请的借用开始时间
-        var startTime = new Date(res.result.meetStartTime).getTime()
+        var startTime = new Date(res1.result.meetStartTime).getTime()
         // if((startTime-nowTime) <=2*60*60*1000  && (startTime-nowTime)>=0){
         if (startTime - nowTime <= 2 * 60 * 60 * 1000) {
           //验证码校验成功，跳转到扫描页,并使用query传参
-          router.push('/auto-scanning?verifyCode=' + verifyCode + '&repMsg=' + res.repMsg)
+          router.push('/auto-scanning?verifyCode=' + verifyCode + '&repMsg=' + res1.repMsg)
         } else {
           ElMessage({
             type: 'error',

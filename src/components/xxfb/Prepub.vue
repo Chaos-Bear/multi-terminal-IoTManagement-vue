@@ -21,11 +21,19 @@
       <div class="first2">
         <div class="first2-1">
           <div>
-            <div id="temp">{{ props.form.roomTemp ? props.form.roomTemp : '21°C' }}</div>
+            <!-- <div id="temp">{{ props.form.roomTemp ? props.form.roomTemp : '21°C' }}</div> -->
+            <div id="temp">
+              <span>{{ props.form.roomTemp ? props.form.roomTemp : '21.6' }}</span>
+              <span style="font-size:20px"> °C </span>
+            </div>
             <span>温度</span>
           </div>
           <div>
-            <div id="shidu">{{ props.form.roomHum ? props.form.roomHum : '30%' }}</div>
+            <!-- <div id="shidu">{{ props.form.roomHum ? props.form.roomHum : '30%' }}</div> -->
+            <div id="shidu">
+              <span>{{ props.form.roomHum ? props.form.roomHum : '30.7' }}</span>
+              <span style="font-size:20px"> %RH </span>
+            </div>
             <span>湿度</span>
           </div>
         </div>
@@ -48,13 +56,56 @@
             v-if="props.form.mtAreaList[0].syncStatus == 1"
             class="main_title_of_meeting"
             :style="{
-              'font-size': props.form.mtAreaList[0].fontSize + 'px',
-              color: props.form.mtAreaList[0].textColor,
-              'text-align': props.form.mtAreaList[0].showLocat,
               display: props.form.mtAreaList[0].isShow == '1' ? 'block' : 'none'
             }"
           >
-            {{ props.form.mtAreaList[0].textConent }}
+           <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>33 && props.form.mtAreaList[0].textConent.length<46">
+            <div class="zdy" :style="{
+              'font-size': '46px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=46 && props.form.mtAreaList[0].textConent.length<=59">
+            <div class="zdy" :style="{
+              'font-size':'38px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=60" >
+            <div class="zdy"  :style="{
+              'font-size': '34px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+              
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length<=33" >
+            <div class="zdy" :style="{
+              'font-size': props.form.mtAreaList[0].fontSize + 'px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+              
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize!=54 ">
+              <div class="zdy" :style="{
+                'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                 color: props.form.mtAreaList[0].textColor,
+                'text-align': props.form.mtAreaList[0].showLocat,
+              }">
+                {{ props.form.mtAreaList[0].textConent }}
+              </div>
+            </template>
           </div>
 
           <!-- 不同步0 -->
@@ -65,18 +116,76 @@
               display: props.form.mtAreaList[0].isShow == '1' ? 'block' : 'none'
             }"
           >
-            <div
-              class="zdy"
-              v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
-              :key="i"
-              :style="{
-                'font-size': props.form.mtAreaList[0].fontSize + 'px',
-                color: props.form.mtAreaList[0].textColor,
-                'text-align': props.form.mtAreaList[0].showLocat
-              }"
-            >
-              {{ item }}
-            </div>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>33 && props.form.mtAreaList[0].textConent.length<46">
+              <div
+                class="zdy"
+                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                :key="i"
+                :style="{
+                  'font-size': '46px',
+                  color: props.form.mtAreaList[0].textColor,
+                  'text-align': props.form.mtAreaList[0].showLocat   
+                }"
+              >
+                {{ item }}
+              </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=46 && props.form.mtAreaList[0].textConent.length<=59">
+              <div
+                class="zdy"
+                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                :key="i"
+                :style="{
+                  'font-size': '38px',
+                  color: props.form.mtAreaList[0].textColor,
+                  'text-align': props.form.mtAreaList[0].showLocat
+                }"
+              >
+                {{ item }}
+              </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=60" >
+              <div
+                class="zdy"
+                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                :key="i"
+                :style="{
+                  'font-size': '34px',
+                  color: props.form.mtAreaList[0].textColor,
+                  'text-align': props.form.mtAreaList[0].showLocat
+                }"
+              >
+                {{ item }}
+              </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length<=33">
+              <div
+                class="zdy"
+                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                :key="i"
+                :style="{
+                  'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                  color: props.form.mtAreaList[0].textColor,
+                  'text-align': props.form.mtAreaList[0].showLocat
+                }"
+              >
+                {{ item }}
+              </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize!=54 ">
+              <div
+                class="zdy"
+                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                :key="i"
+                :style="{
+                  'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                  color: props.form.mtAreaList[0].textColor,
+                  'text-align': props.form.mtAreaList[0].showLocat
+                }"
+              >
+                {{ item }}
+              </div>
+            </template>
           </div>
         </div>
         <!-- 第二行同步与否 会议开始时间，结束时间  visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'-->
@@ -233,9 +342,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref,  computed, onMounted, onBeforeUnmount } from 'vue'
 // import {} from 'element-plus'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 const route = useRoute()
 import SecondFloorShuz from '@/components/xxfb/SecondFloorShuz.vue'
 import SecondFloorShuf from '@/components/xxfb/SecondFloorShuf.vue' //待修改
@@ -243,10 +352,10 @@ import SecondFloorHengf from '@/components/xxfb/SecondFloorHengf.vue'
 
 import FirstFloorHengf from '@/components/xxfb/FirstFloorHengf.vue'
 import FirstFloorShuz from '@/components/xxfb/FirstFloorShuz.vue' //待修改
-import { rowProps } from 'element-plus'
+
 
 const roomName = route.query.roomName
-const roomIdzdy = route.query.roomID
+// const roomIdzdy = route.query.roomID
 
 const props = defineProps({
   form: {
@@ -313,35 +422,35 @@ const isFirstFloorShuz = computed(() => {
   }
 })
 
-const getMeetingList = () => {
-  if (isSecondFloorShuz.value) {
-    return [
-      'A2-206',
-      'A2-207',
-      'A2-208',
-      'A2-201',
-      'A2-202',
-      'A2-221',
-      'A2-220',
-      'A2-219',
-      'A2-227',
-      'A2-226',
-      'A2-225'
-    ]
-  }
-  if (isSecondFloorShuf.value) {
-    return ['A2-204', 'A2-205', 'A2-215', 'A2-216', 'A2-222', 'A2-223']
-  }
-  if (isSecondFloorHengf.value) {
-    return ['A2-211', 'A2-228', 'A2-229', 'A2-212']
-  }
-  if (isFirstFloorHengf.value) {
-    return ['A2-113']
-  }
-  if (isFirstFloorShuz.value) {
-    return ['A2-117']
-  }
-}
+// const getMeetingList = () => {
+//   if (isSecondFloorShuz.value) {
+//     return [
+//       'A2-206',
+//       'A2-207',
+//       'A2-208',
+//       'A2-201',
+//       'A2-202',
+//       'A2-221',
+//       'A2-220',
+//       'A2-219',
+//       'A2-227',
+//       'A2-226',
+//       'A2-225'
+//     ]
+//   }
+//   if (isSecondFloorShuf.value) {
+//     return ['A2-204', 'A2-205', 'A2-215', 'A2-216', 'A2-222', 'A2-223']
+//   }
+//   if (isSecondFloorHengf.value) {
+//     return ['A2-211', 'A2-228', 'A2-229', 'A2-212']
+//   }
+//   if (isFirstFloorHengf.value) {
+//     return ['A2-113']
+//   }
+//   if (isFirstFloorShuz.value) {
+//     return ['A2-117']
+//   }
+// }
 
 const secondFloorShuzRef = ref('')
 const secondFloorShufRef = ref('')
@@ -349,30 +458,30 @@ const secondFloorHengfRef = ref('')
 const firstFloorHengfRef = ref('')
 const firstFloorShuzRef = ref('')
 
-const getstartendRef = () => {
-  if (isSecondFloorShuz.value) {
-    return secondFloorShuzRef.value.start_end
-  }
-  if (isSecondFloorShuf.value) {
-    return secondFloorShufRef.value.start_end
-  }
-  if (isSecondFloorHengf.value) {
-    return secondFloorHengfRef.value.start_end
-  }
-  if (isFirstFloorHengf.value) {
-    return firstFloorHengfRef.value.start_end
-  }
-  if (isFirstFloorShuz.value) {
-    return firstFloorShuzRef.value.start_end
-  }
-}
+// const getstartendRef = () => {
+//   if (isSecondFloorShuz.value) {
+//     return secondFloorShuzRef.value.start_end
+//   }
+//   if (isSecondFloorShuf.value) {
+//     return secondFloorShufRef.value.start_end
+//   }
+//   if (isSecondFloorHengf.value) {
+//     return secondFloorHengfRef.value.start_end
+//   }
+//   if (isFirstFloorHengf.value) {
+//     return firstFloorHengfRef.value.start_end
+//   }
+//   if (isFirstFloorShuz.value) {
+//     return firstFloorShuzRef.value.start_end
+//   }
+// }
 // debugger
 // watch(()=>{
 // //    props.form.line1Text
 // })
 //1.获取最新时间，右上角展示
 const time = ref('')
-//console.log(nd)
+
 var timer = window.setInterval(function () {
   var mynewdate = new Date()
   // console.log("mynewdate",mynewdate)
@@ -388,40 +497,6 @@ var timer = window.setInterval(function () {
   time.value = y + '年' + M + '月' + d + '日' + '  ' + '  ' + h + ':' + m + ':' + s
 }, 1000)
 
-//会议预约字符总长度：125    11个字/58px
-//当会议主题长度大于23时，字号修改为36px  17个字/36px
-const getLine1FontSize = computed(() => {
-  // debugger
-  if (
-    props.form.mtAreaList[0].textConent &&
-    props.form.mtAreaList[0].textConent.length >= 23 &&
-    props.form.mtAreaList[0].textConent.length <= 52
-  ) {
-    props.form.mtAreaList[0].fontSize = '36px'
-  } else if (
-    props.form.mtAreaList[0].textConent &&
-    props.form.mtAreaList[0].textConent.length >= 53 &&
-    props.form.mtAreaList[0].textConent.length <= 84
-  ) {
-    // 21个字/30px
-    props.form.mtAreaList[0].fontSize = '30px'
-  } else if (
-    props.form.mtAreaList[0].textConent &&
-    props.form.mtAreaList[0].textConent.length >= 85
-  ) {
-    props.form.mtAreaList[0].fontSize = '24px'
-  } else {
-  }
-})
-
-//19个字/34px ，当会议主题长度大于19时，字号修改为28px
-// const getLine3FontSize = computed(() => {
-//   if (props.form.mtAreaList[2].textConent && props.form.mtAreaList[2].textConent.length >= 19 && props.form.mtAreaList[2].textConent.length <= 40) {
-//     props.form.mtAreaList[2].fontSize = "28px";
-//   } else if (props.form.mtAreaList[2].textConent && props.form.mtAreaList[2].textConent.length >= 41) {
-//     props.form.mtAreaList[2].fontSize = "24px";
-//   }
-// })
 
 const autoplay = ref(true)
 
@@ -583,16 +658,28 @@ section {
   width: 160px;
 }
 
+// .roomInfo .first .first2 > .first2-1 > div > div {
+//   line-height: 70px;
+//   margin-top: 34px;
+//   margin-bottom: 14px;
+//   color: rgba(255, 255, 255, 1);
+//   font-size: 48px;
+//   font-weight: 800;
+//   text-align: center;
+//   font-family: SourceHanSansSC-black;
+// }
 .roomInfo .first .first2 > .first2-1 > div > div {
   line-height: 70px;
   margin-top: 34px;
-  margin-bottom: 14px;
-  color: rgba(255, 255, 255, 1);
-  font-size: 48px;
-  font-weight: 800;
-  text-align: center;
-  font-family: SourceHanSansSC-black;
+  span:nth-child(1){
+    color: rgba(255, 255, 255, 1);
+    font-size: 48px;
+    font-weight: 800;
+    text-align: center;
+    font-family: SourceHanSansSC-black;
+  }
 }
+
 
 .roomInfo .first .first2 .first2-2 {
   width: 1px;
@@ -654,7 +741,8 @@ section {
 }
 
 .roomInfo .second .startTime_endTime {
-  line-height: 80px;
+  // line-height: 80px;
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.8);
   font-size: 34px;
   text-align: center;

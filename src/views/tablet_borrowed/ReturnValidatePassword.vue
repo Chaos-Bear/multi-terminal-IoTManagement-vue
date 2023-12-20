@@ -29,12 +29,12 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
-import axios from 'axios'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { useRouter, useRoute } from 'vue-router'
+import { ref,  watch } from 'vue'
+
+import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 const router = useRouter()
-import { request, tabletRequest } from '@/utils/server.js'
+import { tabletRequest } from '@/utils/server.js'
 
 // 还平板前通过借还验证码查询预约信息接口
 const getList = () => {
@@ -45,12 +45,12 @@ const getList = () => {
       verifyCode: verifyCode
     })
     .then((res) => {
-      var res = res.data
+      var res1 = res.data
 
-      if (res.repCode == 200) {
-        console.log('校验码输入正确:', res)
+      if (res1.repCode == 200) {
+        console.log('校验码输入正确:', res1)
         //验证码校验成功，跳转到扫描页,并使用query传参
-        router.push('/returnAuto-scanning?verifyCode=' + verifyCode + '&repMsg=' + res.repMsg)
+        router.push('/returnAuto-scanning?verifyCode=' + verifyCode + '&repMsg=' + res1.repMsg)
       } else {
         console.log('校验码输入不正确或已失效:')
         ElMessage({

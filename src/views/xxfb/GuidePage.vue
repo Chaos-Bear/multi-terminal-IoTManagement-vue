@@ -3,21 +3,11 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  reactive,
-  onMounted,
-  computed,
-  nextTick,
-  watch,
-  onUnmounted,
-  onBeforeUnmount
-} from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
-const router = useRouter()
-const route = useRoute()
+import { ref,onMounted,onBeforeUnmount} from 'vue'
+import {  } from 'vue-router'
+import { ElMessage} from 'element-plus'
+import {  } from '@element-plus/icons-vue'
+
 import { pubRequest } from '@/utils/server.js'
 
 const roomName = ref('')
@@ -35,12 +25,18 @@ const getPubPath = (ip) => {
       pubPath.value = res.data.result.pubPath
       // debugger
 
-      // localStorage.setItem("xxfbIp",ip)
       localStorage.setItem(roomName.value, ip)
+      
+      // const data = {
+      //   key: roomName.value,
+      //   value: ip,
+      //   expires: new Date().getTime() +2 * 60 * 1000 // 设置过期时间为当前时间加上30分钟
+      // };
+      // localStorage.removeItem(roomName.value)
 
+      // localStorage.setItem(data.key, JSON.stringify(data));
+     
       window.location.href = pubPath.value
-
-      localStorage.setItem('roomName', res.data.result.roomName)
     })
     .catch((error) => {
       // debugger
@@ -58,7 +54,7 @@ const getIP = (callback) => {
   let RTCPeerConnection =
     window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection
   if (!RTCPeerConnection) {
-    let win = iframe.contentWindow
+    let win =window
     RTCPeerConnection =
       win.RTCPeerConnection || win.mozRTCPeerConnection || win.webkitRTCPeerConnection
   }
@@ -109,6 +105,7 @@ const getIP = (callback) => {
 }
 
 onMounted(() => {
+  // debugger
   getIP(function (ip) {
     console.log(ip)
 

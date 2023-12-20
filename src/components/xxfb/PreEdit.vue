@@ -21,11 +21,18 @@
       <div class="first2">
         <div class="first2-1">
           <div>
-            <div id="temp">{{ props.form.roomTemp ? props.form.roomTemp : '21°C' }}</div>
+            <!-- °C -->
+            <div id="temp">
+              <span>{{ props.form.roomTemp ? props.form.roomTemp : '21.6' }}</span>
+              <span style="font-size:20px"> °C </span>
+            </div>
             <span>温度</span>
           </div>
           <div>
-            <div id="shidu">{{ props.form.roomHum ? props.form.roomHum : '30%' }}</div>
+            <div id="shidu">
+              <span>{{ props.form.roomHum ? props.form.roomHum : '30.7' }}</span>
+              <span style="font-size:20px"> %RH </span>
+            </div>
             <span>湿度</span>
           </div>
         </div>
@@ -48,13 +55,54 @@
             v-if="props.form.mtAreaList[0].syncStatus == 1"
             class="main_title_of_meeting"
             :style="{
-              'font-size': props.form.mtAreaList[0].fontSize + 'px',
-              color: props.form.mtAreaList[0].textColor,
-              'text-align': props.form.mtAreaList[0].showLocat,
               display: props.form.mtAreaList[0].isShow == '1' ? 'block' : 'none'
             }"
           >
-            {{ props.form.mtAreaList[0].textConent }}
+           <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>33 && props.form.mtAreaList[0].textConent.length<46">
+            <div class="zdy" :style="{
+              'font-size': '46px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=46 && props.form.mtAreaList[0].textConent.length<=59">
+            <div class="zdy" :style="{
+              'font-size':'38px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=60" >
+            <div class="zdy" :style="{
+              'font-size': '34px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length<=33" >
+            <div class="zdy" :style="{
+              'font-size': props.form.mtAreaList[0].fontSize + 'px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize!=54 ">
+              <div class="zdy" :style="{
+                'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                color: props.form.mtAreaList[0].textColor,
+                'text-align': props.form.mtAreaList[0].showLocat,
+              }">
+                {{ props.form.mtAreaList[0].textConent }}
+              </div>
+            </template>
           </div>
 
           <!-- 不同步0 -->
@@ -65,18 +113,88 @@
               display: props.form.mtAreaList[0].isShow == '1' ? 'block' : 'none'
             }"
           >
-            <div
+            <!-- <div
               class="zdy"
               v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
               :key="i"
               :style="{
                 'font-size': props.form.mtAreaList[0].fontSize + 'px',
                 color: props.form.mtAreaList[0].textColor,
-                'text-align': props.form.mtAreaList[0].showLocat
+                'text-align': props.form.mtAreaList[0].showLocats
               }"
             >
               {{ item }}
-            </div>
+            </div> -->
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>33 && props.form.mtAreaList[0].textConent.length<46">
+              <div
+                class="zdy"
+                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                :key="i"
+                :style="{
+                  'font-size': '46px',
+                  color: props.form.mtAreaList[0].textColor,
+                  'text-align': props.form.mtAreaList[0].showLocat   
+                }"
+              >
+                {{ item }}
+              </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=46 && props.form.mtAreaList[0].textConent.length<=59">
+              <div
+                class="zdy"
+                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                :key="i"
+                :style="{
+                  'font-size': '38px',
+                  color: props.form.mtAreaList[0].textColor,
+                  'text-align': props.form.mtAreaList[0].showLocat
+                }"
+              >
+                {{ item }}
+              </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=60" >
+              <div
+                class="zdy"
+                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                :key="i"
+                :style="{
+                  'font-size': '34px',
+                  color: props.form.mtAreaList[0].textColor,
+                  'text-align': props.form.mtAreaList[0].showLocat
+                }"
+              >
+                {{ item }}
+              </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length<=33">
+              <div
+                class="zdy"
+                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                :key="i"
+                :style="{
+                  'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                  color: props.form.mtAreaList[0].textColor,
+                  'text-align': props.form.mtAreaList[0].showLocat
+                }"
+              >
+                {{ item }}
+              </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize!=54 ">
+              <div
+                class="zdy"
+                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                :key="i"
+                :style="{
+                  'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                  color: props.form.mtAreaList[0].textColor,
+                  'text-align': props.form.mtAreaList[0].showLocat
+                }"
+              >
+                {{ item }}
+              </div>
+            </template>
           </div>
         </div>
         <!-- 第二行同步与否 会议开始时间，结束时间  visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'-->
@@ -158,7 +276,8 @@
         "
         class="noMeeting"
       >
-        当前暂无<br />会议信息
+        <!-- 当前暂无<br />会议信息 -->
+        当前暂无会议
       </div>
     </div>
     <!-- 三层 -->
@@ -222,12 +341,13 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed, onBeforeUnmount } from 'vue'
+import { ref, computed, onBeforeUnmount } from 'vue'
 // import {} from 'element-plus'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 const route = useRoute()
 import SecondFloorShuz from '@/components/xxfb/SecondFloorShuz.vue'
 import SecondFloorShuf from '@/components/xxfb/SecondFloorShuf.vue' //待修改
@@ -235,10 +355,10 @@ import SecondFloorHengf from '@/components/xxfb/SecondFloorHengf.vue'
 
 import FirstFloorHengf from '@/components/xxfb/FirstFloorHengf.vue'
 import FirstFloorShuz from '@/components/xxfb/FirstFloorShuz.vue' //待修改
-import { rowProps } from 'element-plus'
+import {} from 'element-plus'
 
 const roomName = route.query.roomName
-const roomIdzdy = route.query.roomID
+// const roomIdzdy = route.query.roomID
 
 // var url= window.URL.createObjectURL('C:/Users/55462/Downloads/cat.mp4')
 
@@ -511,23 +631,35 @@ section {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+
 }
 
 .roomInfo .first .first2 > .first2-1 > div {
   text-align: center;
   width: 160px;
 }
-
+// .roomInfo .first .first2 > .first2-1 > div > div {
+//   line-height: 70px;
+//   margin-top: 34px;
+//   margin-bottom: 14px;
+//   color: rgba(255, 255, 255, 1);
+//   font-size: 48px;
+//   font-weight: 800;
+//   text-align: center;
+//   font-family: SourceHanSansSC-black;
+// }
 .roomInfo .first .first2 > .first2-1 > div > div {
   line-height: 70px;
   margin-top: 34px;
-  margin-bottom: 14px;
-  color: rgba(255, 255, 255, 1);
-  font-size: 48px;
-  font-weight: 800;
-  text-align: center;
-  font-family: SourceHanSansSC-black;
+  span:nth-child(1){
+    color: rgba(255, 255, 255, 1);
+    font-size: 48px;
+    font-weight: 800;
+    text-align: center;
+    font-family: SourceHanSansSC-black;
+  }
 }
+
 
 .roomInfo .first .first2 .first2-2 {
   width: 1px;
@@ -582,6 +714,7 @@ section {
   // margin-top: 60px;
   /*margin-bottom: 30px;*/
   word-wrap: break-word;
+  line-height: 1.5;
 }
 .zdy {
   font-weight: 800;
@@ -590,6 +723,7 @@ section {
 
 .roomInfo .second .startTime_endTime {
   line-height: 80px;
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.8);
   font-size: 34px;
   text-align: center;
@@ -605,6 +739,16 @@ section {
   word-wrap: break-word;
 }
 
+// .roomInfo .second .noMeeting {
+//   width: 636px;
+//   line-height: 100px;
+//   // margin-top: 80px;
+//   /*color: rgba(255, 255, 255, 0.1)!important;*/
+//   color: rgba(255, 255, 255, 0.1);
+//   font-size: 68px;
+//   text-align: center;
+//   font-family: SourceHanSansSC-black;
+// }
 .roomInfo .second .noMeeting {
   width: 636px;
   line-height: 100px;

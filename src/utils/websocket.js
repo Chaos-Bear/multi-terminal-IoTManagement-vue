@@ -8,22 +8,22 @@ function createWebSocket(url, events) {
 
   try {
     if ('WebSocket' in window) {
-      websocket = new WebSocket(url)
+      websocket = new window.WebSocket(url)
     } else if ('MozWebSocket' in window) {
-      websocket = new MozWebSocket(url)
+      websocket = new window.MozWebSocket(url)
     } else {
-      websocket = new SockJS(url)
+      websocket = new window.SockJS(url)
     }
     init(websocket, urlPath, events)
   } catch (e) {
     console.log('catch' + e)
     reconnect(urlPath, events)
-  } finally {
+  } 
     if (websocket) {
       return websocket
     }
     return null
-  }
+  
 }
 
 function init(websocket, urlPath, events) {

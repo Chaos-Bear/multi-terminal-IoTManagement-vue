@@ -1,7 +1,8 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+// import { RouterLink, RouterView } from 'vue-router'
 
-import { Plus, Delete } from '@element-plus/icons-vue'
+// import { Plus, Delete } from '@element-plus/icons-vue'
+
 
 // 使用el-config-provider 可以用于全局配置国际化
 import { ElConfigProvider } from 'element-plus'

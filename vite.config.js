@@ -18,7 +18,7 @@ export default defineConfig({
       //       "@plugin": path.resolve(__dirname, "./src/plugins"),
             // "@view": path.resolve(__dirname, "./src/views"),
             // "@component": path.resolve(__dirname, "./src/components"),
-            // "@store": path.resolve(__dirname, "./src/pinia_stores"),
+            // "@store": path.resolve(__dirname, "./src/stores"),
             // "@publishEditor": path.resolve(__dirname, "./src/components/low_code/page_editor"),
             // "@publishPage": path.resolve(__dirname, "./src/components/low_code/page_publish"),
     }

@@ -198,22 +198,17 @@
 <script setup lang="jsx">
 import {
   ref,
-  reactive,
   onMounted,
   computed,
-  watch,
   nextTick,
-  shallowRef,
-  h,
-  onUnmounted,
   onBeforeUnmount
 } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
-import axios from 'axios'
-import quertstring from 'querystring'
+
+// import quertstring from 'querystring'
 // import { el } from 'element-plus/es/locale';
-import { request, tabletRequest } from '@/utils/server.js'
+import {tabletRequest } from '@/utils/server.js'
 // 轮播图
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // Import Swiper styles
@@ -417,12 +412,12 @@ const getAppointmentList = () => {
     })
 }
 //自定义表头 --状态
-const appointmentTime = ref('')
-const appointmentOptions = []
-const onChange3 = (v) => {
-  appointmentTime.value = v
-  appointmentGetList()
-}
+// const appointmentTime = ref('')
+// const appointmentOptions = []
+// const onChange3 = (v) => {
+//   appointmentTime.value = v
+//   appointmentGetList()
+// }
 const appointmentTableData = ref([
   // {
   //   "id": 1,
@@ -454,21 +449,21 @@ const appointmentTableData = ref([
   // }
 ])
 // 今天之前的日期禁止选择
-const disabledDate = (time) => {
-  return time.getTime() < Date.now() - 8.64e7
-}
-const appointmentValue = ref('')
+// const disabledDate = (time) => {
+//   return time.getTime() < Date.now() - 8.64e7
+// }
+// const appointmentValue = ref('')
 // 预约记录 时间选择
 
-const customPrefix = shallowRef({
-  render() {
-    return (
-      <el-icon>
-        <ArrowDown />
-      </el-icon>
-    )
-  }
-})
+// const customPrefix = shallowRef({
+//   render() {
+//     return (
+//       <el-icon>
+//         <ArrowDown />
+//       </el-icon>
+//     )
+//   }
+// })
 
 //3.跳转到取平板/还平板
 const takeTablet = () => {

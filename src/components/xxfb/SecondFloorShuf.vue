@@ -373,7 +373,7 @@
 
 <script setup>
 // 二楼竖反：204、205、215、216、222、223   //待修改
-import { ref, reactive, watch, computed, onMounted, nextTick, onBeforeUnmount } from 'vue'
+import { computed, onMounted, nextTick, onBeforeUnmount } from 'vue'
 import $ from 'jquery'
 
 import startImg from '@/assets/xxfb/path/start.png'
@@ -1410,7 +1410,7 @@ function start_end(xy, end) {
 
   // var length = $(".line").length;
   if ($('.line').length == 1) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+  
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1457,7 +1457,7 @@ function start_end(xy, end) {
       // $("body").attr("timeout-scale", scaletimeout);
     })
   } else if ($('.line').length == 2) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1506,7 +1506,7 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 3) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1557,7 +1557,7 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 4) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1611,7 +1611,7 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 5) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +

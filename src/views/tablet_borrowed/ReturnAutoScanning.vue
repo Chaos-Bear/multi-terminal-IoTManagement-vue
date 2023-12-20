@@ -223,13 +223,13 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive, onMounted, onBeforeMount, computed, markRaw } from 'vue'
+import { ref, onMounted,  computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import axios from 'axios'
+
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
-import { request, tabletRequest } from '@/utils/server.js'
+import { tabletRequest } from '@/utils/server.js'
 import { createWebSocket } from '@/utils/websocket.js'
 var wsbaseURL = import.meta.env.VITE_BASE_URL4
 
@@ -286,15 +286,15 @@ const tableDataForRender = computed(() => {
   })
 })
 
-const num = computed(() => {
-  var count = 0
-  tableData.value.forEach((item) => {
-    if (item['isscaned'] || item.borrowedStatus == 3) {
-      count++
-    }
-  })
-  return count
-})
+// const num = computed(() => {
+//   var count = 0
+//   tableData.value.forEach((item) => {
+//     if (item['isscaned'] || item.borrowedStatus == 3) {
+//       count++
+//     }
+//   })
+//   return count
+// })
 
 const borrowedInfo = ref({
   roomName: 'A2-205',
@@ -336,10 +336,10 @@ const openScanDevice = () => {
 }
 
 // 建立ws连接
-// debugger
-var websocket = createWebSocket(wsbaseURL + '/websocket/' + repMsg, {
+// var websocket = createWebSocket(wsbaseURL + '/websocket/' + repMsg, {
+ createWebSocket(wsbaseURL + '/websocket/' + repMsg, {
   onopen(e) {
-    console.log('建立了websocket连接')
+    console.log('建立了websocket连接',e)
 
     // 重新调用会议室最新消息列表-----------------------
   },
@@ -372,8 +372,8 @@ var websocket = createWebSocket(wsbaseURL + '/websocket/' + repMsg, {
   onerror() {},
   onclose() {},
   onbeforeunload() {},
-  onreconnect(ws) {
-    websocket = ws
+  onreconnect() {
+    // websocket = ws
   }
 })
 
@@ -430,17 +430,17 @@ const getItemById = (arr, id, idstr) => {
   }
   return rs
 }
-const ontabletNameChange = (v) => {
-  var arr = []
-  // debugger
-  form.tabletIDs.forEach((tabletID) => {
-    var it = getItemById(deviceList.value, tabletID, 'tabletID')
-    if (it) {
-      arr.push(it)
-    }
-  })
-  form.tabletNames = arr
-}
+// const ontabletNameChange = (v) => {
+//   var arr = []
+//   // debugger
+//   form.tabletIDs.forEach((tabletID) => {
+//     var it = getItemById(deviceList.value, tabletID, 'tabletID')
+//     if (it) {
+//       arr.push(it)
+//     }
+//   })
+//   form.tabletNames = arr
+// }
 
 //手动添加按钮
 // const handOperated = () => {
@@ -463,15 +463,15 @@ const handReturn = (v) => {
   v.isscaned = true
 }
 
-const ishas = (item) => {
-  for (var i = 0; i < tableData.value.length; i++) {
-    // debugger
-    if (item.tabletID == tableData.value[i].tabletID) {
-      return true
-    }
-  }
-  return false
-}
+// const ishas = (item) => {
+//   for (var i = 0; i < tableData.value.length; i++) {
+//     // debugger
+//     if (item.tabletID == tableData.value[i].tabletID) {
+//       return true
+//     }
+//   }
+//   return false
+// }
 // 确定手动添加，将选择的设备添加到待绑定列表
 // const submitHandOperated = () => {
 //   // debugger
@@ -516,10 +516,9 @@ const postsubmitScan = () => {
     return
   }
   for (var i = 0; i < tableData.value.length; i++) {
-    if (tableData.value[i].isscaned == false) {
-    } else {
-      returnList.push(tableData.value[i])
-    }
+    if (tableData.value[i].isscaned == true) {
+       returnList.push(tableData.value[i])
+    } 
   }
 
   tabletRequest

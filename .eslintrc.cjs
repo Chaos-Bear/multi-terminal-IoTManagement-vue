@@ -13,5 +13,8 @@ module.exports = {
   },
   env:{
     "vue/setup-compiler-macros": true
+  },
+  globals: {
+    "window": true
   }
 }

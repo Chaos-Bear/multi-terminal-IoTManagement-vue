@@ -1,12 +1,11 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
-import home from '../views/home.vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import home from '../views/HomePage.vue'
 
-import Tablet from '../views/tablet_borrowed/Tablet.vue'
+import Tablet from '../views/tablet_borrowed/TabletPage.vue'
 import TabletBorrowed from '../views/tablet_borrowed/TabletBorrowed.vue'
 import NotFound from '../views/NotFound.vue'
 
 const router = createRouter({
-  // history: createWebHistory(import.meta.env.BASE_URL),
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -47,7 +46,7 @@ const router = createRouter({
         {
           path: 'history',
           name: 'History',
-          component: () => import('../views/tablet_borrowed/History.vue')
+          component: () => import('../views/tablet_borrowed/HistoryPage.vue')
         }
       ]
     },
@@ -83,7 +82,7 @@ const router = createRouter({
     {
       path: '/xxfb',
       name: 'Xxfb',
-      component: () => import('../views/xxfb/edit.vue')
+      component: () => import('../views/xxfb/EditPage.vue')
     },
     {
       path: '/monitor-control',
@@ -97,7 +96,7 @@ const router = createRouter({
     {
       path: '/xxfb-monitorlist',
       name: 'XxfbMonitorlist',
-      component: () => import('../views/xxfb/Monitorlist.vue')
+      component: () => import('../views/xxfb/MonitorList.vue')
     },
     {
       path: '/guide-page',
@@ -121,13 +120,16 @@ const router = createRouter({
 
 //路由前置守卫
 // router.beforeEach((to,from,next)=>{
-//判断是否进入某个路径
-//  if(to.path=="/"){
-//     //可以进行路径重定向等
-//     next({path:'tablet-borrowed'})
-//  }else{
+//   //判断是否进入某个路径
+//   if(from.path=='/guide-page' && to.path=="/pub"){
+//       next()
+//       //可以进行路径重定向等
+//       next({path:'tablet-borrowed'})
+//   }else if(from.path!='/guide-page' && to.path=="/pub"){
+//       next({path:'/guide-page'})
+//   }else{
 //     next()
-//  }
+//   }
 // })
 
 export default router

@@ -419,7 +419,7 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive, watch, computed, onMounted, nextTick, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, nextTick, onBeforeUnmount } from 'vue'
 import $ from 'jquery'
 
 import startImg from '@/assets/xxfb/path/start.png'
@@ -506,6 +506,10 @@ const getzbdStyle = computed(() => {
       left: '80px',
       top: '224px'
     }
+  }
+  return {
+      left: '80px',
+      top: '224px'
   }
 })
 // 声明会议室坐标点
@@ -2235,7 +2239,7 @@ function start_end(xy, end) {
 
   // var length = $(".line").length;
   if ($('.line').length == 1) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+   
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -2266,7 +2270,7 @@ function start_end(xy, end) {
         $('.endimg').remove()
         $('.startimg').remove()
 
-        var zuobiaodian = document.getElementById('zuobiaodian')
+        
         zuobiaodian && (zuobiaodian.style.opacity = '1')
         //动态路径展示完毕，调用放大缩小全屏展示函数
         scrollSwiper(ele)
@@ -2282,7 +2286,7 @@ function start_end(xy, end) {
       // $("body").attr("timeout-scale", scaletimeout);
     })
   } else if ($('.line').length == 2) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+   
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -2314,7 +2318,7 @@ function start_end(xy, end) {
           $('.endimg').remove()
           $('.startimg').remove()
 
-          var zuobiaodian = document.getElementById('zuobiaodian')
+          
           zuobiaodian && (zuobiaodian.style.opacity = '1')
           //动态路径展示完毕，调用放大缩小全屏展示函数
           scrollSwiper(ele)
@@ -2331,7 +2335,7 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 3) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -2364,7 +2368,7 @@ function start_end(xy, end) {
             $('.endimg').remove()
             $('.startimg').remove()
 
-            var zuobiaodian = document.getElementById('zuobiaodian')
+            
             zuobiaodian && (zuobiaodian.style.opacity = '1')
             //动态路径展示完毕，调用放大缩小全屏展示函数
             scrollSwiper(ele)
@@ -2382,7 +2386,7 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 4) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -2417,7 +2421,7 @@ function start_end(xy, end) {
               $('.endimg').remove()
               $('.startimg').remove()
 
-              var zuobiaodian = document.getElementById('zuobiaodian')
+              
               zuobiaodian && (zuobiaodian.style.opacity = '1')
               //动态路径展示完毕，调用放大缩小全屏展示函数
               scrollSwiper(ele)
@@ -2436,7 +2440,7 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 5) {
-    var zuobiaodian = document.getElementById('zuobiaodian')
+    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -2471,7 +2475,7 @@ function start_end(xy, end) {
                 $('.endimg').remove()
                 $('.startimg').remove()
 
-                var zuobiaodian = document.getElementById('zuobiaodian')
+               
                 zuobiaodian && (zuobiaodian.style.opacity = '1')
                 //动态路径展示完毕，调用放大缩小全屏展示函数
                 scrollSwiper(ele)

@@ -6,10 +6,10 @@
 
 <script setup>
 
-import Prepub from '@/components/xxfb/Prepub.vue'
+import Prepub from '@/components/xxfb/PrePub.vue'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-
+import { ElMessage} from 'element-plus'
 const route = useRoute()
 import { pubRequest } from '@/utils/server.js'
 import { createWebSocket } from '@/utils/websocket.js'
@@ -21,29 +21,7 @@ const roomName = route.query.roomName
 const prePubRef = ref('')
 // const data = ref('')
 // 1.----获取本机ip接口  注意：是在引导页进行的本地存储------
-// const ipValue = localStorage.getItem("xxfbIp")
 const ipValue = localStorage.getItem(roomName)
-// const roomNameLocal = localStorage.getItem('roomName')
-
-
-// const getIp = (item) => {
-//   pubRequest
-//     .post('/PublishFlowCtrl/queryIotDeviceByName', {
-//       roomName: roomName
-//     })
-//     .then((res) => {
-//       console.log('获取本机ip成功:', res.data.result.deviceIP)
-//       if (res.data.repCode == 200) {
-//         ipValue.value = res.data.result.deviceIP
-//       }
-//       ipValue.value = res.data.result.deviceIP
-//       // debugger
-//     })
-//     .catch((error) => {
-//       // debugger
-//       console.log('获取本机ip失败:', error)
-//     })
-// }
 
 // ---2.下载图片/视频接口-------
 const updateMedia = (releaseCache) => {
@@ -163,97 +141,101 @@ const updateMedia = (releaseCache) => {
 const form = ref()
 
 onMounted(() => {
-  // getIp()
+  
 })
 
-// 缓存 记录初始图片数组
-const releaseInfoCache = ref()
+  // 缓存 记录初始图片数组
+  const releaseInfoCache = ref()
 
-console.log(ipValue)
-
-// debugger
-if (ipValue == null) {
-  //  return
-} else {
-  // let websocket= createWebSocket(wsbaseURL13 + '/websocket/' + ipValue, {
-  createWebSocket(wsbaseURL13 + '/websocket/' + ipValue, {
-    onopen(e) {
-      console.log('建立了websocket连接')
-      console.log(e)
-    },
-    onmessage(e) {
-      if (e.data == 'HeartBeat') {
-        // console.log('接收服务器消息：', e.data)
-        console.log(e.data)
-        return
-      } else {
-        var data = JSON.parse(e.data)
-        if (data.repCode == 200) {
-          if (releaseInfoCache.value == undefined) {
-            // 缓存为空，直接赋值
-            releaseInfoCache.value = data.result
-            updateMedia(releaseInfoCache.value)
-            return
-          } else {
-            var dataRelease = data.result
-            var dataMediaList = dataRelease.mediaAreaList
-            var releaseInfo = releaseInfoCache.value
-            var mediaCahceList = releaseInfo.mediaAreaList
-            var cacheLength = mediaCahceList.length
-            var dataMediaLength = dataMediaList.length
-            var cacheObsFileList = []
-            for (var i = 0; i < mediaCahceList.length; i++) {
-              var cahceMedia = mediaCahceList[i]
-              cacheObsFileList.push(cahceMedia.obsFileID)
-            }
-            var dataObsFileList = []
-            for (var j = 0; j < dataMediaList.length; j++) {
-              var dataMedia = dataMediaList[j]
-              dataObsFileList.push(dataMedia.obsFileID)
-            }
-            //
-            let set2 = new Set(dataObsFileList)
-
-            let intersection = Array.from(new Set(cacheObsFileList)).filter((x) => set2.has(x))
-
-            let setLength = intersection.length
-            // 图片减少情况
-            if (cacheLength != setLength) {
-              updateMedia(dataRelease)
-              console.log(intersection) // 输出: [3, 4, 5]
+  console.log(ipValue)
+  if (ipValue == null) {
+    
+  } else {
+    // let websocket= createWebSocket(wsbaseURL13 + '/websocket/' + localData.value, {
+    createWebSocket(wsbaseURL13 + '/websocket/' + ipValue, {
+      onopen(e) {
+        console.log('建立了websocket连接')
+        console.log(e)
+      },
+      onmessage(e) {
+        if (e.data == 'HeartBeat') {
+          // console.log('接收服务器消息：', e.data)
+          console.log(e.data)
+          return
+        } else {
+          var data = JSON.parse(e.data)
+          if (data.repCode == 200) {
+            if (releaseInfoCache.value == undefined) {
+              // 缓存为空，直接赋值
+              releaseInfoCache.value = data.result
+              updateMedia(releaseInfoCache.value)
               return
-            }
-            // 图片新增情况
-            if (setLength != dataMediaLength) {
-              updateMedia(dataRelease)
-              console.log(intersection) // 输出: [3, 4, 5]
-              return
-            }
+            } else {
+              var dataRelease = data.result
+              var dataMediaList = dataRelease.mediaAreaList
 
-            //刷新 form.value
-            form.value.playGap = dataRelease.playGap
-            form.value.brightNess = dataRelease.brightNess
-            form.value.meetStatus = dataRelease.meetStatus
-            form.value.roomHum = dataRelease.roomHum
-            form.value.roomTemp = dataRelease.roomTemp
-            form.value.roomName = roomName
-            form.value.meetID = dataRelease.meetID
-            form.value.imgShow = dataRelease.imgShow
-            form.value.dataSource = dataRelease.dataSource
-            form.value.playGap = dataRelease.playGap
-            form.value.mtAreaList = dataRelease.mtAreaList
+              var releaseInfo = releaseInfoCache.value
+              var mediaCahceList = releaseInfo.mediaAreaList
+
+              var cacheLength = mediaCahceList.length
+              var dataMediaLength = dataMediaList.length
+              var cacheObsFileList = []
+              for (var i = 0; i < mediaCahceList.length; i++) {
+                var cahceMedia = mediaCahceList[i]
+                cacheObsFileList.push(cahceMedia.obsFileID)
+              }
+              var dataObsFileList = []
+              for (var j = 0; j < dataMediaList.length; j++) {
+                var dataMedia = dataMediaList[j]
+                dataObsFileList.push(dataMedia.obsFileID)
+              }
+              //
+              let set2 = new Set(dataObsFileList)
+
+              let intersection = Array.from(new Set(cacheObsFileList)).filter((x) => set2.has(x))
+
+              let setLength = intersection.length
+              // 图片减少情况
+              if (cacheLength != setLength) {
+                updateMedia(dataRelease)
+                console.log(intersection) // 输出: [3, 4, 5]
+                return
+              }
+              // 图片新增情况
+              if (setLength != dataMediaLength) {
+                updateMedia(dataRelease)
+                console.log(intersection) // 输出: [3, 4, 5]
+                return
+              }
+
+              //刷新 form.value
+              form.value.playGap = dataRelease.playGap
+              form.value.brightNess = dataRelease.brightNess
+              form.value.meetStatus = dataRelease.meetStatus
+              form.value.roomHum = dataRelease.roomHum
+              form.value.roomTemp = dataRelease.roomTemp
+              form.value.roomName = roomName
+              form.value.meetID = dataRelease.meetID
+              form.value.imgShow = dataRelease.imgShow
+              form.value.dataSource = dataRelease.dataSource
+              form.value.playGap = dataRelease.playGap
+              form.value.mtAreaList = dataRelease.mtAreaList
+            }
           }
         }
+      },
+      onerror() {},
+      onclose() {},
+      onbeforeunload() {},
+      onreconnect() {
+        // websocket = ws
       }
-    },
-    onerror() {},
-    onclose() {},
-    onbeforeunload() {},
-    onreconnect() {
-      // websocket = ws
-    }
-  })
+    })
+  // }
 }
+  
+
+
 </script>
 
 <style lang="less" scoped>

@@ -32,7 +32,7 @@
       </el-header>
       <el-main>
         <!-- 2. 用户界面列表 -->
-        <div class="tableBox">
+        <div class="tableBox" >
           <!-- <el-scrollbar height="100%"> -->
           <el-table
             :data="tableData"
@@ -42,6 +42,7 @@
             :header-cell-style="{ background: '#F5F9FC' }"
             @selection-change="selectionChange"
             ref="tableRef"
+            v-loading="isLoading"
           >
             <el-table-column type="selection" width="30" :reserve-selection="true" />
             <el-table-column prop="className" label="名称">
@@ -50,7 +51,8 @@
                   {{ scope.row.className }}
                 </template>
                 <template v-if="scope.row.contType == '页面'">
-                  <a :href="scope.row.pubPath" target="_blank">{{ scope.row.contName }}</a>
+                  <!-- _blank -->
+                  <a :href="scope.row.pubPath" target="_blank"  @click="operateTips(scope.row)">{{ scope.row.contName }}</a>
                   <!-- &nbsp;<span @click="router.push('/xxfb?roomName=' + titleName + '&roomID=' + roomId)"
                     >控制页</span
                   >&nbsp;
@@ -153,12 +155,12 @@
       </el-form>
     </el-dialog>
 
-    <!--1.2 新增/ 修改 页面 -->
+    <!--1.2 新增/ 修改 页面 destroy-on-close-->
     <el-dialog
       :title="pagetype == 'add' ? '新增页面' : '修改页面'"
       v-model="meetingModifyVisual"
-      destroy-on-close
       style="width: 400px"
+
     >
       <el-form
         :model="addPageForm"
@@ -170,19 +172,23 @@
           <el-input v-model="addPageForm.contName" placeholder="请输入页面名称" />
         </el-form-item>
         <el-form-item label="&nbsp;&nbsp;&nbsp;关联设备" prop="">
-          <!-- multiple -->
+          <!-- multiple  :disabled="addPageForm.iotDeviceList.length==1"-->
+          
           <el-select
             v-model="addPageForm.iotDeviceList"
             style="width: 100%"
             placeholder="请选择关联设备"
             multiple
+            :multiple-limit='1'
           >
             <el-option
               v-for="item in deviceList"
               :key="item.deviceID"
               :label="item.deviceName"
               :value="item.deviceID"
-            />
+              >
+              
+            </el-option>
           </el-select>
         </el-form-item>
 
@@ -211,31 +217,32 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { nextTick, onBeforeMount, onMounted, reactive, ref } from 'vue'
-import { Delete } from '@element-plus/icons-vue'
-import { ElMessage, valueEquals, ElMessageBox } from 'element-plus'
+import { nextTick, onMounted, reactive, ref } from 'vue'
+import {  } from '@element-plus/icons-vue'
+import { ElMessage,  ElMessageBox } from 'element-plus'
 
 const router = useRouter()
 const route = useRoute()
 
 import { releaseRequest } from '@/utils/server.js'
 // 1.顶部会议室名称/会议室id展示
-// debugger
 // const titleName = localStorage.getItem('name')
 // const roomId = localStorage.getItem('roomId')
-// debugger
+
 const titleName = route.query.roomName
 const roomId = route.query.roomID
 
+
+const isLoading=ref(false)
+// -----------1.获取用户界面列表接口--------
 const getList = () => {
+  isLoading.value=true
   // 请求用户界面列表
-  // debugger
   releaseRequest
     .post('/IOTRoomCrtl/queryIotRoomClassList', {
       roomID: roomId
     })
     .then((res) => {
-      // debugger
       console.log('请求用户界面列表成功', res.data.result)
       tableData.value.length = 0
       tableData.value = res.data.result
@@ -249,6 +256,9 @@ const getList = () => {
     })
     .catch((error) => {
       console.log('请求用户界面列表失败', error)
+    })
+    .finally(()=>{
+      isLoading.value=false
     })
 }
 // 删除一级分类
@@ -270,7 +280,7 @@ const delPage = (params) => {
 
 //获取设备列表zuixin
 
-//获取设备列表
+//-----------2.获取设备列表接口---------
 const deviceList = ref([{ index: '', deviceName: '' }])
 const getDeviceList = () => {
   releaseRequest
@@ -285,24 +295,24 @@ const getDeviceList = () => {
     })
 }
 // 发布页新增绑定设备
-const createConnectDevice = () => {
-  // 发布页新增绑定设备
-  releaseRequest
-    .post('/IOTRoomCrtl/saveIotContDevice', {
-      contID: 3000001504019772,
-      deviceID: 3000001504019772,
-      deviceModel: 'huawei',
-      deviceName: '信息发布屏',
-      deviceType: 1
-    })
-    .then((res) => {
-      // debugger
-      console.log('发布页新增绑定设备成功', res.data.result)
-    })
-    .catch((error) => {
-      console.log('发布页新增绑定设备失败', error)
-    })
-}
+// const createConnectDevice = () => {
+//   // 发布页新增绑定设备
+//   releaseRequest
+//     .post('/IOTRoomCrtl/saveIotContDevice', {
+//       contID: 3000001504019772,
+//       deviceID: 3000001504019772,
+//       deviceModel: 'huawei',
+//       deviceName: '信息发布屏',
+//       deviceType: 1
+//     })
+//     .then((res) => {
+//       // debugger
+//       console.log('发布页新增绑定设备成功', res.data.result)
+//     })
+//     .catch((error) => {
+//       console.log('发布页新增绑定设备失败', error)
+//     })
+// }
 
 onMounted(() => {
   getList()
@@ -335,21 +345,21 @@ const createFormRules = reactive({
   className: [{ required: true, message: '请输入分类名称', trigger: 'blur' }]
 })
 
-const authArr = ref([
-  {
-    id: '1',
-    role: '管理员'
-  },
-  {
-    id: '2',
-    role: '会议预定人'
-  }
-])
+// const authArr = ref([
+//   {
+//     id: '1',
+//     role: '管理员'
+//   },
+//   {
+//     id: '2',
+//     role: '会议预定人'
+//   }
+// ])
 const addMeetingCategory = () => {
   //校验
   createFormRef.value.validate((valid) => {
     if (valid) {
-      // 发送新增分类请求
+      // ------发送新增分类请求------
       releaseRequest
         .post('/IOTRoomCrtl/saveIOTClassInfo', {
           roomID: roomId,
@@ -376,7 +386,7 @@ const updateMeetingCategory = () => {
   //校验
   createFormRef.value.validate((valid) => {
     if (valid) {
-      //   发修改分类请求
+      //  ----发修改分类请求-----
       releaseRequest
         .post('/IOTRoomCrtl/modifyIOTRoomClass', {
           roomID: roomId,
@@ -414,7 +424,7 @@ const handleEdit = (row) => {
 const meetingModifyVisual = ref(false)
 
 // ---3. 新增/修改 页面
-const pagetype = ref('add')
+const pagetype = ref("add")
 const addPageBtn = (row) => {
   getDeviceList()
   addPageForm.classID = row.classID
@@ -427,7 +437,7 @@ const addPageBtn = (row) => {
 
   meetingModifyVisual.value = true
 
-  pagetype.value = 'add'
+  pagetype.value = "add"
 
   nextTick(() => {
     createPageFormRef.value.clearValidate()
@@ -471,7 +481,7 @@ const addMeetingPage = () => {
       addPageForm.iotDeviceList.forEach((deviceID) => {
         for (var i = 0; i < deviceList.value.length; i++) {
           if (deviceList.value[i].deviceID == deviceID) {
-            let { contID, deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
+            let { deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
             var obj = {
               contID: addPageForm.contID,
               deviceID: deviceID,
@@ -485,7 +495,7 @@ const addMeetingPage = () => {
           }
         }
       })
-      //发送新增页面请求
+      //-------发送新增页面请求-------
       releaseRequest
         .post('/IOTRoomCrtl/saveIOTConet', {
           classID: addPageForm.classID,
@@ -497,7 +507,7 @@ const addMeetingPage = () => {
         })
         .then((res) => {
           // debugger
-          // console.log("修改页面成功",res.data);
+          console.log("修改页面成功",res.data);
           meetingModifyVisual.value = false
           // debugger
           // 查询请求
@@ -529,7 +539,7 @@ const handlePageEdit = (row) => {
   addPageForm.editPath = row.editPath
   addPageForm.pubPath = row.pubPath != 0 ? row.pubPath : ''
 
-  pagetype.value = 'update'
+  pagetype.value = "update"
   meetingModifyVisual.value = true
 
   nextTick(() => {
@@ -545,7 +555,7 @@ const updateMeetingPage = () => {
       addPageForm.iotDeviceList.forEach((deviceID) => {
         for (var i = 0; i < deviceList.value.length; i++) {
           if (deviceList.value[i].deviceID == deviceID) {
-            let { contID, deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
+            let {  deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
             var obj = {
               contID: addPageForm.contID,
               deviceID: deviceID,
@@ -588,8 +598,8 @@ const updateMeetingPage = () => {
 //   ----??? 关联页面字段--没有数据来源  权限--没有数据来源
 // 1.2 删除
 const tableRef = ref('')
-const showBTNDelete = ref(false)
-const deleteList = ref([])
+// const showBTNDelete = ref(false)
+// const deleteList = ref([])
 
 const deleteBtn = () => {
   console.log('selectRows.value', selectRows.value)
@@ -722,6 +732,19 @@ const formatDate = (date) => {
     return m + '月' + d + '日 ' + h + ':' + s
   }
 }
+
+// 如果是发布页，则禁止跳转，并提示
+const operateTips=(row)=>{
+  // debugger
+   if(row.pubPath.includes('/pub')){
+      event.preventDefault(); // 阻止默认跳转行为
+      ElMessage({
+        type: 'warning',
+        message: '不允许跳转',
+      })
+   }
+}
+
 </script>
 
 <style lang="less" scoped>
@@ -756,6 +779,7 @@ const formatDate = (date) => {
 
   // 2.用户界面列表
   .tableBox {
+      height: calc( 100% - 90px);
     :deep(.custom-table-head) {
       background-color: #f5f9fc;
     }
