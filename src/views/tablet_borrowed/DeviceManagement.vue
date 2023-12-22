@@ -408,7 +408,8 @@ const deleteitem = (row) => {
   ElMessageBox.confirm('确定删除当前选中项吗？', '删除', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
+    customClass: 'blue-button' // 应用自定义样式类
   })
     .then(() => {
       ElMessage({

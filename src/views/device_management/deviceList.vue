@@ -327,6 +327,10 @@ const deleteList = (v) => {
     .then((response) => {
       console.log('设备列表删除成功', response)
       if (response.data.repCode == 200) {
+         ElMessage({
+            message: '删除成功',
+            type: 'success',
+          })
         //重新发请求，渲染设备列表
         getList()
         selectRows.value = []
@@ -377,13 +381,10 @@ const deletebtns = () => {
   ElMessageBox.confirm('确定删除当前选中项吗？', '删除', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
+    customClass: 'blue-button' // 应用自定义样式类
   })
     .then(() => {
-      ElMessage({
-        type: 'success',
-        message: '删除成功'
-      })
       // 调用删除设备接口
       deleteList(deviceIDs)
     })
@@ -519,6 +520,10 @@ const addItem = () => {
         .then((res) => {
           console.log('设备列表新增成功', res)
           if (res.data.repCode == 200) {
+            ElMessage({
+              message: '新增成功',
+              type: 'success',
+            })
             //重新发请求，渲染设备列表
             getList()
           }
@@ -574,13 +579,11 @@ const deleteitem = (row) => {
   ElMessageBox.confirm('确定删除当前选中项吗？', '删除', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
+    customClass: 'blue-button' // 应用自定义样式类
   })
     .then(() => {
-      ElMessage({
-        type: 'success',
-        message: '删除成功'
-      })
+      
       // 调用删除设备接口
       deleteList(deviceIDs)
     })
@@ -676,6 +679,10 @@ const editIteminfo = () => {
         .then((res) => {
           console.log('设备列表修改成功:', res)
           if (res.data.repCode == 200) {
+            ElMessage({
+              message: '修改成功',
+              type: 'success',
+            })
             //重新发请求，渲染设备列表
             getList()
           }

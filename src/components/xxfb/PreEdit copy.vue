@@ -24,7 +24,7 @@
             <!-- °C -->
             <div id="temp">
               <span>{{ props.form.roomTemp ? props.form.roomTemp : '21.6' }}</span>
-              <span style="font-size:30px"> °C </span>
+              <span style="font-size:20px"> °C </span>
             </div>
             <span>温度</span>
           </div>
@@ -55,14 +55,108 @@
             v-if="props.form.mtAreaList[0].syncStatus == 1"
             class="main_title_of_meeting"
             :style="{
-              'font-size': props.form.mtAreaList[0].fontSize + 'px',
-              color: props.form.mtAreaList[0].textColor,
-              'text-align': props.form.mtAreaList[0].showLocat,
               display: props.form.mtAreaList[0].isShow == '1' ? 'block' : 'none'
             }"
           >
-            {{ props.form.mtAreaList[0].textConent }}
-          </div>
+
+          <!-- 会议时间或者主办方有一个显示，则按3行来自适应 -->
+          <template  v-if="props.form.mtAreaList[1].isShow=='1' || props.form.mtAreaList[2].isShow=='1'">
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>33 && props.form.mtAreaList[0].textConent.length<46">
+            <div class="zdy" :style="{
+              'font-size': '46px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=46 && props.form.mtAreaList[0].textConent.length<=59">
+            <div class="zdy" :style="{
+              'font-size':'38px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=60" >
+            <div class="zdy" :style="{
+              'font-size': '34px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length<=33" >
+            <div class="zdy" :style="{
+              'font-size': props.form.mtAreaList[0].fontSize + 'px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize!=54 ">
+              <div class="zdy" :style="{
+                'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                color: props.form.mtAreaList[0].textColor,
+                'text-align': props.form.mtAreaList[0].showLocat,
+              }">
+                {{ props.form.mtAreaList[0].textConent }}
+              </div>
+            </template>
+          </template>
+          <!-- 否则 按4行来自适应 -->
+          <template v-else>
+             <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>44 && props.form.mtAreaList[0].textConent.length<60">
+            <div class="zdy" :style="{
+              'font-size': '46px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=60 && props.form.mtAreaList[0].textConent.length<=80">
+            <div class="zdy" :style="{
+              'font-size':'38px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=81" >
+            <div class="zdy" :style="{
+              'font-size': '34px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length<=33" >
+            <div class="zdy" :style="{
+              'font-size': props.form.mtAreaList[0].fontSize + 'px',
+              color: props.form.mtAreaList[0].textColor,
+              'text-align': props.form.mtAreaList[0].showLocat,
+            }">
+               {{ props.form.mtAreaList[0].textConent }}
+            </div>
+            </template>
+            <template v-if="props.form.mtAreaList[0].fontSize!=54 ">
+              <div class="zdy" :style="{
+                'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                color: props.form.mtAreaList[0].textColor,
+                'text-align': props.form.mtAreaList[0].showLocat,
+              }">
+                {{ props.form.mtAreaList[0].textConent }}
+              </div>
+            </template>
+          </template>
+          
+        </div>
 
           <!-- 不同步0 -->
           <div
@@ -72,7 +166,7 @@
               display: props.form.mtAreaList[0].isShow == '1' ? 'block' : 'none'
             }"
           >
-            <div
+            <!-- <div
               class="zdy"
               v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
               :key="i"
@@ -83,8 +177,10 @@
               }"
             >
               {{ item }}
-            </div>
-            <!-- <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>33 && props.form.mtAreaList[0].textConent.length<46">
+            </div> -->
+            <!-- 会议时间或者主办方有一个显示，则按3行来自适应 -->
+            <template  v-if="props.form.mtAreaList[1].isShow=='1' || props.form.mtAreaList[2].isShow=='1'">
+                <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>33 && props.form.mtAreaList[0].textConent.length<46">
               <div
                 class="zdy"
                 v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
@@ -95,65 +191,140 @@
                   'text-align': props.form.mtAreaList[0].showLocat   
                 }"
               >
-                {{ item }}{{props.form.mtAreaList[0].textConent.length}}
+                {{ item }}
               </div>
+                </template>
+                <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=46 && props.form.mtAreaList[0].textConent.length<=59">
+                  <div
+                    class="zdy"
+                    v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                    :key="i"
+                    :style="{
+                      'font-size': '38px',
+                      color: props.form.mtAreaList[0].textColor,
+                      'text-align': props.form.mtAreaList[0].showLocat
+                    }"
+                  >
+                    {{ item }}
+                  </div>
+                </template>
+                <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=60" >
+                  <div
+                    class="zdy"
+                    v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                    :key="i"
+                    :style="{
+                      'font-size': '34px',
+                      color: props.form.mtAreaList[0].textColor,
+                      'text-align': props.form.mtAreaList[0].showLocat
+                    }"
+                  >
+                    {{ item }}
+                  </div>
+                </template>
+                <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length<=33">
+                  <div
+                    class="zdy"
+                    v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                    :key="i"
+                    :style="{
+                      'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                      color: props.form.mtAreaList[0].textColor,
+                      'text-align': props.form.mtAreaList[0].showLocat
+                    }"
+                  >
+                    {{ item }}
+                  </div>
+                </template>
+                <template v-if="props.form.mtAreaList[0].fontSize!=54 ">
+                  <div
+                    class="zdy"
+                    v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                    :key="i"
+                    :style="{
+                      'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                      color: props.form.mtAreaList[0].textColor,
+                      'text-align': props.form.mtAreaList[0].showLocat
+                    }"
+                  >
+                    {{ item }}
+                  </div>
+                </template>
             </template>
-            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=46 && props.form.mtAreaList[0].textConent.length<=59">
+
+            <!-- 否则 按4行来自适应 -->
+            <template v-else>
+                <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>44 && props.form.mtAreaList[0].textConent.length<60">
               <div
                 class="zdy"
                 v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
                 :key="i"
                 :style="{
-                  'font-size': '38px',
+                  'font-size': '46px',
                   color: props.form.mtAreaList[0].textColor,
-                  'text-align': props.form.mtAreaList[0].showLocat
-                }"
-              >
-                {{ item }}{{props.form.mtAreaList[0].textConent.length}}
-              </div>
-            </template>
-            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=60" >
-              <div
-                class="zdy"
-                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
-                :key="i"
-                :style="{
-                  'font-size': '34px',
-                  color: props.form.mtAreaList[0].textColor,
-                  'text-align': props.form.mtAreaList[0].showLocat
-                }"
-              >
-                {{ item }}{{props.form.mtAreaList[0].textConent.length}}
-              </div>
-            </template>
-            <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length<=33">
-              <div
-                class="zdy"
-                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
-                :key="i"
-                :style="{
-                  'font-size': props.form.mtAreaList[0].fontSize + 'px',
-                  color: props.form.mtAreaList[0].textColor,
-                  'text-align': props.form.mtAreaList[0].showLocat
-                }"
-              >
-                {{ item }}{{props.form.mtAreaList[0].textConent.length}}
-              </div>
-            </template>
-            <template v-if="props.form.mtAreaList[0].fontSize!=54 ">
-              <div
-                class="zdy"
-                v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
-                :key="i"
-                :style="{
-                  'font-size': props.form.mtAreaList[0].fontSize + 'px',
-                  color: props.form.mtAreaList[0].textColor,
-                  'text-align': props.form.mtAreaList[0].showLocat
+                  'text-align': props.form.mtAreaList[0].showLocat   
                 }"
               >
                 {{ item }}
               </div>
-            </template> -->
+                </template>
+                <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=60 && props.form.mtAreaList[0].textConent.length<=80">
+                  <div
+                    class="zdy"
+                    v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                    :key="i"
+                    :style="{
+                      'font-size': '38px',
+                      color: props.form.mtAreaList[0].textColor,
+                      'text-align': props.form.mtAreaList[0].showLocat
+                    }"
+                  >
+                    {{ item }}
+                  </div>
+                </template>
+                <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length>=81" >
+                  <div
+                    class="zdy"
+                    v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                    :key="i"
+                    :style="{
+                      'font-size': '34px',
+                      color: props.form.mtAreaList[0].textColor,
+                      'text-align': props.form.mtAreaList[0].showLocat
+                    }"
+                  >
+                    {{ item }}
+                  </div>
+                </template>
+                <template v-if="props.form.mtAreaList[0].fontSize==54 && props.form.mtAreaList[0].textConent.length<=44">
+                  <div
+                    class="zdy"
+                    v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                    :key="i"
+                    :style="{
+                      'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                      color: props.form.mtAreaList[0].textColor,
+                      'text-align': props.form.mtAreaList[0].showLocat
+                    }"
+                  >
+                    {{ item }}
+                  </div>
+                </template>
+                <template v-if="props.form.mtAreaList[0].fontSize!=54 ">
+                  <div
+                    class="zdy"
+                    v-for="(item, i) in props.form.mtAreaList[0].textConent.split('；')"
+                    :key="i"
+                    :style="{
+                      'font-size': props.form.mtAreaList[0].fontSize + 'px',
+                      color: props.form.mtAreaList[0].textColor,
+                      'text-align': props.form.mtAreaList[0].showLocat
+                    }"
+                  >
+                    {{ item }}
+                  </div>
+                </template>
+            </template>
           </div>
         </div>
         <!-- 第二行同步与否 会议开始时间，结束时间  visibility: props.form.mtAreaList[1].isShow == '1' ? 'visible' : 'hidden'-->
@@ -244,35 +415,12 @@
       <!-- 导览图 *****************-->
       <div v-if="props.form && props.form.imgShow && props.form.imgShow == '1'">
         <!-- 二楼  -->
-        <SecondFloorShuz
-          v-if="isSecondFloorShuz"
-          :roomName="props.form.roomName"
-          :form="form"
-        ></SecondFloorShuz>
-
         <SecondFloorHengf
           v-if="isSecondFloorHengf"
           :roomName="props.form.roomName"
           :form="form"
         ></SecondFloorHengf>
-        <!-- 一楼 横反 -->
-        <FirstFloorHengf
-          v-if="isFirstFloorHengf"
-          :roomName="props.form.roomName"
-          :form="form"
-        ></FirstFloorHengf>
-
-        <!-- 待修改布局 -->
-        <SecondFloorShuf
-          v-if="isSecondFloorShuf"
-          :roomName="props.form.roomName"
-          :form="form"
-        ></SecondFloorShuf>
-        <FirstFloorShuz
-          v-if="isFirstFloorShuz"
-          :roomName="props.form.roomName"
-          :form="form"
-        ></FirstFloorShuz>
+        
       </div>
       <!-- 轮播图 -->
       <div class="swiper-container" id="swiper" v-else>
@@ -308,12 +456,9 @@ import { ref, computed, onBeforeUnmount } from 'vue'
 // import {} from 'element-plus'
 import { useRoute } from 'vue-router'
 const route = useRoute()
-import SecondFloorShuz from '@/components/xxfb/SecondFloorShuz.vue'
-import SecondFloorShuf from '@/components/xxfb/SecondFloorShuf.vue' //待修改
+
 import SecondFloorHengf from '@/components/xxfb/SecondFloorHengf.vue'
 
-import FirstFloorHengf from '@/components/xxfb/FirstFloorHengf.vue'
-import FirstFloorShuz from '@/components/xxfb/FirstFloorShuz.vue' //待修改
 import {} from 'element-plus'
 
 const roomName = route.query.roomName
@@ -340,51 +485,16 @@ const props = defineProps({
 // 三楼竖反：310、309、307
 // 三楼横正：312、310
 // 三楼横反：312、309
-const isSecondFloorShuz = computed(() => {
-  // debugger
-  const roomList = [
-    'A2-206',
-    'A2-207',
-    'A2-208',
-    'A2-201',
-    'A2-202',
-    'A2-221',
-    'A2-220',
-    'A2-219',
-    'A2-227',
-    'A2-226',
-    'A2-225'
-  ]
-  if (props.form && props.form.roomName) {
-    return roomList.indexOf(props.form.roomName.trim()) > -1
-  }
-})
-const isSecondFloorShuf = computed(() => {
-  const roomList = ['A2-204', 'A2-205', 'A2-215', 'A2-216', 'A2-222', 'A2-223']
 
-  if (props.form && props.form.roomName) {
-    return roomList.indexOf(props.form.roomName.trim()) > -1
-  }
-})
 const isSecondFloorHengf = computed(() => {
-  const roomList = ['A2-211', 'A2-228', 'A2-229', 'A2-212']
+  const roomList = ['A2-211', 'A2-228', 'A2-229', 'A2-212'   ,'A2-204', 'A2-205', 'A2-215', 'A2-216', 'A2-222', 'A2-223'   ,'A2-206','A2-207','A2-208','A2-201','A2-202', 'A2-221','A2-220','A2-219','A2-227','A2-226','A2-225']
   if (props.form && props.form.roomName) {
     return roomList.indexOf(props.form.roomName.trim()) > -1
-  }
-})
-const isFirstFloorHengf = computed(() => {
-  const roomList = ['A2-113']
-  if (props.form && props.form.roomName) {
-    return roomList.indexOf(props.form.roomName.trim()) > -1
+  }else{
+
   }
 })
 
-const isFirstFloorShuz = computed(() => {
-  const roomList = ['A2-117']
-  if (props.form && props.form.roomName) {
-    return roomList.indexOf(props.form.roomName.trim()) > -1
-  }
-})
 
 // debugger
 // watch(()=>{
@@ -407,31 +517,6 @@ var timer = window.setInterval(function () {
   s = s < 10 ? '0' + s : s
   time.value = y + '年' + M + '月' + d + '日' + '  ' + '  ' + h + ':' + m + ':' + s
 }, 1000)
-
-//会议预约字符总长度：125    11个字/58px
-//当会议主题长度大于23时，字号修改为36px  17个字/36px
-// const getLine1FontSize = computed(() => {
-//   // debugger
-//   if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 23 && props.form.mtAreaList[0].textConent.length <= 52) {
-//     props.form.mtAreaList[0].fontSize = '36px'
-//   } else if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 53 && props.form.mtAreaList[0].textConent.length <= 84) {
-//     // 21个字/30px
-//     props.form.mtAreaList[0].fontSize = '30px'
-//   } else if (props.form.mtAreaList[0].textConent && props.form.mtAreaList[0].textConent.length >= 85) {
-//     props.form.mtAreaList[0].fontSize= '24px'
-//   }else{
-
-//   }
-// })
-
-//19个字/34px ，当会议主题长度大于19时，字号修改为28px
-// const getLine3FontSize = computed(() => {
-//   if (props.form.mtAreaList[2].textConent && props.form.mtAreaList[2].textConent.length >= 19 && props.form.mtAreaList[2].textConent.length <= 40) {
-//     props.form.mtAreaList[2].fontSize = "28px";
-//   } else if (props.form.mtAreaList[2].textConent && props.form.mtAreaList[2].textConent.length >= 41) {
-//     props.form.mtAreaList[2].fontSize = "24px";
-//   }
-// })
 
 const autoplay = ref(true)
 // debugger
@@ -673,6 +758,7 @@ section {
   // margin-top: 60px;
   /*margin-bottom: 30px;*/
   word-wrap: break-word;
+  line-height: 1.5;
 }
 .zdy {
   font-weight: 800;
@@ -681,6 +767,7 @@ section {
 
 .roomInfo .second .startTime_endTime {
   line-height: 80px;
+  //line-height: 1.5;
   color: rgba(255, 255, 255, 0.8);
   font-size: 34px;
   text-align: center;

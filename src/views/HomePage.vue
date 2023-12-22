@@ -15,36 +15,36 @@
           </div>
           <div>设备管理</div>
         </div>
-        <div class="item">
+        <!-- <div class="item">
           <a href="/iot-client/#/callService" target="__blank">
             <img src="@/assets/home/3.png" />
-          </a>
+          </a> -->
           <!-- <a href="/#/callService" target="__blank">
             <img src="@/assets/home/3.png" />
           </a> -->
-          <div>呼叫服务</div>
-        </div>
-        <div class="item">
+          <!-- <div>呼叫服务</div>
+        </div> -->
+        <!-- <div class="item">
           <a href="/iot-client/#/tablet" target="_blank">
             <img src="@/assets/home/2.png" />
-          </a>
+          </a> -->
           <!-- <a href="/#/tablet" target="_blank">
             <img src="@/assets/home/2.png" />
           </a> -->
-          <div>平板借还</div>
-        </div>
-        <!-- <div class="item">
+          <!-- <div>平板借还</div>
+        </div> -->
+        <div class="item">
           <div>
-            <img src="@/assets/home/3.png" @click="router.push('/callService')" />
+            <img src="@/assets/home/3.png" @click="tips()" />
           </div>
           <div>呼叫服务</div>
         </div>
         <div class="item">
           <div>
-            <img src="@/assets/home/2.png" @click="router.push('/tablet')" />
+            <img src="@/assets/home/2.png" @click="tips()" />
           </div>
           <div>平板借还</div>
-        </div> -->
+        </div>
         <div class="item">
           <div>
             <img src="@/assets/xxfb/screenshots/10.png" @click="router.push('/xxfb-monitorlist')" />
@@ -255,6 +255,7 @@
         </el-form>
       </el-dialog>
     </div>
+
   </div>
 </template>
 <script setup>
@@ -345,11 +346,16 @@ const postList = () => {
     })
     .then((res) => {
       console.log('会议室新增列表成功:', res.data)
-
+      
       createFormClose()
       isLocked.value = false
       //debugger
       getList()
+
+       ElMessage({
+        message: '新增成功',
+        type: 'success',
+      })
     })
     .catch((error) => {
       console.log('会议室新增列表失败:', error)
@@ -366,11 +372,12 @@ const deleteList = () => {
     .then((res) => {
       console.log('删除会议室列表成功:', res.data)
       console.log('删除id:', roomID.value)
+      
+      getList()
       ElMessage({
         type: 'success',
         message: '删除成功'
       })
-      getList()
     })
     .catch((error) => {
       console.log('删除会议室列表失败:', error)
@@ -396,6 +403,15 @@ const deleteList = () => {
 //        url:"/tablet"
 //     },
 // ]
+const tips=()=>{
+  ElMessage({
+    // showClose: true,
+    message: '功能完善中...',
+    type: 'warning',
+  })
+}
+
+
 
 // 2.查询/新增/重置
 const queryFormRef = ref()
@@ -658,6 +674,10 @@ const saveMeetingModify = () => {
           createFormClose()
           //debugger
           getList()
+           ElMessage({
+            message: '修改成功',
+            type: 'success',
+          })
         })
         .catch((error) => {
           console.log('会议室编辑失败:', error)
@@ -678,6 +698,7 @@ const deleteMeeting = (v) => {
       cancelButtonClass:'ExitCancelBtn',
       confirmButtonText: '确定',
       type: 'error',
+      customClass: 'blue-button' // 应用自定义样式类
     }).then(() => {
      
     })
@@ -692,7 +713,8 @@ const deleteMeeting = (v) => {
     cancelButtonClass:'ExitCancelBtn',
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
+    customClass: 'blue-button' // 应用自定义样式类
   })
     .then(() => {
       // 发送删除接口 请求，删除此条会议室信息
@@ -726,6 +748,7 @@ const refresh = () => {
   getList()
 }
 </script>
+
 <style lang="less" scoped>
 
 .home {
@@ -1042,6 +1065,14 @@ const refresh = () => {
   :deep(.el-dialog) {
     .el-dialog__body {
       border-top: 1px solid rgba(239, 239, 239, 1);
+
+      .el-form {
+        .el-form-item:last-child{
+          .el-form-item__content {
+            margin-left: 152px!important;
+          }
+        }
+      }
     }
   }
 
@@ -1064,4 +1095,17 @@ const refresh = () => {
   }
 }
 
+
+
+.blue-button .el-button--primary {
+  background-color: rgba(79, 168, 249, 1);
+  outline: 0;
+  // background-color: red;
+}
+.blue-button .el-button--primary:focus{
+    
+    background-color: rgba(79, 168, 249, 1);
+    outline: 0;
+
+}
 </style>

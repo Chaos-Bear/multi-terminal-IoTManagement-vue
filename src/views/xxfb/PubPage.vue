@@ -7,9 +7,9 @@
 <script setup>
 
 import Prepub from '@/components/xxfb/PrePub.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
-import { ElMessage} from 'element-plus'
+import { } from 'element-plus'
 const route = useRoute()
 import { pubRequest } from '@/utils/server.js'
 import { createWebSocket } from '@/utils/websocket.js'
@@ -143,7 +143,9 @@ const form = ref()
 onMounted(() => {
   
 })
-
+onBeforeUnmount(()=>{
+   localStorage.removeItem(roomName)
+})
   // 缓存 记录初始图片数组
   const releaseInfoCache = ref()
 
@@ -160,7 +162,7 @@ onMounted(() => {
       onmessage(e) {
         if (e.data == 'HeartBeat') {
           // console.log('接收服务器消息：', e.data)
-          console.log(e.data)
+          console.log('接收服务器消息',e.data)
           return
         } else {
           var data = JSON.parse(e.data)

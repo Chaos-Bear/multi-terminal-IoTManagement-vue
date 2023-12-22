@@ -507,7 +507,7 @@ const checkListChange=(v)=>{
   // debugger
   selectionList.value.push(v)
   
-  console.log(selectionList.value.indexOf('星期一'))
+  // console.log(selectionList.value.indexOf('星期一'))
 }
 
 // 添加时间弹框中的确定按钮
@@ -641,6 +641,7 @@ const deleteItem=(index)=>{
       cancelButtonClass:'ExitCancelBtn',
       confirmButtonText: '确定',
       type: 'warning',
+      customClass: 'blue-button' // 应用自定义样式类
     }).then(() => {
        
       // 调用定时开关接口

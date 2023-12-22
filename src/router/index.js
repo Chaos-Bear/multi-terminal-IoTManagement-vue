@@ -93,6 +93,11 @@ const router = createRouter({
       path: '/pub',
       component: () => import('../views/xxfb/PubPage.vue')
     },
+    // 热烈欢迎模板
+    // {
+    //   path: '/pub-three',
+    //   component: () => import('../views/xxfb/PubPage3.vue')
+    // },
     {
       path: '/xxfb-monitorlist',
       name: 'XxfbMonitorlist',

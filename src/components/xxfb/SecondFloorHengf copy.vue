@@ -37,31 +37,13 @@
               <div></div>
               <div>
                 <div>
-                  <div
-                    id="A2208"
-                    v-if="props.roomName == 'A2-208'"
-                    :class="[props.roomName == 'A2-208' ? 'active-startA2208' : '']"
-                  >
-                    A2-208
-                  </div>
-                  <div id="A2208" v-else data-roomName="A2208" @click="dataRoomClick('A2208')">
-                    A2-208
-                  </div>
+                  <div id="A2208" data-roomname="A2208" @click="dataRoomClick('A2208')">A2-208</div>
                   <!-- 单扇门 下  上 -->
                   <img class="door" src="@/assets/xxfb/path/2.png" />
                   <img class="door" src="@/assets/xxfb/path/5.png" />
                 </div>
                 <div>
-                  <div
-                    id="A2207"
-                    v-if="props.roomName == 'A2-207'"
-                    :class="[props.roomName == 'A2-207' ? 'active-startA2207' : '']"
-                  >
-                    A2-207
-                  </div>
-                  <div id="A2207" v-else data-roomName="A2207" @click="dataRoomClick('A2207')">
-                    A2-207
-                  </div>
+                  <div id="A2207" data-roomname="A2207" @click="dataRoomClick('A2207')">A2-207</div>
                   <!-- 单扇门 下  上 -->
                   <img class="door" src="@/assets/xxfb/path/2.png" />
                   <img class="door" src="@/assets/xxfb/path/5.png" />
@@ -84,15 +66,7 @@
                 <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
-                <div
-                  id="A2206"
-                  v-if="props.roomName == 'A2-206'"
-                  :class="[props.roomName == 'A2-206' ? 'active-startA2206' : '']"
-                >
-                  <br />A2-206<br />
-                  音控室
-                </div>
-                <div id="A2206" v-else data-roomName="A2206" @click="dataRoomClick('A2206')">
+                <div id="A2206" data-roomname="A2206" @click="dataRoomClick('A2206')">
                   <br />A2-206<br />
                   音控室
                 </div>
@@ -113,61 +87,27 @@
             </div>
             <div class="left4-2">
               <div>
-                 <div
-                    id="A2204"
-                    v-if="props.roomName == 'A2-204'"
-                    :class="[props.roomName == 'A2-204' ? 'active-startA2204' : '']"
-                  >
-                    A2-204
-                  </div>
-                  <div id="A2204" v-else data-roomName="A2204" @click="dataRoomClick('A2204')">
-                    A2-204
-                  </div>
+                <div id="A2204" data-roomname="A2204" @click="dataRoomClick('A2204')">A2-204</div>
+
                 <!-- 竖 双排门 -->
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
               <div>
-                 <div
-                    id="A2202"
-                    v-if="props.roomName == 'A2-202'"
-                    :class="[props.roomName == 'A2-202' ? 'active-startA2202' : '']"
-                  >
-                    <br />A2-202<br />
+                <div id="A2202" data-roomname="A2202" @click="dataRoomClick('A2202')">
+                  <br />A2-202<br />
                   服务室
-                  </div>
-                  <div id="A2202" v-else data-roomName="A2202" @click="dataRoomClick('A2202')">
-                    <br />A2-202<br />
-                  服务室
-                  </div>
+                </div>
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
             <div class="left4-3">
               <div>
-                 <div
-                    id="A2205"
-                    v-if="props.roomName == 'A2-205'"
-                    :class="[props.roomName == 'A2-205' ? 'active-startA2205' : '']"
-                  >
-                    A2-205
-                  </div>
-                  <div id="A2205" v-else data-roomName="A2205" @click="dataRoomClick('A2205')">
-                    A2-205
-                  </div>
+                <div id="A2205" data-roomname="A2205" @click="dataRoomClick('A2205')">A2-205</div>
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
               <div>
-                 <div
-                    id="A2201"
-                    v-if="props.roomName == 'A2-201'"
-                    :class="[props.roomName == 'A2-201' ? 'active-startA2201' : '']"
-                  >
-                    A2-201
-                  </div>
-                  <div id="A2201" v-else data-roomName="A2201" @click="dataRoomClick('A2201')">
-                    A2-201
-                  </div>
+                <div id="A2201" data-roomname="A2201" @click="dataRoomClick('A2201')">A2-201</div>
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
@@ -195,16 +135,13 @@
             <div><br />过<br />道</div>
             <div>
               <div>
-                <div class="tolit">
+                <div>
                   <!-- 需改图片 -->
-                  
-                  <!-- <img src="@/assets/xxfb/path/iconPark-boy.png" /> -->
-                  卫生间
+                  <img src="@/assets/xxfb/path/iconPark-boy.png" />
                 </div>
-                <div class="tolit">
+                <div>
                   <!-- 需改图片 -->
-                  <!-- <img src="@/assets/xxfb/path/iconPark-girl.png" /> -->
-                  卫生间
+                  <img src="@/assets/xxfb/path/iconPark-girl.png" />
                 </div>
               </div>
               <div></div>
@@ -217,18 +154,15 @@
               <div>
                 <img src="@/assets/xxfb/path/shoufuti2.png" />
               </div>
-              <span class="shoufudianti">手扶电梯</span>
-              
             </div>
           </div>
           <div>
             <img src="@/assets/xxfb/path/dblouti.png" />
 
-            <div class="louti">
-              <!-- <img src="@/assets/xxfb/path/dianti.png" />
+            <div>
               <img src="@/assets/xxfb/path/dianti.png" />
-              <img src="@/assets/xxfb/path/huoti.png" /> -->
-              电 梯
+              <img src="@/assets/xxfb/path/dianti.png" />
+              <img src="@/assets/xxfb/path/huoti.png" />
             </div>
           </div>
         </div>
@@ -256,63 +190,28 @@
             </div>
             <div class="right2-2">
               <div>
-                 <div
-                    id="A2216"
-                    v-if="props.roomName == 'A2-216'"
-                    :class="[props.roomName == 'A2-216' ? 'active-startA2216' : '']"
-                  >
-                    <br />A2-216<br />
+                <div id="A2216" data-roomname="A2216" @click="dataRoomClick('A2216')">
+                  <br />A2-216<br />
                   工作间
-                  </div>
-                  <div id="A2216" v-else data-roomName="A2216" @click="dataRoomClick('A2216')">
-                    <br />A2-216<br />
-                  工作间
-                  </div>
+                </div>
                 <!-- 单扇门 下  上 -->
                 <img class="door" src="@/assets/xxfb/path/2.png" />
                 <img class="door" src="@/assets/xxfb/path/5.png" />
               </div>
               <div>
-                <div
-                  id="A2219"
-                  v-if="props.roomName == 'A2-219'"
-                  :class="[props.roomName == 'A2-219' ? 'active-startA2219' : '']"
-                >
-                  A2-219
-                </div>
-                <div id="A2219" v-else data-roomName="A2219" @click="dataRoomClick('A2219')">
-                  A2-219
-                </div>
+                <div id="A2219" data-roomname="A2219" @click="dataRoomClick('A2219')">A2-219</div>
                 <!-- 竖 双排门 -->
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
             <div class="right2-3">
               <div>
-                <div
-                  id="A2215"
-                  v-if="props.roomName == 'A2-215'"
-                  :class="[props.roomName == 'A2-215' ? 'active-startA2215' : '']"
-                >
-                  A2-215
-                </div>
-                <div id="A2215" v-else data-roomName="A2215" @click="dataRoomClick('A2215')">
-                  A2-215
-                </div>
+                <div id="A2215" data-roomname="A2215" @click="dataRoomClick('A2215')">A2-215</div>
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
               <div>
-                <div
-                  id="A2220"
-                  v-if="props.roomName == 'A2-220'"
-                  :class="[props.roomName == 'A2-220' ? 'active-startA2220' : '']"
-                >
-                  A2-220
-                </div>
-                <div id="A2220" v-else data-roomName="A2220" @click="dataRoomClick('A2220')">
-                  A2-220
-                </div>
+                <div id="A2220" data-roomname="A2220" @click="dataRoomClick('A2220')">A2-220</div>
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
@@ -334,16 +233,7 @@
                 <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
-                <div
-                  id="A2221"
-                  v-if="props.roomName == 'A2-221'"
-                  :class="[props.roomName == 'A2-221' ? 'active-startA2221' : '']"
-                >
-                  A2-221
-                </div>
-                <div id="A2221" v-else data-roomName="A2221" @click="dataRoomClick('A2221')">
-                  A2-221
-                </div>
+                <div id="A2221" data-roomname="A2221" @click="dataRoomClick('A2221')">A2-221</div>
                 <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
@@ -360,75 +250,29 @@
             <div class="right4-2">
               <div>
                 <div>
-                  
-                  <div
-                    id="A2223"
-                    v-if="props.roomName == 'A2-223'"
-                    :class="[props.roomName == 'A2-223' ? 'active-startA2223' : '']"
-                  >
-                    A2-223
-                  </div>
-                  <div id="A2223" v-else data-roomName="A2223" @click="dataRoomClick('A2223')">
-                    A2-223
-                  </div>
+                  <div id="A2223" data-roomname="A2223" @click="dataRoomClick('A2223')">A2-223</div>
                   <!-- 竖 双排门 -->
                   <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
                 <div>
-                  <div
-                    id="A22222"
-                    v-if="props.roomName == 'A2-222'"
-                    :class="[props.roomName == 'A2-222' ? 'active-startA2222' : '']"
-                  >
-                    A2-222
-                  </div>
-                  <div id="A2222" v-else data-roomName="A2222" @click="dataRoomClick('A2222')">
-                    A2-222
-                  </div>
+                  <div id="A2222" data-roomname="A2222" @click="dataRoomClick('A2222')">A2-222</div>
                   <!-- 竖 双排门 -->
                   <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
               </div>
               <div>
                 <div>
-                  <div
-                    id="A2225"
-                    v-if="props.roomName == 'A2-225'"
-                    :class="[props.roomName == 'A2-225' ? 'active-startA2225' : '']"
-                  >
-                    A2-225
-                  </div>
-                  <div id="A2225" v-else data-roomName="A2225" @click="dataRoomClick('A2225')">
-                    A2-225
-                  </div>
+                  <div id="A2225" data-roomname="A2225" @click="dataRoomClick('A2225')">A2-225</div>
                   <!-- 竖 双排门 -->
                   <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
                 <div>
-                  <div
-                    id="A2226"
-                    v-if="props.roomName == 'A2-226'"
-                    :class="[props.roomName == 'A2-226' ? 'active-startA2226' : '']"
-                  >
-                    A2-226
-                  </div>
-                  <div id="A2226" v-else data-roomName="A2226" @click="dataRoomClick('A2226')">
-                    A2-226
-                  </div>
+                  <div id="A2226" data-roomname="A2226" @click="dataRoomClick('A2226')">A2-226</div>
                   <!-- 竖 双排门 -->
                   <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
                 <div>
-                  <div
-                    id="A2227"
-                    v-if="props.roomName == 'A2-227'"
-                    :class="[props.roomName == 'A2-227' ? 'active-startA2227' : '']"
-                  >
-                    A2-227
-                  </div>
-                  <div id="A2227" v-else data-roomName="A2227" @click="dataRoomClick('A2227')">
-                    A2-227
-                  </div>
+                  <div id="A2227" data-roomname="A2227" @click="dataRoomClick('A2227')">A2-227</div>
                   <!-- 竖 双排门 -->
                   <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
@@ -481,53 +325,24 @@
         <img src="@/assets/xxfb/path/right.png" />
         <span style="opacity:0">右</span>
       </div>
-      <!-- 竖向标识 朝右-->
-      <div v-if="getzbdStyleshuright" class="arrowPointshu" id="zuobiao" :style="getzbdStyleshuright">
+      <!-- 竖向标识 -->
+      <div v-if="getzbdStyleshu" class="arrowPointshu" id="zuobiao" :style="getzbdStyleshu">
         
         <img src="@/assets/xxfb/path/up.png" />
         <div>
-          <img id="zuobiaodian" src="@/assets/xxfb/path/right1.png" />
-        </div>
-        <img src="@/assets/xxfb/path/down.png" />
-       
-      </div>
-
-      <!-- 竖向标识 朝左-->
-      <div v-if="getzbdStyleshuleft" class="arrowPointshu" id="zuobiao" :style="getzbdStyleshuleft">
-        
-        <img src="@/assets/xxfb/path/up.png" />
-        <div>
-          <img id="zuobiaodian" src="@/assets/xxfb/path/left1.png" />
+          <img id="zuobiaodian" src="@/assets/xxfb/path/huoti.png" />
         </div>
         <img src="@/assets/xxfb/path/down.png" />
        
       </div>
     </div>
     <div class="div3">
-      <div class="div3-1">
-        <div>
-          <div>
-            <img data-v-7c86bae5="" class="hdoubledoor" src="/src/assets/xxfb/path/6.png">
-            <span>茶水间</span>
-          </div>
-          <div class="jianju1"></div>
-          <div>
-            <span>卫生间</span>
-            <img data-v-7c86bae5="" class="doubledoor" src="/src/assets/xxfb/path/7.png">
-          </div>
-          <div class="jianju2"></div>
-          <div>
-            <img data-v-7c86bae5="" class="hdoubledoor" src="/src/assets/xxfb/path/6.png">
-            <span>A2-230</span>
-          </div>
-        </div>
-      </div>
       <ul>
-        <li style="display:none"><img src="@/assets/xxfb/path/dianti.png" /><span>电梯</span></li>
+        <li><img src="@/assets/xxfb/path/dianti.png" /><span>电梯</span></li>
         <li><img src="@/assets/xxfb/path/louti.png" /><span>楼梯</span></li>
-        <li style="display:none"><img src="@/assets/xxfb/path/shoufudt.png" /><span>手扶电梯</span></li>
+        <li><img src="@/assets/xxfb/path/shoufudt.png" /><span>手扶电梯</span></li>
         <li><img src="@/assets/xxfb/path/huoti.png" /><span>货梯</span></li>
-        <li style="display:none"><img src="@/assets/xxfb/path/wc.png" /><span>卫生间</span></li>
+        <li><img src="@/assets/xxfb/path/wc.png" /><span>卫生间</span></li>
         <li><img src="@/assets/xxfb/path/peidianjian.png" /><span>配电间</span></li>
         <li>
           <!-- <img
@@ -550,7 +365,7 @@
 <script setup>
 // 二楼横反：A2-211   A2-228    A2-229 A2-212
 // 二楼竖反：204、205、215、216、222、223
-// 二楼竖正：A2-206、207、208、201、202、221、220、219、227、226、225    ok
+// 二楼竖正：A2-206、207、208、201、202、221、220、219、227、226、225    A2-206/202未写，其余ok
 import { computed, onMounted, nextTick, onBeforeUnmount } from 'vue'
 import $ from 'jquery'
 
@@ -600,9 +415,9 @@ const getzbdStyle = computed(() => {
   }
 })
 
-// 竖-右
-const getzbdStyleshuright=computed(()=>{
+const getzbdStyleshu=computed(()=>{
   // 竖反：204、205、215、216、222、223
+
   if (props.roomName == 'A2-204') {
     return {
       left: '404px',
@@ -641,11 +456,8 @@ const getzbdStyleshuright=computed(()=>{
     }
   }
   
-})
 
-// 竖-左
-const getzbdStyleshuleft=computed(()=>{
-  // 二楼竖正：A2-206、207、208、201、202、221、220、219、227、226、225
+
   // 竖正
   if (props.roomName == 'A2-227') {
     return {
@@ -656,13 +468,13 @@ const getzbdStyleshuleft=computed(()=>{
   if (props.roomName == 'A2-226') {
     return {
       left: '1834px',
-      top: '254px'
+      top: '140px'
     }
   }
   if (props.roomName == 'A2-225') {
     return {
       left: '1834px',
-      top: '140px'
+      top: '254px'
     }
   }
   if (props.roomName == 'A2-219') {
@@ -713,7 +525,10 @@ const getzbdStyleshuleft=computed(()=>{
       top: '477px'
     }
   }
+ 
+
 })
+
 
 // 声明会议室坐标点
 var CoordPoint = {
@@ -1338,188 +1153,7 @@ var CoordPoint = {
     [1861, 464],
     [1866, 464],
     [1846, 464]
-  ],
-
-   
-  // A2-207-----待定位坐标;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  // 一区
-  A2207_A2208: [
-    [430, 468],
-    [430, 300],
-    [410, 300],
-    [410, 300],
-  ],
-  A2207_A2207: [
-   
-  ],
-  A2207_A2211: [
-    [430, 468],
-    [430, 711],
-    [435, 711],
-    [244, 711]
-  ],
-  A2207_A2206: [
-    [430, 468],
-    [430, 540],
-    [410, 540],
-    [410, 540],
-  ],
-  //二区
-  A2207_A2204: [
-    [430, 468],
-    [430, 224],
-    [430, 224],
-    [450, 224],
-  ],
-  A2207_A2205: [
-    [430, 468],
-    [430, 460],
-    [430, 460],
-    [450, 460]
-  ],
-  A2207_A2202: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [885, 711],
-    [880, 711],
-    [880, 230],
-    [880, 230],
-    [810, 230]
-  ],
-  A2207_A2201: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [885, 711],
-    [880, 711],
-    [880, 460],
-    [880, 460],
-    [810, 460]
-  ],
-  A2207_A2212: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [508, 711]
-  ],
-  //3区
-  A2207_A2216: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1082, 711],
-    [1078, 711],
-    [1078, 276],
-    [1078, 276],
-    [1152, 276]
-  ],
-  A2207_A2215: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1082, 711],
-    [1078, 711],
-    [1078, 460],
-    [1078, 460],
-    [1152, 460]
-  ],
-  A2207_A2229: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1206, 711]
-  ],
-  A2207_A2219: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1506, 711],
-    [1501, 711],
-    [1501, 210],
-    [1506, 210],
-    [1486, 210]
-  ],
-  A2207_A2220: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1506, 711],
-    [1501, 711],
-    [1501, 462],
-    [1506, 462],
-    [1486, 462]
-  ],
-  A2207_A2221: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1506, 711],
-    [1501, 711],
-    [1501, 630],
-    [1506, 630],
-    [1486, 630]
-  ],
-
-  //4区
-  A2207_A2223: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1511, 711],
-    [1506, 711],
-    [1506, 210],
-    [1506, 210],
-    [1526, 210]
-  ],
-  A2207_A2222: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1511, 711],
-    [1506, 711],
-    [1506, 378],
-    [1506, 378],
-    [1526, 378]
-  ],
-  A2207_A2228: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1592, 711]
-  ],
-  A2207_A2225: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1866, 711],
-    [1861, 711],
-    [1861, 202],
-    [1866, 202],
-    [1846, 202]
-  ],
-  A2207_A2226: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1866, 711],
-    [1861, 711],
-    [1861, 312],
-    [1866, 312],
-    [1846, 312]
-  ],
-  A2207_A2227: [
-    [430, 468],
-    [430, 711],
-    [430, 711],
-    [1866, 711],
-    [1861, 711],
-    [1861, 464],
-    [1866, 464],
-    [1846, 464]
-  ],
-
-
+  ]
 }
 function start_end(xy, end) {
   if ($('body').attr('locked') == 1) {
@@ -1584,7 +1218,7 @@ function start_end(xy, end) {
         zuobiaodian && (zuobiaodian.style.opacity = '1')
         //动态路径展示完毕，调用放大缩小全屏展示函数
         // scrollSwiper()
-      }, 15000000)
+      }, 15000)
       // 给body添加路径展示定时器 标识
       $('body').attr('timeout', timeout)
 
@@ -1632,7 +1266,7 @@ function start_end(xy, end) {
           zuobiaodian && (zuobiaodian.style.opacity = '1')
           //动态路径展示完毕，调用放大缩小全屏展示函数
           // scrollSwiper()
-        }, 15000000)
+        }, 15000)
         // 给body添加路径展示定时器 标识
         $('body').attr('timeout', timeout)
 
@@ -1682,7 +1316,7 @@ function start_end(xy, end) {
             zuobiaodian && (zuobiaodian.style.opacity = '1')
             //动态路径展示完毕，调用放大缩小全屏展示函数
             // scrollSwiper()
-          }, 15000000)
+          }, 15000)
           // 给body添加路径展示定时器 标识
           $('body').attr('timeout', timeout)
 
@@ -1735,7 +1369,7 @@ function start_end(xy, end) {
               zuobiaodian && (zuobiaodian.style.opacity = '1')
               //动态路径展示完毕，调用放大缩小全屏展示函数
               // scrollSwiper()
-            }, 15000000)
+            }, 15000)
             // 给body添加路径展示定时器 标识
             $('body').attr('timeout', timeout)
 
@@ -1789,7 +1423,7 @@ function start_end(xy, end) {
                 zuobiaodian && (zuobiaodian.style.opacity = '1')
                 //动态路径展示完毕，调用放大缩小全屏展示函数
                 // scrollSwiper()
-              }, 15000000)
+              }, 15000)
               // 给body添加路径展示定时器 标识
               $('body').attr('timeout', timeout)
 
@@ -1885,8 +1519,8 @@ function drawLine(start, end) {
     children.style.height = 5 + 'px'
     children.style.width = 0
     // 判断起点 终点距离 分别与原点比较
-    abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
-    abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
+    var abs1 = Math.sqrt(start[0] * start[0] + start[1] * start[1])
+    var abs2 = Math.sqrt(end[0] * end[0] + end[1] * end[1])
     if (abs1 > abs2) {
       div.style.top = end[1] + 'px'
       div.style.left = end[0] + 'px'
@@ -2012,7 +1646,7 @@ function drawLine(start, end) {
 
 const dataRoomClick = (end) => {
   // console.log(end)
-  // start_end(props.roomName.replace('-', '') + '_' + end, end)
+  start_end(props.roomName.replace('-', '') + '_' + end, end)
 }
 
 onMounted(() => {
@@ -2040,12 +1674,9 @@ div {
   /* border: 1px solid red; */
   /*zoom: 0.345545454;*/
   display: block;
-  // zoom: 0.362054;
+  zoom: 0.362054;
   position: relative;
   // margin-left: -10px;
-  
-  transform: scale(0.3621);
-  transform-origin: left top;
 }
 
 .div1 {
@@ -2072,9 +1703,7 @@ div {
   width: 180px;
   position: absolute;
   right: 44px;
-  // bottom: 13px;
-
-  bottom: 40px;
+  bottom: 13px;
   background-color: transparent;
 }
 
@@ -2547,15 +2176,6 @@ div {
   background-color: rgba(255, 255, 255, 0.04);
 }
 
-.tolit{
-  color: rgba(255, 255, 255, 0.2);
-    font-size: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
 /* 中间楼梯 */
 .div2 .div2-2 .middle {
   width: 060272%;
@@ -2592,14 +2212,6 @@ div {
   margin-left: -2px;
   margin-top: 55px;
 }
-.div2 .div2-2 .middle > div:nth-child(1) div .shoufudianti{
-  color: rgba(255, 255, 255, 0.2);
-    font-size: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: -12px;
-}
 
 .div2 .div2-2 .middle > div:nth-child(2) {
   width: 127px;
@@ -2627,20 +2239,11 @@ div {
   box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
 }
 
-// .div2 .div2-2 .middle > div:nth-child(2) > div img {
-//   width: 35px;
-//   height: 35px;
-//   margin-top: 22px;
-// }
-.div2 .div2-2 .middle > div:nth-child(2) .louti{
-    color: rgba(255, 255, 255, 0.2);
-    font-size: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.div2 .div2-2 .middle > div:nth-child(2) > div img {
+  width: 35px;
+  height: 35px;
+  margin-top: 22px;
 }
-
-
 
 /* 中间右区 */
 .div2 .div2-2 .right {
@@ -2984,96 +2587,13 @@ div {
   height: 84px;
   margin-top: 40px;
   margin-bottom: 40px;
-
-  transform: translateY(-41px);
 }
-.div3 .div3-1{
-  margin-left: 626px;
-  margin-bottom: 12px;
 
-  // background-color: rgba(245,245,245,0.1);
-  background-color: rgba(255, 255, 255, 0.07);
-  width: 716px;
-  height: 130px;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  &>div{
-    
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    
-    
-    // 会议室
-    div{
-      display: flex;
-      position: relative;
-      background-color: #2c6965;
-      padding: 6px;
-      span{
-        width: 200px;
-        height: 100px;
-        line-height: 100px;
-        color: #ffffff;
-        // color: rgba(255, 255, 255, 0.2);
-        font-size: 22px;
-        text-align: center;
-
-        box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
-        background-color: #347f7a;
-       }
-      img{
-        position: absolute;
-        top: 5px;
-        left: 130px;
-      }
-    }
-    div:nth-child(3){
-      img{
-        position: absolute;
-        top: 42px;
-        left: 116px;
-      }
-      span{
-        width: 115px;
-        // color: rgba(255, 255, 255, 0.2);
-      }
-    }
-    div:nth-child(5){
-      span{
-        margin-right: 0px;
-        color: #ffffff;
-        font-size: 30px;
-      }
-      img{
-        position: absolute;
-        top: 5px;
-        left: 40px;
-      }
-    }
-
-    .jianju1{
-       width: 72px;
-       height: 84px;
-       background-color: rgba(255, 255, 255, 0);
-    }
-    .jianju2{
-       width: 66px;
-       height: 84px;
-       background-color: rgba(255, 255, 255, 0);
-    }
-  }
-  
-}
 .div3 ul {
   height: 84px;
   line-height: 84px;
   margin-left: 94px;
   display: flex;
-
-  margin-top: 30px;
 }
 
 .div3 ul li {
@@ -3194,13 +2714,14 @@ div {
 
 
 
-/* 横向起点的激活样式 */
+/* 起点的激活样式 */
 .active-startA2228 {
   width: 202px !important;
   height: 165px !important;
   /*line-height: 225px !important;*/
   line-height: 165px !important;
   background-color: rgba(255, 145, 0, 1) !important;
+  /*font-size: 28px;*/
   font-size: 30px;
   /*background-image: url(@/assets/xxfb/path/dangqian.png);
             background-repeat: no-repeat;
@@ -3229,134 +2750,4 @@ div {
 }
 
 
-
-// 竖反起点的激活样式204无 216无
-.active-startA2204 {
-  width: 154px !important;
-  height: 129px !important;
-  line-height: 129px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2205 {
-  width: 154px !important;
-  height: 201px !important;
-  line-height: 201px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2215 {
-  width: 145px;
-  height: 201px;
-  line-height: 201px;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2216 {
-  width: 145px;
-  height: 129px;
-  font-size: 26px;
-  line-height: 33px;
-  background-color: rgba(255, 145, 0, 1) !important;
-}
-
-.active-startA2222 {
-  width: 134px;
-  height: 166px;
-  line-height: 166px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2223 {
-  width: 134px;
-  height: 166px;
-  line-height: 166px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-
-
-// 竖正 起点的激活样式 202无 206无
-.active-startA2225 {
-  width: 134px;
-  height: 110px;
-  /*line-height: 106px !important;*/
-  line-height: 110px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2226 {
-  width: 134px;
-  height: 110px;
-  line-height: 110px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-  
-}
-.active-startA2227 {
-  width: 134px;
-  height: 110px;
-  /*line-height: 106px !important;*/
-  line-height: 110px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
- 
-}
-.active-startA2219 {
-  width: 145px !important;
-  height: 129px !important;
-  line-height: 129px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2220 {
-  width: 145px !important;
-  height: 201px !important;
-  line-height: 201x !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2221 {
-  width: 117px !important;
-  height: 165px !important;
-  line-height: 165px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2202 {
-  width: 154px;
-  height: 129px;
-  font-size: 26px;
-  line-height: 33px;
-  background-color: rgba(255, 145, 0, 1) !important;
- 
-}
-.active-startA2201 {
-  width: 154px !important;
-  height: 201px !important;
-  line-height: 201px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2208 {
-  width: 250px !important;
-  height: 166px !important;
-  line-height: 166px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2207 {
-  width: 250px !important;
-  height: 166px !important;
-  line-height: 166px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 30px;
-}
-.active-startA2206 {
-  width: 100px !important;
-  height: 165px !important;
-  line-height: 41px !important;
-  background-color: rgba(255, 145, 0, 1) !important;
-  font-size: 26px;
-}
 </style>

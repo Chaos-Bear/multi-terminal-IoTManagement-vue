@@ -59,12 +59,12 @@ function init(websocket, urlPath, events) {
     typeof events.onclose == 'function' && events.onclose(event)
 
     // 判断如果状态码1000，即正常关闭，则不再心跳检测 及 重连
-    if (event.code == 1000) {
-      return
-    } else {
+    // if (event.code == 1000) {
+    //   return
+    // } else {
       heartCheck.reset() //心跳检测
       reconnect(urlPath, events)
-    }
+    // }
   }
 
   //监听窗口关闭事件，当窗口关闭时，主动去closeWebSocket关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
@@ -126,7 +126,7 @@ var heartCheck = {
       //这里发送一个心跳，后端收到后，返回一个心跳消息，
       //onmessage拿到返回的心跳就说明连接正常
       websocket.send('HeartBeat')
-      console.log('HeartBeat')
+      console.log('发送心跳给服务端','HeartBeat')
       self.serverTimeoutObj = setTimeout(function () {
         // 如果超过一定时间还没重置，说明后端主动断开了
         console.log('关闭服务')

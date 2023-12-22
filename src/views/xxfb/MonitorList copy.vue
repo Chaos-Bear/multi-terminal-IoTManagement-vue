@@ -105,7 +105,7 @@ const router = useRouter()
 // import axios from 'axios'
 
 import { releaseRequest } from '@/utils/server.js'
-import defaultImg  from "@/assets/xxfb/screenshots/13.png"
+// import defaultImg  from "@/assets/xxfb/screenshots/13.png"
 // 会议室配置信息
 var floorOptions = ref([])
 var addressOptions = ref([])

@@ -52,7 +52,7 @@
                 </template>
                 <template v-if="scope.row.contType == '页面'">
                   <!-- _blank -->
-                  <a :href="scope.row.pubPath" target="_blank"  @click="operateTips(scope.row)">{{ scope.row.contName }}</a>
+                  <a :href="scope.row.pubPath" target="_blank"  @click="operateTips(scope.row)" :style="scope.row.pubPath.includes('/pub')?'color:#606266;':''">{{ scope.row.contName }}</a>
                   <!-- &nbsp;<span @click="router.push('/xxfb?roomName=' + titleName + '&roomID=' + roomId)"
                     >控制页</span
                   >&nbsp;
@@ -171,7 +171,7 @@
         <el-form-item label="页面名称" prop="contName">
           <el-input v-model="addPageForm.contName" placeholder="请输入页面名称" />
         </el-form-item>
-        <el-form-item label="&nbsp;&nbsp;&nbsp;关联设备" prop="">
+        <el-form-item label="&nbsp;&nbsp;&nbsp;关联设备" >
           <!-- multiple  :disabled="addPageForm.iotDeviceList.length==1"-->
           
           <el-select
@@ -281,7 +281,7 @@ const delPage = (params) => {
 //获取设备列表zuixin
 
 //-----------2.获取设备列表接口---------
-const deviceList = ref([{ index: '', deviceName: '' }])
+const deviceList = ref([])
 const getDeviceList = () => {
   releaseRequest
     .post('/PublishFlowCtrl/queryIotDevicePageInfo', {})
@@ -367,6 +367,10 @@ const addMeetingCategory = () => {
         })
         .then((res) => {
           console.log('新增分类成功', res.data)
+           ElMessage({
+            message: '新增成功',
+            type: 'success',
+          })
           meetingCategoryVisual.value = false
 
           // 查询请求
@@ -395,9 +399,14 @@ const updateMeetingCategory = () => {
         })
         .then((res) => {
           console.log('修改分类成功', res.data)
+           
           meetingCategoryVisual.value = false
           // 查询请求
           getList()
+          ElMessage({
+            message: '修改成功',
+            type: 'success',
+          })
         })
         .catch((error) => {
           console.log('修改分类失败', error)
@@ -431,7 +440,7 @@ const addPageBtn = (row) => {
   addPageForm.contID = ''
   addPageForm.contName = ''
   addPageForm.contType = ''
-  addPageForm.iotDeviceList = ''
+  addPageForm.iotDeviceList = []
   addPageForm.editPath = ''
   addPageForm.pubPath = ''
 
@@ -478,7 +487,7 @@ const addMeetingPage = () => {
     if (valid) {
       var iotDeviceList = []
       // debugger
-      addPageForm.iotDeviceList.forEach((deviceID) => {
+      Array.isArray(addPageForm.iotDeviceList) &&  addPageForm.iotDeviceList.forEach((deviceID) => {
         for (var i = 0; i < deviceList.value.length; i++) {
           if (deviceList.value[i].deviceID == deviceID) {
             let { deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
@@ -509,9 +518,14 @@ const addMeetingPage = () => {
           // debugger
           console.log("修改页面成功",res.data);
           meetingModifyVisual.value = false
+          
           // debugger
           // 查询请求
           getList()
+           ElMessage({
+            message: '新增成功',
+            type: 'success',
+          })
         })
         .catch((error) => {
           console.log('修改页面失败', error)
@@ -582,9 +596,13 @@ const updateMeetingPage = () => {
           // debugger
           console.log('修改页面成功', res.data)
           meetingModifyVisual.value = false
-
+          
           // 查询请求
           getList()
+           ElMessage({
+            message: '修改成功',
+            type: 'success',
+          })
         })
         .catch((error) => {
           console.log('修改页面失败', error)
@@ -609,7 +627,8 @@ const deleteBtn = () => {
   ElMessageBox.confirm('确定删除当前选中的分类或页面吗？', '删除', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
+    customClass: 'blue-button' // 应用自定义样式类
   })
     .then(() => {
       var idArr = []
@@ -699,7 +718,7 @@ const tableData = ref([
 var selectRows = ref([])
 const selectionChange = (selection) => {
   selectRows.value = selection
-  console.log('33333333333333', selectRows.value)
+ // console.log('33333333333333', selectRows.value)
 }
 // 更新时间
 const formatDate = (date) => {
@@ -738,10 +757,10 @@ const operateTips=(row)=>{
   // debugger
    if(row.pubPath.includes('/pub')){
       event.preventDefault(); // 阻止默认跳转行为
-      ElMessage({
-        type: 'warning',
-        message: '不允许跳转',
-      })
+      // ElMessage({
+      //   type: 'warning',
+      //   message: '不允许跳转',
+      // })
    }
 }
 

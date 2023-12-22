@@ -321,7 +321,7 @@
     </div>
     <!--2.有冲突发布弹框  -->
     <div class="pubFormDialog">
-      <el-dialog v-model="pubConflictVisible" title="冲突提示">
+      <el-dialog v-model="pubConflictVisible" title="冲突提示" :before-close="cancelConflictPub">
         <template #header>
           <div class="conflitTips1">
             <span>冲突提示</span>
@@ -340,7 +340,7 @@
                 <!-- <div>发布时间：2023年12月7日 9:00 ~ 12:00</div> -->
                 <div>
                   发布时间：{{
-                    item.startTime.slice(0, -3) + '~' + item.endTime.split(' ')[1].slice(0, -3)
+                    item.editePublishTime.slice(0, -3) + '~' + item.editePublishEndTime.split(' ')[1].slice(0, -3)
                   }}
                 </div>
               </li>
@@ -353,7 +353,7 @@
                 <!-- <div>发布时间：2023年12月7日 9:00 ~ 12:00</div> -->
                 <div>
                   发布时间：{{
-                    item.startTime.slice(0, -3) + '~' + item.endTime.split(' ')[1].slice(0, -3)
+                    item.editePublishTime.slice(0, -3) + '~' + item.editePublishEndTime.split(' ')[1].slice(0, -3)
                   }}
                 </div>
               </li>
@@ -411,10 +411,10 @@
 <script setup>
 import PreEdit from '@/components/xxfb/PreEdit.vue'
 import { ref, onMounted, watch} from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import {  useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-const router = useRouter()
+// const router = useRouter()
 const route = useRoute()
 import { releaseRequest } from '@/utils/server.js'
 // import localforage from "localForage"
@@ -422,7 +422,7 @@ import { releaseRequest } from '@/utils/server.js'
 
 const roomName = route.query.roomName
 // 路由返回上一页时需要roomIdzdy---后端说物联网首页会议id是自己生成的
-const roomIdzdy = route.query.roomID
+// const roomIdzdy = route.query.roomID
 // roomId会议预约返回的id
 const roomId = ref('')
 
@@ -551,6 +551,7 @@ const getImage = (src) => {
 
 // 2.----查询会议预约接口获取同步信息------
 const getSyncInfo = (item) => {
+  // debugger
   releaseRequest
     .post('/IotPageEditCrtl/queryReleasePageInfoByMeet', {
       startTime: form.value.startTime ? form.value.startTime : '',
@@ -559,7 +560,7 @@ const getSyncInfo = (item) => {
       textLocat: item.textLocat
     })
     .then((res) => {
-      // debugger
+      
       if (res.data.repCode == 200) {
         console.log('获取同步信息成功:', res.data.result)
 
@@ -774,7 +775,8 @@ const onReset = () => {
   ElMessageBox.confirm('确定撤销该场次会议吗？', '撤销', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
+    customClass: 'blue-button' // 应用自定义样式类
   })
     .then(() => {
       //调用撤销接口
@@ -1038,6 +1040,10 @@ const confirmConflictPub = () => {
 // 冲突弹框中的取消按钮
 const cancelConflictPub = () => {
   pubConflictVisible.value = false
+  ElMessage({
+    type: 'info',
+    message: '取消发布'
+  })
 }
 
 onMounted(() => {
@@ -1525,7 +1531,7 @@ onMounted(() => {
   .pubSuccessDialog {
     :deep(.el-dialog) {
       --el-dialog-width: 40%;
-      min-width: 368px;
+      width: 368px;
       .el-dialog__header {
       }
       .el-dialog__body {

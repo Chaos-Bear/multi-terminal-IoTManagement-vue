@@ -85,13 +85,14 @@
               :initial-index="4" -->
               <el-image 
               :src="item.roomImg?('data:image/jpg;base64,'+item.roomImg):defaultImg" 
-              @click="getmonitorList(item)"
+              @click="getmonitorList(item)" fit="contain"
               lazy 
               />
-              
-              <el-checkbox   :label="item.roomName">{{' '}}</el-checkbox>
-              <div class="roomName">{{ item.roomName }}信息发布屏</div>
+              <!--v-show="showCheckbox" @mouseenter="handleMouseOver" @mouseleave="handleMouseOut"  -->
+              <el-checkbox   :label="item.roomName" >{{' '}}</el-checkbox>
+              <div class="roomName" >{{ item.roomName }}信息发布屏</div>
             </div>
+            <!-- <div class="roomName" >{{ item.roomName }}信息发布屏</div> -->
           </el-checkbox-group>
         </div>
         <!-- 暂无监控列表 -->
@@ -172,7 +173,7 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted,onBeforeUnmount } from 'vue'
 import {  ElMessage  } from 'element-plus'
 const router = useRouter()
 // import axios from 'axios'
@@ -203,7 +204,7 @@ const getFloorandAddList = () => {
 // 会议室列表接口
 const isLoading=ref(false)
 const getList = () => {
-  isLoading.value=true
+  // isLoading.value=true
   // 全选按钮变为非全选
   checkAll.value=false
   // 会议室选中项改为空数组
@@ -274,7 +275,11 @@ const batchRequest = (roomList,type) => {
       // debugger
       if ( response.data.repCode == 200) {
         console.log('批量开关机操作成功:', response.data.result)
-        ElMessage.error('批量操作成功！')
+       
+        ElMessage({
+          type: 'success',
+          message: '批量操作成功'
+        })
          // 全选按钮变为非全选
         checkAll.value=false
         // 会议室选中项改为空数组
@@ -294,8 +299,8 @@ const batchRequest = (roomList,type) => {
       
     })
     .catch((error) => {
-      console.log('批量开关机操作失败:', error)
-      ElMessage.error('批量开关机操作失败！')
+      console.log('批量开,关机操作失败:', error)
+      ElMessage.error('批量操作失败！')
        // 全选按钮变为非全选
         checkAll.value=false
         // 会议室选中项改为空数组
@@ -305,9 +310,47 @@ const batchRequest = (roomList,type) => {
     
 }
 
+// 轮询刷新
+const setTimeoutZdy = (option) => {
+  setTimeout(function () {
+    console.log(1111)
+    // debugger
+    try {
+      if (typeof option.fn == 'function') {
+        option.fn()
+        if (option.isClose) {
+          return
+        }
+      }
+    } catch {}
+    setTimeoutZdy(option)
+  }, option.time || 60000)
+}
+var option = {
+  isClose: false,
+  fn: () => {
+    // 调用接口
+    getList()
+    
+  },
+  time: 60000
+}
+
 onMounted(() => {
+  // isLoading.value=true
   getList()
   getFloorandAddList()
+  
+
+  // 轮询刷新
+  setTimeoutZdy(option)
+})
+
+// 生命周期:销毁前
+onBeforeUnmount(() => {
+  
+  // 退出页面 停止轮询
+  option.isClose = true
 })
 
 // 1.查询/重置
@@ -350,6 +393,14 @@ const handleCheckedRoomsChange = (value) => {
   checkAll.value = checkedCount === rooms.value.length
   isIndeterminate.value = checkedCount > 0 && checkedCount < rooms.value.length
 }
+
+// const showCheckbox=ref(false)
+// const handleMouseOver=() =>{
+//   showCheckbox.value = true;
+// }
+// const handleMouseOut=() =>{
+//   showCheckbox.value = false;
+// }
 
 // 开机
 const openDevice=()=>{
@@ -413,6 +464,8 @@ const getmonitorList = (item) => {
   router.push('/monitor-control?roomName=' + item.roomName + '&roomID=' + item.roomID)
 }
 
+
+
 // 3.分页
 const currentPage = ref(1)
 const pageSize = ref(24)
@@ -432,6 +485,7 @@ const refresh = () => {
   //重新发请求，渲染设备列表
   getList()
 }
+
 </script>
 <style lang="less" scoped>
 .xxfb-monitorlist {
@@ -443,12 +497,14 @@ const refresh = () => {
   
   // 1. 顶部
   .top {
-    padding: 16px 0px 20px 0px;
-    height: 113px;
+    padding: 16px 0px 0px 0px;
+    // height: 113px;
     border-bottom: 1px solid rgba(239, 239, 239, 1);
     flex: none;
     & > div {
-      margin-top: 11px;
+      margin-top: 20px;
+      padding-top: 19px;
+      border-top: 1px solid rgba(239, 239, 239, 1);
     }
     :deep(.el-form) {
       .el-form-item__content {
@@ -475,6 +531,7 @@ const refresh = () => {
         padding-left: 9px;
         .el-checkbox__input{
           margin-left: 14px;
+          
         }
 
       }
@@ -521,11 +578,13 @@ const refresh = () => {
         text-align: center;
         border: 1px solid rgba(233, 233, 233, 1);
         position: relative;
-        img {
-          width: 100%;
-          height: 100%;
-        }
+        // img {
+        //   width: 100%;
+        //   height: 100%;
+        // }
         .el-image{
+          // width: 180px;
+          // height: 180px;
           width: 65%;
           height: 100%;
         }
@@ -533,7 +592,8 @@ const refresh = () => {
           position: absolute;
           top: 0;
           right: 0;
-          
+          display: none;
+         
         }
         .roomName {
           width: 100%;
@@ -548,14 +608,29 @@ const refresh = () => {
           font-family: SourceHanSansSC-regular;
           position: absolute;
           bottom: 0;
+          // display: none;
+          display: block;
         }
         
         &:hover {
           box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.2);
-          .custom_option_img1,
-          .custom_option_img2 {
-            display: inline-block;
+        
+        //   .roomName{
+        //     // display:block;
+        //   }
+          .el-checkbox{
+            display: inline-flex;
+            
           }
+        }
+        .el-checkbox.is-checked{
+          display: inline-flex;
+        }
+        &:has(.el-checkbox.is-checked){
+          box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.2);
+          // .roomName{
+          //   // display:block;
+          // }
         }
       }
     }

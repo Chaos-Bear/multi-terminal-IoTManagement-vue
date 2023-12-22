@@ -1,49 +1,37 @@
 <template>
   <div class="roomInfo">
-    <!-- 顶部 -->
-    <div class="A2_top">
-      <div
-        id="liangdu"
-        :style="
-          props.form.brightNess >= 100
-            ? 'background-color:rgba(255, 153, 89, 1);box-shadow: 0px 0px 10px 0px rgba(255, 153, 89, 1);'
-            : ''
-        "
-      ></div>
-    </div>
-    <!--一层  -->
+     <!--一层  °C %RH-->
     <div class="first" id="imageback">
       <div class="first1">
-        <span id="newdate" class="newdate">{{ time ? time : '2023年11月1日 上午8:00' }}</span>
-        <div class="title" id="room">{{ props.form.roomName || roomName }}会议室</div>
-        <div class="ch">MEETING ROOM</div>
+        <div class="first1-1">
+          <span id="newdate" class="newdate">{{ time ? time : '2023年11月1日 上午8:00' }}</span>
+          <div >
+            <div id="temp" class="temp">
+              <img src="@/assets/xxfb/pubPage/temp.png">
+              <span>{{ props.form.roomTemp ? props.form.roomTemp : '21.6' }}°C</span>
+            </div>
+            <div id="shidu" class="shidu">
+              <img src="@/assets/xxfb/pubPage/shidu.png">
+              <span>{{ props.form.roomHum ? props.form.roomHum : '30.7' }}%</span>
+            </div>
+          </div>
+        </div>
+        <div class="first1-2" id="room">{{ props.form.roomName || roomName }}</div>
+        
       </div>
       <div class="first2">
         <div class="first2-1">
-          <div>
-            <!-- °C -->
-            <div id="temp">
-              <span>{{ props.form.roomTemp ? props.form.roomTemp : '21.6' }}</span>
-              <span style="font-size:20px"> °C </span>
-            </div>
-            <span>温度</span>
-          </div>
-          <div>
-            <div id="shidu">
-              <span>{{ props.form.roomHum ? props.form.roomHum : '30.7' }}</span>
-              <span style="font-size:20px"> %RH </span>
-            </div>
-            <span>湿度</span>
-          </div>
+          <div class="ch">会议室</div>
+          <span>Meeting Room</span>
         </div>
         <div class="first2-2"></div>
         <div class="first2-3">
-          <!-- <div id="status">空闲中</div> -->
           <div id="status">{{ props.form.meetStatus == 1 ? '使用中' : '空闲中' }}</div>
-          <span>状态</span>
+          <span>{{ props.form.meetStatus == 1 ? 'Occupied' : 'Unused' }}</span>
         </div>
       </div>
     </div>
+    
     <!-- 二层 -->
     <div class="second" id="second">
       <!-- 1.有会议 -->
@@ -433,7 +421,7 @@
         >
           <el-carousel-item v-for="(item, i) in props.form.mediaAreaList" :key="i">
             <img v-if="item.obsFileType == '1'" :src="item.url" />
-            
+            <!-- :src="item.url" -->
             <video
               v-else
               :src="item.url"
@@ -577,20 +565,16 @@ section {
   // width: 704px;
   /*height: 1272px;*/
   // height: 1285px;
-  // width: 100%;
+  width: 100%;
   height: 1280px;
   margin: 0 auto;
   background-color: rgba(44, 105, 101, 1);
-  // zoom: 0.53;
+  zoom: 0.53;
   // zoom: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  
-  width: 835.85px;
-  transform: scale(0.53);
-  transform-origin: left top;
 }
 
 .roomInfo .A2_top {
@@ -614,127 +598,112 @@ section {
 
 .roomInfo .first {
   width: 688px;
-  height: 425px;
-  margin: 0px 10px 10px 10px;
+  height: 454px;
+  margin: 10px 10px 10px 10px;
   background-size: 100% 100%;
   background-image: url(@/assets/xxfb/bk.png);
   background-repeat: no-repeat;
-}
 
-.roomInfo .first .first1 {
-  width: 100%;
-  height: 236px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-}
+  .first1 {
+    width: 100%;
+    height: 284px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-.roomInfo .first .first1 .newdate {
-  height: 36px;
-  padding-top: 6px;
-  margin-left: 396px;
-  opacity: 0.8;
-  color: rgba(255, 255, 255, 1);
-  font-size: 24px;
-  text-align: left;
-  font-family: SourceHanSansSC-regular;
-}
+    .first1-1{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
 
-.roomInfo .first .first1 .title {
-  /*width: 333px;*/
-  height: 70px;
-  margin-top: 12px;
-  margin-left: 34px;
-  color: rgba(255, 255, 255, 1);
-  font-size: 48px;
-  font-weight: 800;
-  text-align: left;
-  font-family: SourceHanSansSC-black;
-}
+      .newdate {
+        height: 36px;
+        line-height: 36px;
+        margin-top: 12px;
+        margin-left: 21px;
+        opacity: 0.8;
+        color:  rgba(255, 255, 255, 1);
+        font-size: 30px;
+        text-align: left;
+        font-family: SourceHanSansSC-regular;
+      }
+      &>div:nth-child(2){
+        margin-top: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .temp,.shidu{
+          margin-right: 20px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          img{
+            width: 28px;
+            height: 28px;
+          }
+          span{
+            height: 44px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 30px;
+            text-align: left;
+            font-family: SourceHanSansSC-regular;
+          }
+        }
+      }
+  }
 
-.roomInfo .first .first1 .ch {
-  width: 368px;
-  height: 56px;
-  margin-top: 14px;
-  margin-left: 30px;
-  color: rgba(255, 255, 255, 0.1);
-  font-size: 43px;
-  font-weight: 800;
-  text-align: left;
-  font-family: SourceHanSansSC-black;
-}
+  .first1-2{
+      /*width: 333px;*/
+      height: 232px;
+      line-height: 232px;
+      // margin-top: 12px;
+      // margin-left: 34px;
+      color: rgba(255, 255, 255, 1);
+      font-size: 120px;
+      text-align: center;
+      font-family: Arial-regular;
 
-.roomInfo .first .first2 {
-  width: 100%;
-  height: 188px;
-  display: flex;
-  justify-content: center;
-}
+  }
+  }
 
-.roomInfo .first .first2 > div {
-  width: 50%;
-  height: 158px;
-  text-align: center;
-}
-
-.roomInfo .first .first2 > .first2-1 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-
-}
-
-.roomInfo .first .first2 > .first2-1 > div {
-  text-align: center;
-  width: 160px;
-}
-// .roomInfo .first .first2 > .first2-1 > div > div {
-//   line-height: 70px;
-//   margin-top: 34px;
-//   margin-bottom: 14px;
-//   color: rgba(255, 255, 255, 1);
-//   font-size: 48px;
-//   font-weight: 800;
-//   text-align: center;
-//   font-family: SourceHanSansSC-black;
-// }
-.roomInfo .first .first2 > .first2-1 > div > div {
-  line-height: 70px;
-  margin-top: 34px;
-  span:nth-child(1){
-    color: rgba(255, 255, 255, 1);
-    font-size: 48px;
-    font-weight: 800;
-    text-align: center;
-    font-family: SourceHanSansSC-black;
+  .first2 {
+    width: 100%;
+    height: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .first2-1,.first2-3 {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      div {
+        height: 70px;
+        margin-bottom: 10px;
+        color: rgba(255, 255, 255, 1);
+        font-size: 48px;
+        text-align: center;
+        font-family: SourceHanSansSC-regular;
+      }
+      span {
+        height: 35px;
+        color: rgba(255, 255, 255, 1);
+        font-size: 24px;
+        text-align: center;
+        font-family: SourceHanSansSC-regular;
+      }
+    }
+    
+    .first2-2 {
+      width: 1px;
+      height: 170px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+    }
   }
 }
 
-
-.roomInfo .first .first2 .first2-2 {
-  width: 1px;
-  height: 100px;
-  margin-top: 50px;
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.roomInfo .first .first2 > .first2-3 > div {
-  line-height: 70px;
-  margin-top: 34px;
-  margin-bottom: 14px;
-  color: rgba(255, 255, 255, 1);
-  font-size: 48px;
-  font-weight: 800;
-  text-align: center;
-  font-family: SourceHanSansSC-black;
-}
-
-.roomInfo .first .first2 span {
-  width: 56px;
-  height: 41px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 28px;
-  text-align: center;
-  font-family: SourceHanSansSC-medium;
-}
 
 .roomInfo .second {
   width: 688px;
