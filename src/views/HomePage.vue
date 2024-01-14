@@ -19,16 +19,16 @@
           <a href="/iot-client/#/callService" target="__blank">
             <img src="@/assets/home/3.png" />
           </a> -->
-          <!-- <a href="/#/callService" target="__blank">
+        <!-- <a href="/#/callService" target="__blank">
             <img src="@/assets/home/3.png" />
           </a> -->
-          <!-- <div>呼叫服务</div>
+        <!-- <div>呼叫服务</div>
         </div> -->
         <!-- <div class="item">
           <a href="/iot-client/#/tablet" target="_blank">
             <img src="@/assets/home/2.png" />
           </a> -->
-          <!-- <a href="/#/tablet" target="_blank">
+        <!-- <a href="/#/tablet" target="_blank">
             <img src="@/assets/home/2.png" />
           </a> -->
           <!-- <div>平板借还</div>
@@ -53,8 +53,7 @@
         </div>
       </div>
       <div>
-         <el-button  style="float: right; margin-left: 10px" @click="returnHome">返回</el-button>
-        
+        <el-button style="float: right; margin-left: 10px" @click="returnHome">返回</el-button>
       </div>
     </div>
     <!-- 2. 头部 -->
@@ -122,12 +121,16 @@
     </div>
     <!-- 3.会议室列表 -->
     <div class="tableBox">
-      <el-scrollbar height="100%" v-loading='isloading'>
-        <div class="meetingList" v-if="meetingList.length > 0" >
+      <el-scrollbar height="100%" v-loading="isloading">
+        <div class="meetingList" v-if="meetingList.length > 0">
           <div v-for="(item, index) in meetingList" :key="index" class="meetingroom">
             <!-- <img src="@/assets/index/1.png" @click="router.push('/meetingUserList?id='+item.id+'&name='+item.name)"/> -->
-            <el-image :src="'data:image/jpg;base64,' + item.roomImg" :key="'data:image/jpg;base64,' + item.roomImg"
-              @click="gotoMeetingUserList(item)"  lazy />
+            <el-image
+              :src="'data:image/jpg;base64,' + item.roomImg"
+              :key="'data:image/jpg;base64,' + item.roomImg"
+              @click="gotoMeetingUserList(item)"
+              lazy
+            />
             <div>
               <div>
                 <div class="roomName">{{ item.roomName }}会议室</div>
@@ -255,18 +258,17 @@
         </el-form>
       </el-dialog>
     </div>
-
   </div>
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
 import { reactive, ref, onMounted, nextTick } from 'vue'
-import { ElMessage,ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Delete } from '@element-plus/icons-vue'
 const router = useRouter()
 // import axios from 'axios'
 
-import {releaseRequest } from '@/utils/server.js'
+import { releaseRequest } from '@/utils/server.js'
 
 // 会议室配置信息
 var floorOptions = ref([])
@@ -291,9 +293,9 @@ const getFloorandAddList = () => {
     })
 }
 // 会议室列表接口
-const isloading=ref(false)
+const isloading = ref(false)
 const getList = () => {
-  isloading.value=true
+  isloading.value = true
   releaseRequest
     .post('/IOTRoomCrtl/queryIotRoomList', {
       floor: searchform.floor,
@@ -316,8 +318,8 @@ const getList = () => {
     .catch((error) => {
       console.log('会议室列表查询失败:', error)
     })
-    .finally(()=>{
-      isloading.value=false
+    .finally(() => {
+      isloading.value = false
     })
 }
 onMounted(() => {
@@ -346,15 +348,15 @@ const postList = () => {
     })
     .then((res) => {
       console.log('会议室新增列表成功:', res.data)
-      
+
       createFormClose()
       isLocked.value = false
       //debugger
       getList()
 
-       ElMessage({
+      ElMessage({
         message: '新增成功',
-        type: 'success',
+        type: 'success'
       })
     })
     .catch((error) => {
@@ -372,7 +374,7 @@ const deleteList = () => {
     .then((res) => {
       console.log('删除会议室列表成功:', res.data)
       console.log('删除id:', roomID.value)
-      
+
       getList()
       ElMessage({
         type: 'success',
@@ -403,15 +405,13 @@ const deleteList = () => {
 //        url:"/tablet"
 //     },
 // ]
-const tips=()=>{
+const tips = () => {
   ElMessage({
     // showClose: true,
     message: '功能完善中...',
-    type: 'warning',
+    type: 'warning'
   })
 }
-
-
 
 // 2.查询/新增/重置
 const queryFormRef = ref()
@@ -439,12 +439,12 @@ const resetQuery = () => {
 // const isshow=ref(true)
 // isshow.value=window.top?true:false
 const returnHome = () => {
-  if(window.top && window.top.document.getElementsByTagName('iframe').length>0){
-     window.top.document.getElementsByTagName('iframe')[0].src='/meeting-appoint-web/#/conference-room-manage'
-  }else{
+  if (window.top && window.top.document.getElementsByTagName('iframe').length > 0) {
+    window.top.document.getElementsByTagName('iframe')[0].src =
+      '/meeting-appoint-web/#/conference-room-manage'
+  } else {
     return
   }
-  
 }
 // 新增
 const createForm = reactive({
@@ -491,7 +491,6 @@ const beforeAvatarUpload = (rawFile) => {
   createForm.img = rawFile.raw
   return true
 }
-
 
 const del = () => {
   imageUrl.value = ''
@@ -674,9 +673,9 @@ const saveMeetingModify = () => {
           createFormClose()
           //debugger
           getList()
-           ElMessage({
+          ElMessage({
             message: '修改成功',
-            type: 'success',
+            type: 'success'
           })
         })
         .catch((error) => {
@@ -692,25 +691,22 @@ const saveMeetingModify = () => {
 const deleteMeeting = (v) => {
   // debugger
   // 删除时，需先删除当前会议室下的项目和页面
-  if(v.roomClassNum || v.roomContNum){
+  if (v.roomClassNum || v.roomContNum) {
     //  ElMessage.error('删除失败，请先删除当前会议室下的所有页面！')
     ElMessageBox.confirm('删除失败，请先删除当前会议室下的所有页面！', '删除', {
-      cancelButtonClass:'ExitCancelBtn',
+      cancelButtonClass: 'ExitCancelBtn',
       confirmButtonText: '确定',
       type: 'error',
       customClass: 'blue-button' // 应用自定义样式类
-    }).then(() => {
-     
     })
-    .catch(() => {
-      
-    })
+      .then(() => {})
+      .catch(() => {})
     return
   }
   roomID.value = v.roomID
   console.log('删除一条会议信息', v.roomName)
   ElMessageBox.confirm('确定删除当前选中会议室？', '删除', {
-    cancelButtonClass:'ExitCancelBtn',
+    cancelButtonClass: 'ExitCancelBtn',
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
@@ -750,7 +746,6 @@ const refresh = () => {
 </script>
 
 <style lang="less" scoped>
-
 .home {
   margin: 0;
   height: 100%;
@@ -764,7 +759,7 @@ const refresh = () => {
     justify-content: space-between;
     align-items: center;
     flex: none;
-    &>div:nth-child(1){
+    & > div:nth-child(1) {
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -793,8 +788,8 @@ const refresh = () => {
           font-family: SourceHanSansSC-regular;
         }
       }
-    } 
-    &>div:nth-child(2){
+    }
+    & > div:nth-child(2) {
       margin-top: -20px;
     }
   }
@@ -866,7 +861,7 @@ const refresh = () => {
         background-color: rgba(255, 255, 255, 1);
         text-align: center;
         border: 1px solid rgba(233, 233, 233, 1);
-        
+
         & > div {
           height: 123px;
           display: flex;
@@ -879,10 +874,10 @@ const refresh = () => {
             display: flex;
             justify-content: space-between;
             align-items: center;
-              img {
-                width: 100%;
-                height: 123px;
-              }
+            img {
+              width: 100%;
+              height: 123px;
+            }
 
             & > div:nth-child(2) {
               width: 28px;
@@ -896,7 +891,7 @@ const refresh = () => {
           }
         }
         // 会议室及项目
-        & > div:nth-child(2){
+        & > div:nth-child(2) {
           height: 90px;
           .roomName {
             width: 130px;
@@ -1062,50 +1057,44 @@ const refresh = () => {
 }
 
 //新增/编辑弹窗
-  :deep(.el-dialog) {
-    .el-dialog__body {
-      border-top: 1px solid rgba(239, 239, 239, 1);
+:deep(.el-dialog) {
+  .el-dialog__body {
+    border-top: 1px solid rgba(239, 239, 239, 1);
 
-      .el-form {
-        .el-form-item:last-child{
-          .el-form-item__content {
-            margin-left: 152px!important;
-          }
+    .el-form {
+      .el-form-item:last-child {
+        .el-form-item__content {
+          margin-left: 152px !important;
         }
       }
     }
   }
-
-
+}
 </style>
 
-<style lang='less'>
+<style lang="less">
 /* 删除弹框确定与取消按钮居中 */
-.ExitCancelBtn{
-    margin-left: 10px!important;
+.ExitCancelBtn {
+  margin-left: 10px !important;
 }
 
 .el-message-box {
-  .el-message-box__content{
-  border-top: 1px solid rgba(239, 239, 239, 1);
+  .el-message-box__content {
+    border-top: 1px solid rgba(239, 239, 239, 1);
   }
-  .el-message-box__btns{
+  .el-message-box__btns {
     /* flex-direction: row-reverse !important; */
     justify-content: center !important;
   }
 }
-
-
 
 .blue-button .el-button--primary {
   background-color: rgba(79, 168, 249, 1);
   outline: 0;
   // background-color: red;
 }
-.blue-button .el-button--primary:focus{
-    
-    background-color: rgba(79, 168, 249, 1);
-    outline: 0;
-
+.blue-button .el-button--primary:focus {
+  background-color: rgba(79, 168, 249, 1);
+  outline: 0;
 }
 </style>

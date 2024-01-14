@@ -4,7 +4,7 @@
     <div class="searchInfo">
       <el-form :model="form">
         <el-form-item label="设备名称">
-          <el-input v-model="form.tabletName" placeholder="请输入设备名称" />
+          <el-input v-model="form.tabletName" placeholder="请输入设备名称" maxlength="50"/>
         </el-form-item>
 
         <el-form-item label="设备状态">
@@ -122,7 +122,7 @@
       <el-dialog v-model="createdialogFormVisible" title="新增">
         <el-form :model="createForm" ref="createFormRef" :rules="createFormRules">
           <el-form-item label="设备名称" :label-width="formLabelWidth" prop="tabletName">
-            <el-input v-model="createForm.tabletName" autocomplete="off" />
+            <el-input v-model="createForm.tabletName" autocomplete="off" maxlength="50"/>
           </el-form-item>
           <el-form-item label="设备序列号" :label-width="formLabelWidth" prop="tabletID">
             <el-input v-model="createForm.tabletID" autocomplete="off" />
@@ -131,10 +131,10 @@
             <el-input v-model="createForm.tabletIP" autocomplete="off" />
           </el-form-item>
           <el-form-item label="品牌" :label-width="formLabelWidth" prop="tabletBrand">
-            <el-input v-model="createForm.tabletBrand" autocomplete="off" />
+            <el-input v-model="createForm.tabletBrand" autocomplete="off" maxlength="50"/>
           </el-form-item>
           <el-form-item label="型号" :label-width="formLabelWidth" prop="tabletModel">
-            <el-input v-model="createForm.tabletModel" autocomplete="off" />
+            <el-input v-model="createForm.tabletModel" autocomplete="off" maxlength="50"/>
           </el-form-item>
           <el-form-item label="端口号" :label-width="formLabelWidth" prop="tabletPort">
             <el-input v-model="createForm.tabletPort" autocomplete="off" />
@@ -173,7 +173,7 @@
       <el-dialog v-model="editdialogFormVisible" title="编辑">
         <el-form :model="editForm" ref="editFormRef" :rules="editFormRules">
           <el-form-item label="设备名称" :label-width="formLabelWidth" prop="tabletName">
-            <el-input v-model="editForm.tabletName" autocomplete="off" />
+            <el-input v-model="editForm.tabletName" autocomplete="off" maxlength="50"/>
           </el-form-item>
           <el-form-item label="设备序列号" :label-width="formLabelWidth" prop="tabletID">
             <el-input v-model="editForm.tabletID" autocomplete="off" readonly />
@@ -182,10 +182,10 @@
             <el-input v-model="editForm.tabletIP" autocomplete="off" />
           </el-form-item>
           <el-form-item label="品牌" :label-width="formLabelWidth" prop="tabletBrand">
-            <el-input v-model="editForm.tabletBrand" autocomplete="off" />
+            <el-input v-model="editForm.tabletBrand" autocomplete="off" maxlength="50"/>
           </el-form-item>
           <el-form-item label="型号" :label-width="formLabelWidth" prop="tabletModel">
-            <el-input v-model="editForm.tabletModel" autocomplete="off" />
+            <el-input v-model="editForm.tabletModel" autocomplete="off" maxlength="50"/>
           </el-form-item>
           <el-form-item label="端口号" :label-width="formLabelWidth" prop="tabletPort">
             <el-input v-model="editForm.tabletPort" autocomplete="off" />
@@ -215,11 +215,11 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref, onMounted} from 'vue'
-import {  } from 'vue-router'
+import { reactive, ref, onMounted } from 'vue'
+import {} from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
-import {tabletRequest } from '@/utils/server.js'
+import { tabletRequest } from '@/utils/server.js'
 
 const table = ref(null)
 // 1.平板管理列表查询接口

@@ -316,7 +316,7 @@
 </template>
 
 <script setup>
-import { nextTick,  onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { ChatDotRound, Search } from '@element-plus/icons-vue'
 // import { ElMessage } from 'element-plus'
 
@@ -704,7 +704,7 @@ var isLocked = true
 //--------创建右侧websocket对象------***
 var ws1 = createWebSocket(wsbaseURL12 + '/websocket/' + userId.value, {
   onopen(e) {
-    console.log('建立了ws1连接',ws1,e)
+    console.log('建立了ws1连接', ws1, e)
   },
   onmessage(e) {
     // console.log('接收ws1服务器消息:', e)
@@ -745,7 +745,6 @@ var ws1 = createWebSocket(wsbaseURL12 + '/websocket/' + userId.value, {
   onreconnect(ws) {
     ws1 = ws
   }
-  
 })
 
 // 3.右侧楼层

@@ -84,6 +84,7 @@ const router = createRouter({
       name: 'Xxfb',
       component: () => import('../views/xxfb/EditPage.vue')
     },
+
     {
       path: '/monitor-control',
       name: 'MonitorControl',
@@ -93,11 +94,7 @@ const router = createRouter({
       path: '/pub',
       component: () => import('../views/xxfb/PubPage.vue')
     },
-    // 热烈欢迎模板
-    // {
-    //   path: '/pub-three',
-    //   component: () => import('../views/xxfb/PubPage3.vue')
-    // },
+  
     {
       path: '/xxfb-monitorlist',
       name: 'XxfbMonitorlist',

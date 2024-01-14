@@ -1,18 +1,8 @@
 <template>
   <div class="edit">
-    <template v-if="form.releaseTempl && form.releaseTempl.templName">
-      <Prepub v-if="form.releaseTempl.templName == 'STYLE_1'" :form="form" ref="prePubRef"></Prepub>
-      <Prepub2
-        v-else-if="form.releaseTempl.templName == 'STYLE_2'"
-        :form="form"
-        ref="prePubRef"
-      ></Prepub2>
-      <Prepub3
-        v-else-if="form.releaseTempl.templName == 'STYLE_3'"
-        :form="form"
-        ref="prePubRef"
-      ></Prepub3>
-    </template>
+    <Prepub :form="form" ref="prePubRef"></Prepub>
+    <Prepub2 :form="form" ref="prePubRef"></Prepub2>
+    <Prepub3 :form="form" ref="prePubRef"></Prepub3>
   </div>
 </template>
 
@@ -22,24 +12,24 @@ import Prepub2 from '@/components/xxfb/PrePub2.vue'
 import Prepub3 from '@/components/xxfb/PrePub3.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
-import {ElMessage} from 'element-plus'
+import {} from 'element-plus'
 const route = useRoute()
-import { pubRequest,udsRequest } from '@/utils/server.js'
+import { pubRequest } from '@/utils/server.js'
 import { createWebSocket } from '@/utils/websocket.js'
 var wsbaseURL13 = import.meta.env.VITE_BASE_URL13
 
-import localforage from 'localforage/src/localforage.js'
-
+import localforage from "localforage/src/localforage.js"
 import Cookies from 'js-cookie'
 // Cookies.set(
 //   'Authorization',
 //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGktbGlzdC11cmwiOlsiXi9kZnMtdWkvLioiLCJeL2hyLW9yZy1zZXJ2aWNlL29yZ1ByZXZpZXcvcXVlcnlTeXNPcmdMaXN0LioiLCJeL2hyLW9yZy1zZXJ2aWNlL3N5c1VzZXIvZ2V0UGFnZUxpc3QuKiIsIl4vaHItb3JnLXNlcnZpY2Uvc3lzVXNlci9xdWVyeUVtcC4qIiwiXi9haS1nYXRlLXBvcnRhbC1zZXJ2aWNlL2dhdGUtcG9ydGFsL2ZlYXR1cmVDb21wYXJlLioiLCJeL2FpLWdhdGUtcG9ydGFsLXNlcnZpY2UvZ2F0ZS1wb3J0YWwvYWRkRmVhdHVyZS4qIiwiXi9oci1hdHRlbmRhbmNlLXNlcnZpY2UvYXR0ZW5kQ29udHJvbGxlci9zaWduaW4uKiIsIl4vYWktZ2F0ZS1wb3J0YWwtc2VydmljZS9tZXJnZWQtZ2F0ZS1wb3J0YWwvLioiLCJeL3lkeXktcXJjb2RlLXNlcnZpY2UvcXJjb2RlL2NyZWF0ZVFyY29kZS4qIl0sImV4cCI6MTcwMzcyNDQ2MSwidXNlcl9uYW1lIjoidXNlcl9tdWx0aXBvcnRfcGxhdDIiLCJqdGkiOiIzZWIwOTA3OS05MTIzLTQxOWMtYjhlZS01Y2FlNjA1MDhlYWYiLCJjbGllbnRfaWQiOiJjbGllbnRfbXVsdGlwb3J0X3BsYXQiLCJzY29wZSI6WyJzZWxlY3QiXX0.ktdaG4rtsMuh0TX1gWSwVFLBi0HDEvajxiO-dcaA_sU'
 // )
 const cookie = Cookies.get('Authorization')
-// console.log(cookie)
+console.log(cookie)
 
 const roomName = route.query.roomName
 // const roomId = route.query.roomID
+
 
 const prePubRef = ref('')
 // const data = ref('')
@@ -61,31 +51,27 @@ const updateMedia = (releaseCache) => {
       imgShow: releaseCache.imgShow,
       dataSource: releaseCache.dataSource,
       mtAreaList: releaseCache.mtAreaList,
-      mediaAreaList: releaseCache.mediaAreaList,
-      releaseTempl: {
-        templName: releaseCache.releaseTempl.templName,
-        templVerion: releaseCache.releaseTempl.templVerion
-      }
+      mediaAreaList: releaseCache.mediaAreaList
     })
     .then((res) => {
+      
       if (res.data.repCode == 200) {
         console.log('下载图片/视频成功:')
-
-        for (let i = 0; i < res.data.result.mediaAreaList.length; i++) {
+        
+        for (let i = 0; i <res.data.result.mediaAreaList.length; i++) {
           if (res.data.result.mediaAreaList[i].obsFileType == 2) {
-            res.data.result.mediaAreaList[i].base64 = ''
+            res.data.result.mediaAreaList[i].base64=''
 
-            res.data.result.mediaAreaList[i].domID =
-              'domID' + res.data.result.mediaAreaList[i].obsFileID
-
+            res.data.result.mediaAreaList[i].domID='domID'+res.data.result.mediaAreaList[i].obsFileID
+            
             // 视频下载
             // debugger
-            downLoadVideo(res.data.result.mediaAreaList[i], i)
+            downLoadVideo(res.data.result.mediaAreaList[i],i)
           }
         }
-
+        
         form.value = res.data.result
-
+        // debugger
         //刷新缓存
         releaseInfoCache.value = res.data.result
       }
@@ -95,16 +81,94 @@ const updateMedia = (releaseCache) => {
     })
 }
 
-const form = ref({
-  releaseTempl: { templName: 'STYLE_2', templVerion: 2 }
-})
+// const from=({
+// {
+//   publishTime: '10:00~23:00',
+//   publishStatus: '1',
+//   roomID: '8186847552438272',
+//   roomName: 'A2-226',
+//   meetID: '670413063993503744',
+//   meetName: '11.13日测试会议',
+//   roomTemp: null,
+//   roomHum: null,
+//   meetStatus: '1',
+//   showStartTime: '2023-11-13T02:00:00.000+0000',
+//   showEndTime: '2023-11-13T14:00:00.000+0000',
+//   startTime: '2023-11-13 10:00:00',
+//   endTime: '2023-11-13 22:00:00',
+//   imgShow: '1',
+//   brightNess: 0,
+//   playGap: 5000,
+//   mtAreaList: [
+//     {
+//       roomID: '8186847552438272',
+//       meetID: '670413063993503744',
+//       textLocat: '标题',
+//       textConent: '11.13日测试会议',
+//       fontSize: 48,
+//       textColor: 'rgba(208, 178, 178, 0.8)',
+//       textVgt: '100%',
+//       showLocat: 'center',
+//       showOrder: 1,
+//       syncStatus: 1,
+//       isShow: '1',
+//       startTime: null,
+//       endTime: null
+//     },
+//     {
+//       roomID: '8186847552438272',
+//       meetID: '670413063993503744',
+//       textLocat: '时间',
+//       textConent: '10:00~23:00',
+//       fontSize: 34,
+//       textColor: 'rgba(219, 79, 79, 0.8)',
+//       textVgt: '100%',
+//       showLocat: 'center',
+//       showOrder: 2,
+//       syncStatus: 1,
+//       isShow: '1',
+//       startTime: null,
+//       endTime: null
+//     },
+//     {
+//       roomID: '8186847552438272',
+//       meetID: '670413063993503744',
+//       textLocat: '主办方',
+//       textConent: '信息系统信息通讯分公司',
+//       fontSize: 34,
+//       textColor: 'rgba(255, 255, 255, 0.8)',
+//       textVgt: '100%',
+//       showLocat: 'center',
+//       showOrder: 3,
+//       syncStatus: 1,
+//       isShow: '1',
+//       startTime: null,
+//       endTime: null
+//     }
+//   ],
+//   mediaAreaList: [
+//     {
+//       name: 'food.jpeg',
+//       url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+//       type: 'img'
+//     },
+//     {
+//       name: 'cat.mp4',
+//       // url: '@/assets/xxfb/cat.mp4',
+//       // url: 'http://39.105.179.38:9797/noderad/cat.mp4',
+//       url:'file:///C:/Users/55462/Downloads/cat%20(7).mp4',
+//       type: 'video',
+//       domId:"xy"
+//     }
+//   ]
+// }
+// )
 
-onMounted(() => {
-  
-  
-})
+const form = ref()
+
+onMounted(() => {})
 onBeforeUnmount(() => {
-  // localStorage.removeItem(roomName)
+  localStorage.removeItem(roomName)
 })
 // 缓存 记录初始图片数组
 const releaseInfoCache = ref()
@@ -128,8 +192,12 @@ if (ipValue == null) {
         if (data.repCode == 200) {
           if (releaseInfoCache.value == undefined) {
             // 缓存为空，直接赋值
+            
+            
             releaseInfoCache.value = data.result
             updateMedia(releaseInfoCache.value)
+             
+            
             return
           } else {
             var dataRelease = data.result
@@ -157,7 +225,6 @@ if (ipValue == null) {
 
             let setLength = intersection.length
             // 图片减少情况
-
             if (cacheLength != setLength) {
               updateMedia(dataRelease)
               console.log(intersection) // 输出: [3, 4, 5]
@@ -182,8 +249,6 @@ if (ipValue == null) {
             form.value.dataSource = dataRelease.dataSource
             form.value.playGap = dataRelease.playGap
             form.value.mtAreaList = dataRelease.mtAreaList
-
-            form.value.releaseTempl = dataRelease.releaseTempl
           }
         }
       }
@@ -198,23 +263,23 @@ if (ipValue == null) {
   // }
 }
 
-// 3.视频下载接口udsRequest
-const downLoadVideo = (item, i) => {
+// 视频下载接口udsRequest
+const downLoadVideo = (item,i) => {
   // 使用.then/.catch
   let videoUrl
-  // debugger
-  localforage
-    .getItem(item.obsFileID)
-    .then((value) => {
-      if (value && value.video && value.video.size>100) {
-        console.log('拉取本地数据流：', value)
-        videoUrl = URL.createObjectURL(value.video)
+    // debugger
+    localforage.getItem(item.obsFileID)
+    .then(value => {
+      if(value){
+        console.log('拉取本地数据流：', value);
+        videoUrl = URL.createObjectURL(value)
         item.base64 = videoUrl
 
-        form.value.mediaAreaList[i].base64 = videoUrl
-        form.value.mediaAreaList = JSON.parse(JSON.stringify(form.value.mediaAreaList))
+        form.value.mediaAreaList[i].base64=videoUrl
+        form.value.mediaAreaList=JSON.parse(JSON.stringify(form.value.mediaAreaList))
 
-      } else {
+        return
+      } else{
         fetch(
           '/dfs-ui/dfs/v2/file/download?inputId=' +
             item.obsFileID +
@@ -234,63 +299,27 @@ const downLoadVideo = (item, i) => {
             //获取文件格式
             // let blob = new Blob([res]);
             const videoUrl = URL.createObjectURL(res)
-            console.log('拉取uds数据流', videoUrl)
+            console.log('拉取uds数据流',videoUrl)
             item.base64 = videoUrl
+            
+            form.value.mediaAreaList[i].base64=videoUrl
+            form.value.mediaAreaList=JSON.parse(JSON.stringify(form.value.mediaAreaList))
 
-            form.value.mediaAreaList[i].base64 = videoUrl
-            form.value.mediaAreaList = JSON.parse(JSON.stringify(form.value.mediaAreaList))
-
-            localforage.keys().then(async function(keys) {
-                if(keys.length>=5){
-                  
-                   let min
-                   let key
-                   for(let i=0;i<keys.length;i++){
-                      let result=await localforage.getItem(keys[i])
-                      if(min){
-                        if(result.timeStamp<min.timeStamp){
-                          key=keys[i]
-                          min=result
-                        }
-                      }else{
-                        key=keys[i]
-                        min=result
-                      }
-                  }
-                  localforage.removeItem(key).then(function() {
-                    localforage
-                      .setItem(item.obsFileID, {video:res,timeStamp:(new Date()).getTime()})
-                      .then(()=>{
-                        console.log('数据流存储到本地成功')
-                      })
-                      .catch(()=>{
-                          
-                      })
-                  }).catch(function(err) {
-                      console.log(err);
-                  });
-                  
-                }else{
-                  
-                   localforage
-                    .setItem(item.obsFileID, {video:res,timeStamp:(new Date()).getTime()})
-                    .then(()=>{
-                      console.log('数据流存储到本地成功')
-                    })
-                    .catch(()=>{
-                        
-                    })
-                }
-            }).catch(function(err) {
-                console.log(err);
-            });
+            localforage.setItem(item.obsFileID, res).then(
+              // console.log('数据流存储到本地成功')
+            );
+            
           })
-          .finally(() => {})
-      }
+          .finally(()=>{
+            
+          })
+        }
+      
     })
-    .catch((error) => {
-      console.error('拉取本地数据流失败', error)
-    })
+    .catch(error => {
+      console.error('拉取本地数据流失败', error);
+      
+    });
 }
 
 
@@ -299,8 +328,5 @@ const downLoadVideo = (item, i) => {
 <style lang="less" scoped>
 .edit {
   // background-color:rgba(255, 255, 255, 1);
-  /* 隐藏鼠标指针 */
-  cursor: none;
-  
 }
 </style>

@@ -316,24 +316,22 @@
         </div>
       </div>
       <!-- 横向标识 -->
-      <div v-if="getzbdStyle" class="arrowPoint" id="zuobiao" :style="getzbdStyle" >
-        <span style="opacity:0">左</span>
+      <div v-if="getzbdStyle" class="arrowPoint" id="zuobiao" :style="getzbdStyle">
+        <span style="opacity: 0">左</span>
         <img src="@/assets/xxfb/path/left.png" />
         <div>
           <img id="zuobiaodian" src="@/assets/xxfb/path/zhishi.png" />
         </div>
         <img src="@/assets/xxfb/path/right.png" />
-        <span style="opacity:0">右</span>
+        <span style="opacity: 0">右</span>
       </div>
       <!-- 竖向标识 -->
       <div v-if="getzbdStyleshu" class="arrowPointshu" id="zuobiao" :style="getzbdStyleshu">
-        
         <img src="@/assets/xxfb/path/up.png" />
         <div>
           <img id="zuobiaodian" src="@/assets/xxfb/path/huoti.png" />
         </div>
         <img src="@/assets/xxfb/path/down.png" />
-       
       </div>
     </div>
     <div class="div3">
@@ -415,7 +413,7 @@ const getzbdStyle = computed(() => {
   }
 })
 
-const getzbdStyleshu=computed(()=>{
+const getzbdStyleshu = computed(() => {
   // 竖反：204、205、215、216、222、223
 
   if (props.roomName == 'A2-204') {
@@ -430,7 +428,7 @@ const getzbdStyleshu=computed(()=>{
       top: '400px'
     }
   }
-  
+
   if (props.roomName == 'A2-215') {
     return {
       left: '1095px',
@@ -455,8 +453,6 @@ const getzbdStyleshu=computed(()=>{
       top: '312px'
     }
   }
-  
-
 
   // 竖正
   if (props.roomName == 'A2-227') {
@@ -485,8 +481,8 @@ const getzbdStyleshu=computed(()=>{
   }
   if (props.roomName == 'A2-220') {
     return {
-      left: "1478px",
-      top: "398px",
+      left: '1478px',
+      top: '398px'
     }
   }
   if (props.roomName == 'A2-221') {
@@ -525,10 +521,7 @@ const getzbdStyleshu=computed(()=>{
       top: '477px'
     }
   }
- 
-
 })
-
 
 // 声明会议室坐标点
 var CoordPoint = {
@@ -1183,7 +1176,6 @@ function start_end(xy, end) {
 
   // var length = $(".line").length;
   if ($('.line').length == 1) {
-    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1230,7 +1222,6 @@ function start_end(xy, end) {
       // $("body").attr("timeout-scale", scaletimeout);
     })
   } else if ($('.line').length == 2) {
-    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1279,7 +1270,6 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 3) {
-    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1330,7 +1320,6 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 4) {
-    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1384,7 +1373,6 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 5) {
-    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -2680,7 +2668,6 @@ div {
   margin-right: 10px;
 }
 
-
 // 竖向
 .div2 .arrowPointshu {
   width: 40px;
@@ -2703,16 +2690,13 @@ div {
   vertical-align: middle;
 }
 
-.div2 .arrowPointshu > div{
- 
+.div2 .arrowPointshu > div {
   img {
     width: 44px;
     height: 44px;
     // margin-top: -16px;
   }
-} 
-
-
+}
 
 /* 起点的激活样式 */
 .active-startA2228 {
@@ -2748,6 +2732,4 @@ div {
   background-color: rgba(255, 145, 0, 1) !important;
   font-size: 30px;
 }
-
-
 </style>

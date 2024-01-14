@@ -48,7 +48,17 @@
                     A2-208
                   </div>
                   <!-- 单扇门 下  上 -->
-                  <img class="door" src="@/assets/xxfb/path/2.png" />
+                  <img
+                    v-if="props.roomName == 'A2-208'"
+                    class="door"
+                    src="@/assets/xxfb/path/active1.png"
+                  />
+                  <img v-else class="door" src="@/assets/xxfb/path/2.png" />
+                  <img
+                    v-if="props.roomName == 'A2-208'"
+                    class="door"
+                    src="@/assets/xxfb/path/active2.png"
+                  />
                   <img class="door" src="@/assets/xxfb/path/5.png" />
                 </div>
                 <div>
@@ -63,7 +73,17 @@
                     A2-207
                   </div>
                   <!-- 单扇门 下  上 -->
-                  <img class="door" src="@/assets/xxfb/path/2.png" />
+                  <img
+                    v-if="props.roomName == 'A2-207'"
+                    class="door"
+                    src="@/assets/xxfb/path/active1.png"
+                  />
+                  <img v-else class="door" src="@/assets/xxfb/path/2.png" />
+                  <img
+                    v-if="props.roomName == 'A2-207'"
+                    class="door"
+                    src="@/assets/xxfb/path/active2.png"
+                  />
                   <img class="door" src="@/assets/xxfb/path/5.png" />
                 </div>
               </div>
@@ -80,8 +100,18 @@
                 <div id="A2211" v-else data-roomName="A2211" @click="dataRoomClick('A2211')">
                   A2-211
                 </div>
-                <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
-                <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
+                <img
+                  v-if="props.roomName == 'A2-211'"
+                  class="hdoubledoor"
+                  src="@/assets/xxfb/path/active4.png"
+                />
+                <img v-else class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
+                <img
+                  v-if="props.roomName == 'A2-211'"
+                  class="hdoubledoor"
+                  src="@/assets/xxfb/path/active4.png"
+                />
+                <img v-else class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
                 <div
@@ -97,7 +127,13 @@
                   音控室
                 </div>
                 <!-- 单门 上 -->
-                <img class="door" src="@/assets/xxfb/path/5.png" />
+                <img
+                  v-if="props.roomName == 'A2-206'"
+                  class="door"
+                  src="@/assets/xxfb/path/active2.png"
+                />
+
+                <img v-else class="door" src="@/assets/xxfb/path/5.png" />
               </div>
             </div>
           </div>
@@ -113,63 +149,94 @@
             </div>
             <div class="left4-2">
               <div>
-                 <div
-                    id="A2204"
-                    v-if="props.roomName == 'A2-204'"
-                    :class="[props.roomName == 'A2-204' ? 'active-startA2204' : '']"
-                  >
-                    A2-204
-                  </div>
-                  <div id="A2204" v-else data-roomName="A2204" @click="dataRoomClick('A2204')">
-                    A2-204
-                  </div>
+                <div
+                  id="A2204"
+                  v-if="props.roomName == 'A2-204'"
+                  :class="[props.roomName == 'A2-204' ? 'active-startA2204' : '']"
+                >
+                  A2-204
+                </div>
+                <div id="A2204" v-else data-roomName="A2204" @click="dataRoomClick('A2204')">
+                  A2-204
+                </div>
                 <!-- 竖 双排门 -->
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <img
+                  v-if="props.roomName == 'A2-204'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
               <div>
-                 <div
-                    id="A2202"
-                    v-if="props.roomName == 'A2-202'"
-                    :class="[props.roomName == 'A2-202' ? 'active-startA2202' : '']"
-                  >
-                    <br />A2-202<br />
+                <div
+                  id="A2202"
+                  v-if="props.roomName == 'A2-202'"
+                  :class="[props.roomName == 'A2-202' ? 'active-startA2202' : '']"
+                >
+                  <br />A2-202<br />
                   服务室
-                  </div>
-                  <div id="A2202" v-else data-roomName="A2202" @click="dataRoomClick('A2202')">
-                    <br />A2-202<br />
+                </div>
+                <div id="A2202" v-else data-roomName="A2202" @click="dataRoomClick('A2202')">
+                  <br />A2-202<br />
                   服务室
-                  </div>
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                </div>
+
+                <img
+                  v-if="props.roomName == 'A2-202'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
             <div class="left4-3">
               <div>
-                 <div
-                    id="A2205"
-                    v-if="props.roomName == 'A2-205'"
-                    :class="[props.roomName == 'A2-205' ? 'active-startA2205' : '']"
-                  >
-                    A2-205
-                  </div>
-                  <div id="A2205" v-else data-roomName="A2205" @click="dataRoomClick('A2205')">
-                    A2-205
-                  </div>
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <div
+                  id="A2205"
+                  v-if="props.roomName == 'A2-205'"
+                  :class="[props.roomName == 'A2-205' ? 'active-startA2205' : '']"
+                >
+                  A2-205
+                </div>
+                <div id="A2205" v-else data-roomName="A2205" @click="dataRoomClick('A2205')">
+                  A2-205
+                </div>
+                <img
+                  v-if="props.roomName == 'A2-205'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <img
+                  v-if="props.roomName == 'A2-205'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
               <div>
-                 <div
-                    id="A2201"
-                    v-if="props.roomName == 'A2-201'"
-                    :class="[props.roomName == 'A2-201' ? 'active-startA2201' : '']"
-                  >
-                    A2-201
-                  </div>
-                  <div id="A2201" v-else data-roomName="A2201" @click="dataRoomClick('A2201')">
-                    A2-201
-                  </div>
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <div
+                  id="A2201"
+                  v-if="props.roomName == 'A2-201'"
+                  :class="[props.roomName == 'A2-201' ? 'active-startA2201' : '']"
+                >
+                  A2-201
+                </div>
+                <div id="A2201" v-else data-roomName="A2201" @click="dataRoomClick('A2201')">
+                  A2-201
+                </div>
+                <img
+                  v-if="props.roomName == 'A2-201'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <img
+                  v-if="props.roomName == 'A2-201'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
             <div class="left4-4">
@@ -185,8 +252,18 @@
                   A2-212
                 </div>
                 <!-- 横 双排门 -->
-                <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
-                <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
+                <img
+                  v-if="props.roomName == 'A2-212'"
+                  class="hdoubledoor"
+                  src="@/assets/xxfb/path/active4.png"
+                />
+                <img v-else class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
+                <img
+                  v-if="props.roomName == 'A2-212'"
+                  class="hdoubledoor"
+                  src="@/assets/xxfb/path/active4.png"
+                />
+                <img v-else class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div></div>
             </div>
@@ -197,7 +274,7 @@
               <div>
                 <div class="tolit">
                   <!-- 需改图片 -->
-                  
+
                   <!-- <img src="@/assets/xxfb/path/iconPark-boy.png" /> -->
                   卫生间
                 </div>
@@ -218,7 +295,6 @@
                 <img src="@/assets/xxfb/path/shoufuti2.png" />
               </div>
               <span class="shoufudianti">手扶电梯</span>
-              
             </div>
           </div>
           <div>
@@ -256,20 +332,30 @@
             </div>
             <div class="right2-2">
               <div>
-                 <div
-                    id="A2216"
-                    v-if="props.roomName == 'A2-216'"
-                    :class="[props.roomName == 'A2-216' ? 'active-startA2216' : '']"
-                  >
-                    <br />A2-216<br />
+                <div
+                  id="A2216"
+                  v-if="props.roomName == 'A2-216'"
+                  :class="[props.roomName == 'A2-216' ? 'active-startA2216' : '']"
+                >
+                  <br />A2-216<br />
                   工作间
-                  </div>
-                  <div id="A2216" v-else data-roomName="A2216" @click="dataRoomClick('A2216')">
-                    <br />A2-216<br />
+                </div>
+                <div id="A2216" v-else data-roomName="A2216" @click="dataRoomClick('A2216')">
+                  <br />A2-216<br />
                   工作间
-                  </div>
+                </div>
                 <!-- 单扇门 下  上 -->
-                <img class="door" src="@/assets/xxfb/path/2.png" />
+                <img
+                  v-if="props.roomName == 'A2-216'"
+                  class="door"
+                  src="@/assets/xxfb/path/active1.png"
+                />
+                <img v-else class="door" src="@/assets/xxfb/path/2.png" />
+                <img
+                  v-if="props.roomName == 'A2-216'"
+                  class="door"
+                  src="@/assets/xxfb/path/active2.png"
+                />
                 <img class="door" src="@/assets/xxfb/path/5.png" />
               </div>
               <div>
@@ -284,7 +370,12 @@
                   A2-219
                 </div>
                 <!-- 竖 双排门 -->
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <img
+                  v-if="props.roomName == 'A2-219'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
             <div class="right2-3">
@@ -299,8 +390,18 @@
                 <div id="A2215" v-else data-roomName="A2215" @click="dataRoomClick('A2215')">
                   A2-215
                 </div>
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <img
+                  v-if="props.roomName == 'A2-215'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <img
+                  v-if="props.roomName == 'A2-215'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
               <div>
                 <div
@@ -313,8 +414,18 @@
                 <div id="A2220" v-else data-roomName="A2220" @click="dataRoomClick('A2220')">
                   A2-220
                 </div>
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <img
+                  v-if="props.roomName == 'A2-220'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <img
+                  v-if="props.roomName == 'A2-220'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
             <div class="right2-4">
@@ -330,8 +441,18 @@
                   A2-229
                 </div>
                 <!-- 横 双排门 -->
-                <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
-                <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
+                <img
+                  v-if="props.roomName == 'A2-229'"
+                  class="hdoubledoor"
+                  src="@/assets/xxfb/path/active4.png"
+                />
+                <img v-else class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
+                <img
+                  v-if="props.roomName == 'A2-229'"
+                  class="hdoubledoor"
+                  src="@/assets/xxfb/path/active4.png"
+                />
+                <img v-else class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
                 <div
@@ -344,7 +465,12 @@
                 <div id="A2221" v-else data-roomName="A2221" @click="dataRoomClick('A2221')">
                   A2-221
                 </div>
-                <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                <img
+                  v-if="props.roomName == 'A2-221'"
+                  class="doubledoor"
+                  src="@/assets/xxfb/path/active3.png"
+                />
+                <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
               </div>
             </div>
           </div>
@@ -360,7 +486,6 @@
             <div class="right4-2">
               <div>
                 <div>
-                  
                   <div
                     id="A2223"
                     v-if="props.roomName == 'A2-223'"
@@ -372,7 +497,12 @@
                     A2-223
                   </div>
                   <!-- 竖 双排门 -->
-                  <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                  <img
+                    v-if="props.roomName == 'A2-223'"
+                    class="doubledoor"
+                    src="@/assets/xxfb/path/active3.png"
+                  />
+                  <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
                 <div>
                   <div
@@ -386,7 +516,12 @@
                     A2-222
                   </div>
                   <!-- 竖 双排门 -->
-                  <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                  <img
+                    v-if="props.roomName == 'A2-222'"
+                    class="doubledoor"
+                    src="@/assets/xxfb/path/active3.png"
+                  />
+                  <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
               </div>
               <div>
@@ -402,7 +537,12 @@
                     A2-225
                   </div>
                   <!-- 竖 双排门 -->
-                  <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                  <img
+                    v-if="props.roomName == 'A2-225'"
+                    class="doubledoor"
+                    src="@/assets/xxfb/path/active3.png"
+                  />
+                  <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
                 <div>
                   <div
@@ -416,7 +556,12 @@
                     A2-226
                   </div>
                   <!-- 竖 双排门 -->
-                  <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                  <img
+                    v-if="props.roomName == 'A2-226'"
+                    class="doubledoor"
+                    src="@/assets/xxfb/path/active3.png"
+                  />
+                  <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
                 <div>
                   <div
@@ -430,7 +575,12 @@
                     A2-227
                   </div>
                   <!-- 竖 双排门 -->
-                  <img class="doubledoor" src="@/assets/xxfb/path/7.png" />
+                  <img
+                    v-if="props.roomName == 'A2-227'"
+                    class="doubledoor"
+                    src="@/assets/xxfb/path/active3.png"
+                  />
+                  <img v-else class="doubledoor" src="@/assets/xxfb/path/7.png" />
                 </div>
                 <div></div>
               </div>
@@ -448,8 +598,18 @@
                   A2-228
                 </div>
                 <!-- 横 双排门 -->
-                <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
-                <img class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
+                <img
+                  v-if="props.roomName == 'A2-228'"
+                  class="hdoubledoor"
+                  src="@/assets/xxfb/path/active4.png"
+                />
+                <img v-else class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
+                <img
+                  v-if="props.roomName == 'A2-228'"
+                  class="hdoubledoor"
+                  src="@/assets/xxfb/path/active4.png"
+                />
+                <img v-else class="hdoubledoor" src="@/assets/xxfb/path/6.png" />
               </div>
               <div>
                 <div>
@@ -472,62 +632,65 @@
         </div>
       </div>
       <!-- 横向标识 -->
-      <div v-if="getzbdStyle" class="arrowPoint" id="zuobiao" :style="getzbdStyle" >
-        <span style="opacity:0">左</span>
+      <div v-if="getzbdStyle" class="arrowPoint" id="zuobiao" :style="getzbdStyle">
+        <span style="opacity: 0">左</span>
         <img src="@/assets/xxfb/path/left.png" />
         <div>
           <img id="zuobiaodian" src="@/assets/xxfb/path/zhishi.png" />
         </div>
         <img src="@/assets/xxfb/path/right.png" />
-        <span style="opacity:0">右</span>
+        <span style="opacity: 0">右</span>
       </div>
       <!-- 竖向标识 朝右-->
-      <div v-if="getzbdStyleshuright" class="arrowPointshu" id="zuobiao" :style="getzbdStyleshuright">
-        
+      <div
+        v-if="getzbdStyleshuright"
+        class="arrowPointshu"
+        id="zuobiao"
+        :style="getzbdStyleshuright"
+      >
         <img src="@/assets/xxfb/path/up.png" />
         <div>
           <img id="zuobiaodian" src="@/assets/xxfb/path/right1.png" />
         </div>
         <img src="@/assets/xxfb/path/down.png" />
-       
       </div>
 
       <!-- 竖向标识 朝左-->
       <div v-if="getzbdStyleshuleft" class="arrowPointshu" id="zuobiao" :style="getzbdStyleshuleft">
-        
         <img src="@/assets/xxfb/path/up.png" />
         <div>
           <img id="zuobiaodian" src="@/assets/xxfb/path/left1.png" />
         </div>
         <img src="@/assets/xxfb/path/down.png" />
-       
       </div>
     </div>
     <div class="div3">
       <div class="div3-1">
         <div>
           <div>
-            <img data-v-7c86bae5="" class="hdoubledoor" src="/src/assets/xxfb/path/6.png">
+            <img data-v-7c86bae5="" class="hdoubledoor" src="/src/assets/xxfb/path/6.png" />
             <span>茶水间</span>
           </div>
           <div class="jianju1"></div>
           <div>
             <span>卫生间</span>
-            <img data-v-7c86bae5="" class="doubledoor" src="/src/assets/xxfb/path/7.png">
+            <img data-v-7c86bae5="" class="doubledoor" src="/src/assets/xxfb/path/7.png" />
           </div>
           <div class="jianju2"></div>
           <div>
-            <img data-v-7c86bae5="" class="hdoubledoor" src="/src/assets/xxfb/path/6.png">
-            <span>A2-230</span>
+            <img data-v-7c86bae5="" class="hdoubledoor" src="/src/assets/xxfb/path/6.png" />
+            <span></span>
           </div>
         </div>
       </div>
       <ul>
-        <li style="display:none"><img src="@/assets/xxfb/path/dianti.png" /><span>电梯</span></li>
+        <li style="display: none"><img src="@/assets/xxfb/path/dianti.png" /><span>电梯</span></li>
         <li><img src="@/assets/xxfb/path/louti.png" /><span>楼梯</span></li>
-        <li style="display:none"><img src="@/assets/xxfb/path/shoufudt.png" /><span>手扶电梯</span></li>
+        <li style="display: none">
+          <img src="@/assets/xxfb/path/shoufudt.png" /><span>手扶电梯</span>
+        </li>
         <li><img src="@/assets/xxfb/path/huoti.png" /><span>货梯</span></li>
-        <li style="display:none"><img src="@/assets/xxfb/path/wc.png" /><span>卫生间</span></li>
+        <li style="display: none"><img src="@/assets/xxfb/path/wc.png" /><span>卫生间</span></li>
         <li><img src="@/assets/xxfb/path/peidianjian.png" /><span>配电间</span></li>
         <li>
           <!-- <img
@@ -542,7 +705,7 @@
         <!-- <img src="@/assets/xxfb/path/200.png" />
         <span>温馨提示：请说导航到xxx会议室或说xxx会议室怎么走。</span> -->
       </div>
-      <img src="@/assets/xxfb/path/1.png" />
+      <img src="@/assets/xxfb/path/21.png" />
     </div>
   </div>
 </template>
@@ -601,7 +764,7 @@ const getzbdStyle = computed(() => {
 })
 
 // 竖-右
-const getzbdStyleshuright=computed(()=>{
+const getzbdStyleshuright = computed(() => {
   // 竖反：204、205、215、216、222、223
   if (props.roomName == 'A2-204') {
     return {
@@ -615,7 +778,7 @@ const getzbdStyleshuright=computed(()=>{
       top: '400px'
     }
   }
-  
+
   if (props.roomName == 'A2-215') {
     return {
       left: '1095px',
@@ -640,11 +803,10 @@ const getzbdStyleshuright=computed(()=>{
       top: '312px'
     }
   }
-  
 })
 
 // 竖-左
-const getzbdStyleshuleft=computed(()=>{
+const getzbdStyleshuleft = computed(() => {
   // 二楼竖正：A2-206、207、208、201、202、221、220、219、227、226、225
   // 竖正
   if (props.roomName == 'A2-227') {
@@ -673,8 +835,8 @@ const getzbdStyleshuleft=computed(()=>{
   }
   if (props.roomName == 'A2-220') {
     return {
-      left: "1478px",
-      top: "398px",
+      left: '1478px',
+      top: '398px'
     }
   }
   if (props.roomName == 'A2-221') {
@@ -1340,18 +1502,15 @@ var CoordPoint = {
     [1846, 464]
   ],
 
-   
   // A2-207-----待定位坐标;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   // 一区
   A2207_A2208: [
     [430, 468],
     [430, 300],
     [410, 300],
-    [410, 300],
+    [410, 300]
   ],
-  A2207_A2207: [
-   
-  ],
+  A2207_A2207: [],
   A2207_A2211: [
     [430, 468],
     [430, 711],
@@ -1362,14 +1521,14 @@ var CoordPoint = {
     [430, 468],
     [430, 540],
     [410, 540],
-    [410, 540],
+    [410, 540]
   ],
   //二区
   A2207_A2204: [
     [430, 468],
     [430, 224],
     [430, 224],
-    [450, 224],
+    [450, 224]
   ],
   A2207_A2205: [
     [430, 468],
@@ -1517,9 +1676,7 @@ var CoordPoint = {
     [1861, 464],
     [1866, 464],
     [1846, 464]
-  ],
-
-
+  ]
 }
 function start_end(xy, end) {
   if ($('body').attr('locked') == 1) {
@@ -1549,7 +1706,6 @@ function start_end(xy, end) {
 
   // var length = $(".line").length;
   if ($('.line').length == 1) {
-    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1596,7 +1752,6 @@ function start_end(xy, end) {
       // $("body").attr("timeout-scale", scaletimeout);
     })
   } else if ($('.line').length == 2) {
-    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1645,7 +1800,6 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 3) {
-    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1696,7 +1850,6 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 4) {
-    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -1750,7 +1903,6 @@ function start_end(xy, end) {
       })
     })
   } else if ($('.line').length == 5) {
-    
     zuobiaodian && (zuobiaodian.style.opacity = '0')
     $('#div2').append(
       "<img class='startimg' src='" +
@@ -2043,7 +2195,7 @@ div {
   // zoom: 0.362054;
   position: relative;
   // margin-left: -10px;
-  
+
   transform: scale(0.3621);
   transform-origin: left top;
 }
@@ -2547,14 +2699,13 @@ div {
   background-color: rgba(255, 255, 255, 0.04);
 }
 
-.tolit{
+.tolit {
   color: rgba(255, 255, 255, 0.2);
-    font-size: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 
 /* 中间楼梯 */
 .div2 .div2-2 .middle {
@@ -2592,13 +2743,13 @@ div {
   margin-left: -2px;
   margin-top: 55px;
 }
-.div2 .div2-2 .middle > div:nth-child(1) div .shoufudianti{
+.div2 .div2-2 .middle > div:nth-child(1) div .shoufudianti {
   color: rgba(255, 255, 255, 0.2);
-    font-size: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: -12px;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -12px;
 }
 
 .div2 .div2-2 .middle > div:nth-child(2) {
@@ -2632,15 +2783,13 @@ div {
 //   height: 35px;
 //   margin-top: 22px;
 // }
-.div2 .div2-2 .middle > div:nth-child(2) .louti{
-    color: rgba(255, 255, 255, 0.2);
-    font-size: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.div2 .div2-2 .middle > div:nth-child(2) .louti {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
-
 
 /* 中间右区 */
 .div2 .div2-2 .right {
@@ -2987,7 +3136,7 @@ div {
 
   transform: translateY(-41px);
 }
-.div3 .div3-1{
+.div3 .div3-1 {
   margin-left: 626px;
   margin-bottom: 12px;
 
@@ -2995,24 +3144,22 @@ div {
   background-color: rgba(255, 255, 255, 0.07);
   width: 716px;
   height: 130px;
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
-  &>div{
-    
+  & > div {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    
-    
+
     // 会议室
-    div{
+    div {
       display: flex;
       position: relative;
       background-color: #2c6965;
       padding: 6px;
-      span{
+      span {
         width: 200px;
         height: 100px;
         line-height: 100px;
@@ -3023,49 +3170,48 @@ div {
 
         box-shadow: 3px 2px 1px 0px rgba(0, 0, 0, 0.4);
         background-color: #347f7a;
-       }
-      img{
+      }
+      img {
         position: absolute;
         top: 5px;
         left: 130px;
       }
     }
-    div:nth-child(3){
-      img{
+    div:nth-child(3) {
+      img {
         position: absolute;
         top: 42px;
         left: 116px;
       }
-      span{
+      span {
         width: 115px;
         // color: rgba(255, 255, 255, 0.2);
       }
     }
-    div:nth-child(5){
-      span{
+    div:nth-child(5) {
+      span {
         margin-right: 0px;
         color: #ffffff;
-        font-size: 30px;
+        font-size: 22px;
       }
-      img{
+      img {
         position: absolute;
         top: 5px;
         left: 40px;
       }
     }
 
-    .jianju1{
-       width: 72px;
-       height: 84px;
-       background-color: rgba(255, 255, 255, 0);
+    .jianju1 {
+      width: 72px;
+      height: 84px;
+      background-color: rgba(255, 255, 255, 0);
     }
-    .jianju2{
-       width: 66px;
-       height: 84px;
-       background-color: rgba(255, 255, 255, 0);
+    .jianju2 {
+      width: 66px;
+      height: 84px;
+      background-color: rgba(255, 255, 255, 0);
     }
   }
-  
 }
 .div3 ul {
   height: 84px;
@@ -3160,7 +3306,6 @@ div {
   margin-right: 10px;
 }
 
-
 // 竖向
 .div2 .arrowPointshu {
   width: 40px;
@@ -3183,16 +3328,13 @@ div {
   vertical-align: middle;
 }
 
-.div2 .arrowPointshu > div{
- 
+.div2 .arrowPointshu > div {
   img {
     width: 44px;
     height: 44px;
     // margin-top: -16px;
   }
-} 
-
-
+}
 
 /* 横向起点的激活样式 */
 .active-startA2228 {
@@ -3227,8 +3369,6 @@ div {
   background-color: rgba(255, 145, 0, 1) !important;
   font-size: 30px;
 }
-
-
 
 // 竖反起点的激活样式204无 216无
 .active-startA2204 {
@@ -3275,7 +3415,6 @@ div {
   font-size: 30px;
 }
 
-
 // 竖正 起点的激活样式 202无 206无
 .active-startA2225 {
   width: 134px;
@@ -3291,7 +3430,6 @@ div {
   line-height: 110px !important;
   background-color: rgba(255, 145, 0, 1) !important;
   font-size: 30px;
-  
 }
 .active-startA2227 {
   width: 134px;
@@ -3300,7 +3438,6 @@ div {
   line-height: 110px !important;
   background-color: rgba(255, 145, 0, 1) !important;
   font-size: 30px;
- 
 }
 .active-startA2219 {
   width: 145px !important;
@@ -3329,7 +3466,6 @@ div {
   font-size: 26px;
   line-height: 33px;
   background-color: rgba(255, 145, 0, 1) !important;
- 
 }
 .active-startA2201 {
   width: 154px !important;

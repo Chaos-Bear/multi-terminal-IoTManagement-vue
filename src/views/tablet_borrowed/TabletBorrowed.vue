@@ -196,19 +196,13 @@
   </div>
 </template>
 <script setup lang="jsx">
-import {
-  ref,
-  onMounted,
-  computed,
-  nextTick,
-  onBeforeUnmount
-} from 'vue'
+import { ref, onMounted, computed, nextTick, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
 // import quertstring from 'querystring'
 // import { el } from 'element-plus/es/locale';
-import {tabletRequest } from '@/utils/server.js'
+import { tabletRequest } from '@/utils/server.js'
 // 轮播图
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // Import Swiper styles

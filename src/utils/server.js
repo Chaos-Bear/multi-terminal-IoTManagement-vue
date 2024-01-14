@@ -24,4 +24,9 @@ const pubRequest = http({
   baseURL: import.meta.env.VITE_BASE_URL7
 })
 
-export { request, tabletRequest, deviceRequest, releaseRequest, pubRequest }
+// 5. 获取openAPI
+const udsRequest = http({
+  baseURL: import.meta.env.VITE_BASE_URL8
+})
+
+export { request, tabletRequest, deviceRequest, releaseRequest, pubRequest, udsRequest }

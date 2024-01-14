@@ -32,7 +32,7 @@
       </el-header>
       <el-main>
         <!-- 2. 用户界面列表 -->
-        <div class="tableBox" >
+        <div class="tableBox">
           <!-- <el-scrollbar height="100%"> -->
           <el-table
             :data="tableData"
@@ -51,8 +51,14 @@
                   {{ scope.row.className }}
                 </template>
                 <template v-if="scope.row.contType == '页面'">
-                  <!-- _blank -->
-                  <a :href="scope.row.pubPath" target="_blank"  @click="operateTips(scope.row)" :style="scope.row.pubPath.includes('/pub')?'color:#606266;':''">{{ scope.row.contName }}</a>
+                  <!-- _blank  -->
+                  <a
+                    :href="scope.row.pubPath"
+                    target="_self"
+                    @click="operateTips(scope.row)"
+                    :style="scope.row.pubPath.includes('/pub') ? 'color:#606266;' : ''"
+                    >{{ scope.row.contName }}</a
+                  >
                   <!-- &nbsp;<span @click="router.push('/xxfb?roomName=' + titleName + '&roomID=' + roomId)"
                     >控制页</span
                   >&nbsp;
@@ -160,7 +166,6 @@
       :title="pagetype == 'add' ? '新增页面' : '修改页面'"
       v-model="meetingModifyVisual"
       style="width: 400px"
-
     >
       <el-form
         :model="addPageForm"
@@ -171,23 +176,22 @@
         <el-form-item label="页面名称" prop="contName">
           <el-input v-model="addPageForm.contName" placeholder="请输入页面名称" />
         </el-form-item>
-        <el-form-item label="&nbsp;&nbsp;&nbsp;关联设备" >
+        <el-form-item label="&nbsp;&nbsp;&nbsp;关联设备">
           <!-- multiple  :disabled="addPageForm.iotDeviceList.length==1"-->
-          
+
           <el-select
             v-model="addPageForm.iotDeviceList"
             style="width: 100%"
             placeholder="请选择关联设备"
             multiple
-            :multiple-limit='1'
+            :multiple-limit="1"
           >
             <el-option
               v-for="item in deviceList"
               :key="item.deviceID"
               :label="item.deviceName"
               :value="item.deviceID"
-              >
-              
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -218,8 +222,8 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { nextTick, onMounted, reactive, ref } from 'vue'
-import {  } from '@element-plus/icons-vue'
-import { ElMessage,  ElMessageBox } from 'element-plus'
+import {} from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const router = useRouter()
 const route = useRoute()
@@ -232,11 +236,10 @@ import { releaseRequest } from '@/utils/server.js'
 const titleName = route.query.roomName
 const roomId = route.query.roomID
 
-
-const isLoading=ref(false)
+const isLoading = ref(false)
 // -----------1.获取用户界面列表接口--------
 const getList = () => {
-  isLoading.value=true
+  isLoading.value = true
   // 请求用户界面列表
   releaseRequest
     .post('/IOTRoomCrtl/queryIotRoomClassList', {
@@ -257,8 +260,8 @@ const getList = () => {
     .catch((error) => {
       console.log('请求用户界面列表失败', error)
     })
-    .finally(()=>{
-      isLoading.value=false
+    .finally(() => {
+      isLoading.value = false
     })
 }
 // 删除一级分类
@@ -367,9 +370,9 @@ const addMeetingCategory = () => {
         })
         .then((res) => {
           console.log('新增分类成功', res.data)
-           ElMessage({
+          ElMessage({
             message: '新增成功',
-            type: 'success',
+            type: 'success'
           })
           meetingCategoryVisual.value = false
 
@@ -399,13 +402,13 @@ const updateMeetingCategory = () => {
         })
         .then((res) => {
           console.log('修改分类成功', res.data)
-           
+
           meetingCategoryVisual.value = false
           // 查询请求
           getList()
           ElMessage({
             message: '修改成功',
-            type: 'success',
+            type: 'success'
           })
         })
         .catch((error) => {
@@ -433,7 +436,7 @@ const handleEdit = (row) => {
 const meetingModifyVisual = ref(false)
 
 // ---3. 新增/修改 页面
-const pagetype = ref("add")
+const pagetype = ref('add')
 const addPageBtn = (row) => {
   getDeviceList()
   addPageForm.classID = row.classID
@@ -446,7 +449,7 @@ const addPageBtn = (row) => {
 
   meetingModifyVisual.value = true
 
-  pagetype.value = "add"
+  pagetype.value = 'add'
 
   nextTick(() => {
     createPageFormRef.value.clearValidate()
@@ -487,23 +490,24 @@ const addMeetingPage = () => {
     if (valid) {
       var iotDeviceList = []
       // debugger
-      Array.isArray(addPageForm.iotDeviceList) &&  addPageForm.iotDeviceList.forEach((deviceID) => {
-        for (var i = 0; i < deviceList.value.length; i++) {
-          if (deviceList.value[i].deviceID == deviceID) {
-            let { deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
-            var obj = {
-              contID: addPageForm.contID,
-              deviceID: deviceID,
-              deviceModel: deviceModel,
-              deviceName: deviceName,
-              deviceType: deviceType
+      Array.isArray(addPageForm.iotDeviceList) &&
+        addPageForm.iotDeviceList.forEach((deviceID) => {
+          for (var i = 0; i < deviceList.value.length; i++) {
+            if (deviceList.value[i].deviceID == deviceID) {
+              let { deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
+              var obj = {
+                contID: addPageForm.contID,
+                deviceID: deviceID,
+                deviceModel: deviceModel,
+                deviceName: deviceName,
+                deviceType: deviceType
+              }
+              // debugger
+              iotDeviceList.push(obj)
+              break
             }
-            // debugger
-            iotDeviceList.push(obj)
-            break
           }
-        }
-      })
+        })
       //-------发送新增页面请求-------
       releaseRequest
         .post('/IOTRoomCrtl/saveIOTConet', {
@@ -516,15 +520,15 @@ const addMeetingPage = () => {
         })
         .then((res) => {
           // debugger
-          console.log("修改页面成功",res.data);
+          console.log('修改页面成功', res.data)
           meetingModifyVisual.value = false
-          
+
           // debugger
           // 查询请求
           getList()
-           ElMessage({
+          ElMessage({
             message: '新增成功',
-            type: 'success',
+            type: 'success'
           })
         })
         .catch((error) => {
@@ -553,7 +557,7 @@ const handlePageEdit = (row) => {
   addPageForm.editPath = row.editPath
   addPageForm.pubPath = row.pubPath != 0 ? row.pubPath : ''
 
-  pagetype.value = "update"
+  pagetype.value = 'update'
   meetingModifyVisual.value = true
 
   nextTick(() => {
@@ -569,7 +573,7 @@ const updateMeetingPage = () => {
       addPageForm.iotDeviceList.forEach((deviceID) => {
         for (var i = 0; i < deviceList.value.length; i++) {
           if (deviceList.value[i].deviceID == deviceID) {
-            let {  deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
+            let { deviceID, deviceModel, deviceName, deviceType } = deviceList.value[i]
             var obj = {
               contID: addPageForm.contID,
               deviceID: deviceID,
@@ -596,12 +600,12 @@ const updateMeetingPage = () => {
           // debugger
           console.log('修改页面成功', res.data)
           meetingModifyVisual.value = false
-          
+
           // 查询请求
           getList()
-           ElMessage({
+          ElMessage({
             message: '修改成功',
-            type: 'success',
+            type: 'success'
           })
         })
         .catch((error) => {
@@ -718,7 +722,7 @@ const tableData = ref([
 var selectRows = ref([])
 const selectionChange = (selection) => {
   selectRows.value = selection
- // console.log('33333333333333', selectRows.value)
+  // console.log('33333333333333', selectRows.value)
 }
 // 更新时间
 const formatDate = (date) => {
@@ -753,23 +757,27 @@ const formatDate = (date) => {
 }
 
 // 如果是发布页，则禁止跳转，并提示
-const operateTips=(row)=>{
+const operateTips = (row) => {
   // debugger
-   if(row.pubPath.includes('/pub')){
-      event.preventDefault(); // 阻止默认跳转行为
-      // ElMessage({
-      //   type: 'warning',
-      //   message: '不允许跳转',
-      // })
-   }
+  if (row.pubPath.includes('/pub')) {
+    event.preventDefault() // 阻止默认跳转行为
+    // ElMessage({
+    //   type: 'warning',
+    //   message: '不允许跳转',
+    // })
+  }
 }
-
 </script>
 
 <style lang="less" scoped>
 .userList {
   // 1.头部
-
+  .el-header {
+    padding: 0px;
+  }
+  .el-main {
+    padding: 0px;
+  }
   // 2.顶部
   // 2.1 顶部新增分类
   .addBtn {
@@ -798,7 +806,7 @@ const operateTips=(row)=>{
 
   // 2.用户界面列表
   .tableBox {
-      height: calc( 100% - 90px);
+    height: calc(100% - 90px);
     :deep(.custom-table-head) {
       background-color: #f5f9fc;
     }

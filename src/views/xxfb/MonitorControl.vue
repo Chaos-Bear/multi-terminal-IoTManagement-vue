@@ -7,7 +7,8 @@
         <div>{{ roomName }}</div>
       </div>
       <div class="btn">
-        <div @click="router.push('/xxfb-monitorlist?roomName=' + roomName + '&roomID=' + roomId)">
+        <!-- <div @click="router.push('/xxfb-monitorlist?roomName=' + roomName + '&roomID=' + roomId)"> -->
+        <div @click="goBack">
           <img src="@/assets/xxfb/4.png" />
           <div>返回</div>
         </div>
@@ -35,19 +36,19 @@
             <div class="top1">手动控制</div>
             <div class="controlInfo">
               <div class="controlItem" @click="openDevice">
-                  <img src="@/assets/xxfb/screenshots/1.png" />
-                  <div>开机</div>
+                <img src="@/assets/xxfb/screenshots/1.png" />
+                <div>开机</div>
               </div>
               <div class="controlItem" @click="shutdownDevice">
-                  <img src="@/assets/xxfb/screenshots/5.png" />
-                  <div>关机</div>
+                <img src="@/assets/xxfb/screenshots/5.png" />
+                <div>关机</div>
               </div>
               <!--规则： 如果时关机状态，那么息屏/亮屏/ 截图 功能点击无效 -->
               <div class="controlItem" @click="isrestart">
-                <img  src="@/assets/xxfb/screenshots/2.png" />
+                <img src="@/assets/xxfb/screenshots/2.png" />
                 <div>重启</div>
               </div>
-              <div class="controlItem"  @click="isrefresh">
+              <div class="controlItem" @click="isrefresh">
                 <template v-if="isrefreshValue">
                   <img src="@/assets/xxfb/screenshots/4.png" />
                   <div>截图</div>
@@ -85,35 +86,35 @@
               <div>
                 <el-button type="primary" @click="timingConfirmBtn">应用</el-button>
                 <el-button type="primary" @click="cancelTiming">取消应用</el-button> -->
-                <!-- <el-button type="primary" @click="timingConfirmBtn" disabled>应用到所有发布屏</el-button> -->
-<!--                 
+          <!-- <el-button type="primary" @click="timingConfirmBtn" disabled>应用到所有发布屏</el-button> -->
+          <!--                 
               </div>
             </div>
           </div> -->
           <div class="timingSwitch">
             <div class="top1">
               <div>定时开、关机</div>
-              <el-button type="primary" @click="allTimingConfirmBtn" disabled>应用到所有发布屏</el-button>
+              <el-button type="primary" @click="allTimingConfirmBtn" disabled
+                >应用到所有发布屏</el-button
+              >
             </div>
             <div class="controlInfo2">
-              <ul >
-                
-                  <li v-for="(item,i) in showList" :key="i" >
-                    <el-icon style="color:red;" @click="deleteItem(i)"><Minus /></el-icon>
-                    <div class="rangeInfo" @click="editTime(item)">
-                      
-                      <div>{{item.dayOfWeeks.join("、")}} {{item.startTime+'~'+ item.shutTime}}</div>
-                      <el-icon style="color:gray;"><ArrowRight /></el-icon>  
-                      
+              <ul>
+                <li v-for="(item, i) in showList" :key="i">
+                  <el-icon style="color: red" @click="deleteItem(i)"><Minus /></el-icon>
+                  <div class="rangeInfo" @click="editTime(item)">
+                    <div>
+                      {{ item.dayOfWeeks.join('、') }} {{ item.startTime + '~' + item.shutTime }}
                     </div>
-                  </li>
-                
+                    <el-icon style="color: gray"><ArrowRight /></el-icon>
+                  </div>
+                </li>
+
                 <li>
-                  <el-icon style="color:blue;" @click="addTime"><Plus /></el-icon>
+                  <el-icon style="color: blue" @click="addTime"><Plus /></el-icon>
                   <span class="addItem" @click="addTime">添加运行时间规则</span>
                 </li>
               </ul>
-              
             </div>
           </div>
         </div>
@@ -127,7 +128,9 @@
           <img src="@/assets/xxfb/screenshots/12.png" />
           <div class="tips1">关机</div>
           <span>Windows将在1分钟内关闭</span>
-          <div style="color:red;'font-size':12px">提示：点击关机后，3分钟之后才能进行开机操作！</div>
+          <div style="color: red; 'font-size':12px ">
+            提示：点击关机后，3分钟之后才能进行开机操作！
+          </div>
         </div>
         <template #footer>
           <span class="dialog-footer">
@@ -156,40 +159,49 @@
 
     <!--3. 添加时间弹框  -->
     <div class="addTimeDialog">
-      <el-dialog v-model="addTimeDialogVisible" :title="operateType=='edit'?'编辑运行时间':'添加运行时间'" :before-close="closeDialog">
+      <el-dialog
+        v-model="addTimeDialogVisible"
+        :title="operateType == 'edit' ? '编辑运行时间' : '添加运行时间'"
+        :before-close="closeDialog"
+      >
         <div class="top">
           <div class="top1">
             <div>请选择日期</div>
-            <el-checkbox-group v-model="checkList" @change="checkListChange" text-color='red' fill='red'>
-              <el-checkbox label="星期一" border :disabled="isDisabledDayOfWeek('星期一')"/>
-              <el-checkbox label="星期二" border :disabled="isDisabledDayOfWeek('星期二')"/>
-              <el-checkbox label="星期三" border :disabled="isDisabledDayOfWeek('星期三')"/>
-              <el-checkbox label="星期四" border :disabled="isDisabledDayOfWeek('星期四')"/>
-              <el-checkbox label="星期五" border :disabled="isDisabledDayOfWeek('星期五')"/>
-              <el-checkbox label="星期六" border :disabled="isDisabledDayOfWeek('星期六')"/>
-              <el-checkbox label="星期日" border :disabled="isDisabledDayOfWeek('星期日')"/>
+            <el-checkbox-group
+              v-model="checkList"
+              @change="checkListChange"
+              text-color="red"
+              fill="red"
+            >
+              <el-checkbox label="星期一" border :disabled="isDisabledDayOfWeek('星期一')" />
+              <el-checkbox label="星期二" border :disabled="isDisabledDayOfWeek('星期二')" />
+              <el-checkbox label="星期三" border :disabled="isDisabledDayOfWeek('星期三')" />
+              <el-checkbox label="星期四" border :disabled="isDisabledDayOfWeek('星期四')" />
+              <el-checkbox label="星期五" border :disabled="isDisabledDayOfWeek('星期五')" />
+              <el-checkbox label="星期六" border :disabled="isDisabledDayOfWeek('星期六')" />
+              <el-checkbox label="星期日" border :disabled="isDisabledDayOfWeek('星期日')" />
             </el-checkbox-group>
           </div>
           <div class="top2">
             <div>请选择时段</div>
             <div>
-                <el-time-select
-                    v-model="timingForm.startTime"
-                    :max-time="timingForm.shutTime"
-                    start="00:00"
-                    step="00:30"
-                    end="23:30"
-                    placeholder="开机时间"
-                />～
-                <el-time-select
-                  v-model="timingForm.shutTime"
-                  :min-time="timingForm.startTime"
-                  start="00:00"
-                  step="00:30"
-                  end="23:30"
-                  placeholder="关机时间"
-                />
-              </div> 
+              <el-time-select
+                v-model="timingForm.startTime"
+                :max-time="timingForm.shutTime"
+                start="00:00"
+                step="00:05"
+                end="23:55"
+                placeholder="开机时间"
+              />～
+              <el-time-select
+                v-model="timingForm.shutTime"
+                :min-time="timingForm.startTime"
+                start="00:00"
+                step="00:05"
+                end="23:55"
+                placeholder="关机时间"
+              />
+            </div>
           </div>
         </div>
         <template #footer>
@@ -200,51 +212,51 @@
         </template>
       </el-dialog>
     </div>
-
-    
   </div>
 </template>
 
 <script setup>
-
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { ElMessage,ElMessageBox } from 'element-plus'
-import {  } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import {} from '@element-plus/icons-vue'
 const router = useRouter()
 const route = useRoute()
-import {releaseRequest } from '@/utils/server.js'
+import { releaseRequest } from '@/utils/server.js'
 
 const roomName = route.query.roomName
 const roomId = route.query.roomID
 
+// 返回
+const goBack = () => {
+  router.go(-1)
+}
+
 const ipValue = ref('')
 // 1. 根据会议室名称 查询会议室绑定的设备ip接口----------------
 const getIp = () => {
-  
   releaseRequest
     .post('/PublishFlowCtrl/queryIotDeviceByName', {
       roomName: roomName
     })
     .then((res) => {
       if (res.data.repCode == 200) {
-        ipValue.value = res.data.result.deviceIP?res.data.result.deviceIP:''
+        ipValue.value = res.data.result.deviceIP ? res.data.result.deviceIP : ''
       }
       console.log('获取会议室绑定设备ip成功:', res.data.result.deviceIP)
       // 调用截屏接口
-      isrefreshValue.value=false
-      terminalControlRequest('screenshot','screen/test')
+      isrefreshValue.value = false
+      terminalControlRequest('screenshot', 'screen/test')
     })
     .catch((error) => {
       // debugger
       console.log('获取会议室绑定设备ip失败:', error)
-      ElMessage.error(error?error:'获取会议室绑定设备ip失败')
-      
+      ElMessage.error(error ? error : '获取会议室绑定设备ip失败')
     })
 }
 // -------2.发布屏设备控制接口-------
 const imgSrc = ref('')
-const terminalControlRequest = (operateType,topic) => {
+const terminalControlRequest = (operateType, topic) => {
   releaseRequest
     .post('/TerminalCtrl/opert', {
       roomName: roomName,
@@ -267,86 +279,86 @@ const terminalControlRequest = (operateType,topic) => {
       console.log('发布屏设备控制成功失败:', error)
       if (operateType == 'screenshot') {
         ElMessage.error('截图失败！')
-
       }
     })
-    .finally(()=>{
+    .finally(() => {
       isrefreshValue.value = true
     })
 }
 
 // -------3.定时开关控制接口-------
 const timingSwitchRequest = () => {
-    // debugger
-  var dayList= ['星期一','星期二', '星期三','星期四','星期五', '星期六', '星期日']
+  // debugger
+  var dayList = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
 
-  if(operateType.value=='edit'){
-  
-   for(var i=0;i<showList.value.length;i++){
-    if(checkListOringe.value.join(",")==showList.value[i].dayOfWeeks.join(",")){
-      showList.value[i].dayOfWeeks=JSON.parse(JSON.stringify(checkList.value)) 
-      showList.value[i].startTime=timingForm.value.startTime
-      showList.value[i].shutTime=timingForm.value.shutTime
-      break
+  if (operateType.value == 'edit') {
+    for (var i = 0; i < showList.value.length; i++) {
+      if (checkListOringe.value.join(',') == showList.value[i].dayOfWeeks.join(',')) {
+        showList.value[i].dayOfWeeks = JSON.parse(JSON.stringify(checkList.value))
+        showList.value[i].startTime = timingForm.value.startTime
+        showList.value[i].shutTime = timingForm.value.shutTime
+        break
+      }
     }
-   }
-  }else{
-    showList.value.push({dayOfWeeks:checkList.value,startTime:timingForm.value.startTime,shutTime:timingForm.value.shutTime})
-    
+  } else {
+    showList.value.push({
+      dayOfWeeks: checkList.value,
+      startTime: timingForm.value.startTime,
+      shutTime: timingForm.value.shutTime
+    })
   }
-  var taskRegularList=[]
-  var dayOfWeeks=[]
+  var taskRegularList = []
+  var dayOfWeeks = []
   // 如果展示规则中有，则push进去
-  for(let i=0;i<showList.value.length;i++){
-    showList.value[i].dayOfWeeks.forEach((dayOfWeek)=>{
-        let json={
-          "dayOfWeek": dayOfWeek,
-          "startTime": showList.value[i].startTime,
-          "shutTime": showList.value[i].shutTime,
-        }
-        dayOfWeeks.push(dayOfWeek)
-        taskRegularList.push(json)
+  for (let i = 0; i < showList.value.length; i++) {
+    showList.value[i].dayOfWeeks.forEach((dayOfWeek) => {
+      let json = {
+        dayOfWeek: dayOfWeek,
+        startTime: showList.value[i].startTime,
+        shutTime: showList.value[i].shutTime
+      }
+      dayOfWeeks.push(dayOfWeek)
+      taskRegularList.push(json)
     })
   }
   // 不包含则push空补充天进去
-  dayList.forEach((dayOfWeek)=>{
-    if(dayOfWeeks.indexOf(dayOfWeek)<=-1){
+  dayList.forEach((dayOfWeek) => {
+    if (dayOfWeeks.indexOf(dayOfWeek) <= -1) {
       taskRegularList.push({
-          "dayOfWeek": dayOfWeek,
-          "startTime": '',
-          "shutTime": '',
-        })
+        dayOfWeek: dayOfWeek,
+        startTime: '',
+        shutTime: ''
+      })
     }
   })
 
   releaseRequest
     .post('/TerminalCtrl/editTerminalTask', {
-      "roomName": roomName,
-      "taskRegularList":taskRegularList,
+      roomName: roomName,
+      taskRegularList: taskRegularList
     })
     .then((response) => {
       // debugger
-      if ( response.data.repCode == 200) {
+      if (response.data.repCode == 200) {
         console.log('定时开、关机设置成功:', response.data.result)
         // 关闭弹框
-        
+
         closeDialog()
         getTimingRequest()
         ElMessage({
           type: 'success',
-          message: '定时开、关机设置成功',
+          message: '定时开、关机设置成功'
         })
-      }else{
+      } else {
         // 否则删除showList最后一位
-        showList.value.splice(showList.value.length-1,1)
-        
+        showList.value.splice(showList.value.length - 1, 1)
+
         ElMessage({
           type: 'error',
-          message: response.data.repMsg,
+          message: response.data.repMsg
         })
-        addTimeDialogVisible.value=false
+        addTimeDialogVisible.value = false
       }
-      
     })
     .catch((error) => {
       console.log('定时开、关机设置失败:', error)
@@ -358,21 +370,20 @@ const getTimingRequest = () => {
   // debugger
   releaseRequest
     .post('/TerminalCtrl/queryTerminalTask', {
-      roomName: roomName,
+      roomName: roomName
     })
     .then((response) => {
       //debugger
-      if ( response.data.repCode == 200) {
+      if (response.data.repCode == 200) {
         console.log('查询定时开关机时间成功:', response.data.result)
-        
-        showList.value=createShowList(response.data.result.taskLists)
-      }else{
+
+        showList.value = createShowList(response.data.result.taskLists)
+      } else {
         ElMessage({
           type: 'error',
-          message: response.data.repMsg?response.data.repMsg:'',
+          message: response.data.repMsg ? response.data.repMsg : ''
         })
       }
-      
     })
     .catch((error) => {
       console.log('查询定时开关机时间失败:', error)
@@ -381,7 +392,7 @@ const getTimingRequest = () => {
 }
 onMounted(() => {
   getIp()
-  
+
   getTimingRequest()
 })
 
@@ -397,21 +408,20 @@ const openDevice = () => {
   ElMessage('开机操作，已发送')
   // debugger
   // 调用用开机接口
-  terminalControlRequest('startup','screen/test')
-  
+  terminalControlRequest('startup', 'screen/test')
 }
 // 2.关机弹出框
 const closeDialogVisible = ref(false)
 //点击关机按钮--关机
-const shutdownDevice=()=>{
+const shutdownDevice = () => {
   // 则展示关 弹框，然后调用关机接口
   closeDialogVisible.value = true
 }
 // 关机弹框中的 确认 按钮
 const confirmClose = () => {
   //调用发布屏设备控制 关机接口
-  terminalControlRequest('shutdown','screen/test')
-  
+  terminalControlRequest('shutdown', 'screen/test')
+
   closeDialogVisible.value = false
 }
 // 关机弹框中的 取消 按钮
@@ -432,13 +442,13 @@ const isrestart = () => {
 // 重启弹框中的 确认 按钮
 const confirmRestart = () => {
   // 调用重启接口
-  terminalControlRequest('restart','screen/test')
+  terminalControlRequest('restart', 'screen/test')
 
   restartDialogVisible.value = false
 }
 // 重启弹框中的 取消 按钮
 const cancelRestart = () => {
-  terminalControlRequest('cancel','screen/test')
+  terminalControlRequest('cancel', 'screen/test')
   restartDialogVisible.value = false
 }
 
@@ -461,10 +471,8 @@ const isrefreshValue = ref(true)
 const isrefresh = () => {
   // 点击截图按钮，变为截图中...
   isrefreshValue.value = false
-  terminalControlRequest('screenshot','screen/test')
+  terminalControlRequest('screenshot', 'screen/test')
 }
-
-
 
 // const timingConfirmBtn=()=>{
 //   if (
@@ -486,219 +494,202 @@ const isrefresh = () => {
 //   }
 // }
 // 应用到所有
-const allTimingConfirmBtn=()=>{
-   
-}
+const allTimingConfirmBtn = () => {}
 
 //添加时间
 // 添加时间弹框
-const addTimeDialogVisible=ref(false)
-const addTime=()=>{
-  operateType.value='add'
-  addTimeDialogVisible.value=true
-  checkList.value=[]
-  checkListOringe.value=[]
-  timingForm.value.startTime=''
-  timingForm.value.shutTime=''
+const addTimeDialogVisible = ref(false)
+const addTime = () => {
+  operateType.value = 'add'
+  addTimeDialogVisible.value = true
+  checkList.value = []
+  checkListOringe.value = []
+  timingForm.value.startTime = ''
+  timingForm.value.shutTime = ''
 }
 
-const selectionList=ref([])
-const checkListChange=(v)=>{
+const selectionList = ref([])
+const checkListChange = (v) => {
   // debugger
   selectionList.value.push(v)
-  
+
   // console.log(selectionList.value.indexOf('星期一'))
 }
 
 // 添加时间弹框中的确定按钮
-const addTimeConfirm=()=>{
-  addTimeDialogVisible.value=true
+const addTimeConfirm = () => {
+  addTimeDialogVisible.value = true
 
-  if(operateType.value=='add'){
-    if(checkList.value.length<=0){
+  if (operateType.value == 'add') {
+    if (checkList.value.length <= 0) {
       ElMessage.error('请至少选择一个日期！')
       return
     }
-    if (!(timingForm.value.startTime  && timingForm.value.shutTime )) {
+    if (!(timingForm.value.startTime && timingForm.value.shutTime)) {
       ElMessage.error('开机时间和关机时间不能为空！')
       return
-    } 
+    }
   }
-  
-  if (
-    timingForm.value.startTime >= timingForm.value.shutTime
-  ) {
+
+  if (timingForm.value.startTime >= timingForm.value.shutTime) {
     ElMessage.error('关机时间需大于开机时间！')
     return
-  } 
+  }
   // 调用定时开关接口
   timingSwitchRequest()
-  
 }
 
-
-const closeDialog=()=>{
-  addTimeDialogVisible.value=false
-
+const closeDialog = () => {
+  addTimeDialogVisible.value = false
 }
 
-const showList=ref([])
-const createShowList=(arr)=>{
-   var showList=[]
-   for(var i=0;i<arr.length;i++){
-      let obj={dayOfWeeks:[],startTime:'',shutTime:''}
-      arr[i].forEach((item,index)=>{
-        if(index==0){
-           obj.startTime=item.startTime
-           obj.shutTime=item.shutTime
-        }
-         obj.dayOfWeeks.push(item.dayOfWeek)
-        
-      }) 
-      if(obj.dayOfWeeks.length>0) {
-        showList.push(obj)
+const showList = ref([])
+const createShowList = (arr) => {
+  var showList = []
+  for (var i = 0; i < arr.length; i++) {
+    let obj = { dayOfWeeks: [], startTime: '', shutTime: '' }
+    arr[i].forEach((item, index) => {
+      if (index == 0) {
+        obj.startTime = item.startTime
+        obj.shutTime = item.shutTime
       }
-      
-   }
-   return showList
-}
-
-const isDisabledDayOfWeek=(dayOfWeek)=>{
-  let bool=false
-    for(var  i=0;i<showList.value.length;i++){
-      if(showList.value[i].dayOfWeeks.indexOf(dayOfWeek)>-1){
-        bool=true
-        break
-      }
+      obj.dayOfWeeks.push(item.dayOfWeek)
+    })
+    if (obj.dayOfWeeks.length > 0) {
+      showList.push(obj)
     }
-  if(operateType.value=='edit'){
-    if(checkListOringe.value.indexOf(dayOfWeek)>-1){
-        bool=false
-        
-      }
-    
+  }
+  return showList
+}
+
+const isDisabledDayOfWeek = (dayOfWeek) => {
+  let bool = false
+  for (var i = 0; i < showList.value.length; i++) {
+    if (showList.value[i].dayOfWeeks.indexOf(dayOfWeek) > -1) {
+      bool = true
+      break
+    }
+  }
+  if (operateType.value == 'edit') {
+    if (checkListOringe.value.indexOf(dayOfWeek) > -1) {
+      bool = false
+    }
   }
   return bool
 }
 
-const operateType=ref('')
-const checkList=ref([])
+const operateType = ref('')
+const checkList = ref([])
 // 2.2 定时开关机
-const timingForm=ref({
-  startTime:'',
-  shutTime:"",
+const timingForm = ref({
+  startTime: '',
+  shutTime: ''
 })
 // 修改时间
-const checkListOringe=ref([])
-const editTime=(item)=>{
+const checkListOringe = ref([])
+const editTime = (item) => {
   // debugger
-  operateType.value='edit'
-  addTimeDialogVisible.value=true
-  checkList.value=JSON.parse(JSON.stringify(item.dayOfWeeks)) 
+  operateType.value = 'edit'
+  addTimeDialogVisible.value = true
+  checkList.value = JSON.parse(JSON.stringify(item.dayOfWeeks))
 
-  checkListOringe.value=JSON.parse(JSON.stringify(item.dayOfWeeks)) 
-  timingForm.value.startTime=item.startTime
-  timingForm.value.shutTime=item.shutTime
+  checkListOringe.value = JSON.parse(JSON.stringify(item.dayOfWeeks))
+  timingForm.value.startTime = item.startTime
+  timingForm.value.shutTime = item.shutTime
 }
 
 // 删除运行规则
-const deleteItem=(index)=>{
+const deleteItem = (index) => {
   // debugger
- let arr=[]
- let dayOfWeeks=[]
- for(var i=0;i<showList.value.length;i++){
-    if(i==index){
-      for(let j=0;j<showList.value[i].dayOfWeeks.length;j++){
+  let arr = []
+  let dayOfWeeks = []
+  for (var i = 0; i < showList.value.length; i++) {
+    if (i == index) {
+      for (let j = 0; j < showList.value[i].dayOfWeeks.length; j++) {
         dayOfWeeks.push(showList.value[i].dayOfWeeks[j])
         arr.push({
-          dayOfWeek:showList.value[i].dayOfWeeks[j],
-          startTime:'',
-          shutTime:'',
-        })  
+          dayOfWeek: showList.value[i].dayOfWeeks[j],
+          startTime: '',
+          shutTime: ''
+        })
       }
-    }else{
-      for(let j=0;j<showList.value[i].dayOfWeeks.length;j++){
+    } else {
+      for (let j = 0; j < showList.value[i].dayOfWeeks.length; j++) {
         dayOfWeeks.push(showList.value[i].dayOfWeeks[j])
         arr.push({
-          dayOfWeek:showList.value[i].dayOfWeeks[j],
-          startTime:showList.value[i].startTime,
-          shutTime:showList.value[i].shutTime,
-        })  
+          dayOfWeek: showList.value[i].dayOfWeeks[j],
+          startTime: showList.value[i].startTime,
+          shutTime: showList.value[i].shutTime
+        })
       }
     }
- }
-  const dayList= ['星期一','星期二', '星期三','星期四','星期五', '星期六', '星期日']
-  dayList.forEach((dayOfWeek)=>{
-  if(dayOfWeeks.indexOf(dayOfWeek)<=-1){
-     arr.push({
-        "dayOfWeek": dayOfWeek,
-        "startTime": '',
-        "shutTime": '',
-      })
   }
-})
+  const dayList = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+  dayList.forEach((dayOfWeek) => {
+    if (dayOfWeeks.indexOf(dayOfWeek) <= -1) {
+      arr.push({
+        dayOfWeek: dayOfWeek,
+        startTime: '',
+        shutTime: ''
+      })
+    }
+  })
   ElMessageBox.confirm('确定删除当前运行时间规则？', '删除', {
-      cancelButtonClass:'ExitCancelBtn',
-      confirmButtonText: '确定',
-      type: 'warning',
-      customClass: 'blue-button' // 应用自定义样式类
-    }).then(() => {
-       
+    cancelButtonClass: 'ExitCancelBtn',
+    confirmButtonText: '确定',
+    type: 'warning',
+    customClass: 'blue-button' // 应用自定义样式类
+  })
+    .then(() => {
       // 调用定时开关接口
       releaseRequest
-      .post('/TerminalCtrl/editTerminalTask', {
-        "roomName": roomName,
-        "taskRegularList":arr,
-      })
-      .then((response) => {
-        // debugger
-        if ( response.data.repCode == 200) {
-          console.log('定时开、关机任务删除成功:', response.data.result)
-          // 关闭弹框
-          
-          closeDialog()
-          getTimingRequest()
-          ElMessage({
-            type: 'success',
-            message: '定时开、关机任务删除成功',
-          })
-        }else{
-          // 否则删除showList最后一位
-          showList.value.splice(showList.value.length-1,1)
-          
-          ElMessage({
-            type: 'error',
-            message: response.data.repMsg,
-          })
-          addTimeDialogVisible.value=false
-        }
-        
-      })
-      .catch((error) => {
-        console.log('定时开、关机任务删除失败:', error)
-        ElMessage.error('定时开、关机任务删除失败！')
-      })
-    })
-    .catch(() => {
-      
-    })
-  
-}
+        .post('/TerminalCtrl/editTerminalTask', {
+          roomName: roomName,
+          taskRegularList: arr
+        })
+        .then((response) => {
+          // debugger
+          if (response.data.repCode == 200) {
+            console.log('定时开、关机任务删除成功:', response.data.result)
+            // 关闭弹框
 
+            closeDialog()
+            getTimingRequest()
+            ElMessage({
+              type: 'success',
+              message: '定时开、关机任务删除成功'
+            })
+          } else {
+            // 否则删除showList最后一位
+            showList.value.splice(showList.value.length - 1, 1)
+
+            ElMessage({
+              type: 'error',
+              message: response.data.repMsg
+            })
+            addTimeDialogVisible.value = false
+          }
+        })
+        .catch((error) => {
+          console.log('定时开、关机任务删除失败:', error)
+          ElMessage.error('定时开、关机任务删除失败！')
+        })
+    })
+    .catch(() => {})
+}
 </script>
 
 <style lang="less" scoped>
-ul{
+ul {
   padding: 0;
- li{
-  list-style: none;
-  
+  li {
+    list-style: none;
   }
 }
 .edit {
   height: 100%;
-  margin-left: 24px;
-  margin-right: 24px;
+  // margin-left: 24px;
+  // margin-right: 24px;
   // 1.顶部
   .top {
     height: 60px;
@@ -850,29 +841,29 @@ ul{
           }
         }
       }
-      
+
       // 2.2 定时开关机
       .timingSwitch {
-        .top1{
+        .top1 {
           margin-top: 25px;
         }
-        .controlInfo{
+        .controlInfo {
           display: flex;
           justify-content: flex-start;
           align-items: center;
           flex-wrap: wrap;
-          &>div{
+          & > div {
             margin-top: 24px;
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            :deep(.el-select){
-              .el-input{
-                 max-width: 200px; 
+            :deep(.el-select) {
+              .el-input {
+                max-width: 200px;
               }
             }
           }
-          &>div:nth-child(1){
+          & > div:nth-child(1) {
             width: 96px;
             height: 24px;
             margin-right: 24px;
@@ -880,41 +871,38 @@ ul{
             font-size: 16px;
             text-align: left;
             font-family: SourceHanSansSC-regular;
-            
           }
-          &>div:nth-child(2){
+          & > div:nth-child(2) {
             //  margin-left: 24px;
-             margin-right: 34px;
+            margin-right: 34px;
           }
-          &>div:nth-child(3){
-            .el-button:nth-child(1){
+          & > div:nth-child(3) {
+            .el-button:nth-child(1) {
               // border:0px;
               // background-color: #8AC7FF;
               background-color: rgba(24, 144, 255, 1);
             }
-            
-          } 
+          }
         }
 
-        .controlInfo2{
+        .controlInfo2 {
           margin-top: 24px;
           ul {
-            
-            li{
+            li {
               height: 32px;
               margin-bottom: 14px;
               display: flex;
               justify-content: flex-start;
               align-items: center;
-              
-              .el-icon{
+
+              .el-icon {
                 margin-right: 14px;
                 // svg{
                 //   color: rgba(245, 34, 45, 1);
-                  
+
                 // }
-              } 
-              .rangeInfo{
+              }
+              .rangeInfo {
                 width: 400px;
                 height: 32px;
                 line-height: 32px;
@@ -929,19 +917,17 @@ ul{
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                &>div{
+                & > div {
                   margin-left: 14px;
                 }
-                
               }
-              .addItem{
-                 height: 20px;
-                  color: rgba(24, 144, 255, 1);
-                  font-size: 14px;
-                  text-align: left;
-                  font-family: SourceHanSansSC-regular;
+              .addItem {
+                height: 20px;
+                color: rgba(24, 144, 255, 1);
+                font-size: 14px;
+                text-align: left;
+                font-family: SourceHanSansSC-regular;
               }
-
             }
           }
         }
@@ -980,7 +966,6 @@ ul{
             text-align: center;
             font-family: PingFangSC-regular;
           }
-         
         }
       }
       .el-dialog__footer {
@@ -1003,7 +988,7 @@ ul{
       }
     }
   }
-   
+
   // 添加时间弹框
   .addTimeDialog {
     :deep(.el-dialog) {
@@ -1013,12 +998,12 @@ ul{
       }
       .el-dialog__body {
         height: 326px;
-        .top{
+        .top {
           display: flex;
           flex-direction: column;
-         
-          .top1{
-            &>div:nth-child(1){
+
+          .top1 {
+            & > div:nth-child(1) {
               width: 100%;
               height: 24px;
               color: rgba(51, 51, 51, 1);
@@ -1027,11 +1012,11 @@ ul{
               text-align: left;
               font-family: SourceHanSansSC-regular;
             }
-            .el-checkbox-group{
+            .el-checkbox-group {
               display: flex;
               flex-wrap: wrap;
-              .el-checkbox.is-bordered{
-               width: 70px;
+              .el-checkbox.is-bordered {
+                width: 70px;
                 height: 32px;
                 line-height: 32px;
                 border-radius: 4px;
@@ -1040,30 +1025,29 @@ ul{
                 font-size: 14px;
                 text-align: center;
                 font-family: Roboto;
-                border: 0px ;
+                border: 0px;
 
                 margin-right: 14px;
                 margin-bottom: 10px;
-                .el-checkbox__input{
+                .el-checkbox__input {
                   position: absolute;
                   right: 0;
                   bottom: 0;
 
-                  .el-checkbox__inner{
-                     border: 0px;
-                     background-color: transparent;
+                  .el-checkbox__inner {
+                    border: 0px;
+                    background-color: transparent;
                   }
                 }
-                .el-checkbox__input.is-checked .el-checkbox__inner{
+                .el-checkbox__input.is-checked .el-checkbox__inner {
                   background-color: rgba(24, 144, 255, 1);
                   border: 1px solid rgba(24, 144, 255, 1);
                 }
               }
             }
           }
-          .top2{
-            
-            &>div:nth-child(1){
+          .top2 {
+            & > div:nth-child(1) {
               width: 100%;
               height: 24px;
               color: rgba(51, 51, 51, 1);
@@ -1072,20 +1056,17 @@ ul{
               text-align: left;
               font-family: SourceHanSansSC-regular;
             }
-            .el-select{
+            .el-select {
               // width: 180px!important;
-              .el-input{
-                width: 140px; 
+              .el-input {
+                width: 140px;
 
-                .el-input__wrapper{
-               
-
+                .el-input__wrapper {
                 }
               }
             }
           }
         }
-        
       }
       .el-dialog__footer {
         text-align: center;

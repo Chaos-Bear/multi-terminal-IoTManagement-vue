@@ -220,13 +220,13 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive, onMounted, computed} from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
-import {tabletRequest } from '@/utils/server.js'
+import { tabletRequest } from '@/utils/server.js'
 import { createWebSocket } from '@/utils/websocket.js'
 var wsbaseURL = import.meta.env.VITE_BASE_URL4
 
@@ -321,7 +321,7 @@ const openScanDevice = () => {
 // debugger
 var websocket = createWebSocket(wsbaseURL + '/websocket/' + repMsg, {
   onopen(e) {
-    console.log('建立了websocket连接',e)
+    console.log('建立了websocket连接', e)
 
     // 重新调用会议室最新消息列表-----------------------
   },
@@ -337,8 +337,8 @@ var websocket = createWebSocket(wsbaseURL + '/websocket/' + repMsg, {
       list.data.forEach((item) => {
         let it = getItemById(tableData.value, item.tabletID, 'tabletID')
         if (!it) {
-           tableData.value.push(item)
-        } 
+          tableData.value.push(item)
+        }
       })
 
       // console.log('接收设备扫描信息：', tableData)
@@ -447,7 +447,6 @@ const submitHandOperated = () => {
   form.tabletNames.forEach((item) => {
     let it = getItemById(tableData.value, item.tabletID, 'tabletID')
     if (it) {
-
     } else {
       tableData.value.push(item)
     }

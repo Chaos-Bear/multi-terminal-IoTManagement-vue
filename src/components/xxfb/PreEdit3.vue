@@ -1,49 +1,5 @@
 <template>
-  <div class="roomInfo">
-    <!-- 顶部 -->
-    <div class="A2_top">
-      <div
-        id="liangdu"
-        :style="
-          props.form.brightNess >= 100
-            ? 'background-color:rgba(255, 153, 89, 1);box-shadow: 0px 0px 10px 0px rgba(255, 153, 89, 1);'
-            : ''
-        "
-      ></div>
-    </div>
-    <!--一层  -->
-    <div class="first" id="imageback">
-      <div class="first1">
-        <span id="newdate" class="newdate">{{ time ? time : '2023年11月1日 上午8:00' }}</span>
-        <div class="title" id="room">{{ props.form.roomName || roomName }}会议室</div>
-        <div class="ch">MEETING ROOM</div>
-      </div>
-      <div class="first2">
-        <div class="first2-1">
-          <div>
-            <!-- °C -->
-            <div id="temp">
-              <span>{{ props.form.roomTemp ? props.form.roomTemp : '21.6' }}</span>
-              <span style="font-size: 20px"> °C </span>
-            </div>
-            <span>温度</span>
-          </div>
-          <div>
-            <div id="shidu">
-              <span>{{ props.form.roomHum ? props.form.roomHum : '30.7' }}</span>
-              <span style="font-size: 20px"> %RH </span>
-            </div>
-            <span>湿度</span>
-          </div>
-        </div>
-        <div class="first2-2"></div>
-        <div class="first2-3">
-          <!-- <div id="status">空闲中</div> -->
-          <div id="status">{{ props.form.meetStatus == 1 ? '使用中' : '空闲中' }}</div>
-          <span>状态</span>
-        </div>
-      </div>
-    </div>
+  <div class="roomInfo" :style="{ backgroundImage: `url(${backgroundImageUrl})` }">
     <!-- 二层 -->
     <div class="second" id="second">
       <!-- 1.有会议 -->
@@ -531,61 +487,14 @@
         class="noMeeting"
       >
         <!-- 当前暂无<br />会议信息 -->
-        当前暂无会议
-      </div>
-    </div>
-    <!-- 三层 -->
-    <div class="third">
-      <!-- 导览图 *****************-->
-      <div v-if="props.form && props.form.imgShow && props.form.imgShow == '1'">
-        <!-- 二楼  -->
-        <SecondFloorHengf
-          v-if="isSecondFloorHengf"
-          :roomName="props.form.roomName"
-          :form="form"
-        ></SecondFloorHengf>
-      </div>
-      <!-- 轮播图 -->
-      <div class="swiper-container" id="swiper" v-else>
-        <!-- 解决carousel的数据只有两条时，循环的方向会一左一右 @change="isVideo"-->
-        <div :class="[{ twoBox: isTwo }, { elseBox: !isTwo }]">
-
-        <el-carousel
-          indicator-position="none"
-          :interval="props.form.playGap"
-          
-          :autoplay="autoplay"
-          ref="carouselRef"
-        >
-          <el-carousel-item v-for="(item, i) in mediaAreaList" :key="i">
-            <!-- 图片 -->
-            <template v-if="item.obsFileType == '1'">
-              <img v-if="item.url" :src="item.url" />
-              {{ item.url }}33333333
-            </template>
-            <template v-else>
-              <video
-                v-if="item.base64"
-                width="684"
-                height="385"
-                :src="item.base64"
-                controls
-                :id="item.domID"
-                
-                :loop="mediaAreaList.length == 1"
-              ></video>
-              <div v-else style="transform: translate(0px, 180px)" v-loading="true"></div>
-            </template>
-          </el-carousel-item>
-        </el-carousel>
-        </div>
+        <!-- 当前暂无会议 -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onBeforeUnmount, watch, nextTick } from 'vue'
+import { ref, computed, onBeforeUnmount, watch } from 'vue'
 // import {} from 'element-plus'
 import { useRoute } from 'vue-router'
 const route = useRoute()
@@ -593,6 +502,8 @@ const route = useRoute()
 import SecondFloorHengf from '@/components/xxfb/SecondFloorHengf.vue'
 
 import {} from 'element-plus'
+
+import bgimg from '@/assets/xxfb/pubPage3/bg.png'
 
 const roomName = route.query.roomName
 // const roomIdzdy = route.query.roomID
@@ -603,7 +514,7 @@ const props = defineProps({
   form: {
     type: Object,
     default() {
-      return { mediaAreaList: [] }
+      return {}
     }
   }
 })
@@ -649,10 +560,6 @@ const isSecondFloorHengf = computed(() => {
   }
 })
 
-// debugger
-// watch(()=>{
-// //    props.form.line1Text
-// })
 //1.获取最新时间，右上角展示
 const time = ref('')
 //console.log(nd)
@@ -671,129 +578,21 @@ var timer = window.setInterval(function () {
   time.value = y + '年' + M + '月' + d + '日' + '  ' + '  ' + h + ':' + m + ':' + s
 }, 1000)
 
-const autoplay = ref(true)
-// debugger
-const carouselRef = ref(null)
-const videoRef = ref(null)
-// const isVideo = (v) => {
-//   if (props.form && mediaAreaList.value.length > 0 && mediaAreaList.value[v].obsFileType == '2') {
-//     autoplay.value = false
-//     // debugger
-//     document.querySelectorAll("video").forEach((item)=>{
-//       item.pause()
-//     })
-//     var domVideo1 = document.getElementById(mediaAreaList.value[v].domID)
-
-//     if (domVideo1) {
-//       domVideo1.setAttribute('autoplay', true)
-//       domVideo1.play().catch((err)=>{
-//         console.log(err)
-//       })
-//       // domVideo1.addEventListener(
-//       //   'timeupdate',
-//       //   function () {
-//       //     //结束
-//       //     console.log('正在播放')
-//       //     domVideo1.setAttribute('muted',false)
-//       //   },
-//       //   false
-//       // )
-//       domVideo1.addEventListener(
-//         'ended',
-//         function () {
-//           //结束
-//           console.log('播放结束')
-//           carouselRef.value.next()
-//           autoplay.value = true
-//         },
-//         false
-//       )
-//     }
-//   } else {
-//     autoplay.value = true
-//     // document.getElementById(mediaAreaList.value[v].domId).pause()
-//   }
-// }
 
 onBeforeUnmount(() => {
   clearInterval(timer)
-
-  document.querySelectorAll("video").forEach((item)=>{
-    item.pause()
-  })
+  
 })
 
-// 轮播图一左一右 切换问题
-const isTwo = ref(false)
-
-const mediaAreaList = ref([])
+const backgroundImageUrl = ref(bgimg)
 watch(
   () => props.form.mediaAreaList,
   () => {
-    //数据返回值
-    // debugger
-    let res = props.form.mediaAreaList
-    //假如长度为2时
-    if (res.length === 2 && (res[0].obsFileType=='1'&&res[1].obsFileType=='1')) {
-      isTwo.value = true
-      //将2条数据复制一份为4条数据
-
-      mediaAreaList.value = res.concat(res)
+    let mediaAreaList = props.form.mediaAreaList
+    if (mediaAreaList && mediaAreaList.length > 0) {
+      backgroundImageUrl.value = mediaAreaList[0].url ? mediaAreaList[0].url : bgimg
     } else {
-      isTwo.value = false
-    //其他时候正常赋值
-    mediaAreaList.value = res
-    }
-  },
-  { deep: true }
-)
-
-let timerSwiper
-watch(
-  () => mediaAreaList.value,
-  () => {
-    if (
-      mediaAreaList.value.length > 0 &&mediaAreaList.value.length > 0 &&
-      mediaAreaList.value[0].obsFileType == 2 &&
-      mediaAreaList.value[0].base64 != ''
-    ) {
-      // debugger
-      clearTimeout(timerSwiper)
-      timerSwiper = setTimeout(() => {
-        autoplay.value = false
-
-        var domVideo1 = document.getElementById(mediaAreaList.value[0].domID)
-
-        if (domVideo1) {
-          console.log(domVideo1)
-          // domVideo1.setAttribute('muted', true)
-          domVideo1.setAttribute('autoplay', true)
-          // if (domVideo1.getAttribute('muted') == true) {
-            domVideo1.play().catch((err)=>{
-              console.log(err)
-            })
-          // }
-
-          domVideo1.addEventListener(
-            'ended',
-            function () {
-              //结束
-              console.log('播放结束')
-              carouselRef.value.next()
-              autoplay.value = true
-            },
-            false
-          )
-        }
-      }, 0)
-    }
-
-    if (
-      mediaAreaList.value &&
-      mediaAreaList.value.length > 0 &&
-      mediaAreaList.value[0].obsFileType == 1 
-    ) {
-      autoplay.value=true
+      backgroundImageUrl.value = bgimg
     }
   },
   { deep: true }
@@ -801,32 +600,6 @@ watch(
 </script>
 
 <style lang="less" scoped>
-.twoBox {
-  width: 100%;
-  height: 100%;
-
-  .carouselBox {
-    width: 100%;
-
-    //将复制出来的数据的下标隐藏
-    :deep(.el-carousel__indicators) {
-      & > li:nth-child(3),
-      & > li:nth-child(4) {
-        display: none;
-      }
-    }
-  }
-}
-
-.elseBox {
-  width: 100%;
-  height: 100%;
-
-  .carouselBox {
-    width: 100%;
-  }
-}
-
 body {
   margin: 0 auto;
   background-color: rgba(44, 105, 101, 1);
@@ -847,7 +620,7 @@ section {
   // width: 100%;
   height: 1280px;
   margin: 0 auto;
-  background-color: rgba(44, 105, 101, 1);
+  // background-color: rgba(44, 105, 101, 1);
   // zoom: 0.53;
   // zoom: 1;
   display: flex;
@@ -858,6 +631,10 @@ section {
   width: 835.85px;
   transform: scale(0.53);
   transform-origin: left top;
+  // background-image: url(@/assets/xxfb/pubPage3/bg.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  justify-content: center;
 }
 
 .roomInfo .A2_top {
@@ -879,135 +656,13 @@ section {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.roomInfo .first {
-  width: 688px;
-  height: 425px;
-  margin: 0px 10px 10px 10px;
-  background-size: 100% 100%;
-  background-image: url(@/assets/xxfb/bk.png);
-  background-repeat: no-repeat;
-}
-
-.roomInfo .first .first1 {
-  width: 100%;
-  height: 236px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.roomInfo .first .first1 .newdate {
-  height: 36px;
-  padding-top: 6px;
-  margin-left: 396px;
-  opacity: 0.8;
-  color: rgba(255, 255, 255, 1);
-  font-size: 24px;
-  text-align: left;
-  font-family: SourceHanSansSC-regular;
-}
-
-.roomInfo .first .first1 .title {
-  /*width: 333px;*/
-  height: 70px;
-  margin-top: 12px;
-  margin-left: 34px;
-  color: rgba(255, 255, 255, 1);
-  font-size: 48px;
-  font-weight: 800;
-  text-align: left;
-  font-family: SourceHanSansSC-black;
-}
-
-.roomInfo .first .first1 .ch {
-  width: 368px;
-  height: 56px;
-  margin-top: 14px;
-  margin-left: 30px;
-  color: rgba(255, 255, 255, 0.1);
-  font-size: 43px;
-  font-weight: 800;
-  text-align: left;
-  font-family: SourceHanSansSC-black;
-}
-
-.roomInfo .first .first2 {
-  width: 100%;
-  height: 188px;
-  display: flex;
-  justify-content: center;
-}
-
-.roomInfo .first .first2 > div {
-  width: 50%;
-  height: 158px;
-  text-align: center;
-}
-
-.roomInfo .first .first2 > .first2-1 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.roomInfo .first .first2 > .first2-1 > div {
-  text-align: center;
-  width: 160px;
-}
-// .roomInfo .first .first2 > .first2-1 > div > div {
-//   line-height: 70px;
-//   margin-top: 34px;
-//   margin-bottom: 14px;
-//   color: rgba(255, 255, 255, 1);
-//   font-size: 48px;
-//   font-weight: 800;
-//   text-align: center;
-//   font-family: SourceHanSansSC-black;
-// }
-.roomInfo .first .first2 > .first2-1 > div > div {
-  line-height: 70px;
-  margin-top: 34px;
-  span:nth-child(1) {
-    color: rgba(255, 255, 255, 1);
-    font-size: 48px;
-    font-weight: 800;
-    text-align: center;
-    font-family: SourceHanSansSC-black;
-  }
-}
-
-.roomInfo .first .first2 .first2-2 {
-  width: 1px;
-  height: 100px;
-  margin-top: 50px;
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.roomInfo .first .first2 > .first2-3 > div {
-  line-height: 70px;
-  margin-top: 34px;
-  margin-bottom: 14px;
-  color: rgba(255, 255, 255, 1);
-  font-size: 48px;
-  font-weight: 800;
-  text-align: center;
-  font-family: SourceHanSansSC-black;
-}
-
-.roomInfo .first .first2 span {
-  width: 56px;
-  height: 41px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 28px;
-  text-align: center;
-  font-family: SourceHanSansSC-medium;
-}
-
 .roomInfo .second {
   width: 688px;
-  height: 392px;
+  // height: 392px;
   margin: 0px 10px 10px 10px;
   overflow-y: hidden;
   border: 1px solid transparent;
-  background-color: rgba(255, 255, 255, 0.08);
+  // background-color: rgba(255, 255, 255, 0.08);
 
   display: flex;
   flex-direction: column;
@@ -1071,46 +726,5 @@ section {
   font-size: 68px;
   text-align: center;
   font-family: SourceHanSansSC-black;
-}
-
-.roomInfo .third {
-  width: 688px;
-  height: 385px;
-  overflow: hidden;
-  position: relative;
-  // margin: 0px 10px 10px 10px;
-  // margin: 0px 10px 10px 0px;
-  // display: flex;
-  // align-items: center;
-}
-
-ul,
-li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-/*轮播图*/
-.swiper-container {
-  width: 688px;
-  height: 385px;
-  // border: 1px solid red;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  :deep(.el-carousel) {
-    height: 385px;
-    .el-carousel__container {
-      height: 100%;
-      img {
-        width: 688px;
-        height: 100%;
-        margin: 0 !important;
-        vertical-align: top;
-      }
-    }
-  }
 }
 </style>

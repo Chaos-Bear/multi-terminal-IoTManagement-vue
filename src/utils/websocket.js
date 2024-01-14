@@ -18,12 +18,11 @@ function createWebSocket(url, events) {
   } catch (e) {
     console.log('catch' + e)
     reconnect(urlPath, events)
-  } 
-    if (websocket) {
-      return websocket
-    }
-    return null
-  
+  }
+  if (websocket) {
+    return websocket
+  }
+  return null
 }
 
 function init(websocket, urlPath, events) {
@@ -62,8 +61,8 @@ function init(websocket, urlPath, events) {
     // if (event.code == 1000) {
     //   return
     // } else {
-      heartCheck.reset() //心跳检测
-      reconnect(urlPath, events)
+    heartCheck.reset() //心跳检测
+    reconnect(urlPath, events)
     // }
   }
 
@@ -126,7 +125,7 @@ var heartCheck = {
       //这里发送一个心跳，后端收到后，返回一个心跳消息，
       //onmessage拿到返回的心跳就说明连接正常
       websocket.send('HeartBeat')
-      console.log('发送心跳给服务端','HeartBeat')
+      console.log('发送心跳给服务端', 'HeartBeat')
       self.serverTimeoutObj = setTimeout(function () {
         // 如果超过一定时间还没重置，说明后端主动断开了
         console.log('关闭服务')

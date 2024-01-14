@@ -68,11 +68,15 @@
              :min-scale="0.2" 
              :preview-src-list="imgList"
              :initial-index="4" -->
-            <el-image 
-             :src="item.roomImg?('data:image/jpg;base64,'+item.roomImg):'/src/assets/xxfb/screenshots/13.png'" 
-             @click="getmonitorList(item)"
-             lazy 
-             />
+            <el-image
+              :src="
+                item.roomImg
+                  ? 'data:image/jpg;base64,' + item.roomImg
+                  : '/src/assets/xxfb/screenshots/13.png'
+              "
+              @click="getmonitorList(item)"
+              lazy
+            />
             <div class="roomName">{{ item.roomName }}信息发布屏</div>
           </div>
         </div>
@@ -100,7 +104,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { reactive, ref, onMounted } from 'vue'
-import {    } from 'element-plus'
+import {} from 'element-plus'
 const router = useRouter()
 // import axios from 'axios'
 
@@ -128,9 +132,9 @@ const getFloorandAddList = () => {
     })
 }
 // 会议室列表接口
-const isLoading=ref(false)
+const isLoading = ref(false)
 const getList = () => {
-  isLoading.value=true
+  isLoading.value = true
   releaseRequest
     .post('/IOTRoomCrtl/queryIotRoomScreenList', {
       floor: searchform.floor,
@@ -145,16 +149,16 @@ const getList = () => {
       // debugger
       // 总条数
       total.value = res.data.totalRecord
-      
+
       //使用push方法:结构后再赋值
-      meetingList.value=res.data.data
+      meetingList.value = res.data.data
 
       // for( var i=0;i<=meetingList.value.length;i++){
       //   // debugger
       //   var imgSrc
       //   if(meetingList.value[i].roomImg==''){
       //     imgSrc=defaultImg
-         
+
       //   }else{
       //      imgSrc='data:image/jpg;base64,'+meetingList.value[i].roomImg
       //   }
@@ -165,8 +169,8 @@ const getList = () => {
     .catch((error) => {
       console.log('会议室列表查询失败:', error)
     })
-    .finally(()=>{
-      isLoading.value=false
+    .finally(() => {
+      isLoading.value = false
     })
 }
 onMounted(() => {
@@ -281,7 +285,7 @@ const refresh = () => {
           width: 100%;
           height: 100%;
         }
-        .el-image{
+        .el-image {
           width: 65%;
           height: 100%;
         }

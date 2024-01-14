@@ -29,7 +29,7 @@
   </div>
 </template>
 <script setup>
-import { ref,  watch } from 'vue'
+import { ref, watch } from 'vue'
 
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'

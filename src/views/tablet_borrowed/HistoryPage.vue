@@ -103,10 +103,10 @@
 </template>
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-import {  } from 'vue-router'
-import { } from 'element-plus'
+import {} from 'vue-router'
+import {} from 'element-plus'
 
-import {  tabletRequest } from '@/utils/server.js'
+import { tabletRequest } from '@/utils/server.js'
 
 // table列表下拉刷新
 import { default as vElTableInfiniteScroll } from 'el-table-infinite-scroll'
@@ -120,7 +120,7 @@ var tm =
 
 var startTime1 = ty + '-' + tm + '-01' + ' 00:00:00'
 var endTime1
-if (tm == 1 || tm ==3 || tm ==5 || tm ==7 || tm ==8 || tm ==10 || tm ==12) {
+if (tm == 1 || tm == 3 || tm == 5 || tm == 7 || tm == 8 || tm == 10 || tm == 12) {
   endTime1 = ty + '-' + tm + '-31' + ' 23:59:59'
 } else if (tm == 2) {
   endTime1 = ty + '-' + tm + '-28' + ' 23:59:59'
@@ -295,7 +295,6 @@ const tableData = ref([
 
 //初始化渲染
 onMounted(() => {})
-
 </script>
 <style lang="less">
 .el-popper.dzy_datePickers {

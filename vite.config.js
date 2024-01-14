@@ -38,7 +38,18 @@ export default defineConfig({
       //   target: 'http://39.105.179.38:8080', // 指定代理服务器
       //   changeOrigin: true,
       //   rewrite: (path) => path.replace(/^\/sweet-api/, '')
-      // }
+      // },
+      '/dfs-ui': {
+        target: 'http://d-nari-test.sgepri.sgcc.com.cn:90', // 指定代理服务器
+        // target: 'https://d-nari-test.sgepri.sgcc.com.cn', // 指定代理服务器
+        changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/dfs-ui/, '')
+      },
+      '/common-openapi-oauth':{
+        target: 'http://d-nari.sgepri.sgcc.com.cn:90', // 指定代理服务器
+        changeOrigin: true,
+      }
+      
     },
     watch: {},
   }

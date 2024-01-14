@@ -1,7 +1,6 @@
 import axios from 'axios'
 // import { ElLoading } from 'element-plus'
 
-
 // import {useShowLoadingStore} from '@/stores/user.js'
 
 // const store = useShowLoadingStore()
@@ -13,8 +12,6 @@ function request(config) {
     headers: config.headers,
     ...config
   })
-  
-  
 
   // var loadingInstance
   //请求拦截器
@@ -27,16 +24,12 @@ function request(config) {
       // if(token){
       //    config.headers.Authorization=`Bearer ${token}`
       // }
-      
-      
-      
+
       return config
     },
     function (error) {
       // Do something with request error
 
-
-      
       return Promise.reject(error)
     }
   )
@@ -47,8 +40,7 @@ function request(config) {
       // Any status code that lie within the range of 2xx cause this function to trigger
 
       // loadingInstance.close()
-      
-     
+
       return response
     },
     function (error) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="edit" >
+  <div class="edit">
     <!-- 1. 顶部 -->
     <div class="top">
       <div class="pubTime">
@@ -34,13 +34,18 @@
       <!-- $data[testCondition ? 'name' : 'place'] -->
       <!--发布状态 publishStatus  待发布1 3 4    已发布 2  撤销 5-->
       <div class="selectInfo">
-        <el-select v-model="form.meetID" placeholder="请选择会议" style="width: auto" popper-class="zdy_selectedit">
+        <el-select
+          v-model="form.meetID"
+          placeholder="请选择会议"
+          style="width: auto"
+          popper-class="zdy_selectedit"
+        >
           <el-option
             v-for="item in meetingList"
             :key="item.meetID"
             :label="item.meetName"
             :value="item.meetID"
-          > 
+          >
             <!-- 方法一 -->
             <template v-if="item.meetID">
               <template v-if="item.publishStatus == '2'">
@@ -60,7 +65,7 @@
               </template>
             </template>
             <template v-else>
-              <span style="float: center;color:lightgray">点击此处创建自定义会议</span>
+              <span style="float: center; color: lightgray">点击此处创建自定义会议</span>
             </template>
             <!-- 方法二 -->
             <!-- <span style="float: left;margin-right:10px;">
@@ -70,7 +75,7 @@
                 </template>
               </template>
             </span> -->
-            <span style=" ">{{ item.meetName }}</span>
+            <span style="">{{ item.meetName }}</span>
           </el-option>
         </el-select>
       </div>
@@ -83,10 +88,11 @@
           <img src="@/assets/xxfb/3.png" />
           <div>发布</div>
         </div>
-        <!-- <div @click="router.push('/meetingUserList?roomName=' + roomName + '&roomID=' + roomIdzdy)">
+        <!-- <div @click="router.push('/meetingUserList?roomName=' + roomName + '&roomID=' + roomIdzdy)"> -->
+        <div @click="goBack">
           <img src="@/assets/xxfb/4.png" />
           <div>返回</div>
-        </div> -->
+        </div>
       </div>
     </div>
     <!-- 2. 预览及编辑区 v-if="meetingList.length > 0"-->
@@ -94,14 +100,39 @@
       <!-- 2.1 预览 -->
       <el-scrollbar height="100%" width="443px" class="preScrollBar">
         <div class="pre">
-          <div class="preTop">预览效果：</div>
+          <!-- <div class="preTop">预览效果：</div> -->
+          <div class="preTop">
+            <div>样式选择：</div>
+            <template v-if="form.releaseTempl && form.releaseTempl.templName">
+              <el-radio-group
+                v-model="form.releaseTempl.templName"
+                class="ml-4"
+                @change="temChange"
+              >
+                <!-- <el-radio :label="'STYLE_'+i" size="large" v-for="item,i in form.releaseTempList" :key="i">{{getContent(i)}}</el-radio> -->
+                <el-radio label="STYLE_1">模板一</el-radio>
+                <el-radio label="STYLE_2">模板二</el-radio>
+                <el-radio label="STYLE_3">模板三</el-radio>
+              </el-radio-group>
+            </template>
+          </div>
           <div class="preInfo">
-            <PreEdit :form="form"></PreEdit>
+            <template v-if="form.releaseTempl && form.releaseTempl.templName">
+              <PreEdit v-if="form.releaseTempl.templName == 'STYLE_1'" :form="form"></PreEdit>
+              <PreEdit2
+                v-else-if="form.releaseTempl.templName == 'STYLE_2'"
+                :form="form"
+              ></PreEdit2>
+              <PreEdit3
+                v-else-if="form.releaseTempl.templName == 'STYLE_3'"
+                :form="form"
+              ></PreEdit3>
+            </template>
           </div>
         </div>
       </el-scrollbar>
       <!-- 2.2 编辑信息 -->
-      <el-scrollbar height="100%" width="100%" class="editScrollBar" >
+      <el-scrollbar height="100%" width="100%" class="editScrollBar">
         <div class="editInfo">
           <!-- 2.2.1会议信息 -->
           <div class="meetingArea">
@@ -206,10 +237,42 @@
             </div>
           </div>
           <!-- 2.2.2媒体信息 -->
-          <div class="mediaArea" v-loading="loading" v-if="form.meetID">
-            <div class="top1">多媒体信息区域（默认展示会议室导览图）</div>
+          <div class="mediaArea" v-if="form.meetID">
+            <div
+              v-if="
+                (form.releaseTempl &&
+                  form.releaseTempl.templName &&
+                  form.releaseTempl.templName == 'STYLE_1') ||
+                (form.releaseTempl &&
+                  form.releaseTempl.templName &&
+                  form.releaseTempl.templName == 'STYLE_2')
+              "
+              class="top1"
+            >
+              多媒体信息区域（默认展示会议室导览图）
+            </div>
+            <div
+              v-if="
+                form.releaseTempl &&
+                form.releaseTempl.templName &&
+                form.releaseTempl.templName == 'STYLE_3'
+              "
+              class="top1"
+            >
+              多媒体信息区域（背景图切换）
+            </div>
             <div class="mediaInfo">
-              <div class="mediaInfo1">
+              <div
+                v-if="
+                  (form.releaseTempl &&
+                    form.releaseTempl.templName &&
+                    form.releaseTempl.templName == 'STYLE_1') ||
+                  (form.releaseTempl &&
+                    form.releaseTempl.templName &&
+                    form.releaseTempl.templName == 'STYLE_2')
+                "
+                class="mediaInfo1"
+              >
                 <span>会议轮播图</span>
                 <el-switch
                   class="ml-2"
@@ -245,11 +308,34 @@
                   />
                 </el-select>
               </div>
-              <div class="mediaInfo2" >
+              <div
+                v-if="
+                  form.releaseTempl &&
+                  form.releaseTempl.templName &&
+                  form.releaseTempl.templName == 'STYLE_3'
+                "
+                style="margin-top: 20px"
+              ></div>
+              <div class="mediaInfo2" v-loading="loading">
                 <ul>
-                  <li v-for="(item, i) in form.mediaAreaList" :key="i" >
+                  <li v-for="(item, i) in form.mediaAreaList" :key="i">
                     <!-- 图片 -->
-                    <el-image v-if="item.obsFileType == '1'&&item.url" :src="item.url" lazy />
+                    <template v-if="item.obsFileType == '2'">
+                      <video
+                        v-if="item.base64"
+                        id="myVideo"
+                        width="167"
+                        height="110"
+                        :src="item.base64"
+                        controls
+                      ></video>
+                      <el-button v-else loading style="border: 0px; transform: translateX(35px)"
+                        >下载中</el-button
+                      >
+                    </template>
+                    <template v-else>
+                      <el-image v-if="item.url" :src="item.url" lazy />
+                    </template>
                     <div class="btn">
                       <!-- <span
                           class="el-upload-list__item-preview"
@@ -257,13 +343,6 @@
                         >
                           <el-icon><zoom-in /></el-icon>
                         </span> -->
-                      <!-- <span
-                            v-if="!disabled"
-                            class="el-upload-list__item-delete"
-                            @click="handleDownload(file)"
-                          >
-                          <el-icon><Download /></el-icon>
-                      </span> -->
                       <span
                         v-if="!disabled"
                         class="el-upload-list__item-delete"
@@ -273,13 +352,14 @@
                       </span>
                     </div>
                   </li>
+                  <!-- accept=".jpg,.jpeg,.png,.gif,webp,.mp4,.webm,.flv,.f4v,.avi,.wmv,.mov" -->
                   <el-upload
                     class="avatar-uploader"
                     :http-request="() => {}"
                     :show-file-list="false"
                     :auto-upload="false"
                     :on-change="beforeAvatarUpload"
-                    accept=".jpg,.jpeg,.png,.gif,webp,.mp4"
+                    accept=".jpg,.jpeg,.png,.gif,webp,.mp4,.mov"
                     :disabled="form.meetID && form.meetID == ''"
                   >
                     <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
@@ -308,7 +388,9 @@
           </div>
           <div class="pubendTime">
             <span>结束时间：</span>
-            <span class="time">{{ form.editePublishEndTime ? form.editePublishEndTime.slice(0, -3) : '' }}</span>
+            <span class="time">{{
+              form.editePublishEndTime ? form.editePublishEndTime.slice(0, -3) : ''
+            }}</span>
           </div>
         </div>
         <template #footer>
@@ -340,7 +422,9 @@
                 <!-- <div>发布时间：2023年12月7日 9:00 ~ 12:00</div> -->
                 <div>
                   发布时间：{{
-                    item.editePublishTime.slice(0, -3) + '~' + item.editePublishEndTime.split(' ')[1].slice(0, -3)
+                    item.editePublishTime.slice(0, -3) +
+                    '~' +
+                    item.editePublishEndTime.split(' ')[1].slice(0, -3)
                   }}
                 </div>
               </li>
@@ -353,7 +437,9 @@
                 <!-- <div>发布时间：2023年12月7日 9:00 ~ 12:00</div> -->
                 <div>
                   发布时间：{{
-                    item.editePublishTime.slice(0, -3) + '~' + item.editePublishEndTime.split(' ')[1].slice(0, -3)
+                    item.editePublishTime.slice(0, -3) +
+                    '~' +
+                    item.editePublishEndTime.split(' ')[1].slice(0, -3)
                   }}
                 </div>
               </li>
@@ -409,16 +495,23 @@
 </template>
 
 <script setup>
+import axios from 'axios'
 import PreEdit from '@/components/xxfb/PreEdit.vue'
-import { ref, onMounted, watch} from 'vue'
-import {  useRoute } from 'vue-router'
+import PreEdit2 from '@/components/xxfb/PreEdit2.vue'
+import PreEdit3 from '@/components/xxfb/PreEdit3.vue'
+import { ref, onMounted, watch, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-// const router = useRouter()
+const router = useRouter()
 const route = useRoute()
-import { releaseRequest } from '@/utils/server.js'
-// import localforage from "localForage"
-// import { keys } from 'localforage'
+import { releaseRequest, udsRequest } from '@/utils/server.js'
+
+import { upload, uploadByPieces, compressImage } from '@/utils/upload.js'
+import localforage from 'localforage/src/localforage.js'
+
+import Cookies from 'js-cookie'
+const cookie = Cookies.get('Authorization')
 
 const roomName = route.query.roomName
 // 路由返回上一页时需要roomIdzdy---后端说物联网首页会议id是自己生成的
@@ -426,13 +519,17 @@ const roomName = route.query.roomName
 // roomId会议预约返回的id
 const roomId = ref('')
 
+// 返回
+const goBack = () => {
+  router.go(-1)
+}
 
 // 是否展示图片列表
 const isshowimg = ref(false)
 
 // 1.----根据会议名称 获取会议场次接口------
-const getMeetingList = () => {
-  loading.value=true
+const getMeetingList = (video) => {
+  loading.value = true
   releaseRequest
     .post('/IotPageEditCrtl/queryReleasePageInfo', {
       roomName: roomName,
@@ -440,33 +537,75 @@ const getMeetingList = () => {
       meetID: ''
     })
     .then((res) => {
-      // debugger
       // console.log('按会议场次查询成功:', res.data.result)
       if (res.data.repCode == 200) {
+        if(video){
+          if (meetingList.value.length > 0) {
+            if (form.value.meetID) {
+              for (var i = 0; i < res.data.result.length; i++) {
+                if (form.value.meetID == res.data.result[i].meetID) {
+                  res.data.result[i].mediaAreaList.forEach((item) => {
+                    if (item.obsFileType == 2) {
+                      item.domID = 'domID' + item.obsFileID
+                    }
+                  })
 
-        // 1.选择会议列表 res.data.result为所有会议
-        meetingList.value = res.data.result || []
-        //默认选中最近的一场会议
-        if (meetingList.value.length > 0) {
-          if (form.value.meetID) {
-            for (var i = 0; i < res.data.result.length; i++) {
-              if (form.value.meetID == res.data.result[i].meetID) {
-                form.value = Object.assign({}, form.value, res.data.result[i])
-                break
+                  form.value.mediaAreaList =  res.data.result[i].mediaAreaList
+                 
+                  break
+                }
               }
+            }else{
+               
             }
-          } else {
-            form.value.meetID = res.data.result[0].meetID
-
-            roomId.value = res.data.result[0].roomID
-            // 2.会议信息区域,默认为最近的一场
-            form.value = Object.assign({}, form.value, res.data.result[0])
-            // for (var i = 0; i < form.value.mediaAreaList.length; i++) {
-            //   downLoad(form.value.mediaAreaList[i])
-            // }
+            if (form.value.mediaAreaList.length > 0) {
+              // 图片下载
+              downloadReleaseMedia(form.value.mediaAreaList)
+            }
           }
-          if (form.value.mediaAreaList.length > 0) {
-            downloadReleaseMedia(form.value.mediaAreaList)
+        }else{
+          // 1.选择会议列表 res.data.result为所有会议
+          meetingList.value = res.data.result || []
+          //默认选中最近的一场会议
+          if (meetingList.value.length > 0) {
+            if (form.value.meetID) {
+              for (var i = 0; i < res.data.result.length; i++) {
+                if (form.value.meetID == res.data.result[i].meetID) {
+                  res.data.result[i].mediaAreaList.forEach((item) => {
+                    if (item.obsFileType == 2) {
+                      item.domID = 'domID' + item.obsFileID
+                    }
+                  })
+
+                  form.value = Object.assign({}, form.value, res.data.result[i])
+                 
+                  break
+                }
+              }
+            } else {
+              form.value.meetID = res.data.result[0].meetID
+
+              roomId.value = res.data.result[0].roomID
+
+              res.data.result[0].mediaAreaList.forEach((item) => {
+                if (item.obsFileType == 2) {
+                  item.domID = 'domID' + item.obsFileID
+                }
+              })
+              // 2.会议信息区域,默认为最近的一场
+              form.value = Object.assign({}, form.value, res.data.result[0])
+              
+              
+              // for (var i = 0; i < form.value.mediaAreaList.length; i++) {
+              //   downLoad(form.value.mediaAreaList[i])
+              // }
+            }
+           
+            if (form.value.mediaAreaList.length > 0) {
+              // 图片下载
+              downloadReleaseMedia(form.value.mediaAreaList)
+            }
+            
           }
         }
       } else {
@@ -480,15 +619,15 @@ const getMeetingList = () => {
       // debugger
       console.log('按会议场次查询失败:', error)
     })
-    .finally(()=>{
-        loading.value=false
+    .finally(() => {
+      loading.value = false
+
     })
 }
-// ---5.下载图片/视频接口-------
-// loading加载图
+// ---5.下载图片接口-------
 const loading = ref(true)
 const downloadReleaseMedia = (mediaAreaList) => {
-  loading.value=true
+  loading.value = true
   releaseRequest
     .post('/IotPageEditCrtl/download', {
       mediaAreaList: mediaAreaList
@@ -496,39 +635,34 @@ const downloadReleaseMedia = (mediaAreaList) => {
     .then((res) => {
       // debugger
       if (res.data.repCode == 200) {
-        console.log('下载图片/视频成功:', res.data.result)
+        // console.log('下载图片成功:', res.data.result)
 
         for (var i = 0; i < res.data.result.length; i++) {
-          // obsFileType  为 1图片 时则修改字段为upload组件识别的name和url字段  2视频
-          if (res.data.result[i].obsFileType == 1) {
-            res.data.result[i].name = res.data.result[i].obsFileName
-            res.data.result[i].url = 'data:image/jpg;base64,' + res.data.result[i].base64
+          // obsFileType  为 1图片 时则修改字段为upload组件识别的name和url字段  2视频  3背景图
+          if (res.data.result[i].obsFileType == 1 || res.data.result[i].obsFileType == 3) {
+            form.value.mediaAreaList[i].name = res.data.result[i].obsFileName
+            form.value.mediaAreaList[i].url = 'data:image/jpg;base64,' + res.data.result[i].base64
           }
         }
-        form.value.mediaAreaList = res.data.result
-        if (form.value.mediaAreaList.length == 0) {
-          isshowimg.value = true
-        } else {
-          const promiseArr = []
-          form.value.mediaAreaList.forEach((item) => {
-            promiseArr.push(getImage(item.url))
-          })
-          Promise.all(promiseArr)
-            .then(() => {
-              isshowimg.value = true
-            })
-            .catch(() => {
-              isshowimg.value = true
-            })
+        
+        // form.value.mediaAreaList = JSON.parse(JSON.stringify(form.value.mediaAreaList))
+        for (let i = 0; i < form.value.mediaAreaList.length; i++) {
+          if (form.value.mediaAreaList[i].obsFileType == 2) {
+            
+            // 视频下载
+            
+            downLoadVideo(form.value.mediaAreaList[i])
+          }
         }
+
       }
     })
     .catch((error) => {
       // debugger
-      console.log('下载图片/视频失败:', error)
+      console.log('下载图片失败:', error)
     })
-    .finally(()=>{
-      loading.value=false
+    .finally(() => {
+      loading.value = false
     })
 }
 // 通过getImage实现图片加载完毕展示
@@ -560,7 +694,6 @@ const getSyncInfo = (item) => {
       textLocat: item.textLocat
     })
     .then((res) => {
-      
       if (res.data.repCode == 200) {
         console.log('获取同步信息成功:', res.data.result)
 
@@ -602,6 +735,10 @@ const updatePrePub = () => {
       endTime: form.value.endTime,
       editePublishTime: form.value.editePublishTime,
       editePublishEndTime: form.value.editePublishEndTime,
+      releaseTempl: {
+        templName: form.value.releaseTempl.templName,
+        templVerion: form.value.releaseTempl.templVerion
+      }
     })
     .then((res) => {
       // debugger
@@ -624,43 +761,116 @@ const updatePrePub = () => {
     .catch((error) => {
       // debugger
       console.log('定时发布修改失败:', error)
-      pubErrorVisible.value.vlaue=true
+      pubErrorVisible.value.vlaue = true
       ElMessage.error('定时发布失败！')
     })
 }
 
-// 4.上传图片/视频接口
-
-const uploadReleaseMedia = (rawFile) => {
-  
-  //数据流
-  const formData = new FormData()
-  const data = {
-    roomID: roomId.value,
-    meetID: form.value.meetID
+// 4.上传图片接口
+const uploadReleaseMedia = (rawFile, obsFileType) => {
+  for(let i=0;i<form.value.mediaAreaList.length;i++){
+    
+    if(form.value.mediaAreaList[i].obsFileType=='2' && (rawFile.name.includes('png') ||
+    rawFile.name.includes('jpeg') ||
+    rawFile.name.includes('gif') ||
+    rawFile.name.includes('jpg'))){
+       ElMessage({
+          message: '图片和视频不允许同时上传',
+          type: 'error'
+        })
+       return 
+    }
+    if(form.value.mediaAreaList.length>0 && form.value.mediaAreaList[0].obsFileType=='2' ){
+       ElMessage({
+          message: '只允许上传一个视频',
+          type: 'error'
+        })
+       return 
+    }
+    // .webm,.f4v,.avi,.wmv,.mov
+    if(form.value.mediaAreaList[i].obsFileType=='1' && (rawFile.name.includes('mp4') ||
+    rawFile.name.includes('mov'))){
+       ElMessage({
+          message: '图片和视频不允许同时上传',
+          type: 'error'
+        })
+       return 
+    }
   }
-  formData.append('data', JSON.stringify(data))
-  // 二进制文件上传
-  formData.append('file', rawFile.raw)
-  // debugger
-  releaseRequest
-    .post('/IotPageEditCrtl/uploadReleaseMedia', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    .then((res) => {
-      console.log('上传图片/视频成功:', res.data)
-      
-      form.value.mediaAreaList.push(res.data.result)
-      downloadReleaseMedia(form.value.mediaAreaList)
-    })
+  
+  if (
+    rawFile.name.includes('png') ||
+    rawFile.name.includes('jpeg') ||
+    rawFile.name.includes('gif') ||
+    rawFile.name.includes('jpg')
+  ) {
+    //数据流
+    const formData = new FormData()
+    const data = {
+      roomID: roomId.value,
+      meetID: form.value.meetID,
+      obsFileType: obsFileType
+    }
+    formData.append('data', JSON.stringify(data))
+    // 二进制文件上传
+    formData.append('file', rawFile.raw)
+    // debugger
+    releaseRequest
+      .post('/IotPageEditCrtl/uploadReleaseMedia', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((res) => {
+        console.log('上传图片成功:', res.data)
+        form.value.mediaAreaList.push(res.data.result)
+        // 使用深拷贝，解决子组件watch监听问题
+        form.value.mediaAreaList = JSON.parse(JSON.stringify(form.value.mediaAreaList))
 
-    .catch((error) => {
-      console.log('上传图片/视频失败:', error)
-    })
+        downloadReleaseMedia(form.value.mediaAreaList)
+      })
+
+      .catch((error) => {
+        console.log('上传图失败:', error)
+      })
+  } else {
+    // 视频上传
+    //  debuggerfileName, appId, storeLocation, file
+    //ALL inner是只内网，outer是只外网
+  
+    let obj = {
+      fileName: rawFile.name,
+      appId: 'DDXXHDPT-RLSBQDDP',
+      storeLocation: 'OUTER',
+      file: rawFile.raw
+    }
+    // 调用upload.js文件中的上传视频方法
+    loading.value = true
+    uploadByPieces(obj)
+      .then((resData) => {
+        loading.value = false
+        // fileId symbolicLinkId
+        console.log('resData', resData, resData.result)
+        
+        // debugger
+        getMeetingList('video')
+       
+        // 上传视频到uds成功，则调用后端更新视频数据接口
+        uploadVideoFileMateDate(resData.result.symbolicLinkId, rawFile.name)
+      })
+      .catch((e) => {
+        console.log(e)
+        ElMessage({
+          message: '上传视频到uds失败',
+          type: 'error'
+        })
+      })
+      .finally(() => {
+        // loading.value=false
+      })
+  }
 }
-// 6.删除上传的图片接口
+// 6.删除上传的图片/视频 接口
 const delUploadReleaseMedia = (uploadFile, i) => {
   releaseRequest
     .post('/IotPageEditCrtl/deleteReleaseMedia', {
@@ -673,6 +883,8 @@ const delUploadReleaseMedia = (uploadFile, i) => {
       console.log('删除图片成功', res.data)
 
       form.value.mediaAreaList.splice(i, 1)
+
+      form.value.mediaAreaList = JSON.parse(JSON.stringify(form.value.mediaAreaList))
     })
     .catch((error) => {
       // debugger
@@ -752,6 +964,7 @@ const resetPubInfo = () => {
           if (meetingList.value[i].meetID == form.value.meetID) {
             // 撤销后，将该会议发布状态更新为已撤销'5'
             meetingList.value[i].publishStatus = '5'
+            break
           }
         }
       } else {
@@ -818,9 +1031,7 @@ const pickerOptions = ref({
 })
 
 // 1.选择会议 会议状态：meetStatus 1使用中  2空闲中;  imgShow 1导览图  2轮播图
-const meetingList = ref([
-  
-])
+const meetingList = ref([])
 // 发布状态: publishStatus  待发布1 3 4    已发布 2  撤销 5
 // const statusList = ref([
 //   { status: 2, title: '已发布' },
@@ -835,17 +1046,28 @@ const form = ref({ roomName: '', meetID: '' })
 watch(
   () => form.value.meetID,
   () => {
+    // debugger
     var res = { roomName: '' }
     for (var i = 0; i < meetingList.value.length; i++) {
       if (meetingList.value[i].meetID == form.value.meetID) {
         res = meetingList.value[i]
+        break
       }
     }
-
+    
+    if(res&&res.mediaAreaList&&res.mediaAreaList.length>0){
+      res.mediaAreaList.forEach((item) => {
+        if (item.obsFileType == 2) {
+          item.domID = 'domID' + item.obsFileID
+        }
+      })
+    }
+    
     form.value = Object.assign({}, form.value, res)
 
     if (form.value.mediaAreaList.length > 0) {
-      // 重新调用下载图片/视频接口
+      // 重新调用下载图片接口
+
       downloadReleaseMedia(form.value.mediaAreaList)
     }
   }
@@ -898,20 +1120,21 @@ const handleRemove = (item, i) => {
 //   dialogVisible.value = true
 // }
 
-// 2.2.3图片上传
+// 2.2.3图片/视频上传
 const beforeAvatarUpload = (rawFile) => {
-  
-  console.log('0000000', rawFile)
+  console.log('上传文件', rawFile)
 
-  // if (rawFile.type !== 'image/jpeg') {
-  //   ElMessage.error('Avatar picture must be JPG format!')
-  //   return false
-  // } else
-  if (rawFile.size / 1024 / 1024 > 20) {
-    ElMessage.error('上传文件不能超过 20MB!')
-    return false
+  if (rawFile.type == ('image/jpeg' || 'image/jpg' || 'image/png' || 'image/gif')) {
+    if (rawFile.size / 1024 / 1024 > 5) {
+      ElMessage.error('上传图片不能超过 5MB!')
+      return false
+    }
+  } else {
+    if (rawFile.size / 1024 / 1024 > 10240) {
+      ElMessage.error('上传图片不能超过 10G!')
+      return false
+    }
   }
-
   // for (var i = 0; i < form.value.mediaAreaList.length; i++) {
   //   if (rawFile.name == form.value.mediaAreaList[i].name) {
   //     ElMessage.error('上传文件名重复！')
@@ -919,55 +1142,165 @@ const beforeAvatarUpload = (rawFile) => {
   //   }
   // }
 
-  // debugger
   // 判断上传的类型
   // 如是图片：调用上传图片接口
-  uploadReleaseMedia(rawFile)
+  if (form.value && form.value.releaseTempl && form.value.releaseTempl.templName == 'STYLE_3') {
+    if(rawFile.name.includes('mp4') || rawFile.name.includes('mov')){
+       ElMessage({
+          message: '只允许上传图片',
+          type: 'error'
+        })
+
+    }else{
+      uploadReleaseMedia(rawFile, 3)
+    }
+    
+  } else {
+    uploadReleaseMedia(rawFile, 1)
+  }
 
   return true
 }
-// const handleDownload = (file) => {
-//   console.log(file)
-//   downLoad(file)
-// }
 
-// 2.3视频/图片下载到本底  仅支持视频下载和图片下载
-// const downLoad = (item) => {
-//   // debugger
-//   let url = item.url
-//   // let fileName = url.slice(url.lastIndexOf("/") + 1); //下载的文件名换成自己的
-//   let fileName = item.name //dayjs
-//   var xhr = new XMLHttpRequest()
-//   xhr.open('GET', url, true)
-//   // xhr.open("POST", url, true);
-//   xhr.responseType = 'blob' // 返回类型blob
-//   xhr.onload = () => {
-//     if (xhr.readyState === 4 && xhr.status === 200) {
-//       let blob = xhr.response
-//       let downLoadUrl = window.URL.createObjectURL(
-//         new Blob([blob], {
-//           type: item.type === 'video' ? 'video/mp4' : 'image/jpeg'
-//         })
-//       )
-//       let a = document.createElement('a')
-//       a.download = fileName
-//       a.href = downLoadUrl
-//       a.style.display = 'none'
-//       document.body.appendChild(a)
-//       a.click()
+// --------------10.更新视频数据接口----------------------
+const uploadVideoFileMateDate = (symbolicLinkId, fileName) => {
+  // debugger
+  releaseRequest
+    .post('/IotPageEditCrtl/uploadVideoFileMateDate', {
+      roomID: roomId.value,
+      meetID: form.value.meetID,
+      obsFileID: symbolicLinkId,
+      originalFilename: fileName
+    })
+    .then((res) => {
+      // debugger
+      console.log('更新视频数据成功:', res.data)
+      if (res.data.repCode == 200) {
+        // 更新展示列表
+        form.value.mediaAreaList.push(res.data.result)
 
-//       // 在浏览器端，通过使用XMLHttpRequest对象和Blob对象，可以实现下载文件并获取文件的绝对路径：
-//       // window.URL.revokeObjectURL(url);
+          // 1.2日修改的
+          if(res.data.result&&res.data.result.mediaAreaList&&res.data.result.mediaAreaList.length>0){
+             res.data.result.mediaAreaList.forEach((item) => {
+                if (item.obsFileType == 2) {
+                  item.domID = 'domID' + item.obsFileID
+                }
+              })
+          }
+          
+          // 2.会议信息区域,默认为最近的一场
+          form.value = Object.assign({}, form.value, res.data.result)
+        
 
-//       // resolve(a.href); // 返回文件路径
-//       // window.URL.revokeObjectURL(downLoadUrl) // 释放url
-//       a.remove()
-//       // debugger
-//     }
-//   }
-//   // debugger
-//   xhr.send()
-// }
+        form.value.mediaAreaList = JSON.parse(JSON.stringify(form.value.mediaAreaList))
+      } else {
+        ElMessage({
+          message: res.data.repMsg,
+          type: 'error'
+        })
+      }
+    })
+    .catch((error) => {
+      // debugger
+      console.log('更新视频数据失败:', error)
+      // ElMessage({
+      //     message: error,
+      //     type: 'error'
+      // })
+    })
+}
+// ----------11.视频下载接口udsRequest----------
+const downLoadVideo = (item) => {
+  // 使用.then/.catch
+  let videoUrl
+  
+  localforage
+    .getItem(item.obsFileID)
+    .then((value) => {
+      if (value && value.video && value.video.size>100) {
+        // debugger
+        console.log('拉取本地数据流：', value)
+        videoUrl = URL.createObjectURL(value.video)
+        item.base64 = videoUrl
+        
+      } else {
+        fetch(
+          '/dfs-ui/dfs/v2/file/download?inputId=' +
+            item.obsFileID +
+            '&fileName=' +
+            item.obsFileName,
+          {
+            headers: {
+              access_token: cookie
+            }
+          }
+        )
+          .then((response) => {
+            return response.blob()
+          })
+          .then((res) => {
+            //获取文件格式
+            // let blob = new Blob([res]);
+            const videoUrl = URL.createObjectURL(res)
+            console.log('拉取uds数据流', videoUrl)
+            item.base64 = videoUrl
+            // form.value.playGap=
+
+            localforage.keys().then(async function(keys) {
+                if(keys.length>=5){
+                  
+                   let min
+                   let key
+                   for(let i=0;i<keys.length;i++){
+                      let result=await localforage.getItem(keys[i])
+                      if(min){
+                        if(result.timeStamp<min.timeStamp){
+                          key=keys[i]
+                          min=result
+                        }
+                      }else{
+                        key=keys[i]
+                        min=result
+                      }
+                  }
+                  localforage.removeItem(key).then(function() {
+                    localforage
+                      .setItem(item.obsFileID, {video:res,timeStamp:(new Date()).getTime()})
+                      .then(()=>{
+                        console.log('数据流存储到本地成功')
+                      })
+                      .catch(()=>{
+                          
+                      })
+                  }).catch(function(err) {
+                      console.log(err);
+                  });
+                  
+                }else{
+                  
+                   localforage
+                    .setItem(item.obsFileID, {video:res,timeStamp:(new Date()).getTime()})
+                    .then(()=>{
+                      console.log('数据流存储到本地成功')
+                    })
+                    .catch(()=>{
+                        
+                    })
+                }
+            }).catch(function(err) {
+                console.log(err);
+            });
+            
+           
+          })
+          .finally(() => {})
+      }
+    })
+    .catch((error) => {
+      console.error('拉取本地数据流失败', error)
+
+    })
+}
 
 // 4.发布弹框------------
 const pubFormVisible = ref(false)
@@ -981,7 +1314,7 @@ const cancelPub = () => {
 }
 // 提前时间计算
 // const getOptiontime=()=>{
-  
+
 // }
 
 // 获取当前时间
@@ -1003,12 +1336,13 @@ const confirmPub = () => {
     form.value.editePublishEndTime == ''
   ) {
     ElMessage.error('开始时间和结束时间不能为空！')
-  // }else if (form.value.editePublishTime != '' && ( new Date().getTime()> new Date(form.value.editePublishTime).getTime())) {
-  //   ElMessage.error('开始时间不能为过去时间！')
+    // }else if (form.value.editePublishTime != '' && ( new Date().getTime()> new Date(form.value.editePublishTime).getTime())) {
+    //   ElMessage.error('开始时间不能为过去时间！')
   } else if (
     form.value.editePublishTime != '' &&
     form.value.editePublishEndTime != '' &&
-    new Date(form.value.editePublishTime).getTime() >= new Date(form.value.editePublishEndTime).getTime()
+    new Date(form.value.editePublishTime).getTime() >=
+      new Date(form.value.editePublishEndTime).getTime()
   ) {
     ElMessage.error('结束时间需大于开始时间！')
   } else {
@@ -1052,26 +1386,89 @@ onMounted(() => {
 
   // readVideo1()
 })
-</script>
-<style lang='less'>
-  .zdy_selectedit{
-    width: 276px;
-    ul li{
-      padding-left: 10px;
-      padding-right: 10px;
-      &>span:nth-child(2){
-        // width: 190px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+
+// 3.选择模板
+// --------------13.查询样式对应背景图接口----------------------
+const getgbRequset = (templateStyle) => {
+  // debugger
+  releaseRequest
+    .post('/IotPageEditCrtl/queryBackImageReleaseMedia', {
+      roomID: roomId.value,
+      meetID: form.value.meetID,
+      releaseTempl: {
+        templName: templateStyle
       }
+    })
+    .then((res) => {
+      console.log('查询样式对应背景图成功:', res.data)
+      if (res.data.repCode == 200) {
+        // 更新展示列表
+        if(res.data.result.mediaAreaList && res.data.result.mediaAreaList.length>0){
+           downloadReleaseMedia(res.data.result.mediaAreaList)
+        }
+        
+        form.value.mediaAreaList = res.data.result.mediaAreaList
+
+        form.value.mediaAreaList = JSON.parse(JSON.stringify(form.value.mediaAreaList))
+
+        
+      } else {
+        ElMessage({
+          message: res.data.repMsg,
+          type: 'error'
+        })
+      }
+    })
+    .catch((error) => {
+      // debugger
+      console.log('查询样式对应背景图失败:', error)
+      // ElMessage({
+      //     message: error,
+      //     type: 'error'
+      // })
+    })
+}
+let arr = ['模板一', '模板二', '模板三', '模板四']
+const getContent = (i) => {
+  for (var j = 0; j < arr.length; i++) {
+    if (j == 0) {
+      return arr[0]
+    } else if (j == 1) {
+      return arr[1]
+    } else {
+      return arr[2]
     }
   }
+}
+const temChange = (value) => {
+  
+  if(form.value.meetID != ''){
+    getgbRequset(value)
+  }
+  form.value.mediaAreaList = JSON.parse(JSON.stringify(form.value.mediaAreaList))
+}
+
+</script>
+<style lang="less">
+.zdy_selectedit {
+  width: 276px;
+  ul li {
+    padding-left: 10px;
+    padding-right: 10px;
+    & > span:nth-child(2) {
+      // width: 190px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
 </style>
 <style lang="less" scoped>
 .edit {
-  margin-left: 24px;
-  margin-right: 24px;
+  height: 100%;
+  // margin-left: 24px;
+  margin-right: 12px;
   // 1.顶部
   .top {
     height: 60px;
@@ -1128,8 +1525,8 @@ onMounted(() => {
     }
     .btn {
       // width: 176px;
-      // width: 134px;
-      width: 104px;
+      width: 134px;
+      // width: 104px;
       height: 60px;
       display: flex;
       justify-content: space-between;
@@ -1171,19 +1568,30 @@ onMounted(() => {
     }
     .pre {
       height: 100%;
-      padding-left: 12px;
+      // padding-left: 12px;
       padding-top: 24px;
       padding-right: 34px;
       background-color: #f5f5f5;
       .preTop {
-        width: 70px;
         height: 20px;
         margin-left: 8px;
         margin-bottom: 19px;
-        color: rgba(16, 16, 16, 1);
-        font-size: 14px;
-        text-align: left;
-        font-family: SourceHanSansSC-regular;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        & > div:nth-child(1) {
+          width: 70px;
+          margin-right: 8px;
+          color: rgba(16, 16, 16, 1);
+          font-size: 14px;
+          text-align: left;
+          font-family: SourceHanSansSC-regular;
+        }
+        .el-radio-group {
+          .el-radio {
+            height: 20px;
+          }
+        }
       }
       .preInfo {
         width: 375px;
@@ -1311,7 +1719,7 @@ onMounted(() => {
       // 2.2.2媒体信息
       .mediaArea {
         padding-bottom: 30px;
-        .top1{
+        .top1 {
           height: 52px;
           line-height: 52px;
         }

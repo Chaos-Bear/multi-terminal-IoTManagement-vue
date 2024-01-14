@@ -3,10 +3,10 @@
 </template>
 
 <script setup>
-import { ref,onMounted,onBeforeUnmount} from 'vue'
-import {  } from 'vue-router'
-import { ElMessage} from 'element-plus'
-import {  } from '@element-plus/icons-vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import {} from 'vue-router'
+import { ElMessage } from 'element-plus'
+import {} from '@element-plus/icons-vue'
 
 import { pubRequest } from '@/utils/server.js'
 
@@ -26,7 +26,7 @@ const getPubPath = (ip) => {
       // debugger
 
       localStorage.setItem(roomName.value, ip)
-      
+
       // const data = {
       //   key: roomName.value,
       //   value: ip,
@@ -35,7 +35,7 @@ const getPubPath = (ip) => {
       // localStorage.removeItem(roomName.value)
 
       // localStorage.setItem(data.key, JSON.stringify(data));
-     
+
       window.location.href = pubPath.value
     })
     .catch((error) => {
@@ -54,7 +54,7 @@ const getIP = (callback) => {
   let RTCPeerConnection =
     window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection
   if (!RTCPeerConnection) {
-    let win =window
+    let win = window
     RTCPeerConnection =
       win.RTCPeerConnection || win.mozRTCPeerConnection || win.webkitRTCPeerConnection
   }

@@ -287,9 +287,9 @@ const getmeetingRoomList = () => {
     })
 }
 //获取设备列表
-const isLoading=ref(false)
+const isLoading = ref(false)
 const getList = () => {
-  isLoading.value=true
+  isLoading.value = true
   deviceRequest
     .post('/IotDeviceEditCtrl/queryIotDevicePageList', {
       deviceIP: form.deviceIP,
@@ -313,8 +313,8 @@ const getList = () => {
     .catch((error) => {
       console.log('设备管理列表按条件查询失败:', error)
     })
-    .finally(()=>{
-      isLoading.value=false
+    .finally(() => {
+      isLoading.value = false
     })
 }
 const tableRef = ref('')
@@ -327,10 +327,10 @@ const deleteList = (v) => {
     .then((response) => {
       console.log('设备列表删除成功', response)
       if (response.data.repCode == 200) {
-         ElMessage({
-            message: '删除成功',
-            type: 'success',
-          })
+        ElMessage({
+          message: '删除成功',
+          type: 'success'
+        })
         //重新发请求，渲染设备列表
         getList()
         selectRows.value = []
@@ -339,7 +339,7 @@ const deleteList = (v) => {
       }
     })
     .catch((error) => {
-      console.log('设备列表删除失败',error)
+      console.log('设备列表删除失败', error)
     })
 }
 //初始化渲染
@@ -522,7 +522,7 @@ const addItem = () => {
           if (res.data.repCode == 200) {
             ElMessage({
               message: '新增成功',
-              type: 'success',
+              type: 'success'
             })
             //重新发请求，渲染设备列表
             getList()
@@ -583,7 +583,6 @@ const deleteitem = (row) => {
     customClass: 'blue-button' // 应用自定义样式类
   })
     .then(() => {
-      
       // 调用删除设备接口
       deleteList(deviceIDs)
     })
@@ -681,7 +680,7 @@ const editIteminfo = () => {
           if (res.data.repCode == 200) {
             ElMessage({
               message: '修改成功',
-              type: 'success',
+              type: 'success'
             })
             //重新发请求，渲染设备列表
             getList()

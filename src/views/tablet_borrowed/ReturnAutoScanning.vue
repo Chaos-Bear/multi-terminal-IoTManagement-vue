@@ -223,7 +223,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted,  computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 import { useRouter, useRoute } from 'vue-router'
@@ -337,9 +337,9 @@ const openScanDevice = () => {
 
 // 建立ws连接
 // var websocket = createWebSocket(wsbaseURL + '/websocket/' + repMsg, {
- createWebSocket(wsbaseURL + '/websocket/' + repMsg, {
+createWebSocket(wsbaseURL + '/websocket/' + repMsg, {
   onopen(e) {
-    console.log('建立了websocket连接',e)
+    console.log('建立了websocket连接', e)
 
     // 重新调用会议室最新消息列表-----------------------
   },
@@ -517,8 +517,8 @@ const postsubmitScan = () => {
   }
   for (var i = 0; i < tableData.value.length; i++) {
     if (tableData.value[i].isscaned == true) {
-       returnList.push(tableData.value[i])
-    } 
+      returnList.push(tableData.value[i])
+    }
   }
 
   tabletRequest

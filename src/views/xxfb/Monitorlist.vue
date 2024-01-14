@@ -57,25 +57,33 @@
       </div>
     </div>
     <div class="controlInfo">
-         <el-checkbox
-          v-model="checkAll"
-          :indeterminate="isIndeterminate"
-          @change="handleCheckAllChange"
-          >全选</el-checkbox
-        >
-        <el-button type="primary" @click="openDevice" :style="checkedRooms.length>=1?'background-color: rgba(79, 168, 249, 1);':''" :disabled="checkedRooms.length<1">开机</el-button>
-        <el-button type="danger" @click="shutdownDevice" :style="checkedRooms.length>=1?'background-color: rgba(245, 34, 45, 1);':''" :disabled="checkedRooms.length<1">关机</el-button>
-      </div>
+      <el-checkbox
+        v-model="checkAll"
+        :indeterminate="isIndeterminate"
+        @change="handleCheckAllChange"
+        >全选</el-checkbox
+      >
+      <el-button
+        type="primary"
+        @click="openDevice"
+        :style="checkedRooms.length >= 1 ? 'background-color: rgba(79, 168, 249, 1);' : ''"
+        :disabled="checkedRooms.length < 1"
+        >开机</el-button
+      >
+      <el-button
+        type="danger"
+        @click="shutdownDevice"
+        :style="checkedRooms.length >= 1 ? 'background-color: rgba(245, 34, 45, 1);' : ''"
+        :disabled="checkedRooms.length < 1"
+        >关机</el-button
+      >
+    </div>
     <!-- 2.发布屏监控列表 :src="'data:image/jpg;base64,'+"-->
     <div class="tableBox">
-      
       <!-- <el-scrollbar height="100%" v-loading="isLoading"> -->
       <el-scrollbar height="100%" v-loading="isLoading">
         <div class="meetingList" v-if="meetingList.length > 0">
-          <el-checkbox-group
-            v-model="checkedRooms"
-            @change="handleCheckedRoomsChange"
-          >
+          <el-checkbox-group v-model="checkedRooms" @change="handleCheckedRoomsChange">
             <div v-for="(item, index) in meetingList" :key="index" class="meetingroom">
               <!-- <img :src="item.roomImg?('data:image/jpg;base64,'+item.roomImg):'/src/assets/xxfb/screenshots/13.png'" @click="getmonitorList(item)" /> -->
               <!-- :zoom-rate="1.2"
@@ -83,14 +91,15 @@
               :min-scale="0.2" 
               :preview-src-list="imgList"
               :initial-index="4" -->
-              <el-image 
-              :src="item.roomImg?('data:image/jpg;base64,'+item.roomImg):defaultImg" 
-              @click="getmonitorList(item)" fit="contain"
-              lazy 
+              <el-image
+                :src="item.roomImg ? 'data:image/jpg;base64,' + item.roomImg : defaultImg"
+                @click="getmonitorList(item)"
+                fit="contain"
+                lazy
               />
               <!--v-show="showCheckbox" @mouseenter="handleMouseOver" @mouseleave="handleMouseOut"  -->
-              <el-checkbox   :label="item.roomName" >{{' '}}</el-checkbox>
-              <div class="roomName" >{{ item.roomName }}信息发布屏</div>
+              <el-checkbox :label="item.roomName">{{ ' ' }}</el-checkbox>
+              <div class="roomName">{{ item.roomName }}信息发布屏</div>
             </div>
             <!-- <div class="roomName" >{{ item.roomName }}信息发布屏</div> -->
           </el-checkbox-group>
@@ -116,14 +125,16 @@
     </div>
 
     <!--1.关机弹框  -->
-    <div class="closeDialog" >
+    <div class="closeDialog">
       <el-dialog v-model="shutDialogVisible" title="" :before-close="closeshutDialog">
         <div class="tips">
           <img src="@/assets/xxfb/screenshots/12.png" />
           <div class="tips1">关机确认</div>
-          
-          <span>确认后 {{checkedRooms.join('、')}} 将在1分钟内关机。</span>
-          <div style="color:red;'font-size':12px">提示：点击关机后，3分钟之后才能进行开机操作！</div>
+
+          <span>确认后 {{ checkedRooms.join('、') }} 将在1分钟内关机。</span>
+          <div style="color: red; 'font-size':12px ">
+            提示：点击关机后，3分钟之后才能进行开机操作！
+          </div>
         </div>
         <template #footer>
           <span class="dialog-footer">
@@ -136,7 +147,11 @@
 
     <!--2.开机失败弹框  -->
     <div class="errorTipsDialog">
-      <el-dialog v-model="errorTipsVisible" title="开机失败提示" :before-close="closeErrorTipsDialog">
+      <el-dialog
+        v-model="errorTipsVisible"
+        title="开机失败提示"
+        :before-close="closeErrorTipsDialog"
+      >
         <template #header>
           <div class="conflitTips1">
             <span>失败提示</span>
@@ -145,20 +160,18 @@
         </template>
         <div class="conflict">
           <div>
-            <div>批量操作{{checkedRooms.length}}个设备，其中{{errInfo.length}}个失败</div>
+            <div>批量操作{{ checkedRooms.length }}个设备，其中{{ errInfo.length }}个失败</div>
           </div>
           <el-scrollbar max-height="209px">
             <ul>
-              <li v-for="item,i in errInfo" :key='i'>
-                <div>会议室名称：{{item.roomName}}</div>
-                
-                <div>
-                  失败原因：{{item.errorMsg}}
-                </div>
+              <li v-for="(item, i) in errInfo" :key="i">
+                <div>会议室名称：{{ item.roomName }}</div>
+
+                <div>失败原因：{{ item.errorMsg }}</div>
               </li>
             </ul>
           </el-scrollbar>
-         
+
           <!-- <div class="conflictTips2">注：设备开机失败！当前设备不支持开机操作，请检查主题配置。！</div> -->
         </div>
         <template #footer>
@@ -173,13 +186,13 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
-import { reactive, ref, onMounted,onBeforeUnmount } from 'vue'
-import {  ElMessage  } from 'element-plus'
+import { reactive, ref, onMounted, onBeforeUnmount } from 'vue'
+import { ElMessage } from 'element-plus'
 const router = useRouter()
 // import axios from 'axios'
 
 import { releaseRequest } from '@/utils/server.js'
-import defaultImg  from "@/assets/xxfb/screenshots/13.png"
+import defaultImg from '@/assets/xxfb/screenshots/13.png'
 // 会议室配置信息
 var floorOptions = ref([])
 var addressOptions = ref([])
@@ -202,13 +215,13 @@ const getFloorandAddList = () => {
     })
 }
 // 会议室列表接口
-const isLoading=ref(false)
+const isLoading = ref(false)
 const getList = () => {
   // isLoading.value=true
   // 全选按钮变为非全选
-  checkAll.value=false
+  checkAll.value = false
   // 会议室选中项改为空数组
-  checkedRooms.value=[]
+  checkedRooms.value = []
   isIndeterminate.value = false
 
   releaseRequest
@@ -225,22 +238,20 @@ const getList = () => {
       // debugger
       // 总条数
       total.value = res.data.totalRecord
-      
-      
-      meetingList.value=res.data.data
-      let  arr=[]
-      for(var i=0;i<meetingList.value.length;i++){
-          arr.push(meetingList.value[i].roomName)
+
+      meetingList.value = res.data.data
+      let arr = []
+      for (var i = 0; i < meetingList.value.length; i++) {
+        arr.push(meetingList.value[i].roomName)
       }
-      rooms.value=arr
-      
+      rooms.value = arr
 
       // for( var i=0;i<=meetingList.value.length;i++){
       //   // debugger
       //   var imgSrc
       //   if(meetingList.value[i].roomImg==''){
       //     imgSrc=defaultImg
-         
+
       //   }else{
       //      imgSrc='data:image/jpg;base64,'+meetingList.value[i].roomImg
       //   }
@@ -251,63 +262,62 @@ const getList = () => {
     .catch((error) => {
       console.log('会议室列表查询失败:', error)
     })
-    .finally(()=>{
-      isLoading.value=false
+    .finally(() => {
+      isLoading.value = false
     })
 }
 
-
 // 批量开关机操作
-const errInfo=ref([])
-const batchRequest = (roomList,type) => {
-  errInfo.value=[]
+const errInfo = ref([])
+const batchRequest = (roomList, type) => {
+  errInfo.value = []
 
-  let arr=[]
-  for(let i=0;i<roomList.length;i++){
-     arr.push({"roomName":roomList[i],"operate": type})
+  let arr = []
+  for (let i = 0; i < roomList.length; i++) {
+    arr.push({ roomName: roomList[i], operate: type })
   }
-  
+
   releaseRequest
-    .post('/TerminalCtrl/batchTerminTsk',{
-      "result": arr
+    .post('/TerminalCtrl/batchTerminTsk', {
+      result: arr
     })
     .then((response) => {
       // debugger
-      if ( response.data.repCode == 200) {
+      if (response.data.repCode == 200) {
         console.log('批量开关机操作成功:', response.data.result)
-       
+
         ElMessage({
           type: 'success',
           message: '批量操作成功'
         })
-         // 全选按钮变为非全选
-        checkAll.value=false
+        // 全选按钮变为非全选
+        checkAll.value = false
         // 会议室选中项改为空数组
-        checkedRooms.value=[]
+        checkedRooms.value = []
         isIndeterminate.value = false
-      }else{
-        
-        for(let i=0;i<response.data.result.length;i++){
-           if(response.data.result[i].errorMsg!=''){
-               errInfo.value.push({"roomName":response.data.result[i].roomName,"errorMsg":response.data.result[i].errorMsg})
-           }
+      } else {
+        for (let i = 0; i < response.data.result.length; i++) {
+          if (response.data.result[i].errorMsg != '') {
+            errInfo.value.push({
+              roomName: response.data.result[i].roomName,
+              errorMsg: response.data.result[i].errorMsg
+            })
+          }
         }
-        
+
         // 开机失败弹框
-        errorTipsVisible.value=true
+        errorTipsVisible.value = true
       }
-      
     })
     .catch((error) => {
       console.log('批量开,关机操作失败:', error)
       ElMessage.error('批量操作失败！')
-       // 全选按钮变为非全选
-        checkAll.value=false
-        // 会议室选中项改为空数组
-        checkedRooms.value=[]
-        isIndeterminate.value = false
+      // 全选按钮变为非全选
+      checkAll.value = false
+      // 会议室选中项改为空数组
+      checkedRooms.value = []
+      isIndeterminate.value = false
     })
-    
 }
 
 // 轮询刷新
@@ -331,7 +341,6 @@ var option = {
   fn: () => {
     // 调用接口
     getList()
-    
   },
   time: 60000
 }
@@ -340,7 +349,6 @@ onMounted(() => {
   // isLoading.value=true
   getList()
   getFloorandAddList()
-  
 
   // 轮询刷新
   setTimeoutZdy(option)
@@ -348,7 +356,6 @@ onMounted(() => {
 
 // 生命周期:销毁前
 onBeforeUnmount(() => {
-  
   // 退出页面 停止轮询
   option.isClose = true
 })
@@ -380,7 +387,7 @@ const resetQuery = () => {
 const checkAll = ref(false)
 const isIndeterminate = ref(false)
 const checkedRooms = ref([])
-const rooms=ref([])
+const rooms = ref([])
 
 const handleCheckAllChange = (val) => {
   // 选中项
@@ -403,52 +410,45 @@ const handleCheckedRoomsChange = (value) => {
 // }
 
 // 开机
-const openDevice=()=>{
-
-  batchRequest(checkedRooms.value,'startup')
+const openDevice = () => {
+  batchRequest(checkedRooms.value, 'startup')
 }
 //开机失败弹框
-const errorTipsVisible=ref(false)
- 
-const closeErrorTipsDialog=()=>{
-  errorTipsVisible.value=false
+const errorTipsVisible = ref(false)
+
+const closeErrorTipsDialog = () => {
+  errorTipsVisible.value = false
 
   // 全选按钮变为非全选
-  checkAll.value=false
+  checkAll.value = false
   // 会议室选中项改为空数组
-  checkedRooms.value=[]
+  checkedRooms.value = []
   isIndeterminate.value = false
 }
 
-
-
 // 关机
-const shutDialogVisible=ref(false)
+const shutDialogVisible = ref(false)
 //顶部批量关机按钮
-const shutdownDevice=()=>{
-  shutDialogVisible.value=true
-  
-  
+const shutdownDevice = () => {
+  shutDialogVisible.value = true
 }
 // 关机弹框中的 确认 按钮
 const confirmClose = () => {
   //调用批量 关机接口
-  batchRequest(checkedRooms.value,'shutdown')
-  
+  batchRequest(checkedRooms.value, 'shutdown')
+
   shutDialogVisible.value = false
 }
 // 关机弹框中的 取消 按钮
 const closeshutDialog = () => {
- 
   shutDialogVisible.value = false
- 
+
   // 全选按钮变为非全选
-  checkAll.value=false
+  checkAll.value = false
   // 会议室选中项改为空数组
-  checkedRooms.value=[]
+  checkedRooms.value = []
   isIndeterminate.value = false
 }
-
 
 // 2.会议室个数
 const meetingList = ref([
@@ -463,8 +463,6 @@ const getmonitorList = (item) => {
   // localStorage.setItem('roomId', item.roomID)
   router.push('/monitor-control?roomName=' + item.roomName + '&roomID=' + item.roomID)
 }
-
-
 
 // 3.分页
 const currentPage = ref(1)
@@ -485,16 +483,15 @@ const refresh = () => {
   //重新发请求，渲染设备列表
   getList()
 }
-
 </script>
 <style lang="less" scoped>
 .xxfb-monitorlist {
-  margin-left: 24px;
-  margin-right: 24px;
+  // margin-left: 24px;
+  // margin-right: 24px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  
+
   // 1. 顶部
   .top {
     padding: 16px 0px 0px 0px;
@@ -512,58 +509,56 @@ const refresh = () => {
       }
     }
   }
-  
-  // 全选/开机/关机
-    .controlInfo{
-      margin-top: 16px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      .el-checkbox{
-        width: 71px;
-        height: 32px;
-        margin-right: 10px;
-        border-radius: 2px;
-        color: rgba(16, 16, 16, 1);
-        font-size: 14px;
-        text-align: center;
-        font-family: Roboto;
-        padding-left: 9px;
-        .el-checkbox__input{
-          margin-left: 14px;
-          
-        }
 
-      }
-      .el-button{
-        width: 80px;
-        height: 32px;
-        line-height: 20px;
-        border-radius: 2px;
-        background-color: rgba(191, 191, 191, 1);
-        border:0px;
-        color: rgba(255, 255, 255, 1);
-        font-size: 14px;
-        text-align: center;
-        font-family: Roboto;
+  // 全选/开机/关机
+  .controlInfo {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .el-checkbox {
+      width: 71px;
+      height: 32px;
+      margin-right: 10px;
+      border-radius: 2px;
+      color: rgba(16, 16, 16, 1);
+      font-size: 14px;
+      text-align: center;
+      font-family: Roboto;
+      padding-left: 9px;
+      .el-checkbox__input {
+        margin-left: 14px;
       }
     }
+    .el-button {
+      width: 80px;
+      height: 32px;
+      line-height: 20px;
+      border-radius: 2px;
+      background-color: rgba(191, 191, 191, 1);
+      border: 0px;
+      color: rgba(255, 255, 255, 1);
+      font-size: 14px;
+      text-align: center;
+      font-family: Roboto;
+    }
+  }
   // 2. 发布屏监控列表
   .tableBox {
     flex: 1;
     overflow: hidden;
-    
+
     // 监控列表
     .meetingList {
       width: 100%;
       // height: 690px;
       // height: calc( 100% -  );
       padding-top: 16px;
-    
+
       display: flex;
       flex-wrap: wrap;
       // border: 1px solid red;
-      .el-checkbox-group{
+      .el-checkbox-group {
         width: 100%;
         display: flex;
         flex-wrap: wrap;
@@ -582,18 +577,17 @@ const refresh = () => {
         //   width: 100%;
         //   height: 100%;
         // }
-        .el-image{
+        .el-image {
           // width: 180px;
           // height: 180px;
           width: 65%;
           height: 100%;
         }
-        .el-checkbox{
+        .el-checkbox {
           position: absolute;
           top: 0;
           right: 0;
           display: none;
-         
         }
         .roomName {
           width: 100%;
@@ -611,22 +605,21 @@ const refresh = () => {
           // display: none;
           display: block;
         }
-        
+
         &:hover {
           box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.2);
-        
-        //   .roomName{
-        //     // display:block;
-        //   }
-          .el-checkbox{
+
+          //   .roomName{
+          //     // display:block;
+          //   }
+          .el-checkbox {
             display: inline-flex;
-            
           }
         }
-        .el-checkbox.is-checked{
+        .el-checkbox.is-checked {
           display: inline-flex;
         }
-        &:has(.el-checkbox.is-checked){
+        &:has(.el-checkbox.is-checked) {
           box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.2);
           // .roomName{
           //   // display:block;
@@ -719,7 +712,6 @@ const refresh = () => {
             text-align: center;
             font-family: PingFangSC-regular;
           }
-         
         }
       }
       .el-dialog__footer {
@@ -770,31 +762,29 @@ const refresh = () => {
       border-top: 1px solid rgba(239, 239, 239, 1);
       padding: 24px;
       padding-bottom: 20px;
-        .conflict{
-          &>div:nth-child(1){
+      .conflict {
+        & > div:nth-child(1) {
+          font-size: 14px;
+          margin-bottom: 6px;
+        }
+      }
+      ul {
+        padding: 0;
+        // height: 89px;
+        li {
+          list-style: none;
+          div {
+            color: rgba(90, 90, 90, 1);
             font-size: 14px;
-            margin-bottom: 6px;
+            text-align: left;
+            font-family: SourceHanSansSC-regular;
+          }
+          div:nth-child(2) {
+            margin-top: 4px;
+            margin-bottom: 4px;
           }
         }
-        ul {
-          padding: 0;
-          // height: 89px;
-          li {
-            list-style: none;
-            div {
-              color: rgba(90, 90, 90, 1);
-              font-size: 14px;
-              text-align: left;
-              font-family: SourceHanSansSC-regular;
-            }
-            div:nth-child(2) {
-              margin-top: 4px;
-              margin-bottom: 4px;
-            }
-          }
-        }
-        
-      
+      }
     }
     .el-dialog__footer {
       text-align: center;
