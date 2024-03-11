@@ -677,7 +677,7 @@
             <img data-v-7c86bae5="" class="doubledoor" src="/src/assets/xxfb/path/7.png" />
           </div>
           <div class="jianju2"></div>
-          <div>
+          <div style="opacity:0">
             <img data-v-7c86bae5="" class="hdoubledoor" src="/src/assets/xxfb/path/6.png" />
             <span></span>
           </div>

@@ -113,6 +113,7 @@
                 <el-radio label="STYLE_1">模板一</el-radio>
                 <el-radio label="STYLE_2">模板二</el-radio>
                 <el-radio label="STYLE_3">模板三</el-radio>
+                <el-radio label="STYLE_4">模板四</el-radio>
               </el-radio-group>
             </template>
           </div>
@@ -127,6 +128,10 @@
                 v-else-if="form.releaseTempl.templName == 'STYLE_3'"
                 :form="form"
               ></PreEdit3>
+              <PreEdit4
+                v-else-if="form.releaseTempl.templName == 'STYLE_4'"
+                :form="form"
+              ></PreEdit4>
             </template>
           </div>
         </div>
@@ -245,7 +250,10 @@
                   form.releaseTempl.templName == 'STYLE_1') ||
                 (form.releaseTempl &&
                   form.releaseTempl.templName &&
-                  form.releaseTempl.templName == 'STYLE_2')
+                  form.releaseTempl.templName == 'STYLE_2')||
+                (form.releaseTempl &&
+                  form.releaseTempl.templName &&
+                  form.releaseTempl.templName == 'STYLE_4')
               "
               class="top1"
             >
@@ -269,7 +277,10 @@
                     form.releaseTempl.templName == 'STYLE_1') ||
                   (form.releaseTempl &&
                     form.releaseTempl.templName &&
-                    form.releaseTempl.templName == 'STYLE_2')
+                    form.releaseTempl.templName == 'STYLE_2')||
+                  (form.releaseTempl &&
+                    form.releaseTempl.templName &&
+                    form.releaseTempl.templName == 'STYLE_4')
                 "
                 class="mediaInfo1"
               >
@@ -499,6 +510,7 @@ import axios from 'axios'
 import PreEdit from '@/components/xxfb/PreEdit.vue'
 import PreEdit2 from '@/components/xxfb/PreEdit2.vue'
 import PreEdit3 from '@/components/xxfb/PreEdit3.vue'
+import PreEdit4 from '@/components/xxfb/PreEdit4.vue'
 import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -1587,9 +1599,10 @@ const temChange = (value) => {
           text-align: left;
           font-family: SourceHanSansSC-regular;
         }
-        .el-radio-group {
+        :deep(.el-radio-group) {
           .el-radio {
             height: 20px;
+            margin-right: 14px;
           }
         }
       }

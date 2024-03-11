@@ -276,7 +276,7 @@ const terminalControlRequest = (operateType, topic) => {
       }
     })
     .catch((error) => {
-      console.log('发布屏设备控制成功失败:', error)
+      console.log('发布屏设备控制失败:', error)
       if (operateType == 'screenshot') {
         ElMessage.error('截图失败！')
       }

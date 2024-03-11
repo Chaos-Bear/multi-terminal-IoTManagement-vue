@@ -12,6 +12,11 @@
         :form="form"
         ref="prePubRef"
       ></Prepub3>
+      <Prepub4
+        v-else-if="form.releaseTempl.templName == 'STYLE_4'"
+        :form="form"
+        ref="prePubRef"
+      ></Prepub4>
     </template>
   </div>
 </template>
@@ -20,6 +25,7 @@
 import Prepub from '@/components/xxfb/PrePub.vue'
 import Prepub2 from '@/components/xxfb/PrePub2.vue'
 import Prepub3 from '@/components/xxfb/PrePub3.vue'
+import Prepub4 from '@/components/xxfb/PrePub4.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import {ElMessage} from 'element-plus'

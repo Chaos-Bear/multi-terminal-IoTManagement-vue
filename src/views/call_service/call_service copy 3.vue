@@ -38,21 +38,19 @@
                   </div>
                 </div>
                 <!-- 1.2  根据chatState的已读/未读 ，判断是否显示红点 -->
-                
                 <div
                   v-else
                   :id="'roomID' + item.roomID"
                   :class="[
                     'roomList',
                     currentMeetingIndex == item.roomID ? 'active' : '',
-                    item &&item.chatTime && item.chatState && item.chatState != '已读' ? 'hasmsg' : ''
+                    item && item.chatState && item.chatState != '已读' ? 'hasmsg' : ''
                   ]"
                   v-for="(item, i) in roomInfo"
                   @click="clickRoomName(item)"
                   :key="i"
                 >
                   <!-- 会议室名称 -->
-  
                   <div class="roominfo">
                     <span>{{ item.roomName.split('-')[1] }}</span>
                     <span>{{ item.roomName }}会议室</span>
@@ -103,7 +101,7 @@
                             <!-- 会议状态/会议名称/会议开始-结束时间 -->
                             <span class="call_service_span_img" style="width: 6.06vw">
                               <span class="call_service_img call_service_online_img_meeting"></span>
-                              {{ meetingInfo.obj.meetStat ? meetingInfo.obj.meetStat :'未使用' }}
+                              {{ meetingInfo.obj.meetStat ? meetingInfo.obj.meetStat :'空闲中' }}
                             </span>
                             <span class="call_service_span_img">
                               <span class="call_service_img call_service_online_img_rank"></span>
@@ -130,13 +128,12 @@
                     >
                       <!--2.2 中间 中部消息展示区  -->
                       <div class="call_service_msg_area">
-                        <div class="nomore"  v-if="historyMsgList.length>0 && nomore" >没有更多了</div>
-                        <div  v-loading="isloading"  customClass='loadingzdy'></div>
+                        <div class="nomore" v-if="historyMsgList.length>0 && nomore" >没有更多了</div>
 
                         <template v-for="(item, i) in historyMsgList" :key="i">
                           <!-- 2.2.1 他人消息 -->
                           <!-- <div class="othersMsg" v-if="item.userID != route.query.userID"> -->
-                          <div class="othersMsg" v-if="item.userID != userId" :id="item.uuid">
+                          <div class="othersMsg" v-if="item.userID != userId">
                             <div class="call_service_chat_messages_name">
                               <span>{{ item.userName ? item.userName : 'NARI' }}</span>
                               <span>{{
@@ -151,15 +148,14 @@
                                   class="call_service_chat"
                                   style="border-radius: 0 20px 20px 20px"
                                 >
-                                  <!-- <span>{{ item.chatMsg }} </span> -->
-                                  <div v-for="(item1,ii) in item.chatMsg.split('\n')" :key='ii'> {{ item1 }}</div>
+                                  <span>{{ item.chatMsg }} </span>
                                 </div>
                               </div>
                               <!-- <div>{{ item.chatTime.indexOf(dayTime)==-1 ? item.chatTime.slice(0,-3):item.chatTime.split(" ")[1].slice(0,-3)}}</div> -->
                             </div>
                           </div>
                           <!-- 2.2.2 自己消息 v-if="item.chatTime!=historyMsgList[i+1].chatTime"-->
-                          <div class="myMsg" v-else  :id='item.uuid' >
+                          <div class="myMsg" v-else>
                             <div class="call_service_chat_messages_name">
                               <span>{{ item.userName ? item.userName : item.userID }} </span>
                               <span>{{
@@ -171,8 +167,7 @@
                             <div class="mymsgcont">
                               <div class="call_service_chat_messages">
                                 <div class="call_service_chat">
-                                  <!-- <span> {{ item.chatMsg }}</span> -->
-                                  <div v-for="(item1,ii) in item.chatMsg.split('\n')" :key='ii'> {{ item1 }}</div>
+                                  <span> {{ item.chatMsg }}</span>
                                 </div>
                               </div>
                             </div>
@@ -180,7 +175,7 @@
 
                           <!--  显示'历史记录'字样：根据会议meetID 的不同，判断是否显示，如果只有一个会议的历史记录，则没法判断----不显示 -->
                           <!-- <div class="historyInfo" v-if="item.lastw||(i<historyMsgList.length-1 && item.meetID != historyMsgList[i+1].meetID)"> -->
-                          <!-- <div
+                          <div
                             class="historyInfo"
                             v-if="
                               i < historyMsgList.length - 1 &&
@@ -190,7 +185,7 @@
                             <span>
                               — 以上为{{ item.chatTime.slice(0, -3) }}场次呼叫服务历史记录 —
                             </span>
-                          </div> -->
+                          </div>
                         </template>
 
                         <!-- 2.2.3 暂无记录 -->"
@@ -206,7 +201,7 @@
                     </el-scrollbar>
                   </div>
                   <el-divider />
-                  <!-- 2.3 中间 底部发送消息区域  @keyup.enter="onChangeMsgInfo($event)"-->
+                  <!-- 2.3 中间 底部发送消息区域 -->
                   <div :class="['centerBottom', isShow ? 'active1' : '']">
                     <div class="inputMsgInfo">
                       <el-button @click="commonLanguage">
@@ -215,17 +210,12 @@
                       </el-button>
 
                       <el-input
-                        v-if='isfresh'
-                        ref="inputTextarea"
                         class="call_service_input_msg"
                         size="large"
-                        placeholder="新信息,按 Ctrl+Enter 换行"
+                        placeholder="新信息"
                         v-model="inputMsg"
-                        @keydown.enter="handelMessage"
-                        @keydown.enter.ctrl.prevent
-                        
-                        autosize
-                        type="textarea"
+                        @keyup.enter="onChangeMsgInfo($event)"
+                  
                       />
                       <el-button type="primary" @click="onChangeMsgInfo($event)">发送</el-button>
                     </div>
@@ -273,15 +263,15 @@
                         item1 && item1.roomName ? item1.roomName : '暂无'
                       }}</span>
                       <span class="call_service_floor_span"
-                        >温度:{{ (item1 && item1.roomTemp) ? (item1.roomTemp +'℃') : '暂无' }}</span
+                        >温度:{{ item1 && item1.roomTemp ? item1.roomTemp : '暂无' }}</span
                       >
                       <span class="call_service_floor_span"
-                        >湿度:{{ (item1 && item1.roomHum) ? (item1.roomHum + '%') : '暂无' }}</span
+                        >湿度:{{ item1 && item1.roomHum ? item1.roomHum : '暂无' }}</span
                       >
                       <!-- <span class="call_service_floor_span">灯光:{{item1.roomLhtStat?"已开启":"已关闭"}}</span> -->
                       <span class="call_service_floor_span"
                         >灯光:{{ item1.roomDoLkStat >= 100 ? '已开启' : '已关闭' }}
-                        <el-switch
+                        <!-- <el-switch
                           class="ml-2"
                           size="small"
                           v-model="item1.roomLhtStat"
@@ -295,10 +285,10 @@
                               isOpen(v, item1)
                             }
                           "
-                        />
+                        /> -->
                       </span>
                       <!-- 系统 使用的灯光字段  roomDoLkStat主题 -->
-                      <!-- <span class="call_service_floor_span"
+                      <span class="call_service_floor_span"
                         >系统:
                         <el-switch
                           class="ml-2"
@@ -315,7 +305,7 @@
                             }
                           "
                         />
-                      </span>-->
+                      </span>
                     </div>
                   </el-collapse-item>
                 </el-collapse>
@@ -331,15 +321,12 @@
 <script setup>
 import { nextTick, onMounted, ref } from 'vue'
 import { ChatDotRound, Search } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
+// import { ElMessage } from 'element-plus'
 
 // import { useRoute } from 'vue-router'
 import { createWebSocket } from '@/utils/websocket.js'
 
 import { request } from '@/utils/server.js'
-
-//import { v4 as uuidv4 } from 'uuid';
-import $ from 'jquery'
 // // 中间聊天区域wsbaseURL11
 // var wsbaseURL11 = import.meta.env.VITE_BASE_URL11
 // // 右侧楼层区域wsbaseURL12
@@ -395,7 +382,7 @@ const postUserInfo = () => {
       // "erpbh":"4600072255"
     })
     .then((res) => {
-      // console.log('用户信息查询成功:', res.data)
+      console.log('用户信息查询成功:', res.data)
       //将工号查询返回的对应姓名存下来
       // debugger
       showName.value = res.data.result[0].xm
@@ -413,11 +400,11 @@ const meetingInfo = ref({
 const getMeetingInfo = () => {
   request
     .post('/ShowCatCtrl/queryCallRmStatInfo', {
-      // meetID: meetingInfo.value.meetID,
+      meetID: meetingInfo.value.meetID,
       roomID: meetingInfo.value.roomID
     })
     .then((res) => {
-      // console.log('中间顶部 会议状态查询成功:', res.data)
+      console.log('中间顶部 会议状态查询成功:', res.data)
       
       meetingInfo.value.obj = res.data
     })
@@ -432,116 +419,50 @@ const isScrollToBottom = ref(true)
 const showHis = ref([])
 const timer=ref("")
 const nomore=ref(false)
-
-const ele=ref('')
-function uuid() {
-	var s = [];
-	var hexDigits = "0123456789abcdef";
-	for (var i = 0; i < 36; i++) {
-		s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-	}
-	s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
-	s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
-	s[8] = s[13] = s[18] = s[23] = "-";
-
-	var uuid = s.join("");
-	return uuid;
-}
-
-// 加载状态
-const isloading=ref(false)
 const getHistoryInfo = () => {
-  if(nomore.value){
-    
-  }else{
-    if (isHisLocked.value) {
-      return
-    }
-    isHisLocked.value = true
-    isloading.value=true
-    
-    // debugger
-    request
-      .post('/ShowCatCtrl/showLgScrnChatHis', historyParams.value)
-      .then((res) => {
-        // console.log('历史消息查询成功:', res.data)
-        var list = []
-        
-        historyParams.value.lastChatTime = res.data.chatTime
-        // debugger
-        showHis.value = res.data.callMsgAllList
-        res.data.callMsgAllList.forEach((item) => {
-          item.list.forEach((chatItem) => {
-            chatItem.uuid= 'uuid_'+uuid()
-            chatItem.chatMsg = entitiesToUtf16(chatItem.chatMsg);
-            list.push(chatItem)
-            // debugger
-          })
-          
-        })
-        
-        // debugger
-        if(list.length==0){
-          nomore.value=true
-          isHisLocked=true
-        }
-        
-        historyMsgList.value.unshift(...list)
-        // console.log('历史记录',historyMsgList.value)
-
-        if(list.length<10 && historyMsgList.value.length<10){
-          nomore.value=true
-        }
-        
-        // 最新的历史记录 最后一条 ，加 lastw 字段
-        historyMsgList.value[historyMsgList.value.length - 1].lastw = true
-        // debugger
-        if (isScrollToBottom.value) {
-          clearTimeout(timer.value)
-          timer.value= setTimeout(() => {
-              scrollbarRef.value &&
-                scrollbarRef.value.scrollTo(0, scrollbarRef.value.wrapRef.scrollHeight-100)
-          })
-          isScrollToBottom.value = false
-        }else{
-          if(ele.value){
-            
-            nextTick(()=>{
-              //  console.log('d999999999999999',ele.value,$('#'+ele.value).position().top)
-               scrollbarRef.value &&
-                scrollbarRef.value.scrollTo(0,  $('#'+ele.value).position().top)
-            })
-          }
-          
-        }
-      })
-      .catch((error) => {
-        console.log('历史消息查询查询失败:', error)
-      })
-      .finally(() => {
-        isHisLocked.value = false
-
-        isloading.value=false
-      })
+  if (isHisLocked.value) {
+    return
   }
-}
-
-// -------4.已读未读消息更新接口--------
-const resetState = (lastChatMsgId) => {
-  // debugger
+  isHisLocked.value = true
   request
-    .post('/ShowCatCtrl/updateChatMsgStatus', {
-      "userId": userId.value, //用户id
-      "lastChatMsgId": lastChatMsgId, //最新消息id
-      // "roomId": meetingInfo.value.roomID, //房间id
-    })
+    .post('/ShowCatCtrl/showLgScrnChatHis', historyParams.value)
     .then((res) => {
-      // console.log('已读未读消息更新接口:', res.data)
-      
-      
+      console.log('历史消息查询成功:', res.data)
+      var list = []
+
+      historyParams.value.lastChatTime = res.data.chatTime
+      // debugger
+      showHis.value = res.data.callMsgAllList
+      res.data.callMsgAllList.forEach((item) => {
+        item.list.forEach((chatItem) => {
+
+          chatItem.chatMsg = entitiesToUtf16(chatItem.chatMsg);
+          list.push(chatItem)
+        })
+      })
+      // debugger
+      if(list.length==0){
+         nomore.value=true
+      }
+      historyMsgList.value.unshift(...list)
+
+      // 最新的历史记录 最后一条 ，加 lastw 字段
+      historyMsgList.value[historyMsgList.value.length - 1].lastw = true
+      // debugger
+      if (isScrollToBottom.value) {
+        clearTimeout(timer.value)
+        timer.value= setTimeout(() => {
+            scrollbarRef.value &&
+              scrollbarRef.value.scrollTo(0, scrollbarRef.value.wrapRef.scrollHeight)
+        })
+        isScrollToBottom.value = false
+      }
     })
     .catch((error) => {
-      console.log('已读未读消息更新接口:', error)
+      console.log('历史消息查询查询失败:', error)
+    })
+    .finally(() => {
+      isHisLocked.value = false
     })
 }
 
@@ -646,11 +567,10 @@ const searchClick = (data) => {
 
 // 1.2点击左侧每个会议室
 const clickRoomName = (item) => {
-  item.chatState = '已读'
-
+  // debugger
   isScrollToBottom.value = true
   // debugger
-  // console.log('会议室', item)
+  console.log('会议室', item)
   meetingInfo.value = Object.assign(meetingInfo.value, item)
   currentMeetingIndex.value = item.roomID
 
@@ -671,24 +591,11 @@ const clickRoomName = (item) => {
     meetID: item.meetID,
     roomID: item.roomID,
     state: 1,
-    type: 'init',
-    // chatMsgId:item.chatMsgId,
+    type: 'init'
   }
   // debugger
-  let count=0
   if (websocket.readyState == 1) {
-    if(count==0){
-      resetState(item.chatMsgId)
-      count++
-    }else{
-        // 切换会议室时，判断当前会议室有未读消息，则调用已读未读消息状态接口
-      if(item.chatState=="未读" && item.chatMsgId){
-        resetState(item.chatMsgId)
-      }
-    }
-    
     websocket.send(JSON.stringify(initmsg))
-    // console.log('初始化消息发送',initmsg)
   }
 
   // 调用中间顶部 会议状态接口
@@ -710,24 +617,21 @@ const scrollbarRef = ref(null)
 const isHisLocked = ref(false)
 const onScroll = (top) => {
   //上面隐藏内容的高度
-  // console.log(top.scrollTop)
+  console.log(top.scrollTop)
   // 容器高度
   // console.log(scrollbarRef.value.wrapRef.clientHeight)
   // 内容高度
   // console.log(scrollbarRef.value.wrapRef.scrollHeight)
-   
-  if (top.scrollTop <= 0) {
+
+  if (top.scrollTop <= 20) {
     // debugger
-    
     if (historyMsgList.value.length > 0) {
-      ele.value=historyMsgList.value[0].uuid
       historyParams.value.lastChatTime = historyMsgList.value[0].chatTime
     }
     
     if(nomore.value){
        
     }else{
-      
       getHistoryInfo()
     }
     
@@ -760,8 +664,7 @@ function entitiesToUtf16(str) {
 var websocket = createWebSocket(wsbaseURL11, {
   onopen(e) {
     console.log('建立了websocket连接')
-    // console.log(e)
-    
+    console.log(e)
     if (roomInfo.value.length > 0) {
       let index
       for (var i = 0; i < roomInfo.value.length; i++) {
@@ -770,7 +673,6 @@ var websocket = createWebSocket(wsbaseURL11, {
           break
         }
       }
-      
       clickRoomName(roomInfo.value[index])
     }
     // 重新调用会议室最新消息列表-----------------------
@@ -786,8 +688,6 @@ var websocket = createWebSocket(wsbaseURL11, {
     data.chatMsg = entitiesToUtf16(data.chatMsg);
     // 最新消息push到历史消息最后面
     historyMsgList.value.push(data)
-     
-    resetState(data.chatMsgId)
     // debugger
     for (var i = 0; i < roomInfo.value.length; i++) {
       if (currentMeetingIndex.value == roomInfo.value[i].roomID) {
@@ -808,33 +708,17 @@ var websocket = createWebSocket(wsbaseURL11, {
   }
 })
 
-const inputTextarea=ref('')
-const isfresh=ref(true)
-const handelMessage=(e)=>{
-  if (e.ctrlKey) {
-        inputMsg.value += '\n'; // 在文本末尾添加换行符
-      } else {
-        // 发送消息的逻辑
-        console.log('发送消息:',inputMsg.value);
-        
-        onChangeMsgInfo(e)
-        inputMsg.value = inputMsg.value.replace(/\n/g, ''); // 发送消息后清除输入框内容中的回车符号
-        
-       
-      }
-}
-// 发送按钮，监听输入框消息变化
-// const issending=ref(false)
+// 监听输入框消息变化
 const onChangeMsgInfo = (e) => {
-  
-    if ((inputMsg.value=='' ||  inputMsg.value.trim() == '') && iscommon.value==false) {
-      ElMessage({
-        type: 'warning',
-        message: '发送消息不允许为空',
-        offset: 16
-      })
-      return
-    }
+  // if (inputMsg.value=='' && e.target.innerHTML == '发送') {
+  // if (inputMsg.value=='') {
+  //   ElMessage({
+  //     type: 'warning',
+  //     message: '请输入消息',
+  //     offset: 16
+  //   })
+  //   return
+  // }
   var sendmsg = {
     callUser: {
       userID: userId.value,
@@ -852,21 +736,16 @@ const onChangeMsgInfo = (e) => {
   }
   //点击按钮发送数据给服务器
   // debugger
-  // console.log('用户输入消息：', inputMsg.value)
-  // console.log('常用语选择', e.target.innerHTML)
+  console.log('用户输入消息：', inputMsg.value)
+  console.log('常用语选择', e.target.innerHTML)
   console.log('发送消息：', sendmsg)
   //数据是字符串、ArrayBuffer或Blob中的一种4
 
   if (websocket.readyState == 1) {
     websocket.send(JSON.stringify(sendmsg))
-    
   }
 
   inputMsg.value = ''
-  isfresh.value=false
-  nextTick(()=>{
-    isfresh.value=true
-  })
 }
 
 // 断开重连
@@ -878,14 +757,10 @@ const commonLanguageArr = [
   '已帮您处理完毕，有需求随时沟通哦～'
 ]
 const isShow = ref(false)
-const commonLanguage = () => {
-  isShow.value = !isShow.value
-}
+const commonLanguage = () => [(isShow.value = !isShow.value)]
 
 // 点击常用语
-const iscommon=ref(false)
 const onCommonMsgInfo = (e) => {
-  iscommon.value=true
   // debugger
   onChangeMsgInfo(e)
 }
@@ -895,7 +770,7 @@ var isLocked = true
 //--------创建左侧 和 右侧websocket对象------***
 var ws1 = createWebSocket(wsbaseURL12 + '/websocket/' + userId.value, {
   onopen(e) {
-    console.log('建立了ws1左右侧连接')
+    console.log('建立了ws1连接', ws1, e)
   },
   onmessage(e) {
     // console.log('接收ws1服务器消息:', e)
@@ -910,14 +785,13 @@ var ws1 = createWebSocket(wsbaseURL12 + '/websocket/' + userId.value, {
         //左侧会议室列表
         roomInfo.value = []
         roomInfo.value = data.result
-       
+
         // console.log("左侧会议室列表",roomInfo.value)
 
         //会议室列表初始化完毕，调用一次改默认第一个会议室 的点击事件，渲染中间部分
         if (isLocked) {
           if (roomInfo.value.length > 0) {
             clickRoomName(roomInfo.value[0])
-            // debugger
           }
           isLocked = false
         } else {
@@ -950,7 +824,7 @@ const floorInfo = ref([])
 
 const isOpen = (v, item1) => {
   // debugger
-  // console.log(v, item1)
+  console.log(v, item1)
   // 此处需要加灯光控制接口
   // var lightMsg = {
 
@@ -974,27 +848,14 @@ const isOpen = (v, item1) => {
         roomID: item1.roomID
       })
       .then((res) => {
-        // debugger
+        console.log('控制设备发送成功', res)
         console.log('主题打印', topic)
-        if(res.data.repCode==200){
-           // console.log('控制设备发送成功', res)
-        }else{
-           ElMessage({
-            type: 'error',
-            message: res.data.repMsg || '控制设备发送失败'
-          })  
-        }
       })
       .catch((error) => {
         console.log('控制设备发送失败', error)
-         ElMessage({
-            type: 'error',
-            message: error|| '控制设备发送失败'
-          })
       })
   }
 }
-
 </script>
 
 <style scoped lang="less">
@@ -1287,37 +1148,6 @@ const isOpen = (v, item1) => {
               span {
                 white-space: nowrap;
               }
-              .call_service_span_img {
-                  margin-right: (40/1920) * 100vw;
-                  color: #ffffff;
-                  font-size: (14/1920) * 100vw;
-                  display: inline-block;
-                  opacity: 0.8;
-
-                .call_service_img {
-                  background-repeat: no-repeat;
-                  width: (18/1920) * 100vw;
-                  height: (18/1920) * 100vw;
-                  display: inline-block;
-                  top: (3/1080) * 100vh;
-                  position: relative;
-                }
-                .call_service_online_img_meeting {
-                  background-image: url('@/assets/img/call_online_meeting.svg');
-                  background-size: (18/1920) * 100vw (18/1920) * 100vw;
-                }
-
-                .call_service_online_img_rank {
-                  background-image: url('@/assets/img/call_ranking_list.svg');
-                  background-size: (18/1920) * 100vw (18/1920) * 100vw;
-                }
-
-                .call_service_online_img_time {
-                  background-image: url('@/assets/img/call_time_line.svg');
-                  background-size: (18/1920) * 100vw (18/1920) * 100vw;
-                }
-              }
-
               span:nth-child(2) {
                 width: 40%;
                 overflow: hidden;
@@ -1381,15 +1211,13 @@ const isOpen = (v, item1) => {
         }
       }
       // 2.4 暂无记录
-      .noMessageRecode , .nomore{
+      .noMessageRecode ,.nomore{
         text-align: center;
-        margin-bottom: (16/1080) * 100vh;
         span {
           color: rgba(255, 255, 255, 0.4);
           width: (290/1920) * 100vw;
         }
       }
-     
       // 横线
       .el-divider--horizontal {
         width: (1000/1920) * 100vw;
@@ -1477,7 +1305,6 @@ const isOpen = (v, item1) => {
         justify-content: space-between;
         align-items: center;
         & > span {
-          width: (80/1080) * 100vw;
           display: inline-block;
           color: rgba(255, 255, 255, 1);
           font-size: (12/1920) * 100vw;
@@ -1533,6 +1360,37 @@ const isOpen = (v, item1) => {
   color: #ffffff;
 }
 
+.call_service_img {
+  background-repeat: no-repeat;
+  width: (18/1920) * 100vw;
+  height: (18/1920) * 100vw;
+  display: inline-block;
+  top: (3/1080) * 100vh;
+  position: relative;
+}
+
+.call_service_online_img_meeting {
+  background-image: url('@/assets/img/call_online_meeting.svg');
+  background-size: (18/1920) * 100vw (18/1920) * 100vw;
+}
+
+.call_service_online_img_rank {
+  background-image: url('@/assets/img/call_ranking_list.svg');
+  background-size: (18/1920) * 100vw (18/1920) * 100vw;
+}
+
+.call_service_online_img_time {
+  background-image: url('@/assets/img/call_time_line.svg');
+  background-size: (18/1920) * 100vw (18/1920) * 100vw;
+}
+
+.call_service_span_img {
+  margin-right: (40/1920) * 100vw;
+  color: #ffffff;
+  font-size: (14/1920) * 100vw;
+  display: inline-block;
+  opacity: 0.8;
+}
 
 .call_service_msg_area {
   height: (650/1080) * 100vh;
@@ -1593,28 +1451,15 @@ const isOpen = (v, item1) => {
   display: inline-flex;
   margin-left: (20/1920) * 100vw;
   width: (640/1920) * 100vw;
-  min-height: (40/1080) * 100vh;
+  height: (40/1080) * 100vh;
   background-color: rgba(255, 255, 255, 0.1);
   box-shadow: none;
-  
-  // input框
-  .el-input__wrapper {
-    background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: none;
-  }
-  // textarea
-  .el-textarea__inner{
-    min-height: (40/1080) * 100vh!important;
-    line-height: 1.8;
-    padding-top:0 ;
-    padding-bottom: 0;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    box-shadow: none;
-  }
 }
 
-
+:deep(.call_service_input_msg .el-input__wrapper) {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
 
 :deep(.call_service_input_msg .el-input__inner) {
   color: white;

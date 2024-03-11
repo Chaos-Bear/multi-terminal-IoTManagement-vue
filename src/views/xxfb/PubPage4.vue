@@ -3,6 +3,7 @@
     <Prepub :form="form" ref="prePubRef"></Prepub>
     <Prepub2 :form="form" ref="prePubRef"></Prepub2>
     <Prepub3 :form="form" ref="prePubRef"></Prepub3>
+    <Prepub4 :form="form" ref="prePubRef"></Prepub4>
   </div>
 </template>
 

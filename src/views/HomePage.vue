@@ -15,15 +15,16 @@
           </div>
           <div>设备管理</div>
         </div>
-        <!-- <div class="item">
+        <div class="item">
           <a href="/iot-client/#/callService" target="__blank">
             <img src="@/assets/home/3.png" />
-          </a> -->
+          </a>
         <!-- <a href="/#/callService" target="__blank">
             <img src="@/assets/home/3.png" />
           </a> -->
-        <!-- <div>呼叫服务</div>
-        </div> -->
+        <div>呼叫服务</div>
+        </div>
+
         <!-- <div class="item">
           <a href="/iot-client/#/tablet" target="_blank">
             <img src="@/assets/home/2.png" />
@@ -33,18 +34,20 @@
           </a> -->
           <!-- <div>平板借还</div>
         </div> -->
-        <div class="item">
+
+        <!-- <div class="item">
           <div>
             <img src="@/assets/home/3.png" @click="tips()" />
           </div>
           <div>呼叫服务</div>
-        </div>
+        </div> -->
         <div class="item">
           <div>
             <img src="@/assets/home/2.png" @click="tips()" />
           </div>
           <div>平板借还</div>
         </div>
+        
         <div class="item">
           <div>
             <img src="@/assets/xxfb/screenshots/10.png" @click="router.push('/xxfb-monitorlist')" />
